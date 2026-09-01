@@ -299,14 +299,22 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 }
 /* ── теплий фон: плями-доповнення до ціану + зерно ───────── */
 :root{
-  --warm-a:#d1601f; --warm-b:#a03a16;
-  --g-main:.16; --g-b:.08; --g-c:.06; --grain:.05;
+  --warm-a:#e2701c; --warm-b:#c04a18;
+  --g-main:.38; --g-b:.20; --g-c:.15; --grain:.06;
 }
 @media (prefers-color-scheme:dark){
-  :root{ --g-main:.46; --g-b:.20; --g-c:.14; --grain:.085 }
+  :root{
+    --warm-a:#d1601f; --warm-b:#a03a16;
+    --g-main:.72; --g-b:.34; --g-c:.25; --grain:.10;
+  }
 }
-body::before,body::after{
+body::after{
   content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+}
+body::before{
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  /* навмисно більший за екран: зсув паралакса не має оголювати край */
+  top:-70vh; bottom:-70vh; left:-20vw; right:-20vw;
 }
 body::before{
   background:
@@ -327,7 +335,7 @@ body::after{
   mix-blend-mode:overlay;
 }
 body::before{
-  transform:translate3d(0, var(--par, 0px), 0) scale(1.12);
+  transform:translate3d(0, var(--par, 0px), 0);
   will-change:transform;
 }
 }
@@ -567,6 +575,7 @@ body::before{
     var mq = matchMedia('(prefers-reduced-motion: reduce)');
     var target = 0, cur = 0, running = false;
     function factor(){ return mq.matches ? 0 : 0.14; }
+    function cap(){ return innerHeight * 0.34; }   // не більше третини екрана
     function apply(v){ body.style.setProperty('--par', v.toFixed(2) + 'px'); }
     function frame(){
       cur += (target - cur) * 0.09;
@@ -574,7 +583,8 @@ body::before{
       else { cur = target; apply(cur); running = false; }
     }
     function onScroll(){
-      target = (window.scrollY || document.documentElement.scrollTop || 0) * factor();
+      var y = (window.scrollY || document.documentElement.scrollTop || 0) * factor();
+      target = -Math.min(y, cap());
       if(!running){ running = true; requestAnimationFrame(frame); }
     }
     apply(0);
