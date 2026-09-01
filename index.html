@@ -270,7 +270,12 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
 }
 
 /* ── poster ───────────────────────────────────────────────── */
-.poster{background:var(--accent); color:#f7f4f3; padding-block:clamp(34px,6vw,80px)}
+.poster{
+  background:var(--accent); color:#f7f4f3; padding-block:clamp(34px,6vw,80px);
+  --uline:3px;
+}
+@media (min-width:700px){.poster{--uline:5px}}
+@media (min-width:1200px){.poster{--uline:6px}}
 .poster .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .poster a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
@@ -279,7 +284,7 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   color:color-mix(in srgb,#f7f4f3 60%,transparent);
   background-image:linear-gradient(#f7f4f3,#f7f4f3);
   background-repeat:no-repeat; background-position:0 100%;
-  background-size:0% clamp(2px,.5vw,6px);
+  background-size:0% var(--uline);
   transition:background-size 400ms var(--ease), color 260ms var(--ease);
 }
 .poster a::after{
@@ -288,10 +293,10 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .poster a:hover{color:#f7f4f3; background-size:100% clamp(2px,.5vw,6px)}
+  .poster a:hover{color:#f7f4f3; background-size:100% var(--uline)}
   .poster a:hover::after{opacity:1; transform:none}
 }
-.poster a:active{color:#f7f4f3; background-size:100% clamp(2px,.5vw,6px)}
+.poster a:active{color:#f7f4f3; background-size:100% var(--uline)}
 .poster a:active::after{opacity:1; transform:none}
 .poster .lines{margin-top:.24em}
 .poster a + a{margin-left:clamp(7px,1.1vw,20px)}
@@ -404,9 +409,9 @@ body::before{
         <div class="spec" data-rev style="--d:210ms">
           <h3 data-en="02 — Print &amp; Design" data-ua="02 — Друк і дизайн">02 &mdash; Print &amp; Design</h3>
           <ul>
-            <li><a class="it" href="/design/" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
             <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="/design/" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
           </ul>
         </div>
         <div class="spec" data-rev style="--d:280ms">
