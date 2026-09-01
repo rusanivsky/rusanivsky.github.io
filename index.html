@@ -104,6 +104,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font-size:11px; letter-spacing:.1em; text-transform:uppercase;
   font-weight:600; color:var(--mute);
 }
+#clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .tiny b{font-weight:800; color:var(--ink); letter-spacing:.1em}
 .tgl{display:flex; gap:0; align-items:center}
@@ -281,7 +282,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 <header class="wrap meta" data-rev>
   <div class="cols">
     <span class="tiny" data-en="Kyiv, UA" data-ua="Київ, UA">Kyiv, UA</span>
-    <span class="tiny"><span id="clock">—:—</span> <span id="tz">EET</span></span>
+    <span class="tiny"><span id="clock">—:—:—</span> <span id="tz">EET</span></span>
   </div>
   <div class="cols">
     <div class="tgl" id="lang" role="group" aria-label="Language">
@@ -510,7 +511,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     if(!c) return;
     try{
       var now = new Date();
-      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KYIV}).format(now);
+      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:KYIV}).format(now);
       if(z){
         var parts = new Intl.DateTimeFormat('en-GB',{timeZone:KYIV,timeZoneName:'short'}).formatToParts(now);
         for(var i=0;i<parts.length;i++){
@@ -524,8 +525,10 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   var clockTimer;
   function scheduleTick(){
     clearTimeout(clockTimer);
-    // прокидаємось точно на межі хвилини, а не раз на 20 с
-    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 60000 - (Date.now() % 60000) + 50);
+    // у прихованій вкладці не крутимо щосекунди — час оновиться при поверненні
+    if(document.hidden) return;
+    // прокидаємось точно на межі секунди
+    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 1000 - (Date.now() % 1000) + 20);
   }
   function resyncClock(){ tick(); scheduleTick(); }
   tick(); scheduleTick();
