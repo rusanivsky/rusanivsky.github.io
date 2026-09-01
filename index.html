@@ -191,17 +191,36 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
-@media (hover:hover){
-  .spec:hover{color:var(--ink)}
-  .spec:hover::after{transform:scaleX(1)}
+.spec .it{
+  color:inherit; text-decoration:none;
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  background-image:linear-gradient(var(--accent),var(--accent));
+  background-repeat:no-repeat; background-position:0 100%;
+  background-size:0% var(--rule);
+  transition:background-size 380ms var(--ease), color 240ms var(--ease);
 }
+.spec a.it::after{
+  content:"↗"; display:inline-block; margin-left:.4em; font-size:.72em; color:var(--accent);
+  opacity:0; transform:translate(-3px,3px);
+  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
+}
+@media (hover:hover){
+  .spec:hover::after{transform:scaleX(1)}
+  .spec .it:hover{color:var(--ink); background-size:100% var(--rule)}
+  .spec a.it:hover::after{opacity:1; transform:none}
+}
+.spec .it:active{color:var(--ink); background-size:100% var(--rule)}
+.spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 .spec h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px}
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
   font-size:clamp(15px,1.35vw,20px); line-height:1.35; text-wrap:pretty;
-  display:grid; grid-template-columns:1.6em 1fr;
+  position:relative; padding-left:1.6em;
 }
-.spec li::before{content:"—"; color:var(--accent); font-weight:800}
+.spec li::before{
+  content:"—"; color:var(--accent); font-weight:800;
+  position:absolute; left:0; top:0;
+}
 @media (min-width:1100px){.specs{grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:clamp(20px,2.2vw,36px)}}
 .figwrap{grid-column:7/span 6; align-self:start}
 figure{margin:0; position:relative; z-index:1}
@@ -339,25 +358,25 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <div class="spec" data-rev style="--d:140ms">
           <h3 data-en="01 — Print &amp; Design" data-ua="01 — Друк і дизайн">01 &mdash; Print &amp; Design</h3>
           <ul>
-            <li data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</li>
-            <li data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</li>
-            <li data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</li>
+            <li><span class="it" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</span></li>
+            <li><span class="it" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</span></li>
+            <li><span class="it" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</span></li>
           </ul>
         </div>
         <div class="spec" data-rev style="--d:210ms">
           <h3 data-en="02 — Video" data-ua="02 — Відео">02 &mdash; Video</h3>
           <ul>
-            <li data-en="Interview editing" data-ua="Монтаж інтерв’ю">Interview editing</li>
-            <li data-en="YouTube vlogs" data-ua="Влоги для YouTube">YouTube vlogs</li>
-            <li data-en="Short-form video for social" data-ua="Короткі відеоролики для соцмереж">Short-form video for social</li>
+            <li><span class="it" data-en="Interview editing" data-ua="Монтаж інтерв’ю">Interview editing</span></li>
+            <li><span class="it" data-en="YouTube vlogs" data-ua="Влоги для YouTube">YouTube vlogs</span></li>
+            <li><span class="it" data-en="Short-form video for social" data-ua="Короткі відеоролики для соцмереж">Short-form video for social</span></li>
           </ul>
         </div>
         <div class="spec" data-rev style="--d:280ms">
           <h3 data-en="03 — Photography" data-ua="03 — Фотографія">03 &mdash; Photography</h3>
           <ul>
-            <li data-en="Street photography" data-ua="Вулична фотографія">Street photography</li>
-            <li data-en="Events" data-ua="Події">Events</li>
-            <li data-en="Portraits" data-ua="Портрети">Portraits</li>
+            <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Street photography" data-ua="Вулична фотографія">Street photography</a></li>
+            <li><a class="it" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="Events" data-ua="Події">Events</a></li>
+            <li><span class="it" data-en="Portraits" data-ua="Портрети">Portraits</span></li>
           </ul>
         </div>
       </div>
@@ -385,14 +404,11 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     <a class="row" data-rev style="--d:70ms" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener">
       <span class="num">02</span><span class="lab">Instagram</span><span class="han">@rusanivsky</span><span class="arw">↗</span>
     </a>
-    <a class="row" data-rev style="--d:140ms" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener">
-      <span class="num">03</span><span class="lab">Pixover</span><span class="han" data-en="Photography" data-ua="Фотографія">Photography</span><span class="arw">↗</span>
+    <a class="row" data-rev style="--d:140ms" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener">
+      <span class="num">03</span><span class="lab">LinkedIn</span><span class="han" data-en="Professional" data-ua="Професійне">Professional</span><span class="arw">↗</span>
     </a>
-    <a class="row" data-rev style="--d:210ms" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener">
-      <span class="num">04</span><span class="lab">LinkedIn</span><span class="han" data-en="Professional" data-ua="Професійне">Professional</span><span class="arw">↗</span>
-    </a>
-    <a class="row" data-rev style="--d:280ms" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener">
-      <span class="num">05</span><span class="lab">Facebook</span><span class="han" data-en="Social" data-ua="Соцмережі">Social</span><span class="arw">↗</span>
+    <a class="row" data-rev style="--d:210ms" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener">
+      <span class="num">04</span><span class="lab">Facebook</span><span class="han" data-en="Social" data-ua="Соцмережі">Social</span><span class="arw">↗</span>
     </a>
   </section>
 
