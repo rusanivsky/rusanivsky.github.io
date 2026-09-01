@@ -84,3 +84,55 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .pt{font-size:clamp(18px,1.7vw,24px);font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
 .pd{margin:0;font-size:clamp(13px,1vw,15px);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
+/* ── теплий фон: плями-доповнення до ціану + зерно ───────── */
+:root{
+  --warm-a:#e2701c; --warm-b:#c04a18;
+  --g-main:.38; --g-b:.20; --g-c:.15; --grain:.06;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --warm-a:#d1601f; --warm-b:#a03a16;
+    --g-main:.72; --g-b:.34; --g-c:.25; --grain:.10;
+  }
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+}
+body::before{
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  /* навмисно більший за екран: зсув паралакса не має оголювати край */
+  top:-70vh; bottom:-70vh; left:-20vw; right:-20vw;
+}
+body::before{
+  background:
+    /* головне джерело світла — ліворуч, у порожнечі поруч з іменем */
+    radial-gradient(58vmax 62vmax at -6% 34%,
+      color-mix(in srgb, var(--warm-a) calc(var(--g-main) * 100%), transparent) 0%,
+      color-mix(in srgb, var(--warm-b) calc(var(--g-main) * 42%), transparent) 38%,
+      transparent 70%),
+    radial-gradient(36vmax 34vmax at 104% 72%,
+      color-mix(in srgb, var(--warm-b) calc(var(--g-b) * 100%), transparent), transparent 66%),
+    radial-gradient(30vmax 28vmax at 16% 104%,
+      color-mix(in srgb, var(--warm-a) calc(var(--g-c) * 100%), transparent), transparent 64%);
+}
+body::after{
+  background-image:url("data:image/svg+xml;charset=utf-8,<svg xmlns='http%3A//www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url%28%23n%29' opacity='0.55'/></svg>");
+  background-size:220px 220px;
+  opacity:var(--grain);
+  mix-blend-mode:overlay;
+}
+body::before{
+  transform:translate3d(0, var(--par, 0px), 0);
+  will-change:transform;
+}
+}
+
+/* ── плавний перехід між сторінками ──────────────────────── */
+@view-transition{ navigation:auto }
+@keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
+@keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
+::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
+::view-transition-new(root){ animation:vt-in 380ms var(--ease) 60ms both }
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){ animation:none }
+}
