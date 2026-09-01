@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer</title>
+<meta name="description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
+<link rel="canonical" href="https://rusanivsky.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kyrylo Rusanivsky">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://rusanivsky.com/">
+<meta property="og:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
+<meta property="og:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
+<meta property="og:image" content="https://rusanivsky.com/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer, Kyiv">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
+<meta name="twitter:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
+<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#f3f2f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171615" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f8299'/%3E%3Ctext x='4' y='24' font-family='Helvetica,sans-serif' font-weight='800' font-size='20' fill='%23f3f2f2'%3EKR%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f2f2; --surface:#eae9e9; --ink:#201e1d; --accent:#0f8299;
+  --divider:color-mix(in srgb, #201e1d 40%, transparent);
+  --mute:color-mix(in srgb, #201e1d 52%, transparent);
+  --font:"Archivo",system-ui,-apple-system,sans-serif;
+  --pad:clamp(16px,3.2vw,48px);
+  --rule:2px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
+    --divider:color-mix(in srgb, #f0eeec 34%, transparent);
+    --mute:color-mix(in srgb, #f0eeec 55%, transparent);
+  }
+}
+html[data-theme="light"]{
+  --bg:#f3f2f2; --surface:#eae9e9; --ink:#201e1d;
+  --divider:color-mix(in srgb, #201e1d 40%, transparent);
+  --mute:color-mix(in srgb, #201e1d 52%, transparent);
+}
+html[data-theme="dark"]{
+  --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
+  --divider:color-mix(in srgb, #f0eeec 34%, transparent);
+  --mute:color-mix(in srgb, #f0eeec 55%, transparent);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font); font-size:15px; line-height:1.55; font-weight:400;
+  overflow-x:hidden;
+}
+img{display:block; max-width:100%}
+a{color:inherit; text-decoration:none}
+h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+.wrap{padding-inline:var(--pad)}
+.rule{height:var(--rule); background:var(--divider); border:0; margin:0}
+
+/* ── marginalia bar ───────────────────────────────────────── */
+.meta{
+  display:grid; grid-template-columns:1fr auto; gap:var(--pad) 24px;
+  padding-block:2px; align-items:center;
+}
+.meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
+.tiny{
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; color:var(--mute);
+}
+.meta .tiny{white-space:nowrap}
+.tiny b{font-weight:800; color:var(--ink); letter-spacing:.1em}
+.tgl{display:flex; gap:0; align-items:center}
+.tgl button{
+  appearance:none; background:transparent; border:0; cursor:pointer; color:var(--mute);
+  font:inherit; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  padding:16px 8px; min-height:44px; line-height:1; transition:color 220ms var(--ease);
+}
+.tgl button:first-child{padding-left:0}
+.tgl button[aria-pressed="true"]{color:var(--ink)}
+@media (hover:hover){.tgl button:hover{color:var(--accent)}}
+.tgl span{padding:0; font-size:11px; color:var(--divider); line-height:1}
+@media (max-width:560px){
+  .meta{grid-template-columns:1fr; gap:6px}
+  .meta .cols{gap:14px}
+}
+
+/* ── hero name ────────────────────────────────────────────── */
+.hero{padding-block:clamp(40px,12vh,120px) 0}
+.name{display:block; text-transform:uppercase; text-align:right; --fit:.82}
+@media (max-width:1024px){.name{--fit:.9}}
+@media (max-width:768px){.name{--fit:1}}
+.ln{display:block; overflow:hidden; padding-top:.14em; margin-top:-.14em}
+.ln.done{overflow:visible}
+.ln+.ln{margin-top:-.10em}
+.ln>span{
+  display:inline-block; white-space:nowrap; line-height:1;
+  font-size:13.6vw; font-weight:800; letter-spacing:-.035em;
+  transform:translateY(115%);
+}
+.ln:nth-child(1)>span{font-variation-settings:"wdth" 96}
+.ln:nth-child(2)>span{font-variation-settings:"wdth" 96}
+.is-in .ln>span{transform:translateY(0); transition:transform 620ms var(--ease)}
+.is-in .ln:nth-child(2)>span{transition-delay:110ms}
+
+.hero-foot{
+  display:grid; grid-template-columns:repeat(12,1fr); gap:24px;
+  align-items:end; padding-block:clamp(20px,4vh,44px) clamp(20px,4vh,40px);
+}
+.lede{grid-column:1/span 6; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
+.hero-foot .scroll{grid-column:11/span 2; justify-self:end; text-align:right}
+@media (max-width:900px){
+  .lede{grid-column:1/span 12}
+  .hero-foot .scroll{display:none}
+}
+
+/* ── marquee ──────────────────────────────────────────────── */
+.mq{overflow:hidden; padding-block:10px; -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mq-t{display:flex; width:max-content; animation:slide 34s linear infinite}
+.mq:hover .mq-t{animation-play-state:paused}
+.mq span{
+  display:block; white-space:nowrap; padding-right:.4em;
+  font-size:clamp(22px,3.4vw,44px); font-weight:800; text-transform:uppercase;
+  letter-spacing:-.01em; font-variation-settings:"wdth" 88;
+}
+.mq i{font-style:normal; color:var(--accent)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ── portrait + statement ─────────────────────────────────── */
+.about{
+  display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
+  padding-block:clamp(40px,7vh,96px);
+}
+.roles{grid-column:1/span 6; align-self:start; position:relative; z-index:2}
+.roles h2{
+  font-size:clamp(30px,4.4vw,68px); text-transform:uppercase; letter-spacing:-.035em;
+  font-variation-settings:"wdth" 92; line-height:.94; color:var(--accent);
+}
+.roles h2 span{display:block}
+.roles h2 span:nth-child(3){
+  position:relative; width:max-content; padding-right:.14em;
+}
+.note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
+.specs{display:grid; gap:clamp(18px,2.4vw,32px); margin-top:clamp(24px,3.4vw,44px)}
+.spec{border-top:var(--rule) solid var(--divider); padding-top:12px}
+.spec h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px}
+.spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
+.spec li{
+  font-size:clamp(15px,1.35vw,20px); line-height:1.35; text-wrap:pretty;
+  display:grid; grid-template-columns:1.6em 1fr;
+}
+.spec li::before{content:"—"; color:var(--accent); font-weight:800}
+@media (min-width:1100px){.specs{grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:clamp(20px,2.2vw,36px)}}
+.figwrap{grid-column:7/span 6; align-self:start}
+figure{margin:0; position:relative; z-index:1}
+.shot{
+  position:relative; aspect-ratio:4/5; background:var(--surface);
+  overflow:hidden;
+}
+.shot img{
+  width:100%; height:100%; object-fit:cover;
+  transform:scale(1.04); transition:transform 800ms var(--ease);
+}
+.about.is-in .shot img{transform:scale(1)}
+figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10px}
+@media (max-width:900px){
+  .roles,.figwrap{grid-column:1/span 12}
+  .figwrap{order:-1}
+  .shot{aspect-ratio:3/4}
+}
+
+/* ── index of links ───────────────────────────────────────── */
+.index{padding-bottom:clamp(30px,6vh,72px)}
+.index h2{font-size:11px}
+.row{
+  display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
+  align-items:baseline; padding-block:clamp(16px,2.2vw,26px);
+  border-top:var(--rule) solid var(--divider); min-height:64px;
+  position:relative; overflow:hidden;
+}
+.row:last-of-type{border-bottom:var(--rule) solid var(--divider)}
+.row .num{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--mute); transition:color 240ms var(--ease)}
+.row .lab{
+  font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:uppercase;
+  letter-spacing:-.035em; line-height:.98; font-variation-settings:"wdth" 100;
+  transition:transform 380ms var(--ease); transform-origin:left;
+}
+.row .han{font-size:clamp(12px,1vw,14px); color:var(--mute); letter-spacing:.01em}
+.row .arw{font-size:clamp(14px,1.3vw,20px); transition:transform 380ms var(--ease)}
+.row::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:var(--rule);
+  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+}
+@media (hover:hover){
+  .row:hover .lab{transform:translateX(clamp(8px,1.4vw,22px))}
+  .row:hover .num{color:var(--accent)}
+  .row:hover .arw{transform:translate(6px,-6px)}
+  .row:hover::after{transform:scaleX(1)}
+}
+.row:active .lab{transform:translateX(10px)}
+.row:active .num{color:var(--accent)}
+.row:active::after{transform:scaleX(1)}
+@media (max-width:640px){
+  .row{grid-template-columns:auto 1fr auto; row-gap:2px; padding-block:14px}
+  .row .num{grid-row:1}
+  .row .lab{grid-column:2/span 2}
+  .row .han{grid-column:2; grid-row:2}
+  .row .arw{grid-row:1; align-self:center}
+}
+
+/* ── poster ───────────────────────────────────────────────── */
+.poster{background:var(--accent); color:#f7f4f3; padding-block:clamp(34px,6vw,80px)}
+.poster .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
+.poster a{
+  display:inline-block; margin-top:.24em;
+  font-size:clamp(30px,7.2vw,104px); font-weight:800; text-transform:none;
+  letter-spacing:-.04em; line-height:.95; font-variation-settings:"wdth" 90;
+  border-bottom:clamp(2px,.5vw,6px) solid transparent; transition:border-color 300ms var(--ease)
+}
+.poster a:hover,.poster a:active{border-bottom-color:#f7f4f3}
+.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9}
+
+/* ── footer ───────────────────────────────────────────────── */
+footer{padding-block:16px 22px; display:grid; grid-template-columns:1fr auto; gap:8px 24px}
+footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+@media (max-width:560px){footer{grid-template-columns:1fr}}
+
+/* ── reveal ───────────────────────────────────────────────── */
+[data-rev]{opacity:0; transform:translateY(22px)}
+[data-rev].is-in{opacity:1; transform:none; transition:opacity 520ms var(--ease), transform 560ms var(--ease)}
+[data-rev].is-in{transition-delay:var(--d,0ms)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important; transition:none!important}
+  .ln>span{transform:none!important}
+  [data-rev]{opacity:1!important; transform:none!important}
+  .mq-t{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap meta" data-rev>
+  <div class="cols">
+    <span class="tiny" data-en="Kyiv, UA" data-ua="Київ, UA">Kyiv, UA</span>
+    <span class="tiny"><span id="clock">—:—</span> <span id="tz">EET</span></span>
+  </div>
+  <div class="cols">
+    <div class="tgl" id="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button><span>/</span><button type="button" data-lang="ua" aria-pressed="false">UA</button>
+    </div>
+    <div class="tgl" id="theme" role="group" aria-label="Colour scheme">
+      <button type="button" data-theme="light" aria-pressed="false">Light</button><span>/</span><button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</header>
+<hr class="rule">
+
+<main>
+  <section class="wrap hero" id="hero" aria-labelledby="nm">
+    <h1 class="name" id="nm">
+      <span class="ln"><span data-fit data-en="Kyrylo" data-ua="Кирило">Kyrylo</span></span>
+      <span class="ln"><span data-fit data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span></span>
+    </h1>
+    <div class="hero-foot">
+      <p class="lede" data-rev style="--d:280ms" data-en="I design and typeset books, covers and printed matter, edit video — interviews, YouTube vlogs and short clips for social media — and shoot street photography, events and portraits. Based in Kyiv." data-ua="Верстаю книжкові видання, роблю дизайн обкладинок і друкованої продукції. Монтую відео: інтерв’ю, влоги для YouTube і короткі ролики для соцмереж. Займаюся стріт фотографією, знімаю івенти та портрети.">I design and typeset books, covers and printed matter, edit video — interviews, YouTube vlogs and short clips for social media — and shoot street photography, events and portraits. Based in Kyiv.</p>
+      <span class="tiny scroll" data-rev style="--d:360ms" data-en="Scroll ↓" data-ua="Далі ↓">Scroll ↓</span>
+    </div>
+  </section>
+
+  <hr class="rule">
+  <section class="mq" aria-hidden="true">
+    <div class="mq-t">
+      <span class="mq-s" data-en="Graphic Designer / Book Layout / Cover Design / Video Editor / Photographer / " data-ua="Графічний дизайнер / Верстка книжок / Дизайн обкладинок / Відеомонтаж / Фотограф / ">Graphic Designer / Book Layout / Cover Design / Video Editor / Photographer / </span>
+      <span class="mq-s" data-en="Graphic Designer / Book Layout / Cover Design / Video Editor / Photographer / " data-ua="Графічний дизайнер / Верстка книжок / Дизайн обкладинок / Відеомонтаж / Фотограф / ">Graphic Designer / Book Layout / Cover Design / Video Editor / Photographer / </span>
+    </div>
+  </section>
+  <hr class="rule">
+
+  <section class="wrap about" id="about" aria-label="About">
+    <div class="roles">
+      <h2 data-rev>
+        <span data-en="Graphic" data-ua="Графічний">Graphic</span>
+        <span data-en="Designer" data-ua="дизайнер">Designer</span>
+        <span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span>
+        <span data-en="Photographer" data-ua="Фотограф">Photographer</span>
+      </h2>
+      <div class="specs">
+        <div class="spec" data-rev style="--d:140ms">
+          <h3 data-en="01 — Print &amp; Design" data-ua="01 — Друк і дизайн">01 &mdash; Print &amp; Design</h3>
+          <ul>
+            <li data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</li>
+            <li data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</li>
+            <li data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</li>
+          </ul>
+        </div>
+        <div class="spec" data-rev style="--d:210ms">
+          <h3 data-en="02 — Video" data-ua="02 — Відео">02 &mdash; Video</h3>
+          <ul>
+            <li data-en="Interview editing" data-ua="Монтаж інтерв’ю">Interview editing</li>
+            <li data-en="YouTube vlogs" data-ua="Влоги для YouTube">YouTube vlogs</li>
+            <li data-en="Short-form video for social" data-ua="Короткі відеоролики для соцмереж">Short-form video for social</li>
+          </ul>
+        </div>
+        <div class="spec" data-rev style="--d:280ms">
+          <h3 data-en="03 — Photography" data-ua="03 — Фотографія">03 &mdash; Photography</h3>
+          <ul>
+            <li data-en="Street photography" data-ua="Вулична фотографія">Street photography</li>
+            <li data-en="Events and reportage" data-ua="Івенти та репортаж">Events and reportage</li>
+            <li data-en="Portraits" data-ua="Портрети">Portraits</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note" data-rev style="--d:350ms" data-en="Commercial and editorial commissions. Direct enquiries only." data-ua="Комерційні та редакційні замовлення. Звертайтеся напряму.">Commercial and editorial commissions. Direct enquiries only.</p>
+    </div>
+    <div class="figwrap">
+      <figure data-rev style="--d:80ms">
+        <div class="shot">
+          <img src="photo.jpg" alt="Portrait of Kyrylo Rusanivsky" width="1600" height="1600" loading="lazy" decoding="async">
+        </div>
+        <figcaption class="tiny"><span data-en="Kyiv · 2023" data-ua="Київ · 2023">Kyiv · 2023</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap index" aria-labelledby="ix">
+    <h2 class="tiny" id="ix" data-rev data-en="Index" data-ua="Покажчик">Index</h2>
+    <a class="row" data-rev href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">
+      <span class="num">01</span><span class="lab">Behance</span><span class="han" data-en="Portfolio" data-ua="Портфоліо">Portfolio</span><span class="arw">↗</span>
+    </a>
+    <a class="row" data-rev style="--d:70ms" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener">
+      <span class="num">02</span><span class="lab">Instagram</span><span class="han">@rusanivsky</span><span class="arw">↗</span>
+    </a>
+    <a class="row" data-rev style="--d:140ms" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener">
+      <span class="num">03</span><span class="lab">Pixover</span><span class="han" data-en="Photography" data-ua="Фотографія">Photography</span><span class="arw">↗</span>
+    </a>
+    <a class="row" data-rev style="--d:210ms" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener">
+      <span class="num">04</span><span class="lab">LinkedIn</span><span class="han" data-en="Professional" data-ua="Професійне">Professional</span><span class="arw">↗</span>
+    </a>
+    <a class="row" data-rev style="--d:280ms" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener">
+      <span class="num">05</span><span class="lab">Facebook</span><span class="han" data-en="Social" data-ua="Соцмережі">Social</span><span class="arw">↗</span>
+    </a>
+    <a class="row" data-rev style="--d:350ms" href="mailto:info@rusanivsky.com">
+      <span class="num">06</span><span class="lab" data-en="Email" data-ua="Пошта">Email</span><span class="han">info@rusanivsky.com</span><span class="arw">→</span>
+    </a>
+  </section>
+
+  <section class="poster wrap" aria-label="Contact">
+    <p class="k" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
+    <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">info@rusanivsky.com</a>
+    <p class="sub tiny" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
+  </section>
+</main>
+
+<hr class="rule">
+<footer class="wrap">
+  <div class="cols">
+    <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
+    <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
+  </div>
+  <div class="cols"><span class="tiny" data-en="Set in Archivo" data-ua="Набрано Archivo">Set in Archivo</span></div>
+</footer>
+
+<script>
+(function(){
+  var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* fit the hero lines to the measure */
+  var fits = [].slice.call(document.querySelectorAll('[data-fit]'));
+  function fit(){
+    var sc = parseFloat(getComputedStyle(document.querySelector('.name')).getPropertyValue('--fit')) || 1;
+    var size = null;
+    fits.forEach(function(el){
+      var box = el.parentElement.clientWidth;
+      if(!box) return;
+      var keep = el.textContent;
+      var variants = [el.getAttribute('data-en'), el.getAttribute('data-ua')].filter(Boolean);
+      if(!variants.length) variants = [keep];
+      el.style.fontSize = '200px';
+      variants.forEach(function(txt){
+        el.textContent = txt;
+        var w = el.getBoundingClientRect().width;
+        if(!w) return;
+        var s = 200 * box * sc / w;
+        if(size === null || s < size) size = s;
+      });
+      el.textContent = keep;
+    });
+    fits.forEach(function(el){
+      el.style.fontSize = size ? size.toFixed(2) + 'px' : '';
+    });
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fit();
+  var t; addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(fit, 120); }, {passive:true});
+
+  /* reveals */
+  function show(el){ el.classList.add('is-in'); }
+  if ('IntersectionObserver' in window && !rm){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ show(e.target); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.12});
+    document.querySelectorAll('[data-rev], .about').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('[data-rev], .about').forEach(show);
+  }
+  requestAnimationFrame(function(){ show(document.getElementById('hero')); });
+  document.querySelectorAll('.ln').forEach(function(ln){
+    var inner = ln.firstElementChild;
+    var done = function(){ ln.classList.add('done'); };
+    if(rm){ done(); return; }
+    inner.addEventListener('transitionend', done, {once:true});
+    setTimeout(done, 1400);
+  });
+
+  /* theme + language toggles */
+  var root = document.documentElement;
+  function setTheme(v, save){
+    if(v){ root.setAttribute('data-theme', v); } else { root.removeAttribute('data-theme'); }
+    if(save){ try{ localStorage.setItem('kr-theme', v || ''); }catch(e){} }
+    document.querySelectorAll('#theme button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.theme === v));
+    });
+  }
+  function setLang(v, save){
+    root.setAttribute('lang', v === 'ua' ? 'uk' : 'en');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var t = el.getAttribute('data-' + v);
+      if(t) el.textContent = t;
+    });
+    if(save){ try{ localStorage.setItem('kr-lang', v); }catch(e){} }
+    document.querySelectorAll('#lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.lang === v));
+    });
+    fit();
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  }
+  document.querySelectorAll('#theme button').forEach(function(b){
+    b.addEventListener('click', function(){
+      setTheme(root.getAttribute('data-theme') === b.dataset.theme ? '' : b.dataset.theme, true);
+    });
+  });
+  document.querySelectorAll('#lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.dataset.lang, true); });
+  });
+  try{
+    var st = localStorage.getItem('kr-theme'); if(st) setTheme(st, false);
+    setLang(localStorage.getItem('kr-lang') || 'en', false);
+  }catch(e){ setLang('en', false); }
+
+  /* Kyiv clock */
+  function tick(){
+    var c = document.getElementById('clock'), z = document.getElementById('tz');
+    if(!c) return;
+    try{
+      var now = new Date();
+      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Europe/Kyiv'}).format(now);
+      if(z){
+        var parts = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Kyiv',timeZoneName:'short'}).formatToParts(now);
+        for(var i=0;i<parts.length;i++){
+          if(parts[i].type==='timeZoneName'){
+            z.textContent = parts[i].value.replace('GMT+3','EEST').replace('GMT+2','EET');
+          }
+        }
+      }
+    }catch(e){ c.textContent = ''; }
+  }
+  tick(); setInterval(tick, 20000);
+
+  /* magnetic arrow on pointer devices */
+  if (matchMedia('(hover:hover) and (pointer:fine)').matches && !rm){
+    document.querySelectorAll('.row').forEach(function(row){
+      var arw = row.querySelector('.arw');
+      row.addEventListener('pointermove', function(e){
+        var r = row.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width/2)) / r.width;
+        arw.style.transform = 'translate(' + (6 + dx*10).toFixed(1) + 'px,-6px)';
+      });
+      row.addEventListener('pointerleave', function(){ arw.style.transform = ''; });
+    });
+  }
+})();
+</script>
+</body>
+</html>
