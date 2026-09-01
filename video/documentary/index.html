@@ -115,6 +115,30 @@
     b.addEventListener('click',function(){ setLang(b.dataset.lang,true); });
   });
   try{ setLang(detect(),false); }catch(e){ setLang('en',false); }
+  /* плавний перехід між сторінками там, де немає @view-transition */
+  (function(){
+    var native = ('startViewTransition' in document) && CSS.supports && CSS.supports('selector(::view-transition)');
+    if(native) return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var root = document.documentElement;
+    root.classList.add('pt-js');
+    document.addEventListener('click', function(e){
+      if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a');
+      if(!a || a.hasAttribute('download')) return;
+      if(a.target && a.target !== '_self') return;
+      var href = a.getAttribute('href') || '';
+      if(/^(mailto:|tel:|#)/.test(href)) return;
+      var u; try{ u = new URL(a.href); }catch(err){ return; }
+      if(u.origin !== location.origin) return;
+      if(u.pathname === location.pathname && u.search === location.search) return;
+      e.preventDefault();
+      root.classList.add('pt-leave');
+      setTimeout(function(){ location.href = a.href; }, 210);
+    });
+    addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
+  })();
+
   /* паралакс фонового світла */
   (function(){
     var body = document.body;

@@ -281,11 +281,16 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
   font-size:clamp(30px,7.2vw,104px); font-weight:800; text-transform:none;
   letter-spacing:-.04em; line-height:.95; font-variation-settings:"wdth" 90;
+  position:relative;
   color:color-mix(in srgb,#f7f4f3 60%,transparent);
-  background-image:linear-gradient(#f7f4f3,#f7f4f3);
-  background-repeat:no-repeat; background-position:0 100%;
-  background-size:0% var(--uline);
-  transition:background-size 400ms var(--ease), color 260ms var(--ease);
+  transition:color 260ms var(--ease);
+}
+/* лінія окремим шаром і через transform — background-size тут не інтерполюється */
+.poster a::before{
+  content:""; position:absolute; left:0; right:0; bottom:-.02em;
+  height:var(--uline); background:#f7f4f3;
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
 }
 .poster a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
@@ -293,10 +298,12 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .poster a:hover{color:#f7f4f3; background-size:100% var(--uline)}
+  .poster a:hover{color:#f7f4f3}
+  .poster a:hover::before{transform:scaleX(1)}
   .poster a:hover::after{opacity:1; transform:none}
 }
-.poster a:active{color:#f7f4f3; background-size:100% var(--uline)}
+.poster a:active{color:#f7f4f3}
+.poster a:active::before{transform:scaleX(1)}
 .poster a:active::after{opacity:1; transform:none}
 .poster .lines{margin-top:.24em}
 .poster a + a{margin-left:clamp(7px,1.1vw,20px)}
@@ -346,6 +353,15 @@ body::after{
 body::before{
   transform:translate3d(0, var(--par, 0px), 0);
   will-change:transform;
+}
+
+/* запасний перехід для браузерів без @view-transition */
+@keyframes pt-in{ from{opacity:0} to{opacity:1} }
+@keyframes pt-out{ from{opacity:1} to{opacity:0} }
+html.pt-js body{ animation:pt-in 320ms var(--ease) both }
+html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
+@media (prefers-reduced-motion:reduce){
+  html.pt-js body,html.pt-leave body{ animation:none }
 }
 
 /* ── плавний перехід між сторінками ──────────────────────── */
@@ -575,6 +591,30 @@ body::before{
     return 'en';
   }
   try{ setLang(detectLang(), false); }catch(e){ setLang('en', false); }
+
+  /* плавний перехід між сторінками там, де немає @view-transition */
+  (function(){
+    var native = ('startViewTransition' in document) && CSS.supports && CSS.supports('selector(::view-transition)');
+    if(native) return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var root = document.documentElement;
+    root.classList.add('pt-js');
+    document.addEventListener('click', function(e){
+      if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a');
+      if(!a || a.hasAttribute('download')) return;
+      if(a.target && a.target !== '_self') return;
+      var href = a.getAttribute('href') || '';
+      if(/^(mailto:|tel:|#)/.test(href)) return;
+      var u; try{ u = new URL(a.href); }catch(err){ return; }
+      if(u.origin !== location.origin) return;
+      if(u.pathname === location.pathname && u.search === location.search) return;
+      e.preventDefault();
+      root.classList.add('pt-leave');
+      setTimeout(function(){ location.href = a.href; }, 210);
+    });
+    addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
+  })();
 
   /* паралакс фонового світла */
   (function(){
