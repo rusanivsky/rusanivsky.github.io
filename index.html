@@ -279,17 +279,7 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   border-bottom:clamp(2px,.5vw,6px) solid transparent; transition:border-color 300ms var(--ease)
 }
 .poster a:hover,.poster a:active{border-bottom-color:#f7f4f3}
-.poster a.wa{
-  font-size:clamp(15px,2vw,27px); font-weight:800; letter-spacing:-.02em;
-  line-height:1.1; margin-top:.75em; border-bottom-width:2px;
-}
-.poster a.wa .num{font-weight:600; opacity:.82; font-variant-numeric:tabular-nums; white-space:nowrap}
-.poster a.wa::after{
-  content:"↗"; display:inline-block; margin-left:.42em; font-size:.7em;
-  opacity:0; transform:translate(-3px,3px);
-  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
-}
-@media (hover:hover){.poster a.wa:hover::after{opacity:1; transform:none}}
+.poster .lines{display:flex; flex-direction:column; align-items:flex-start}
 .poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 55%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
@@ -422,8 +412,10 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 
   <section class="poster wrap" aria-label="Contact">
     <p class="k" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
-    <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">info@rusanivsky.com</a>
-    <a class="wa" href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:130ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp <span class="num">+38 093 867 65 81</span></a>
+    <div class="lines">
+      <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
+      <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
+    </div>
     <p class="sub tiny" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
   </section>
 </main>
