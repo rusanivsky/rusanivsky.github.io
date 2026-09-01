@@ -85,3 +85,13 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
+
+/* ── перемикач рубрик ─────────────────────────────────────── */
+.secs{display:flex;flex-wrap:wrap;gap:clamp(14px,2.4vw,40px);padding-block:0 clamp(22px,3vw,38px)}
+.sec{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--mute);
+  padding-block:6px;position:relative;transition:color 240ms var(--ease)}
+.sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);
+  background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
+.sec.on{color:var(--ink)}
+.sec.on::after{transform:scaleX(1)}
+@media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
