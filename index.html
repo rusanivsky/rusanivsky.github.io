@@ -498,14 +498,21 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   try{ setLang(detectLang(), false); }catch(e){ setLang('en', false); }
 
   /* Kyiv clock */
+  var KYIV = (function(){
+    var names = ['Europe/Kyiv', 'Europe/Kiev'];
+    for(var i = 0; i < names.length; i++){
+      try{ new Intl.DateTimeFormat('en-GB', {timeZone: names[i]}).format(new Date()); return names[i]; }catch(e){}
+    }
+    return null;
+  })();
   function tick(){
     var c = document.getElementById('clock'), z = document.getElementById('tz');
     if(!c) return;
     try{
       var now = new Date();
-      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Europe/Kyiv'}).format(now);
+      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KYIV}).format(now);
       if(z){
-        var parts = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Kyiv',timeZoneName:'short'}).formatToParts(now);
+        var parts = new Intl.DateTimeFormat('en-GB',{timeZone:KYIV,timeZoneName:'short'}).formatToParts(now);
         for(var i=0;i<parts.length;i++){
           if(parts[i].type==='timeZoneName'){
             z.textContent = parts[i].value.replace('GMT+3','EEST').replace('GMT+2','EET');
@@ -514,7 +521,19 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
       }
     }catch(e){ c.textContent = ''; }
   }
-  tick(); setInterval(tick, 20000);
+  var clockTimer;
+  function scheduleTick(){
+    clearTimeout(clockTimer);
+    // прокидаємось точно на межі хвилини, а не раз на 20 с
+    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 60000 - (Date.now() % 60000) + 50);
+  }
+  function resyncClock(){ tick(); scheduleTick(); }
+  tick(); scheduleTick();
+  // вкладку розгорнули, повернули фокус, або сторінку дістали з кешу —
+  // час міг застаріти, поки таймери були пригальмовані чи заморожені
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) resyncClock(); });
+  addEventListener('pageshow', resyncClock);
+  addEventListener('focus', resyncClock);
 
   /* magnetic arrow on pointer devices */
   if (matchMedia('(hover:hover) and (pointer:fine)').matches && !rm){
