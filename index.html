@@ -279,7 +279,7 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   border-bottom:clamp(2px,.5vw,6px) solid transparent; transition:border-color 300ms var(--ease)
 }
 .poster a:hover,.poster a:active{border-bottom-color:#f7f4f3}
-.poster .lines{display:flex; flex-direction:column; align-items:flex-start}
+.poster .lines{display:flex; flex-wrap:wrap; align-items:baseline; gap:0 clamp(22px,4vw,86px)}
 .poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 55%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
@@ -347,20 +347,20 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
       </h2>
       <div class="specs">
         <div class="spec" data-rev style="--d:140ms">
-          <h3 data-en="01 — Print &amp; Design" data-ua="01 — Друк і дизайн">01 &mdash; Print &amp; Design</h3>
-          <ul>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
-          </ul>
-        </div>
-        <div class="spec" data-rev style="--d:210ms">
-          <h3 data-en="02 — Video editing" data-ua="02 — Відеомонтаж">02 &mdash; Video editing</h3>
+          <h3 data-en="01 — Video editing" data-ua="01 — Відеомонтаж">01 &mdash; Video editing</h3>
           <ul>
             <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
             <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
             <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
             <li><a class="it" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></li>
+          </ul>
+        </div>
+        <div class="spec" data-rev style="--d:210ms">
+          <h3 data-en="02 — Print &amp; Design" data-ua="02 — Друк і дизайн">02 &mdash; Print &amp; Design</h3>
+          <ul>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
           </ul>
         </div>
         <div class="spec" data-rev style="--d:280ms">
