@@ -276,10 +276,28 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   display:inline-block; margin-top:.24em;
   font-size:clamp(30px,7.2vw,104px); font-weight:800; text-transform:none;
   letter-spacing:-.04em; line-height:.95; font-variation-settings:"wdth" 90;
-  border-bottom:clamp(2px,.5vw,6px) solid transparent; transition:border-color 300ms var(--ease)
+  color:color-mix(in srgb,#f7f4f3 60%,transparent);
+  background-image:linear-gradient(#f7f4f3,#f7f4f3);
+  background-repeat:no-repeat; background-position:0 100%;
+  background-size:0% clamp(2px,.5vw,6px);
+  transition:background-size 400ms var(--ease), color 260ms var(--ease);
 }
-.poster a:hover,.poster a:active{border-bottom-color:#f7f4f3}
-.poster .lines{display:flex; flex-wrap:wrap; align-items:baseline; gap:0 clamp(22px,4vw,86px)}
+.poster a::after{
+  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
+  vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .poster a:hover{color:#f7f4f3; background-size:100% clamp(2px,.5vw,6px)}
+  .poster a:hover::after{opacity:1; transform:none}
+}
+.poster a:active{color:#f7f4f3; background-size:100% clamp(2px,.5vw,6px)}
+.poster a:active::after{opacity:1; transform:none}
+.poster .lines{display:flex; flex-wrap:wrap; align-items:baseline; gap:0 clamp(14px,2.4vw,44px)}
+.poster .lines .sep{
+  font-size:clamp(30px,7.2vw,104px); font-weight:400; line-height:.95;
+  letter-spacing:-.04em; color:color-mix(in srgb,#f7f4f3 34%,transparent); user-select:none;
+}
 .poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 55%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
@@ -401,9 +419,9 @@ body::before{
         <div class="spec" data-rev style="--d:210ms">
           <h3 data-en="02 — Print &amp; Design" data-ua="02 — Друк і дизайн">02 &mdash; Print &amp; Design</h3>
           <ul>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
+            <li><a class="it" href="/design/" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
+            <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
+            <li><a class="it" href="/design/" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
           </ul>
         </div>
         <div class="spec" data-rev style="--d:280ms">
@@ -457,6 +475,7 @@ body::before{
     <p class="k" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
     <div class="lines">
       <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
+      <span class="sep" aria-hidden="true" data-rev style="--d:120ms">/</span>
       <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
     </div>
     <p class="sub tiny" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
