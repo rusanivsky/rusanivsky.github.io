@@ -180,7 +180,21 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 .specs{display:grid; gap:clamp(18px,2.4vw,32px); margin-top:clamp(24px,3.4vw,44px)}
-.spec{border-top:var(--rule) solid var(--divider); padding-top:12px}
+.spec{
+  border-top:var(--rule) solid var(--divider); padding-top:12px;
+  position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent);
+  transition:color 300ms var(--ease);
+}
+.spec::after{
+  content:""; position:absolute; left:0; right:0; top:calc(var(--rule) * -1);
+  height:var(--rule); background:var(--accent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+}
+@media (hover:hover){
+  .spec:hover{color:var(--ink)}
+  .spec:hover::after{transform:scaleX(1)}
+}
 .spec h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px}
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
@@ -342,7 +356,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
           <h3 data-en="03 — Photography" data-ua="03 — Фотографія">03 &mdash; Photography</h3>
           <ul>
             <li data-en="Street photography" data-ua="Вулична фотографія">Street photography</li>
-            <li data-en="Events and reportage" data-ua="Івенти та репортаж">Events and reportage</li>
+            <li data-en="Events" data-ua="Події">Events</li>
             <li data-en="Portraits" data-ua="Портрети">Portraits</li>
           </ul>
         </div>
@@ -364,7 +378,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   </section>
 
   <section class="wrap index" aria-labelledby="ix">
-    <h2 class="tiny" id="ix" data-rev data-en="Index" data-ua="Покажчик">Index</h2>
+    <h2 class="tiny" id="ix" data-rev data-en="Social" data-ua="Соцмережі">Social</h2>
     <a class="row" data-rev href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">
       <span class="num">01</span><span class="lab">Behance</span><span class="han" data-en="Portfolio" data-ua="Портфоліо">Portfolio</span><span class="arw">↗</span>
     </a>
@@ -379,9 +393,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     </a>
     <a class="row" data-rev style="--d:280ms" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener">
       <span class="num">05</span><span class="lab">Facebook</span><span class="han" data-en="Social" data-ua="Соцмережі">Social</span><span class="arw">↗</span>
-    </a>
-    <a class="row" data-rev style="--d:350ms" href="mailto:info@rusanivsky.com">
-      <span class="num">06</span><span class="lab" data-en="Email" data-ua="Пошта">Email</span><span class="han">info@rusanivsky.com</span><span class="arw">→</span>
     </a>
   </section>
 
