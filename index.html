@@ -6,9 +6,13 @@
 <title>Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer</title>
 <meta name="description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
 <link rel="canonical" href="https://rusanivsky.com/">
+<link rel="alternate" hreflang="en" href="https://rusanivsky.com/">
+<link rel="alternate" hreflang="uk" href="https://rusanivsky.com/?lang=uk">
+<link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kyrylo Rusanivsky">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="uk_UA">
 <meta property="og:url" content="https://rusanivsky.com/">
 <meta property="og:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
 <meta property="og:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
@@ -21,14 +25,19 @@
 <meta name="twitter:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
 <meta name="twitter:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#f3f2f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171615" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f8299'/%3E%3Ctext x='4' y='24' font-family='Helvetica,sans-serif' font-weight='800' font-size='20' fill='%23f3f2f2'%3EKR%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{
+  font-family:"Archivo";
+  src:url("/archivo-var.woff2") format("woff2");
+  font-weight:100 900; font-stretch:62% 125%;
+  font-style:normal; font-display:swap;
+}
 :root{
   --bg:#f3f2f2; --surface:#eae9e9; --ink:#201e1d; --accent:#0f8299;
   --divider:color-mix(in srgb, #201e1d 40%, transparent);
@@ -235,7 +244,7 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
   border-bottom:clamp(2px,.5vw,6px) solid transparent; transition:border-color 300ms var(--ease)
 }
 .poster a:hover,.poster a:active{border-bottom-color:#f7f4f3}
-.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9}
+.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 55%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
 footer{padding-block:16px 22px; display:grid; grid-template-columns:1fr auto; gap:8px 24px}
@@ -333,7 +342,11 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
         <div class="shot">
-          <img src="photo.jpg" alt="Portrait of Kyrylo Rusanivsky" width="1600" height="1600" loading="lazy" decoding="async">
+          <picture>
+        <source srcset="photo.avif" type="image/avif">
+        <source srcset="photo.webp" type="image/webp">
+        <img src="photo.jpg" alt="Portrait of Kyrylo Rusanivsky" width="1600" height="1600" loading="lazy" decoding="async">
+      </picture>
         </div>
         <figcaption class="tiny"><span data-en="Kyiv · 2023" data-ua="Київ · 2023">Kyiv · 2023</span></figcaption>
       </figure>
@@ -445,7 +458,14 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
       var t = el.getAttribute('data-' + v);
       if(t) el.textContent = t;
     });
-    if(save){ try{ localStorage.setItem('kr-lang', v); }catch(e){} }
+    if(save){
+      try{ localStorage.setItem('kr-lang', v); }catch(e){}
+      try{
+        var u = new URL(location.href);
+        if(v === 'ua'){ u.searchParams.set('lang','uk'); } else { u.searchParams.delete('lang'); }
+        history.replaceState(null, '', u);
+      }catch(e){}
+    }
     document.querySelectorAll('#lang button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.lang === v));
     });
@@ -462,7 +482,9 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   });
   try{
     var st = localStorage.getItem('kr-theme'); if(st) setTheme(st, false);
-    setLang(localStorage.getItem('kr-lang') || 'en', false);
+    var qp = new URLSearchParams(location.search).get('lang');
+    var initLang = (qp === 'uk' || qp === 'ua') ? 'ua' : (localStorage.getItem('kr-lang') || 'en');
+    setLang(initLang, false);
   }catch(e){ setLang('en', false); }
 
   /* Kyiv clock */
@@ -497,6 +519,36 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     });
   }
 })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "url": "https://rusanivsky.com/",
+  "inLanguage": ["en", "uk"],
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Kyrylo Rusanivsky",
+    "alternateName": "\u041a\u0438\u0440\u0438\u043b\u043e \u0420\u0443\u0441\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+    "url": "https://rusanivsky.com/",
+    "image": "https://rusanivsky.com/photo.jpg",
+    "email": "info@rusanivsky.com",
+    "jobTitle": ["Graphic Designer", "Video Editor", "Photographer"],
+    "knowsLanguage": ["en", "uk"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kyiv",
+      "addressCountry": "UA"
+    },
+    "sameAs": [
+      "https://www.behance.net/rusanivsky",
+      "https://www.instagram.com/rusanivsky/",
+      "https://www.linkedin.com/in/rusanivsky/",
+      "https://www.facebook.com/rusanivsky",
+      "https://pixover.com/p/rusanivsky"
+    ]
+  }
+}
 </script>
 </body>
 </html>
