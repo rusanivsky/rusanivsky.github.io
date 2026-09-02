@@ -95,19 +95,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .tiny b{font-weight:800; color:var(--ink); letter-spacing:.1em}
-.tgl{
-  display:flex; gap:0; align-items:center;
-  border:var(--rule) solid var(--divider); border-radius:999px;
-  padding-inline:4px; transition:border-color 240ms var(--ease);
-}
-@media (hover:hover){.tgl:hover{border-color:var(--accent)}}
+.tgl{display:flex; gap:0; align-items:center}
 .tgl button{
   appearance:none; background:transparent; border:0; cursor:pointer; color:var(--mute);
   font:inherit; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
   padding:16px 8px; min-height:44px; line-height:1; transition:color 220ms var(--ease);
 }
-.tgl button:first-child{padding-left:12px}
-.tgl button:last-child{padding-right:12px}
+.tgl button:first-child{padding-left:0}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 .tgl span{padding:0; font-size:11px; color:var(--divider); line-height:1}
@@ -252,10 +246,14 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
 .row{
   display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
   align-items:baseline; padding-block:clamp(16px,2.2vw,26px);
-  border-top:var(--rule) solid var(--divider); min-height:64px;
-  position:relative; overflow:hidden;
+  min-height:64px; position:relative; overflow:hidden;
 }
-.row:last-of-type{border-bottom:var(--rule) solid var(--divider)}
+.row:first-of-type{border-top:var(--rule) solid var(--divider)}
+/* сіра лінія — псевдоелемент, щоб акцент лягав точно поверх неї */
+.row::before{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:var(--rule); background:var(--divider);
+}
 .row .num{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--mute); transition:color 240ms var(--ease)}
 .row .lab{
   font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:uppercase;
