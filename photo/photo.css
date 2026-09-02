@@ -80,7 +80,7 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 @media (hover:hover){.sec[aria-current]:hover::after{background:var(--accent)}}
 
 /* ── перелік категорій ───────────────────────────────────── */
-.cats{padding-bottom:clamp(20px,3vw,40px)}
+.cats{padding-bottom:clamp(30px,6vh,72px)}
 .cat{
   display:grid;grid-template-columns:auto 1fr auto auto;gap:clamp(14px,2.4vw,36px);
   align-items:baseline;padding-block:clamp(16px,2.2vw,26px);
@@ -97,21 +97,23 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 .cat .qty{font-size:clamp(12px,1vw,14px);color:var(--mute);letter-spacing:.01em;font-variant-numeric:tabular-nums}
 .cat .arw{font-size:clamp(14px,1.3vw,20px);transition:transform 380ms var(--ease)}
 .cat::after{
-  content:"";position:absolute;left:0;right:0;top:calc(var(--rule) * -1);
-  height:var(--rule);background:var(--accent);
-  transform:scaleX(0);transform-origin:left;transition:transform 420ms var(--ease);
+  content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform 420ms var(--ease);
 }
 @media (hover:hover){
-  .cat:hover::after{transform:scaleX(1)}
+  .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px))}
   .cat:hover .num{color:var(--accent)}
-  .cat:hover .lab{transform:translateX(clamp(4px,.5vw,10px))}
-  .cat:hover .arw{transform:translate(.25em,-.25em)}
+  .cat:hover .arw{transform:translate(6px,-6px)}
+  .cat:hover::after{transform:scaleX(1)}
 }
-
-/* ── липка шапка ─────────────────────────────────────────── */
-.topbar{
-  position:sticky;top:0;z-index:30;background:var(--bg);
-  border-bottom:var(--rule) solid var(--divider);
+.cat:active .lab{transform:translateX(10px)}
+.cat:active .num{color:var(--accent)}
+.cat:active::after{transform:scaleX(1)}
+@media (max-width:640px){
+  .cat{grid-template-columns:auto 1fr auto;row-gap:2px;padding-block:14px}
+  .cat .num{grid-row:1}
+  .cat .lab{grid-column:2/span 2}
+  .cat .qty{grid-column:2;grid-row:2}
+  .cat .arw{grid-row:1;align-self:center}
 }
-.topbar .rule{margin-bottom:2px}
-.head{padding-top:clamp(24px,5vh,64px)}
