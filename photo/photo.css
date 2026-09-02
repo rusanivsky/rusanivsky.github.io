@@ -71,3 +71,36 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 .sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);
   background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
 @media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
+
+.sec[aria-current]{color:var(--ink)}
+.sec[aria-current]::after{transform:scaleX(1);background:var(--divider)}
+@media (hover:hover){.sec[aria-current]:hover::after{background:var(--accent)}}
+
+/* ── перелік категорій ───────────────────────────────────── */
+.cats{padding-bottom:clamp(20px,3vw,40px)}
+.cat{
+  display:grid;grid-template-columns:auto 1fr auto auto;gap:clamp(14px,2.4vw,36px);
+  align-items:baseline;padding-block:clamp(16px,2.2vw,26px);
+  border-top:var(--rule) solid var(--divider);min-height:64px;
+  position:relative;overflow:hidden;
+}
+.cat:last-of-type{border-bottom:var(--rule) solid var(--divider)}
+.cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .lab{
+  font-size:clamp(28px,4.6vw,60px);font-weight:800;text-transform:uppercase;
+  letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
+  transition:transform 380ms var(--ease);transform-origin:left;
+}
+.cat .qty{font-size:clamp(12px,1vw,14px);color:var(--mute);letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.cat .arw{font-size:clamp(14px,1.3vw,20px);transition:transform 380ms var(--ease)}
+.cat::after{
+  content:"";position:absolute;left:0;right:0;top:calc(var(--rule) * -1);
+  height:var(--rule);background:var(--accent);
+  transform:scaleX(0);transform-origin:left;transition:transform 420ms var(--ease);
+}
+@media (hover:hover){
+  .cat:hover::after{transform:scaleX(1)}
+  .cat:hover .num{color:var(--accent)}
+  .cat:hover .lab{transform:translateX(clamp(4px,.5vw,10px))}
+  .cat:hover .arw{transform:translate(.25em,-.25em)}
+}
