@@ -151,18 +151,20 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font-variation-settings:"wdth" 92; line-height:.94; color:var(--accent);
 }
 .roles h2 span{display:block}
-.roles h2 span:nth-child(3){
-  position:relative; width:max-content; padding-right:.14em;
-}
-/* контурний набір; заливка лише на головному рядку, решта — при наведенні */
+/* кожен фах — власна ціль наведення завширшки зі свій текст, а не з колонку,
+   тож порожнє поле праворуч його не вмикає; «відеомонтажер» тому й вилазить
+   за колонку, що ширина тут по тексту */
+.roles h2 .role{position:relative; width:max-content; padding-right:.14em}
+/* контурний набір; заливається лише той напис, на який навели */
 @supports (-webkit-text-stroke: 2px currentColor){
   .roles h2 span{
     -webkit-text-stroke:clamp(1.6px,.22vw,2.4px) var(--accent);
     color:transparent;
     transition:color 420ms var(--ease);
   }
-  .roles h2 span:nth-child(3){color:var(--accent)}
-  @media (hover:hover){.roles h2:hover span{color:var(--accent)}}
+  @media (hover:hover){.roles h2 .role:hover span{color:var(--accent)}}
+  /* на тачі ховера нема — заливка на час дотику, щоб напис не був мертвим */
+  @media (hover:none){.roles h2 .role:active span{color:var(--accent)}}
 }
 .pills{
   display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:0;
@@ -385,10 +387,12 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   <section class="wrap about" id="about" aria-label="About">
     <div class="roles">
       <h2 data-rev>
-        <span data-en="Graphic" data-ua="Графічний">Graphic</span>
-        <span data-en="Designer" data-ua="дизайнер">Designer</span>
-        <span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span>
-        <span data-en="Photographer" data-ua="Фотограф">Photographer</span>
+        <span class="role">
+          <span data-en="Graphic" data-ua="Графічний">Graphic</span>
+          <span data-en="Designer" data-ua="дизайнер">Designer</span>
+        </span>
+        <span class="role"><span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span></span>
+        <span class="role"><span data-en="Photographer" data-ua="Фотограф">Photographer</span></span>
       </h2>
       <ul class="pills" data-rev style="--d:110ms">
         <li data-en="Freelance" data-ua="Фриланс">Freelance</li>
