@@ -117,3 +117,11 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
   .cat .qty{grid-column:2;grid-row:2}
   .cat .arw{grid-row:1;align-self:center}
 }
+
+/* ── липка шапка ─────────────────────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:30;background:var(--bg);
+  border-bottom:var(--rule) solid var(--divider);
+}
+.topbar .rule{margin-bottom:2px}
+.head{padding-top:clamp(24px,5vh,64px)}
