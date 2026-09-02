@@ -53,37 +53,6 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .head h1{font-size:clamp(40px,9vw,120px);text-transform:uppercase;font-variation-settings:"wdth" 90}
 .head .cnt{margin-top:14px}
 
-/* ── список розділів на хабі ───────────────────────────── */
-.row{display:grid;grid-template-columns:auto 1fr auto auto;gap:clamp(14px,2.4vw,36px);align-items:baseline;padding-block:clamp(16px,2.2vw,26px);border-top:var(--rule) solid var(--divider);min-height:64px;position:relative;overflow:hidden}
-.row:last-of-type{border-bottom:var(--rule) solid var(--divider)}
-.row .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
-.row .lab{font-size:clamp(26px,4.4vw,58px);font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.98;transition:transform 380ms var(--ease);transform-origin:left}
-.row .han{font-size:clamp(12px,1vw,14px);color:var(--mute)}
-.row .arw{font-size:clamp(14px,1.3vw,20px);transition:transform 380ms var(--ease)}
-.row::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 420ms var(--ease)}
-@media (hover:hover){
-  .row:hover .lab{transform:translateX(clamp(8px,1.4vw,22px))}
-  .row:hover .num{color:var(--accent)}
-  .row:hover .arw{transform:translate(6px,-6px)}
-  .row:hover::after{transform:scaleX(1)}
-}
-
-/* ── сітка відео ───────────────────────────────────────── */
-.grid{display:grid;gap:clamp(26px,3.4vw,52px);grid-template-columns:1fr;padding-bottom:clamp(40px,7vh,90px)}
-@media (min-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
-.v{display:flex;flex-direction:column;gap:10px}
-.fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--surface);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit}
-.fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
-.fac .pl{position:absolute;inset:0;display:grid;place-items:center}
-.fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--accent);position:relative;transition:transform 300ms var(--ease)}
-.fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid #f3f2f2;border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}
-@media (hover:hover){.fac:hover img{transform:scale(1.04);opacity:.82}.fac:hover .pl i{transform:scale(1.1)}}
-.v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
-.vt{font-size:clamp(16px,1.4vw,19px);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
-.vc{margin:0;font-size:12px;line-height:1.45;color:var(--mute);text-wrap:pretty}
-.plat{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--accent)}
-
 /* ── сітка знімків ───────────────────────────────────────── */
 .sec-h{padding-block:clamp(30px,4vw,56px) clamp(12px,1.6vw,20px);border-top:var(--rule) solid var(--divider);margin-top:clamp(26px,3.4vw,48px)}
 .sec-h:first-of-type{margin-top:0;border-top:0}
