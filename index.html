@@ -47,6 +47,7 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
+  --pencil:#c9541f;
   --edge:transparent;
   --bg:#f3f2f2; --surface:#eae9e9; --ink:#201e1d; --accent:#0f8299;
   --divider:color-mix(in srgb, #201e1d 40%, transparent);
@@ -155,16 +156,23 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    тож порожнє поле праворуч його не вмикає; «відеомонтажер» тому й вилазить
    за колонку, що ширина тут по тексту */
 .roles h2 .role{position:relative; width:max-content; padding-right:.14em}
-/* контурний набір; заливається лише той напис, на який навели */
+/* залито; під курсором напис лишається самим контуром, наче обведений олівцем */
+.roles h2 span{color:var(--accent); transition:color 320ms var(--ease)}
 @supports (-webkit-text-stroke: 2px currentColor){
-  .roles h2 span{
-    -webkit-text-stroke:clamp(1.6px,.22vw,2.4px) var(--accent);
-    color:transparent;
-    transition:color 420ms var(--ease);
+  .roles h2 .role{--pencil-w:clamp(1.1px,.15vw,1.8px)}
+  @media (hover:hover){
+    .roles h2 .role:hover span{
+      color:transparent;
+      -webkit-text-stroke:var(--pencil-w) var(--pencil);
+    }
   }
-  @media (hover:hover){.roles h2 .role:hover span{color:var(--accent)}}
-  /* на тачі ховера нема — заливка на час дотику, щоб напис не був мертвим */
-  @media (hover:none){.roles h2 .role:active span{color:var(--accent)}}
+  /* на тачі ховера нема — контур на час дотику */
+  @media (hover:none){
+    .roles h2 .role:active span{
+      color:transparent;
+      -webkit-text-stroke:var(--pencil-w) var(--pencil);
+    }
+  }
 }
 .pills{
   display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:0;
