@@ -296,6 +296,9 @@ figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10
 .poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 55%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
+footer .arch{position:relative;color:var(--mute);transition:color 240ms var(--ease)}
+footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
+@media (hover:hover){footer .arch:hover{color:var(--ink)}footer .arch:hover::after{transform:scaleX(1)}}
 footer{padding-block:16px 22px; display:grid; grid-template-columns:1fr auto; gap:8px 24px}
 footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 @media (max-width:560px){footer{grid-template-columns:1fr}}
@@ -438,7 +441,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
     <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
   </div>
-  <div class="cols"><span class="tiny" data-en="Set in Fixel" data-ua="Набрано Fixel">Set in Fixel</span></div>
+  <div class="cols"><a class="tiny arch" href="/photo/" data-en="Photo archive" data-ua="Архів фото">Photo archive</a><span class="tiny" data-en="Set in Fixel" data-ua="Набрано Fixel">Set in Fixel</span></div>
 </footer>
 
 <script>
