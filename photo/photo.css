@@ -121,10 +121,10 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 .cat:active::after{transform:scaleX(1)}
 @media (max-width:640px){
   .cat{grid-template-columns:auto 1fr auto;row-gap:2px;padding-block:14px}
-  .cat .num{grid-row:1}
-  .cat .lab{grid-column:2/span 2}
+  .cat .num{grid-column:1;grid-row:1}
+  .cat .lab{grid-column:2;grid-row:1}
+  .cat .arw{grid-column:3;grid-row:1;align-self:center}
   .cat .qty{grid-column:2;grid-row:2}
-  .cat .arw{grid-row:1;align-self:center}
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */

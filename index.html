@@ -290,12 +290,12 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 .row:active .num{color:var(--accent)}
 .row:active::after{transform:scaleX(1)}
 @media (max-width:640px){
-  .row{grid-template-columns:auto 1fr auto; row-gap:2px; padding-block:14px}
-  .row .num{grid-row:1}
-  .row .lab{grid-column:2/span 2}
-  .row .han{grid-column:2; grid-row:2}
-  .row .arw{grid-row:1; align-self:center}
-}
+    .row{grid-template-columns:auto 1fr auto; row-gap:2px; padding-block:14px}
+    .row .num{grid-column:1; grid-row:1}
+    .row .lab{grid-column:2; grid-row:1}
+    .row .arw{grid-column:3; grid-row:1; align-self:center}
+    .row .han{grid-column:2; grid-row:2}
+  }
 
 /* ── poster ───────────────────────────────────────────────── */
 .poster{
