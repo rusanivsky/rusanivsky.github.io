@@ -221,13 +221,17 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .figwrap{grid-column:7/span 6; align-self:start}
 figure{margin:0; position:relative; z-index:1}
 .shot{
-  position:relative; aspect-ratio:4/5; background:var(--surface);
+  position:relative; display:flex; background:var(--surface);
   overflow:hidden;
+  /* фото продовжується бірюзовою плашкою до самого краю екрана */
+  margin-right:calc(var(--pad) * -1);
   border-start-start-radius:clamp(24px,5vw,80px);
   border-end-start-radius:clamp(24px,5vw,80px);
 }
+.shot picture{display:block; position:relative; flex:1 1 auto; aspect-ratio:4/5}
+.shot::before{content:""; order:1; flex:0 0 var(--pad); background:var(--accent)}
 .shot::after{
-  content:""; position:absolute; inset:0; pointer-events:none;
+  content:""; position:absolute; inset:0 var(--pad) 0 0; pointer-events:none;
   border:1px solid var(--edge); border-radius:inherit;
 }
 .shot img{
@@ -235,11 +239,11 @@ figure{margin:0; position:relative; z-index:1}
   transform:scale(1.04); transition:transform 800ms var(--ease);
 }
 .about.is-in .shot img{transform:scale(1)}
-figcaption{display:flex; justify-content:space-between; gap:12px; padding-top:10px}
+figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 @media (max-width:900px){
   .roles,.figwrap{grid-column:1/span 12}
   .figwrap{order:-1}
-  .shot{aspect-ratio:3/4}
+  .shot picture{aspect-ratio:3/4}
 }
 
 /* ── index of links ───────────────────────────────────────── */
