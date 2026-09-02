@@ -232,9 +232,8 @@ figure{margin:0; position:relative; z-index:1}
 .shot::before{content:""; order:1; flex:0 0 var(--pad); background:var(--accent)}
 .shot::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  border:0; border-radius:inherit;
-  border-top:var(--rule) solid var(--edge);
-  border-bottom:var(--rule) solid var(--edge);
+  border:var(--rule) solid var(--edge); border-right:0;
+  border-radius:inherit;
 }
 .shot img{
   width:100%; height:100%; object-fit:cover;
