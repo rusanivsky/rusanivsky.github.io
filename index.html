@@ -235,7 +235,9 @@ figure{margin:0; position:relative; z-index:1}
 .shot::before{content:""; order:1; flex:0 0 var(--pad); background:var(--accent)}
 /* обводка йде зовні — обіймає фото і плашку, не наїжджаючи на знімок */
 .shot::after{
-  content:""; position:absolute; inset:calc(var(--rule) * -1); pointer-events:none;
+  content:""; position:absolute; pointer-events:none;
+  top:calc(var(--rule) * -1); bottom:calc(var(--rule) * -1);
+  left:calc(var(--rule) * -1); right:0;
   border:var(--rule) solid var(--edge); border-right:0;
   border-end-start-radius:calc(var(--r) + var(--rule));
 }
