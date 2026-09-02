@@ -184,6 +184,7 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 /* ── контакти ────────────────────────────────────────────── */
 .poster{
   background:var(--accent); color:#f7f4f3; padding-block:clamp(34px,6vw,80px);
+  border-top-left-radius:clamp(24px,5vw,80px);
   --uline:3px;
 }
 @media (min-width:700px){.poster{--uline:5px}}
