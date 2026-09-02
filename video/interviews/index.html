@@ -123,31 +123,6 @@
     addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
   })();
 
-  /* паралакс фонового світла */
-  (function(){
-    var body = document.body;
-    var mq = matchMedia('(prefers-reduced-motion: reduce)');
-    var target = 0, cur = 0, running = false;
-    function factor(){ return mq.matches ? 0 : 0.14; }
-    function cap(){ return innerHeight * 0.34; }   // не більше третини екрана
-    function apply(v){ body.style.setProperty('--par', v.toFixed(2) + 'px'); }
-    function frame(){
-      cur += (target - cur) * 0.09;
-      if(Math.abs(target - cur) > 0.2){ apply(cur); requestAnimationFrame(frame); }
-      else { cur = target; apply(cur); running = false; }
-    }
-    function onScroll(){
-      var y = (window.scrollY || document.documentElement.scrollTop || 0) * factor();
-      target = -Math.min(y, cap());
-      if(!running){ running = true; requestAnimationFrame(frame); }
-    }
-    apply(0);
-    addEventListener('scroll', onScroll, {passive:true});
-    addEventListener('resize', onScroll, {passive:true});
-    if(mq.addEventListener) mq.addEventListener('change', onScroll);
-    onScroll();
-  })();
-
   document.addEventListener('click',function(e){
     var f=e.target.closest('.fac'); if(!f) return;
     var pl=f.dataset.pl, id=f.dataset.id;

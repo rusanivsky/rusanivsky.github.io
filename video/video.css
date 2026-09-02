@@ -95,49 +95,6 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 .sec.on{color:var(--ink)}
 .sec.on::after{transform:scaleX(1)}
 @media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
-/* ── теплий фон: плями-доповнення до ціану + зерно ───────── */
-:root{
-  --warm-a:#e2701c; --warm-b:#c04a18;
-  --g-main:.38; --g-b:.20; --g-c:.15; --grain:.06;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --warm-a:#d1601f; --warm-b:#a03a16;
-    --g-main:.72; --g-b:.34; --g-c:.25; --grain:.10;
-  }
-}
-body::after{
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-}
-body::before{
-  content:""; position:fixed; z-index:-1; pointer-events:none;
-  /* навмисно більший за екран: зсув паралакса не має оголювати край */
-  top:-70vh; bottom:-70vh; left:-20vw; right:-20vw;
-}
-body::before{
-  background:
-    /* головне джерело світла — ліворуч, у порожнечі поруч з іменем */
-    radial-gradient(58vmax 62vmax at -6% 34%,
-      color-mix(in srgb, var(--warm-a) calc(var(--g-main) * 100%), transparent) 0%,
-      color-mix(in srgb, var(--warm-b) calc(var(--g-main) * 42%), transparent) 38%,
-      transparent 70%),
-    radial-gradient(36vmax 34vmax at 104% 72%,
-      color-mix(in srgb, var(--warm-b) calc(var(--g-b) * 100%), transparent), transparent 66%),
-    radial-gradient(30vmax 28vmax at 16% 104%,
-      color-mix(in srgb, var(--warm-a) calc(var(--g-c) * 100%), transparent), transparent 64%);
-}
-body::after{
-  background-image:url("data:image/svg+xml;charset=utf-8,<svg xmlns='http%3A//www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url%28%23n%29' opacity='0.55'/></svg>");
-  background-size:220px 220px;
-  opacity:var(--grain);
-  mix-blend-mode:overlay;
-}
-body::before{
-  transform:translate3d(0, var(--par, 0px), 0);
-  will-change:transform;
-}
-}
-
 
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }

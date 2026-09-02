@@ -324,46 +324,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   .ln>span{transform:none!important}
   [data-rev]{opacity:1!important; transform:none!important}
 }
-/* ── теплий фон: джерела світла + зерно ──────────────────── */
-:root{ --glow:.34; --grain:.05 }
-@media (prefers-color-scheme:dark){ :root{ --glow:.9; --grain:.10 } }
-body::after{
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-}
-body::before{
-  content:""; position:fixed; z-index:-1; pointer-events:none;
-  /* навмисно більший за екран: зсув паралакса не має оголювати край */
-  top:-70vh; bottom:-70vh; left:-20vw; right:-20vw;
-  opacity:var(--glow);
-  background:
-    /* головне джерело — ліворуч, з гарячим ядром і довгим згасанням */
-    radial-gradient(46vmax 52vmax at 2% 30%,
-      #ff8a3d 0%, #f2621d 16%, #c2431a 34%, #6f2712 56%, transparent 76%),
-    radial-gradient(30vmax 30vmax at 100% 70%,
-      #e8631f 0%, #a53c16 34%, transparent 68%),
-    radial-gradient(26vmax 24vmax at 14% 106%,
-      #f0701f 0%, #8d3413 40%, transparent 70%);
-}
-body::after{
-  background-image:url("data:image/svg+xml;charset=utf-8,<svg xmlns='http%3A//www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url%28%23n%29' opacity='0.55'/></svg>");
-  background-size:220px 220px;
-  opacity:var(--grain);
-  mix-blend-mode:overlay;
-}
-body::before{
-  transform:translate3d(0, var(--par, 0px), 0);
-  will-change:transform;
-}
-
-/* запасний перехід для браузерів без @view-transition */
-@keyframes pt-in{ from{opacity:0} to{opacity:1} }
-@keyframes pt-out{ from{opacity:1} to{opacity:0} }
-html.pt-js body{ animation:pt-in 320ms var(--ease) both }
-html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
-@media (prefers-reduced-motion:reduce){
-  html.pt-js body,html.pt-leave body{ animation:none }
-}
-
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
 @keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
@@ -614,31 +574,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
       setTimeout(function(){ location.href = a.href; }, 210);
     });
     addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
-  })();
-
-  /* паралакс фонового світла */
-  (function(){
-    var body = document.body;
-    var mq = matchMedia('(prefers-reduced-motion: reduce)');
-    var target = 0, cur = 0, running = false;
-    function factor(){ return mq.matches ? 0 : 0.14; }
-    function cap(){ return innerHeight * 0.34; }   // не більше третини екрана
-    function apply(v){ body.style.setProperty('--par', v.toFixed(2) + 'px'); }
-    function frame(){
-      cur += (target - cur) * 0.09;
-      if(Math.abs(target - cur) > 0.2){ apply(cur); requestAnimationFrame(frame); }
-      else { cur = target; apply(cur); running = false; }
-    }
-    function onScroll(){
-      var y = (window.scrollY || document.documentElement.scrollTop || 0) * factor();
-      target = -Math.min(y, cap());
-      if(!running){ running = true; requestAnimationFrame(frame); }
-    }
-    apply(0);
-    addEventListener('scroll', onScroll, {passive:true});
-    addEventListener('resize', onScroll, {passive:true});
-    if(mq.addEventListener) mq.addEventListener('change', onScroll);
-    onScroll();
   })();
 
   /* Kyiv clock */
