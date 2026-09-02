@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/video/video.css">
 </head>
 <body>
+<div class="topbar">
 <header class="wrap meta">
   <a class="back" href="/" data-en="← Kyrylo Rusanivsky" data-ua="← Кирило Русанівський">← Kyrylo Rusanivsky</a>
   <div class="tgl" id="lang" role="group" aria-label="Language">
@@ -30,11 +31,12 @@
   </div>
 </header>
 <hr class="rule">
+<nav class="wrap secs"><a class="sec" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв&#x27;ю">Interviews</a><a class="sec on" href="/video/music/" aria-current="page" data-en="Music Videos" data-ua="Музичні відео">Music Videos</a><a class="sec" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a><a class="sec" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></nav>
+</div>
 <section class="wrap head">
   <h1 data-en="Music Videos" data-ua="Музичні відео">Music Videos</h1>
   <p class="tiny cnt">21</p>
 </section>
-<nav class="wrap secs"><a class="sec" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв&#x27;ю">Interviews</a><a class="sec on" href="/video/music/" aria-current="page" data-en="Music Videos" data-ua="Музичні відео">Music Videos</a><a class="sec" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a><a class="sec" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></nav>
 <section class="wrap grid">
   <article class="v">
     <button class="fac" type="button" data-pl="yt" data-id="bpz1jSrtFMA" aria-label="Різдвяний вечір класичної музики «Зимова Феєрія»">
@@ -284,6 +286,16 @@
     fr.loading='lazy';
     f.replaceWith(fr);
   });
+})();
+</script>
+<script>
+/* показати активну вкладку, коли смуга не вміщається */
+(function(){
+  var n=document.querySelector('.secs');
+  var a=n&&n.querySelector('[aria-current]');
+  if(!n||!a) return;
+  var x=a.offsetLeft-parseFloat(getComputedStyle(n).paddingLeft||0)-16;
+  if(x>0 && n.scrollWidth>n.clientWidth) n.scrollLeft=x;
 })();
 </script>
 </body>
