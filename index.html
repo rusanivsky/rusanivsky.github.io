@@ -151,15 +151,17 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    блоком і сітка зносить фото в наступний ряд */
 .roles{grid-column:1/span 5; align-self:start; position:relative; z-index:2}
 .roles h2{
-  font-size:clamp(15px,2.2vw,34px); font-weight:400; text-transform:uppercase;
+  font-size:clamp(24px,6.5vw,88px); font-weight:100; text-transform:uppercase;
   letter-spacing:-.01em;
-  font-variation-settings:"wdth" 92; line-height:1.05; color:var(--pencil);
+  font-variation-settings:"wdth" 92; line-height:1.1; color:var(--pencil);
 }
 .roles h2 span{display:block}
 .roles h2 .role{width:max-content}
 /* фахи розведені між собою; «графічний дизайнер» займає два рядки, тож
    відступ ставиться між блоками, а не між рядками всередині фаху */
-.roles h2 .role + .role{margin-top:.55em}
+.roles h2 .role + .role{margin-top:.35em}
+.roles h2 .role:nth-child(2){transform:translateX(clamp(16px, 8vw, 120px))}
+.roles h2 .role:nth-child(3){transform:translateX(clamp(32px, 16vw, 240px))}
 /* просто помаранчевий, без реакції на курсор */
 .roles h2 span{color:var(--pencil)}
 .pills{
