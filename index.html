@@ -131,35 +131,34 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
+  align-items:end; padding-block:clamp(16px,2.75vh,37.5px) clamp(8px,1.4vh,18px);
 }
 /* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
 .lede{grid-column:6/span 5; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
-.hero-foot .scroll{grid-column:11/span 2; justify-self:end; text-align:right}
 @media (max-width:900px){
   .lede{grid-column:1/span 12; justify-self:stretch}
-  .hero-foot .scroll{display:none}
 }
 
 
 /* ── portrait + statement ─────────────────────────────────── */
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
-  padding-block:clamp(16px,2.75vh,37.5px);
+  padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
 }
 /* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
    блоком і сітка зносить фото в наступний ряд */
-.roles{grid-column:1/span 5; align-self:start; position:relative; z-index:2}
+.roles{grid-column:1/span 5; align-self:start; position:relative; z-index:2; margin-left:clamp(10px, 5vw, 60px)}
 .roles h2{
-  font-size:clamp(15px,2.2vw,34px); font-weight:400; text-transform:uppercase;
+  font-size:clamp(12px,1.8vw,27px); font-weight:600; text-transform:uppercase;
   letter-spacing:-.01em;
-  font-variation-settings:"wdth" 92; line-height:1.05; color:var(--pencil);
+  font-variation-settings:"wdth" 92; line-height:1.15; color:var(--pencil);
 }
 .roles h2 span{display:block}
 .roles h2 .role{width:max-content}
 /* фахи розведені між собою; «графічний дизайнер» займає два рядки, тож
    відступ ставиться між блоками, а не між рядками всередині фаху */
-.roles h2 .role + .role{margin-top:.55em}
+.roles h2 .role + .role{margin-top:.45em; transform:translateX(clamp(8px, 4vw, 60px))}
+.roles h2 .role:nth-child(3){transform:translateX(clamp(16px, 8vw, 120px))}
 /* просто помаранчевий, без реакції на курсор */
 .roles h2 span{color:var(--pencil)}
 .pills{
@@ -234,6 +233,10 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 /* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
 .figwrap{grid-column:6/span 3; align-self:start}
+/* зсув, щоб ліва межа портрета лягла на ліву межу 3-го блока в .specs
+   нижче — підібрано вимірюванням на 901..1920px, під 900px .figwrap і так
+   на всю ширину, тож зсув там вимкнено */
+@media (min-width:901px){.figwrap{margin-left:clamp(60px,8vw,150px)}}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
@@ -389,8 +392,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
       <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
     </h1>
     <div class="hero-foot">
-      <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв’ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
-      <span class="tiny scroll" data-rev style="--d:360ms" data-en="Scroll ↓" data-ua="Далі ↓">Scroll ↓</span>
+      <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
     </div>
   </section>
 
@@ -406,11 +408,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <span class="role"><span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span></span>
         <span class="role"><span data-en="Photographer" data-ua="Фотограф">Photographer</span></span>
       </h2>
-      <ul class="pills" data-rev style="--d:110ms">
-        <li data-en="Freelance" data-ua="Фриланс">Freelance</li>
-        <li data-en="Kyiv" data-ua="Київ">Kyiv</li>
-        <li data-en="Since 2013" data-ua="з 2013">Since 2013</li>
-      </ul>
     </div>
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
