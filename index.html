@@ -89,7 +89,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .meta{
   display:grid; grid-template-columns:1fr auto; gap:var(--pad) 24px;
   /* у ряду тепер живе ім'я, тож ряд дихає, а не тулиться до лінійки */
-  padding-block:clamp(12px,1.8vh,20px); align-items:center;
+  padding-block:clamp(4px,.8vh,10px); align-items:center;
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
 .tiny{
@@ -105,6 +105,8 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font:inherit; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
   padding:16px 8px; min-height:44px; line-height:1; transition:color 220ms var(--ease);
 }
+/* 44px — це вимога до тач-цілі; з мишею вона зайва і лише піднімає шапку */
+@media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
 .tgl button:first-child{padding-left:0}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
@@ -115,14 +117,14 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 
 /* ── ім'я під шапкою ───────────────────────────────────────── */
-/* одним рядком, як у рефі: великий кегль, але легка насиченість —
-   вага несе розмір, а не жир */
+/* двома рядками: великий кегль, але легка насиченість —
+   вагу несе розмір, а не жир */
 .name{
   font-size:clamp(38px,6.4vw,96px); font-weight:500;
-  letter-spacing:-.03em; line-height:1.05; white-space:nowrap;
-  font-variation-settings:"wdth" 98;
+  letter-spacing:-.03em; line-height:1; font-variation-settings:"wdth" 98;
 }
-.hero{padding-block:clamp(40px,9vh,96px) 0}
+.name span{display:block; white-space:nowrap}
+.hero{padding-block:clamp(18px,3.6vh,44px) 0}
 
 .hero-foot{
   display:grid; grid-template-columns:repeat(12,1fr);
@@ -145,39 +147,28 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
   padding-block:clamp(64px,11vh,150px);
 }
-.roles{grid-column:1/span 6; align-self:start; position:relative; z-index:2}
+/* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
+   блоком і сітка зносить фото в наступний ряд */
+.roles{grid-column:1/span 5; align-self:start; position:relative; z-index:2}
 .roles h2{
   font-size:clamp(15px,2.2vw,34px); font-weight:400; text-transform:uppercase;
   letter-spacing:-.01em;
   font-variation-settings:"wdth" 92; line-height:1.05; color:var(--pencil);
-  padding-left:.62em;
 }
 .roles h2 span{display:block}
-/* кожен фах — власна ціль наведення завширшки зі свій текст, а не з колонку,
-   тож порожнє поле праворуч його не вмикає; «відеомонтажер» тому й вилазить
-   за колонку, що ширина тут по тексту */
-.roles h2 .role{position:relative; width:max-content; padding-right:.14em}
-/* риска перед кожним фахом — як на прев'ю посилання; помаранчева, бо сам напис
-   уже бірюзовий. Висить у власному відступі h2, тож на вузькому екрані її не
-   зрізає край; «графічний дизайнер» займає два рядки, риска лишається одна */
-.roles h2 .role::before{
-  content:"/"; position:absolute; left:-.62em; top:0;
-  color:var(--pencil); letter-spacing:0;
-}
-/* перелік помаранчевий; під курсором фах гасне до чорнила — єдиний
-   кольоровий акцент на сторінці, тож ховер знімає колір, а не додає */
-.roles h2 span{color:var(--pencil); transition:color 320ms var(--ease)}
-@media (hover:hover){.roles h2 .role:hover span{color:var(--ink)}}
-/* на тачі ховера нема — гасне на час дотику */
-@media (hover:none){.roles h2 .role:active span{color:var(--ink)}}
+.roles h2 .role{width:max-content}
+/* фахи розведені між собою; «графічний дизайнер» займає два рядки, тож
+   відступ ставиться між блоками, а не між рядками всередині фаху */
+.roles h2 .role + .role{margin-top:.55em}
+/* просто помаранчевий, без реакції на курсор */
+.roles h2 span{color:var(--pencil)}
 .pills{
-  display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:0;
+  display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px); list-style:none; padding:0;
   margin:clamp(18px,2.4vw,28px) 0 0;
 }
 .pills li{
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800;
-  color:var(--mute); border:var(--rule) solid var(--divider); border-radius:999px;
-  padding:9px 16px; line-height:1;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+  color:var(--mute); line-height:1;
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 /* ── напрямки: чотири кадри сходинкою ─────────────────────── */
@@ -201,7 +192,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* height:auto обов'язковий — інакше презентаційний атрибут height робить
      висоту визначеною і aspect-ratio не застосовується */
   width:100%; height:auto; aspect-ratio:4/5; object-fit:cover;
-  background:var(--surface); transition:opacity 320ms var(--ease);
+  background:var(--surface);
 }
 .spec .it{
   color:inherit; text-decoration:none;
@@ -218,7 +209,6 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
 @media (hover:hover){
-  .spec:hover .sh{opacity:.82}
   .spec .it:hover{color:var(--ink); background-size:100% var(--rule)}
   .spec a.it:hover::after{opacity:1; transform:none}
 }
@@ -263,11 +253,7 @@ figure{margin:0; position:relative; z-index:1}
   border:var(--rule) solid var(--edge);
   border-end-start-radius:calc(var(--r) + var(--rule));
 }
-.shot img{
-  width:100%; height:100%; object-fit:cover;
-  transform:scale(1.04); transition:transform 800ms var(--ease);
-}
-.about.is-in .shot img{transform:scale(1)}
+.shot img{width:100%; height:100%; object-fit:cover}
 figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 @media (max-width:900px){
   .roles,.figwrap{grid-column:1/span 12}
@@ -291,8 +277,8 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 }
 .row .num{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--mute); transition:color 240ms var(--ease)}
 .row .lab{
-  font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:uppercase;
-  letter-spacing:-.035em; line-height:.98; font-variation-settings:"wdth" 100;
+  font-size:clamp(28px,4.6vw,60px); font-weight:300; letter-spacing:-.02em;
+  line-height:1.02; font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease); transform-origin:left;
 }
 .row .han{font-size:clamp(12px,1vw,14px); color:var(--mute); letter-spacing:.01em}
@@ -321,7 +307,7 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 
 /* ── poster ───────────────────────────────────────────────── */
 .poster{
-  background:var(--deep); color:var(--deep-ink); padding-block:clamp(56px,9vw,120px);
+  background:var(--deep); color:var(--deep-ink); padding-block:clamp(36px,5vw,72px);
   border-top-right-radius:clamp(24px,5vw,80px);
   --uline:2px;
 }
@@ -404,7 +390,10 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 
 <main>
   <section class="wrap hero" id="hero" aria-labelledby="nm">
-    <h1 class="name" id="nm" data-en="Kyrylo Rusanivsky" data-ua="Кирило Русанівський">Kyrylo Rusanivsky</h1>
+    <h1 class="name" id="nm">
+      <span data-en="Kyrylo" data-ua="Кирило">Kyrylo</span>
+      <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
+    </h1>
     <div class="hero-foot">
       <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв’ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
       <span class="tiny scroll" data-rev style="--d:360ms" data-en="Scroll ↓" data-ua="Далі ↓">Scroll ↓</span>
