@@ -142,8 +142,9 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 
 
 /* ── portrait + statement ─────────────────────────────────── */
+:root{--about-gap:clamp(20px,2.6vw,40px)}
 .about{
-  display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
+  display:grid; grid-template-columns:repeat(12,1fr); gap:var(--about-gap);
   padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
 }
 /* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
@@ -170,44 +171,45 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   color:var(--mute); line-height:1;
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
-/* ── напрямки: сітка 2×2 з хрестом тонких ліній, як у рефі ─── */
+/* ── напрямки: підпис-колонка + сітка 2×2 з наскрізним хрестом ── */
+:root{
+  /* винесено в змінні, щоб .figwrap міг обчислити той самий відступ
+     точною формулою, а не підібраною кривою */
+  --work-label-w:clamp(90px,12vw,160px);
+  --work-gap:clamp(20px,3vw,44px);
+}
 .work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
+.work-in{
+  display:grid; grid-template-columns:var(--work-label-w) 1fr;
+  gap:var(--work-gap);
+}
+.work-in h2{align-self:start; padding-top:.3em}
 .specs{
-  display:grid; grid-template-columns:1fr 1fr; align-items:start;
-  list-style:none; padding:0; margin:clamp(28px,4vw,56px) 0 0;
+  display:grid;
+  grid-template-columns:1fr clamp(24px,3.2vw,48px) 1fr;
+  grid-template-rows:auto clamp(28px,4vw,52px) auto;
+  list-style:none; padding:0; margin:0; position:relative;
 }
-.spec{
-  position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent);
-  transition:color 300ms var(--ease);
+/* хрест намальований не бордюрами окремих клітинок (їхня висота різна —
+   у Photography 6 посилань, у Street одне, тож межі розповзались), а
+   двома проміжними треками самої сітки — суцільна лінія на всю висоту/
+   ширину незалежно від того, наскільки нерівний вміст навколо */
+.specs::before{
+  content:""; grid-column:2; grid-row:1/-1;
+  width:var(--rule); background:var(--divider); justify-self:center;
 }
-/* хрест: вертикальна лінія між колонками, горизонтальна — між рядками;
-   звичайні border, не оверлей — тому нема подвоєння й розбіжності лінії */
-.spec:nth-child(1){
-  border-right:var(--rule) solid var(--divider);
-  border-bottom:var(--rule) solid var(--divider);
-  padding:0 clamp(24px,3.2vw,48px) clamp(28px,4vw,52px) 0;
+.specs::after{
+  content:""; grid-row:2; grid-column:1/-1;
+  height:var(--rule); background:var(--divider); align-self:center;
 }
-.spec:nth-child(2){
-  border-bottom:var(--rule) solid var(--divider);
-  padding:0 0 clamp(28px,4vw,52px) clamp(24px,3.2vw,48px);
-}
-.spec:nth-child(3){
-  border-right:var(--rule) solid var(--divider);
-  padding:clamp(28px,4vw,52px) clamp(24px,3.2vw,48px) 0 0;
-}
-.spec:nth-child(4){
-  padding:clamp(28px,4vw,52px) 0 0 clamp(24px,3.2vw,48px);
-}
+.spec{position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent)}
+.spec:nth-child(1){grid-column:1; grid-row:1}
+.spec:nth-child(2){grid-column:3; grid-row:1}
+.spec:nth-child(3){grid-column:1; grid-row:3}
+.spec:nth-child(4){grid-column:3; grid-row:3}
 .spec .no{
   display:block; font-size:11px; letter-spacing:.1em; font-weight:800;
-  color:var(--mute); margin-bottom:10px;
-}
-.spec .sh{
-  /* невеликий супутній кадр — як лінійна іконка в рефі, а не на всю
-     колонку; height:auto обов'язковий, інакше презентаційний атрибут
-     height робить висоту визначеною і aspect-ratio не застосовується */
-  display:block; width:clamp(84px,9vw,140px); height:auto; aspect-ratio:4/5;
-  object-fit:cover; background:var(--surface);
+  color:var(--mute); margin-bottom:14px;
 }
 .spec .it{
   color:inherit; text-decoration:none;
@@ -232,36 +234,48 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* та сама гарнітурна вісь, що й назви сторінок (wdth 98, вага 400) —
    але капітеллю й чорним, бо це вже підпис під фото, а не заголовок */
 .spec h3{
-  /* у 1.5 рази більше й тонше — заголовок читається як підпис під фото,
-     а не як формальна капітель */
-  font-size:clamp(24px,2.25vw,33px); font-weight:300; text-transform:uppercase;
+  font-size:clamp(22px,2vw,30px); font-weight:300; text-transform:uppercase;
   letter-spacing:-.015em; font-variation-settings:"wdth" 98;
-  line-height:1.1; margin:16px 0 10px; color:var(--ink);
+  line-height:1.1; margin:0 0 10px; color:var(--ink);
 }
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
   font-size:clamp(13px,1vw,15px); line-height:1.4; text-wrap:pretty;
   position:relative;
 }
-/* вужче за 560px 2×2 стає тісним — складаємо в один стовпець;
-   хрест ліній стає простим горизонтальним розділювачем між пунктами */
-@media (max-width:560px){
-  .specs{grid-template-columns:1fr}
-  .spec:nth-child(1),.spec:nth-child(2),.spec:nth-child(3){
-    border-right:0; border-bottom:var(--rule) solid var(--divider);
-    padding:0 0 clamp(24px,6vw,36px);
+/* вужче за 700px підпис-колонка й сітка вже не вміщуються поряд —
+   підпис стає звичайним рядком зверху, а 2×2 складається в один стовпець */
+@media (max-width:700px){
+  .work-in{display:block}
+  .work-in h2{padding-top:0; margin-bottom:clamp(20px,4vw,32px)}
+  .specs{grid-template-columns:1fr; grid-template-rows:none}
+  .specs::before,.specs::after{content:none}
+  .spec:nth-child(1),.spec:nth-child(2),.spec:nth-child(3),.spec:nth-child(4){
+    grid-column:1; grid-row:auto;
   }
-  .spec:nth-child(2),.spec:nth-child(3),.spec:nth-child(4){
-    padding-top:clamp(24px,6vw,36px);
+  .spec:not(:last-child){
+    border-bottom:var(--rule) solid var(--divider);
+    padding-bottom:clamp(24px,6vw,36px); margin-bottom:clamp(24px,6vw,36px);
   }
-  .spec:nth-child(4){border-bottom:0}
 }
 /* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
 .figwrap{grid-column:6/span 3; align-self:start}
 /* зсув, щоб ліва межа портрета лягла на ліву межу 3-го блока в .specs
    нижче — підібрано вимірюванням на 901..1920px, під 900px .figwrap і так
    на всю ширину, тож зсув там вимкнено */
-@media (min-width:901px){.figwrap{margin-left:clamp(60px,8vw,150px)}}
+/* точна формула замість підібраної кривої: .figwrap стоїть у 6-й колонці
+   12-колонкової сітки .about, а ціль — ліва межа спец-колонки .work-in
+   (підпис-колонка + gap). Обидва боки виражені через ті самі --pad/
+   --about-gap/--work-label-w/--work-gap, тож рівність точна на будь-якій
+   ширині, а не наближена */
+@media (min-width:901px){
+  .figwrap{
+    margin-left:calc(
+      var(--work-label-w) + var(--work-gap)
+      - (5 * (100vw - 2 * var(--pad) + var(--about-gap))) / 12
+    );
+  }
+}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
@@ -451,51 +465,49 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   <hr class="rule">
 
   <section class="wrap work" aria-labelledby="wk">
-    <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
-    <ol class="specs">
-      <li class="spec" data-rev style="--d:80ms; --i:0">
-        <span class="no" aria-hidden="true">01</span>
-        <img class="sh" src="img/spec-video.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
-        <h3 data-en="Video editing" data-ua="Відеомонтаж">Video editing</h3>
-        <ul>
-          <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
-          <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
-          <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
-          <li><a class="it" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></li>
-        </ul>
-      </li>
-      <li class="spec" data-rev style="--d:150ms; --i:1">
-        <span class="no" aria-hidden="true">02</span>
-        <img class="sh" src="img/spec-design.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
-        <h3 data-en="Print &amp; Design" data-ua="Друк і дизайн">Print &amp; Design</h3>
-        <ul>
-          <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
-          <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-          <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
-        </ul>
-      </li>
-      <li class="spec" data-rev style="--d:220ms; --i:2">
-        <span class="no" aria-hidden="true">03</span>
-        <img class="sh" src="img/spec-photo.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
-        <h3 data-en="Photography" data-ua="Фотографія">Photography</h3>
-        <ul>
-          <li><a class="it" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a></li>
-          <li><a class="it" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a></li>
-          <li><a class="it" href="/photo/backstage/" data-en="Backstage" data-ua="Бекстейдж">Backstage</a></li>
-          <li><a class="it" href="/photo/concerts-theatre/" data-en="Concerts &amp; theatre" data-ua="Концерти та вистави">Concerts &amp; theatre</a></li>
-          <li><a class="it" href="/photo/parties/" data-en="Parties" data-ua="Вечірки">Parties</a></li>
-          <li><a class="it" href="/photo/photo-sessions/" data-en="Photo sessions" data-ua="Фотосесії">Photo sessions</a></li>
-        </ul>
-      </li>
-      <li class="spec" data-rev style="--d:290ms; --i:3">
-        <span class="no" aria-hidden="true">04</span>
-        <img class="sh" src="img/spec-street.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
-        <h3 data-en="Street photography" data-ua="Вулична фотографія">Street photography</h3>
-        <ul>
-          <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Ongoing series on Instagram" data-ua="Постійна серія в Instagram">Ongoing series on Instagram</a></li>
-        </ul>
-      </li>
-    </ol>
+    <div class="work-in">
+      <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
+      <ol class="specs">
+        <li class="spec" data-rev style="--d:80ms">
+          <span class="no" aria-hidden="true">01</span>
+          <h3 data-en="Video editing" data-ua="Відеомонтаж">Video editing</h3>
+          <ul>
+            <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
+            <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
+            <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
+            <li><a class="it" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></li>
+          </ul>
+        </li>
+        <li class="spec" data-rev style="--d:150ms">
+          <span class="no" aria-hidden="true">02</span>
+          <h3 data-en="Print &amp; Design" data-ua="Друк і дизайн">Print &amp; Design</h3>
+          <ul>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
+            <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
+          </ul>
+        </li>
+        <li class="spec" data-rev style="--d:220ms">
+          <span class="no" aria-hidden="true">03</span>
+          <h3 data-en="Photography" data-ua="Фотографія">Photography</h3>
+          <ul>
+            <li><a class="it" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a></li>
+            <li><a class="it" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a></li>
+            <li><a class="it" href="/photo/backstage/" data-en="Backstage" data-ua="Бекстейдж">Backstage</a></li>
+            <li><a class="it" href="/photo/concerts-theatre/" data-en="Concerts &amp; theatre" data-ua="Концерти та вистави">Concerts &amp; theatre</a></li>
+            <li><a class="it" href="/photo/parties/" data-en="Parties" data-ua="Вечірки">Parties</a></li>
+            <li><a class="it" href="/photo/photo-sessions/" data-en="Photo sessions" data-ua="Фотосесії">Photo sessions</a></li>
+          </ul>
+        </li>
+        <li class="spec" data-rev style="--d:290ms">
+          <span class="no" aria-hidden="true">04</span>
+          <h3 data-en="Street photography" data-ua="Вулична фотографія">Street photography</h3>
+          <ul>
+            <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Ongoing series on Instagram" data-ua="Постійна серія в Instagram">Ongoing series on Instagram</a></li>
+          </ul>
+        </li>
+      </ol>
+    </div>
   </section>
 
   <section class="wrap index" aria-labelledby="ix">
