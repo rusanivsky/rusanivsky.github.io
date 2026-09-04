@@ -180,17 +180,28 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   padding:9px 16px; line-height:1;
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
-.specs{display:grid; gap:clamp(18px,2.4vw,32px); margin-top:clamp(40px,5.4vw,72px)}
+/* ── напрямки: чотири кадри сходинкою ─────────────────────── */
+.work{padding-block:clamp(40px,7vh,88px) clamp(56px,10vh,128px)}
+.specs{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:clamp(16px,2.2vw,32px); align-items:start;
+  list-style:none; padding:0; margin:clamp(28px,4vw,56px) 0 0;
+}
+/* кожен наступний блок опускається на сходинку — діагональ як у рефі */
 .spec{
-  border-top:var(--rule) solid var(--divider); padding-top:12px;
+  padding-top:calc(var(--i,0) * clamp(18px,3.4vw,64px));
   position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent);
   transition:color 300ms var(--ease);
 }
-.spec::after{
-  content:""; position:absolute; left:0; right:0; top:calc(var(--rule) * -1);
-  height:var(--rule); background:var(--accent);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform 420ms var(--ease);
+.spec .no{
+  display:block; font-size:11px; letter-spacing:.1em; font-weight:800;
+  color:var(--mute); margin-bottom:10px;
+}
+.spec .sh{
+  /* height:auto обов'язковий — інакше презентаційний атрибут height робить
+     висоту визначеною і aspect-ratio не застосовується */
+  width:100%; height:auto; aspect-ratio:4/5; object-fit:cover;
+  background:var(--surface); transition:opacity 320ms var(--ease);
 }
 .spec .it{
   color:inherit; text-decoration:none;
@@ -207,23 +218,30 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
 @media (hover:hover){
-  .spec:hover::after{transform:scaleX(1)}
+  .spec:hover .sh{opacity:.82}
   .spec .it:hover{color:var(--ink); background-size:100% var(--rule)}
   .spec a.it:hover::after{opacity:1; transform:none}
 }
 .spec .it:active{color:var(--ink); background-size:100% var(--rule)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
-.spec h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px}
+.spec h3{
+  font-size:clamp(16px,1.5vw,22px); font-weight:500; letter-spacing:-.015em;
+  line-height:1.15; margin:14px 0 10px;
+}
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
-  font-size:clamp(15px,1.35vw,20px); line-height:1.35; text-wrap:pretty;
-  position:relative; padding-left:1.6em;
+  font-size:clamp(13px,1vw,15px); line-height:1.4; text-wrap:pretty;
+  position:relative;
 }
-.spec li::before{
-  content:"—"; color:var(--accent); font-weight:800;
-  position:absolute; left:0; top:0;
+@media (max-width:900px){
+  .specs{grid-template-columns:repeat(2,1fr)}
+  .spec{padding-top:0}
+  .spec:nth-child(2n){padding-top:clamp(20px,5vw,48px)}
 }
-@media (min-width:1100px){.specs{grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:clamp(20px,2.2vw,36px)}}
+@media (max-width:520px){
+  .specs{grid-template-columns:1fr}
+  .spec,.spec:nth-child(2n){padding-top:0}
+}
 /* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
 .figwrap{grid-column:6/span 3; align-self:start}
 figure{margin:0; position:relative; z-index:1}
@@ -410,37 +428,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <li data-en="Kyiv" data-ua="Київ">Kyiv</li>
         <li data-en="Since 2013" data-ua="з 2013">Since 2013</li>
       </ul>
-      <div class="specs">
-        <div class="spec" data-rev style="--d:140ms">
-          <h3 data-en="01 — Video editing" data-ua="01 — Відеомонтаж">01 &mdash; Video editing</h3>
-          <ul>
-            <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
-            <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
-            <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
-            <li><a class="it" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></li>
-          </ul>
-        </div>
-        <div class="spec" data-rev style="--d:210ms">
-          <h3 data-en="02 — Print &amp; Design" data-ua="02 — Друк і дизайн">02 &mdash; Print &amp; Design</h3>
-          <ul>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
-            <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
-          </ul>
-        </div>
-        <div class="spec" data-rev style="--d:280ms">
-          <h3 data-en="03 — Photography" data-ua="03 — Фотографія">03 &mdash; Photography</h3>
-          <ul>
-              <li><a class="it" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a></li>
-              <li><a class="it" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a></li>
-              <li><a class="it" href="/photo/backstage/" data-en="Backstage" data-ua="Бекстейдж">Backstage</a></li>
-              <li><a class="it" href="/photo/concerts-theatre/" data-en="Concerts &amp; theatre" data-ua="Концерти та вистави">Concerts &amp; theatre</a></li>
-              <li><a class="it" href="/photo/parties/" data-en="Parties" data-ua="Вечірки">Parties</a></li>
-              <li><a class="it" href="/photo/photo-sessions/" data-en="Photo sessions" data-ua="Фотосесії">Photo sessions</a></li>
-              <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Street" data-ua="Вулична фотографія">Street</a></li>
-            </ul>
-        </div>
-      </div>
       <p class="note" data-rev style="--d:350ms" data-en="Commercial and editorial commissions. Direct enquiries only." data-ua="Комерційні та редакційні замовлення. Звертайтеся напряму.">Commercial and editorial commissions. Direct enquiries only.</p>
     </div>
     <div class="figwrap">
@@ -455,6 +442,56 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <figcaption class="tiny"><span data-en="Kyiv · 2023" data-ua="Київ · 2023">Kyiv · 2023</span></figcaption>
       </figure>
     </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="wrap work" aria-labelledby="wk">
+    <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
+    <ol class="specs">
+      <li class="spec" data-rev style="--d:80ms; --i:0">
+        <span class="no" aria-hidden="true">01</span>
+        <img class="sh" src="img/spec-video.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
+        <h3 data-en="Video editing" data-ua="Відеомонтаж">Video editing</h3>
+        <ul>
+          <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
+          <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
+          <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
+          <li><a class="it" href="/video/vlogs/" data-en="Vlogs" data-ua="Влоги">Vlogs</a></li>
+        </ul>
+      </li>
+      <li class="spec" data-rev style="--d:150ms; --i:1">
+        <span class="no" aria-hidden="true">02</span>
+        <img class="sh" src="img/spec-design.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
+        <h3 data-en="Print &amp; Design" data-ua="Друк і дизайн">Print &amp; Design</h3>
+        <ul>
+          <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
+          <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
+          <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
+        </ul>
+      </li>
+      <li class="spec" data-rev style="--d:220ms; --i:2">
+        <span class="no" aria-hidden="true">03</span>
+        <img class="sh" src="img/spec-photo.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
+        <h3 data-en="Photography" data-ua="Фотографія">Photography</h3>
+        <ul>
+          <li><a class="it" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a></li>
+          <li><a class="it" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a></li>
+          <li><a class="it" href="/photo/backstage/" data-en="Backstage" data-ua="Бекстейдж">Backstage</a></li>
+          <li><a class="it" href="/photo/concerts-theatre/" data-en="Concerts &amp; theatre" data-ua="Концерти та вистави">Concerts &amp; theatre</a></li>
+          <li><a class="it" href="/photo/parties/" data-en="Parties" data-ua="Вечірки">Parties</a></li>
+          <li><a class="it" href="/photo/photo-sessions/" data-en="Photo sessions" data-ua="Фотосесії">Photo sessions</a></li>
+        </ul>
+      </li>
+      <li class="spec" data-rev style="--d:290ms; --i:3">
+        <span class="no" aria-hidden="true">04</span>
+        <img class="sh" src="img/spec-street.webp" alt="" width="900" height="1124" loading="lazy" decoding="async">
+        <h3 data-en="Street photography" data-ua="Вулична фотографія">Street photography</h3>
+        <ul>
+          <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Ongoing series on Instagram" data-ua="Постійна серія в Instagram">Ongoing series on Instagram</a></li>
+        </ul>
+      </li>
+    </ol>
   </section>
 
   <section class="wrap index" aria-labelledby="ix">
