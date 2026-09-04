@@ -51,10 +51,10 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 .tgl span{font-size:11px;color:var(--divider)}
 
-.head{padding-block:clamp(28px,6vh,72px) clamp(20px,3vw,36px)}
+.head{padding-block:clamp(14px,2.6vh,34px) clamp(20px,3vw,36px)}
 /* те саме трактування, що й ім'я на головній: звичайний регістр,
    легка насиченість, вагу несе кегль */
-.head h1{font-size:clamp(38px,6.4vw,96px);font-weight:500;letter-spacing:-.03em;line-height:1;font-variation-settings:"wdth" 98}
+.head h1{font-size:clamp(42px,7.4vw,112px);font-weight:400;letter-spacing:-.032em;line-height:1;font-variation-settings:"wdth" 98}
 .head .cnt{margin-top:14px}
 
 /* ── список розділів на хабі ───────────────────────────── */
