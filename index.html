@@ -25,7 +25,7 @@
 <meta name="twitter:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
 <meta name="twitter:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg">
-<meta name="theme-color" content="#f3f2f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f2f0ea" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171615" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
@@ -48,8 +48,10 @@
 }
 :root{
   --pencil:#d64427;
+  /* контактна плашка — глибокий темно-сірий, однаковий у обох темах */
+  --deep:#333230; --deep-ink:#f2f0ea;
   --edge:transparent;
-  --bg:#f3f2f2; --surface:#eae9e9; --ink:#201e1d; --accent:#0f8299;
+  --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
   --divider:color-mix(in srgb, #201e1d 40%, transparent);
   --mute:color-mix(in srgb, #201e1d 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
@@ -86,7 +88,8 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* ── marginalia bar ───────────────────────────────────────── */
 .meta{
   display:grid; grid-template-columns:1fr auto; gap:var(--pad) 24px;
-  padding-block:2px; align-items:center;
+  /* у ряду тепер живе ім'я, тож ряд дихає, а не тулиться до лінійки */
+  padding-block:clamp(12px,1.8vh,20px); align-items:center;
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
 .tiny{
@@ -111,32 +114,25 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   .meta .cols{gap:14px}
 }
 
-/* ── hero name ────────────────────────────────────────────── */
-.hero{padding-block:clamp(40px,12vh,120px) 0}
-.name{display:block; text-transform:uppercase; text-align:left; --fit:.82}
-@media (max-width:1024px){.name{--fit:.9}}
-@media (max-width:768px){.name{--fit:1}}
-.ln{display:block; overflow:hidden; padding-top:.14em; margin-top:-.14em}
-.ln.done{overflow:visible}
-.ln+.ln{margin-top:-.10em}
-.ln>span{
-  display:inline-block; white-space:nowrap; line-height:1;
-  font-size:13.6vw; font-weight:800; letter-spacing:-.035em;
-  transform:translateY(115%);
+/* ── ім'я під шапкою ───────────────────────────────────────── */
+/* одним рядком, як у рефі: великий кегль, але легка насиченість —
+   вага несе розмір, а не жир */
+.name{
+  font-size:clamp(38px,6.4vw,96px); font-weight:500;
+  letter-spacing:-.03em; line-height:1.05; white-space:nowrap;
+  font-variation-settings:"wdth" 98;
 }
-.ln:nth-child(1)>span{font-variation-settings:"wdth" 96}
-.ln:nth-child(2)>span{font-variation-settings:"wdth" 96}
-.is-in .ln>span{transform:translateY(0); transition:transform 620ms var(--ease)}
-.is-in .ln:nth-child(2)>span{transition-delay:110ms}
+.hero{padding-block:clamp(40px,9vh,96px) 0}
 
 .hero-foot{
-  display:grid; grid-template-columns:repeat(12,1fr); gap:24px;
-  align-items:end; padding-block:clamp(20px,4vh,44px) clamp(20px,4vh,40px);
+  display:grid; grid-template-columns:repeat(12,1fr);
+  /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
+     розходяться і фото не стає рівно під ліву межу ліду */
+  gap:clamp(20px,2.6vw,40px);
+  align-items:end; padding-block:clamp(48px,9vh,112px) clamp(36px,7vh,80px);
 }
-/* ім'я флашем ліворуч, лід — у правій половині, але лівіше за «Scroll»;
-   всередині абзац лишається вирівняним уліво, бо 46ch рваного лівого краю
-   не читаються */
-.lede{grid-column:5/span 6; justify-self:end; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
+/* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
+.lede{grid-column:6/span 5; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
 .hero-foot .scroll{grid-column:11/span 2; justify-self:end; text-align:right}
 @media (max-width:900px){
   .lede{grid-column:1/span 12; justify-self:stretch}
@@ -147,12 +143,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* ── portrait + statement ─────────────────────────────────── */
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
-  padding-block:clamp(40px,7vh,96px);
+  padding-block:clamp(64px,11vh,150px);
 }
 .roles{grid-column:1/span 6; align-self:start; position:relative; z-index:2}
 .roles h2{
-  font-size:clamp(30px,4.4vw,68px); text-transform:uppercase; letter-spacing:-.035em;
-  font-variation-settings:"wdth" 92; line-height:.94; color:var(--accent);
+  font-size:clamp(15px,2.2vw,34px); font-weight:400; text-transform:uppercase;
+  letter-spacing:-.01em;
+  font-variation-settings:"wdth" 92; line-height:1.05; color:var(--pencil);
   padding-left:.62em;
 }
 .roles h2 span{display:block}
@@ -167,11 +164,12 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   content:"/"; position:absolute; left:-.62em; top:0;
   color:var(--pencil); letter-spacing:0;
 }
-/* під курсором напис перебирає колір риски перед ним — та сама помаранчева пара */
-.roles h2 span{color:var(--accent); transition:color 320ms var(--ease)}
-@media (hover:hover){.roles h2 .role:hover span{color:var(--pencil)}}
-/* на тачі ховера нема — заливка на час дотику */
-@media (hover:none){.roles h2 .role:active span{color:var(--pencil)}}
+/* перелік помаранчевий; під курсором фах гасне до чорнила — єдиний
+   кольоровий акцент на сторінці, тож ховер знімає колір, а не додає */
+.roles h2 span{color:var(--pencil); transition:color 320ms var(--ease)}
+@media (hover:hover){.roles h2 .role:hover span{color:var(--ink)}}
+/* на тачі ховера нема — гасне на час дотику */
+@media (hover:none){.roles h2 .role:active span{color:var(--ink)}}
 .pills{
   display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:0;
   margin:clamp(18px,2.4vw,28px) 0 0;
@@ -182,7 +180,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   padding:9px 16px; line-height:1;
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
-.specs{display:grid; gap:clamp(18px,2.4vw,32px); margin-top:clamp(24px,3.4vw,44px)}
+.specs{display:grid; gap:clamp(18px,2.4vw,32px); margin-top:clamp(40px,5.4vw,72px)}
 .spec{
   border-top:var(--rule) solid var(--divider); padding-top:12px;
   position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent);
@@ -226,13 +224,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   position:absolute; left:0; top:0;
 }
 @media (min-width:1100px){.specs{grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:clamp(20px,2.2vw,36px)}}
-.figwrap{grid-column:7/span 6; align-self:start}
+/* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
+.figwrap{grid-column:6/span 3; align-self:start}
 figure{margin:0; position:relative; z-index:1}
 .shot{
-  --r:clamp(24px,5vw,80px);
+  /* радіус пропорційний новому, удвічі меншому кадру */
+  --r:clamp(10px,1.4vw,20px);
   position:relative; display:flex; background:var(--surface);
-  /* фото продовжується бірюзовою плашкою до самого краю екрана */
-  margin-right:calc(var(--pad) * -1);
   /* гострий верхній лівий кут, заокруглений лише нижній */
   border-end-start-radius:var(--r);
 }
@@ -240,13 +238,11 @@ figure{margin:0; position:relative; z-index:1}
   display:block; position:relative; flex:1 1 auto; aspect-ratio:4/5;
   overflow:hidden; border-end-start-radius:var(--r);
 }
-.shot::before{content:""; order:1; flex:0 0 var(--pad); background:var(--accent)}
-/* обводка йде зовні — обіймає фото і плашку, не наїжджаючи на знімок */
+/* обводка йде зовні — не наїжджає на знімок */
 .shot::after{
   content:""; position:absolute; pointer-events:none;
-  top:calc(var(--rule) * -1); bottom:calc(var(--rule) * -1);
-  left:calc(var(--rule) * -1); right:0;
-  border:var(--rule) solid var(--edge); border-right:0;
+  inset:calc(var(--rule) * -1);
+  border:var(--rule) solid var(--edge);
   border-end-start-radius:calc(var(--r) + var(--rule));
 }
 .shot img{
@@ -262,7 +258,7 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 }
 
 /* ── index of links ───────────────────────────────────────── */
-.index{padding-bottom:clamp(30px,6vh,72px)}
+.index{padding-block:clamp(24px,5vh,56px) clamp(48px,9vh,110px)}
 .index h2{font-size:11px}
 .row{
   display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
@@ -307,25 +303,24 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 
 /* ── poster ───────────────────────────────────────────────── */
 .poster{
-  background:var(--accent); color:#f7f4f3; padding-block:clamp(34px,6vw,80px);
+  background:var(--deep); color:var(--deep-ink); padding-block:clamp(56px,9vw,120px);
   border-top-right-radius:clamp(24px,5vw,80px);
-  --uline:3px;
+  --uline:2px;
 }
-@media (min-width:700px){.poster{--uline:5px}}
-@media (min-width:1200px){.poster{--uline:6px}}
+@media (min-width:700px){.poster{--uline:3px}}
 .poster .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .poster a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:clamp(30px,7.2vw,104px); font-weight:800; text-transform:none;
+  font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:none;
   letter-spacing:-.04em; line-height:.95; font-variation-settings:"wdth" 90;
   position:relative;
-  color:color-mix(in srgb,#f7f4f3 60%,transparent);
+  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
   transition:color 260ms var(--ease);
 }
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
 .poster a::before{
   content:""; position:absolute; left:0; right:0; bottom:-.02em;
-  height:var(--uline); background:#f7f4f3;
+  height:var(--uline); background:var(--deep-ink);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
@@ -335,22 +330,22 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .poster a:hover{color:#f7f4f3}
+  .poster a:hover{color:var(--deep-ink)}
   .poster a:hover::before{transform:scaleX(1)}
   .poster a:hover::after{opacity:1; transform:none}
 }
-.poster a:active{color:#f7f4f3}
+.poster a:active{color:var(--deep-ink)}
 .poster a:active::before{transform:scaleX(1)}
 .poster a:active::after{opacity:1; transform:none}
 .poster .lines{margin-top:.24em}
-.poster a + a{margin-left:clamp(7px,1.1vw,20px)}
-.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,#f7f4f3 72%,transparent)}
+.poster a + a{margin-left:clamp(7px,1.1vw,14px)}
+.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,var(--deep-ink) 72%,transparent)}
 
 /* ── footer ───────────────────────────────────────────────── */
 footer .arch{position:relative;color:var(--mute);transition:color 240ms var(--ease)}
 footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
 @media (hover:hover){footer .arch:hover{color:var(--ink)}footer .arch:hover::after{transform:scaleX(1)}}
-footer{padding-block:16px 22px; display:grid; grid-template-columns:1fr auto; gap:8px 24px}
+footer{padding-block:clamp(20px,3vh,34px) clamp(24px,4vh,44px); display:grid; grid-template-columns:1fr auto; gap:8px 24px}
 footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 @media (max-width:560px){footer{grid-template-columns:1fr}}
 
@@ -361,7 +356,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
-  .ln>span{transform:none!important}
   [data-rev]{opacity:1!important; transform:none!important}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
@@ -380,7 +374,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 <header class="wrap meta" data-rev>
   <div class="cols">
     <span class="tiny" data-en="Kyiv, UA" data-ua="Київ, UA">Kyiv, UA</span>
-    <span class="tiny"><span id="clock">—:—:—</span> <span id="tz">EET</span></span>
+    <span class="tiny"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span id="clock">—:—</span> <span id="tz">EET</span></span>
   </div>
   <div class="cols">
     <div class="tgl" id="lang" role="group" aria-label="Language">
@@ -392,10 +386,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 
 <main>
   <section class="wrap hero" id="hero" aria-labelledby="nm">
-    <h1 class="name" id="nm">
-      <span class="ln"><span data-fit data-en="Kyrylo" data-ua="Кирило">Kyrylo</span></span>
-      <span class="ln"><span data-fit data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span></span>
-    </h1>
+    <h1 class="name" id="nm" data-en="Kyrylo Rusanivsky" data-ua="Кирило Русанівський">Kyrylo Rusanivsky</h1>
     <div class="hero-foot">
       <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв’ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
       <span class="tiny scroll" data-rev style="--d:360ms" data-en="Scroll ↓" data-ua="Далі ↓">Scroll ↓</span>
@@ -510,35 +501,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 (function(){
   var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* fit the hero lines to the measure */
-  var fits = [].slice.call(document.querySelectorAll('[data-fit]'));
-  function fit(){
-    var sc = parseFloat(getComputedStyle(document.querySelector('.name')).getPropertyValue('--fit')) || 1;
-    var size = null;
-    fits.forEach(function(el){
-      var box = el.parentElement.clientWidth;
-      if(!box) return;
-      var keep = el.textContent;
-      var variants = [el.getAttribute('data-en'), el.getAttribute('data-ua')].filter(Boolean);
-      if(!variants.length) variants = [keep];
-      el.style.fontSize = '200px';
-      variants.forEach(function(txt){
-        el.textContent = txt;
-        var w = el.getBoundingClientRect().width;
-        if(!w) return;
-        var s = 200 * box * sc / w;
-        if(size === null || s < size) size = s;
-      });
-      el.textContent = keep;
-    });
-    fits.forEach(function(el){
-      el.style.fontSize = size ? size.toFixed(2) + 'px' : '';
-    });
-  }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-  fit();
-  var t; addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(fit, 120); }, {passive:true});
-
   /* reveals */
   function show(el){ el.classList.add('is-in'); }
   if ('IntersectionObserver' in window && !rm){
@@ -550,13 +512,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     document.querySelectorAll('[data-rev], .about').forEach(show);
   }
   requestAnimationFrame(function(){ show(document.getElementById('hero')); });
-  document.querySelectorAll('.ln').forEach(function(ln){
-    var inner = ln.firstElementChild;
-    var done = function(){ ln.classList.add('done'); };
-    if(rm){ done(); return; }
-    inner.addEventListener('transitionend', done, {once:true});
-    setTimeout(done, 1400);
-  });
 
   /* language toggle */
   var root = document.documentElement;
@@ -577,8 +532,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     document.querySelectorAll('#lang button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.lang === v));
     });
-    fit();
-    if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   }
   document.querySelectorAll('#lang button').forEach(function(b){
     b.addEventListener('click', function(){ setLang(b.dataset.lang, true); });
@@ -640,7 +593,7 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     if(!c) return;
     try{
       var now = new Date();
-      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:KYIV}).format(now);
+      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KYIV}).format(now);
       if(z){
         var parts = new Intl.DateTimeFormat('en-GB',{timeZone:KYIV,timeZoneName:'short'}).formatToParts(now);
         for(var i=0;i<parts.length;i++){
@@ -656,8 +609,8 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     clearTimeout(clockTimer);
     // у прихованій вкладці не крутимо щосекунди — час оновиться при поверненні
     if(document.hidden) return;
-    // прокидаємось точно на межі секунди
-    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 1000 - (Date.now() % 1000) + 20);
+    // секунд на екрані нема — прокидаємось точно на межі хвилини
+    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 60000 - (Date.now() % 60000) + 20);
   }
   function resyncClock(){ tick(); scheduleTick(); }
   tick(); scheduleTick();
