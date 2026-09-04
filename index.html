@@ -172,6 +172,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
   color:var(--mute); line-height:1;
 }
+.specs-intro{
+  margin:clamp(18px,2.4vw,28px) 0 0; font-size:clamp(16px,2.4vw,32px);
+  font-weight:100; text-transform:uppercase; color:var(--pencil);
+  display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px);
+  line-height:1.2; letter-spacing:-.01em;
+}
+.specs-intro span{display:block}
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 /* ── напрямки: чотири кадри сходинкою ─────────────────────── */
 .work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
@@ -408,11 +415,12 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <span class="role"><span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span></span>
         <span class="role"><span data-en="Photographer" data-ua="Фотограф">Photographer</span></span>
       </h2>
-      <ul class="pills" data-rev style="--d:110ms">
-        <li data-en="Freelance" data-ua="Фриланс">Freelance</li>
-        <li data-en="Kyiv" data-ua="Київ">Kyiv</li>
-        <li data-en="Since 2013" data-ua="з 2013">Since 2013</li>
-      </ul>
+      <p class="specs-intro" data-rev style="--d:110ms">
+        <span data-en="Video editing" data-ua="Відеомонтаж">Video editing</span>
+        <span data-en="Print & Design" data-ua="Поліграфія та дизайн">Print & Design</span>
+        <span data-en="Photography" data-ua="Фотографія">Photography</span>
+        <span data-en="Street photography" data-ua="Вулична фотографія">Street photography</span>
+      </p>
     </div>
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
