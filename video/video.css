@@ -51,7 +51,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 .tgl span{font-size:11px;color:var(--divider)}
 
-.head{padding-block:clamp(14px,2.6vh,34px) clamp(20px,3vw,36px)}
+.head{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
 /* те саме трактування, що й ім'я на головній: звичайний регістр,
    легка насиченість, вагу несе кегль */
 .head h1{font-size:clamp(42px,7.4vw,112px);font-weight:400;letter-spacing:-.032em;line-height:1;font-variation-settings:"wdth" 98}
@@ -88,7 +88,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .vc{margin:0;font-size:12px;line-height:1.45;color:var(--mute);text-wrap:pretty}
 .plat{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--accent)}
 
-footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
+footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px);display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
 @keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
