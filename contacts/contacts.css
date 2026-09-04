@@ -137,7 +137,9 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
   border-bottom:var(--rule) solid var(--divider);
 }
 .topbar .rule{margin-bottom:2px}
-.head{padding-top:clamp(24px,5vh,64px)}
+/* той самий просвіт над заголовком, що і .hero на головній —
+   це правило йде після базового .head і перебивало його */
+.head{padding-top:clamp(10px,2vh,26px)}
 
 /* ── соцмережі ───────────────────────────────────────────── */
 /* ── index of links ───────────────────────────────────────── */
@@ -188,7 +190,6 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 /* ── контакти ────────────────────────────────────────────── */
 .poster{
   background:var(--deep); color:var(--deep-ink); padding-block:clamp(26px,3.4vw,52px);
-  border-top-right-radius:clamp(24px,5vw,80px);
   --uline:2px;
 }
 @media (min-width:700px){.poster{--uline:3px}}

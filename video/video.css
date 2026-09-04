@@ -126,7 +126,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   border-bottom:var(--rule) solid var(--divider);
 }
 .topbar .rule{margin-bottom:2px}
-.head{padding-top:clamp(24px,5vh,64px)}
+/* той самий просвіт над заголовком, що і .hero на головній —
+   це правило йде після базового .head і перебивало його */
+.head{padding-top:clamp(10px,2vh,26px)}
 
 .meta .nav{position:relative;transition:color 240ms var(--ease)}
 @media (hover:hover){.meta .nav:hover{color:var(--accent)}}
