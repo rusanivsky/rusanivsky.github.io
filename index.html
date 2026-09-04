@@ -66,6 +66,7 @@
     --mute:color-mix(in srgb, #f0eeec 55%, transparent);
     --edge:color-mix(in srgb, #ffffff 42%, transparent);
   }
+  .spec h3{background:#201e1d; color:#f2f0ea; padding:clamp(8px,1.2vw,12px) clamp(18px,2.4vw,28px); display:inline-block}
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -172,13 +173,6 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
   color:var(--mute); line-height:1;
 }
-.specs-intro{
-  margin:clamp(18px,2.4vw,28px) 0 0; font-size:clamp(16px,2.4vw,32px);
-  font-weight:100; text-transform:uppercase; color:var(--pencil);
-  display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px);
-  line-height:1.2; letter-spacing:-.01em;
-}
-.specs-intro span{display:block}
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 /* ── напрямки: чотири кадри сходинкою ─────────────────────── */
 .work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
@@ -224,9 +218,19 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .spec .it:active{color:var(--ink); background-size:100% var(--rule)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 .spec h3{
-  font-size:clamp(16px,1.5vw,22px); font-weight:500; letter-spacing:-.015em;
-  line-height:1.15; margin:14px 0 10px;
+  font-size:clamp(24px,6.5vw,88px); font-weight:100; text-transform:uppercase;
+  letter-spacing:-.01em; color:var(--pencil);
+  line-height:1.1; margin:14px 0 10px;
+  display:inline-block; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  background-image:linear-gradient(var(--pencil),var(--pencil));
+  background-repeat:no-repeat; background-position:0 100%;
+  background-size:0% var(--rule);
+  transition:background-size 380ms var(--ease);
 }
+@media (hover:hover){
+  .spec h3:hover{background-size:100% var(--rule)}
+}
+.spec h3:active{background-size:100% var(--rule)}
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
   font-size:clamp(13px,1vw,15px); line-height:1.4; text-wrap:pretty;
@@ -415,12 +419,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <span class="role"><span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span></span>
         <span class="role"><span data-en="Photographer" data-ua="Фотограф">Photographer</span></span>
       </h2>
-      <p class="specs-intro" data-rev style="--d:110ms">
-        <span data-en="Video editing" data-ua="Відеомонтаж">Video editing</span>
-        <span data-en="Print & Design" data-ua="Поліграфія та дизайн">Print & Design</span>
-        <span data-en="Photography" data-ua="Фотографія">Photography</span>
-        <span data-en="Street photography" data-ua="Вулична фотографія">Street photography</span>
-      </p>
     </div>
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
