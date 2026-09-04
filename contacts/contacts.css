@@ -53,14 +53,14 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 .tgl span{font-size:11px;color:var(--divider)}
 
-.head{padding-block:clamp(14px,2.6vh,34px) clamp(20px,3vw,36px)}
+.head{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
 /* те саме трактування, що й ім'я на головній: звичайний регістр,
    легка насиченість, вагу несе кегль */
 .head h1{font-size:clamp(42px,7.4vw,112px);font-weight:400;letter-spacing:-.032em;line-height:1;font-variation-settings:"wdth" 98}
 .head .cnt{margin-top:14px}
 
 /* ── сітка знімків ───────────────────────────────────────── */
-.sec-h{padding-block:clamp(30px,4vw,56px) clamp(12px,1.6vw,20px);border-top:var(--rule) solid var(--divider);margin-top:clamp(26px,3.4vw,48px)}
+.sec-h{padding-block:clamp(32px,5.5vh,75px) clamp(12px,2vh,20px);border-top:var(--rule) solid var(--divider);margin-top:clamp(26px,3.4vw,48px)}
 .sec-h:first-of-type{margin-top:0;border-top:0}
 .sec-h h2{font-size:clamp(22px,3.4vw,44px);font-weight:800;letter-spacing:-.03em;text-transform:uppercase;font-variation-settings:"wdth" 92}
 .sec-h .n{margin-top:8px}
@@ -74,7 +74,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 @media (min-width:1100px){.shots{grid-template-columns:repeat(3,1fr)}}
 .shots img{width:100%;height:auto;background:var(--surface);display:block}
 .shots > *{align-self:start}
-footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
+footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px);display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
 /* ── перемикач категорій ─────────────────────────────────── */
 .secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .secs::-webkit-scrollbar{display:none}

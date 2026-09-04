@@ -49,7 +49,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 .tgl span{font-size:11px;color:var(--divider)}
 
-.head{padding-block:clamp(10px,2vh,26px) clamp(20px,3vw,36px)}
+.head{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
 /* те саме трактування, що й ім'я на головній: звичайний регістр,
    легка насиченість, вагу несе кегль */
 .head h1{font-size:clamp(42px,7.4vw,112px);font-weight:400;letter-spacing:-.032em;line-height:1;font-variation-settings:"wdth" 98}
@@ -94,7 +94,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .p img{width:100%;height:auto;background:var(--surface);display:block}
 .pt{font-size:clamp(18px,1.7vw,24px);font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
 .pd{margin:0;font-size:clamp(13px,1vw,15px);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
-footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
+footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px);display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
 
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }

@@ -131,7 +131,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(48px,9vh,112px) clamp(36px,7vh,80px);
+  align-items:end; padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px);
 }
 /* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
 .lede{grid-column:6/span 5; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
@@ -145,7 +145,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* ── portrait + statement ─────────────────────────────────── */
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
-  padding-block:clamp(64px,11vh,150px);
+  padding-block:clamp(32px,5.5vh,75px);
 }
 /* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
    блоком і сітка зносить фото в наступний ряд */
@@ -172,7 +172,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 /* ── напрямки: чотири кадри сходинкою ─────────────────────── */
-.work{padding-block:clamp(40px,7vh,88px) clamp(56px,10vh,128px)}
+.work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
 .specs{
   display:grid; grid-template-columns:repeat(4,1fr);
   gap:clamp(16px,2.2vw,32px); align-items:start;
@@ -249,7 +249,7 @@ figure{margin:0; position:relative; z-index:1}
   border:var(--rule) solid var(--edge);
 }
 .shot img{width:100%; height:100%; object-fit:cover}
-figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
+figcaption{display:none}
 @media (max-width:900px){
   .roles,.figwrap{grid-column:1/span 12}
   .figwrap{order:-1}
@@ -257,7 +257,7 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 }
 
 /* ── index of links ───────────────────────────────────────── */
-.index{padding-block:clamp(24px,5vh,56px) clamp(48px,9vh,110px)}
+.index{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
 .index h2{font-size:11px}
 .row{
   display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
@@ -302,7 +302,7 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 
 /* ── poster ───────────────────────────────────────────────── */
 .poster{
-  background:var(--deep); color:var(--deep-ink); padding-block:clamp(26px,3.4vw,52px);
+  background:var(--deep); color:var(--deep-ink); padding-block:clamp(32px,5.5vh,75px);
   --uline:2px;
 }
 @media (min-width:700px){.poster{--uline:3px}}
@@ -343,7 +343,7 @@ figcaption{display:flex; justify-content:flex-end; gap:12px; padding-top:10px}
 footer .arch{position:relative;color:var(--mute);transition:color 240ms var(--ease)}
 footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
 @media (hover:hover){footer .arch:hover{color:var(--ink)}footer .arch:hover::after{transform:scaleX(1)}}
-footer{padding-block:clamp(20px,3vh,34px) clamp(24px,4vh,44px); display:grid; grid-template-columns:1fr auto; gap:8px 24px}
+footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px); display:grid; grid-template-columns:1fr auto; gap:8px 24px}
 footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 @media (max-width:560px){footer{grid-template-columns:1fr}}
 
