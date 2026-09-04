@@ -196,7 +196,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .spec .it{
   color:inherit; text-decoration:none;
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  background-image:linear-gradient(var(--accent),var(--accent));
+  background-image:linear-gradient(var(--pencil),var(--pencil));
   background-repeat:no-repeat; background-position:0 100%;
   background-size:0% var(--rule);
   transition:background-size 380ms var(--ease), color 240ms var(--ease);
@@ -213,9 +213,12 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .spec .it:active{color:var(--ink); background-size:100% var(--rule)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+/* та сама гарнітурна вісь, що й назви сторінок (wdth 98, вага 400) —
+   але капітеллю й чорним, бо це вже підпис під фото, а не заголовок */
 .spec h3{
-  font-size:clamp(16px,1.5vw,22px); font-weight:500; letter-spacing:-.015em;
-  line-height:1.15; margin:14px 0 10px;
+  font-size:clamp(16px,1.5vw,22px); font-weight:400; text-transform:uppercase;
+  letter-spacing:-.01em; font-variation-settings:"wdth" 98;
+  line-height:1.15; margin:14px 0 10px; color:var(--ink);
 }
 .spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
 .spec li{
@@ -283,7 +286,7 @@ figcaption{display:none}
 .row .arw{font-size:clamp(14px,1.3vw,20px); transition:transform 380ms var(--ease)}
 .row::after{
   content:""; position:absolute; left:0; right:0; bottom:0; height:var(--rule);
-  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  background:var(--pencil); transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
 @media (hover:hover){
@@ -321,7 +324,7 @@ figcaption{display:none}
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
 .poster a::before{
   content:""; position:absolute; left:0; right:0; bottom:-.02em;
-  height:var(--uline); background:var(--deep-ink);
+  height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
@@ -344,7 +347,7 @@ figcaption{display:none}
 
 /* ── footer ───────────────────────────────────────────────── */
 footer .arch{position:relative;color:var(--mute);transition:color 240ms var(--ease)}
-footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
+footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--pencil);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
 @media (hover:hover){footer .arch:hover{color:var(--ink)}footer .arch:hover::after{transform:scaleX(1)}}
 footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px); display:grid; grid-template-columns:1fr auto; gap:8px 24px}
 footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
