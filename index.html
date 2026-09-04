@@ -124,14 +124,14 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   letter-spacing:-.032em; line-height:1; font-variation-settings:"wdth" 98;
 }
 .name span{display:block; white-space:nowrap}
-.hero{padding-block:clamp(10px,2vh,26px) 0}
+.hero{padding-block:clamp(5px,1vh,13px) 0}
 
 .hero-foot{
   display:grid; grid-template-columns:repeat(12,1fr);
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px);
+  align-items:end; padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
 }
 /* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
 .lede{grid-column:6/span 5; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
@@ -145,7 +145,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* ── portrait + statement ─────────────────────────────────── */
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(20px,2.6vw,40px);
-  padding-block:clamp(32px,5.5vh,75px);
+  padding-block:clamp(16px,2.75vh,37.5px);
 }
 /* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
    блоком і сітка зносить фото в наступний ряд */
@@ -411,7 +411,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
         <li data-en="Kyiv" data-ua="Київ">Kyiv</li>
         <li data-en="Since 2013" data-ua="з 2013">Since 2013</li>
       </ul>
-      <p class="note" data-rev style="--d:350ms" data-en="Commercial and editorial commissions. Direct enquiries only." data-ua="Комерційні та редакційні замовлення. Звертайтеся напряму.">Commercial and editorial commissions. Direct enquiries only.</p>
     </div>
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
