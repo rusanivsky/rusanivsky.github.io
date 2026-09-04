@@ -50,14 +50,16 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .tgl span{font-size:11px;color:var(--divider)}
 
 .head{padding-block:clamp(28px,6vh,72px) clamp(20px,3vw,36px)}
-.head h1{font-size:clamp(40px,9vw,120px);text-transform:uppercase;font-variation-settings:"wdth" 90}
+/* те саме трактування, що й ім'я на головній: звичайний регістр,
+   легка насиченість, вагу несе кегль */
+.head h1{font-size:clamp(38px,6.4vw,96px);font-weight:500;letter-spacing:-.03em;line-height:1;font-variation-settings:"wdth" 98}
 .head .cnt{margin-top:14px}
 
 /* ── список розділів на хабі ───────────────────────────── */
 .row{display:grid;grid-template-columns:auto 1fr auto auto;gap:clamp(14px,2.4vw,36px);align-items:baseline;padding-block:clamp(16px,2.2vw,26px);border-top:var(--rule) solid var(--divider);min-height:64px;position:relative;overflow:hidden}
 .row:last-of-type{border-bottom:var(--rule) solid var(--divider)}
 .row .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
-.row .lab{font-size:clamp(26px,4.4vw,58px);font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.98;transition:transform 380ms var(--ease);transform-origin:left}
+.row .lab{font-size:clamp(26px,4.4vw,58px);font-weight:300;letter-spacing:-.02em;line-height:1.02;transition:transform 380ms var(--ease);transform-origin:left}
 .row .han{font-size:clamp(12px,1vw,14px);color:var(--mute)}
 .row .arw{font-size:clamp(14px,1.3vw,20px);transition:transform 380ms var(--ease)}
 .row::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 420ms var(--ease)}

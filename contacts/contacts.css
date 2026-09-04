@@ -54,7 +54,9 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .tgl span{font-size:11px;color:var(--divider)}
 
 .head{padding-block:clamp(28px,6vh,72px) clamp(20px,3vw,36px)}
-.head h1{font-size:clamp(40px,9vw,120px);text-transform:uppercase;font-variation-settings:"wdth" 90}
+/* те саме трактування, що й ім'я на головній: звичайний регістр,
+   легка насиченість, вагу несе кегль */
+.head h1{font-size:clamp(38px,6.4vw,96px);font-weight:500;letter-spacing:-.03em;line-height:1;font-variation-settings:"wdth" 98}
 .head .cnt{margin-top:14px}
 
 /* ── сітка знімків ───────────────────────────────────────── */
@@ -101,7 +103,7 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 }
 .cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:clamp(28px,4.6vw,60px);font-weight:800;text-transform:uppercase;
+  font-size:clamp(28px,4.6vw,60px);font-weight:300;letter-spacing:-.02em;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease);transform-origin:left;
 }
@@ -154,8 +156,8 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 }
 .row .num{font-size:11px; font-weight:800; letter-spacing:.1em; color:var(--mute); transition:color 240ms var(--ease)}
 .row .lab{
-  font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:uppercase;
-  letter-spacing:-.035em; line-height:.98; font-variation-settings:"wdth" 100;
+  font-size:clamp(28px,4.6vw,60px); font-weight:300; letter-spacing:-.02em;
+  line-height:1.02; font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease); transform-origin:left;
 }
 .row .han{font-size:clamp(12px,1vw,14px); color:var(--mute); letter-spacing:.01em}
@@ -185,7 +187,7 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 /* ── poster ───────────────────────────────────────────────── */
 /* ── контакти ────────────────────────────────────────────── */
 .poster{
-  background:var(--deep); color:var(--deep-ink); padding-block:clamp(34px,6vw,80px);
+  background:var(--deep); color:var(--deep-ink); padding-block:clamp(26px,3.4vw,52px);
   border-top-right-radius:clamp(24px,5vw,80px);
   --uline:2px;
 }
@@ -193,8 +195,8 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 .poster .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .poster a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:clamp(28px,4.6vw,60px); font-weight:800; text-transform:none;
-  letter-spacing:-.04em; line-height:.95; font-variation-settings:"wdth" 90;
+  font-size:clamp(28px,4.6vw,60px); font-weight:300; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
   color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
   transition:color 260ms var(--ease);

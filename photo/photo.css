@@ -52,7 +52,9 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .tgl span{font-size:11px;color:var(--divider)}
 
 .head{padding-block:clamp(28px,6vh,72px) clamp(20px,3vw,36px)}
-.head h1{font-size:clamp(40px,9vw,120px);text-transform:uppercase;font-variation-settings:"wdth" 90}
+/* те саме трактування, що й ім'я на головній: звичайний регістр,
+   легка насиченість, вагу несе кегль */
+.head h1{font-size:clamp(38px,6.4vw,96px);font-weight:500;letter-spacing:-.03em;line-height:1;font-variation-settings:"wdth" 98}
 .head .cnt{margin-top:14px}
 
 /* ── сітка знімків ───────────────────────────────────────── */
@@ -107,7 +109,7 @@ footer{padding-block:16px 26px;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:w
 }
 .cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:clamp(28px,4.6vw,60px);font-weight:800;text-transform:uppercase;
+  font-size:clamp(28px,4.6vw,60px);font-weight:300;letter-spacing:-.02em;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease);transform-origin:left;
 }
