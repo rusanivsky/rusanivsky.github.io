@@ -24,17 +24,25 @@
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
   --rule:1px; --pen:2px;
-  /* далі 14" MacBook Pro Retina верстка не росте — на ширших
-     екранах краще поле з боків, ніж розтягнуті рядки */
-  --maxw:1512px;
+  /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
+     не росте, скільки б не було екрана — поле з боків краще за довгі рядки */
+  --maxw:1440px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
+/* темний набір оголошено двічі: під системну тему — і тільки поки її
+   не перебили вручну — та під явно вибрану темну. Перемикач у шапці
+   ставить html[data-theme], а без нього все як було */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
     --divider:color-mix(in srgb,#f0eeec 34%,transparent);
     --mute:color-mix(in srgb,#f0eeec 55%,transparent);
   }
+}
+:root[data-theme="dark"]{
+  --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
+  --divider:color-mix(in srgb,#f0eeec 34%,transparent);
+  --mute:color-mix(in srgb,#f0eeec 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -77,6 +85,20 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
+/* тема й мова стоять однією групою в правому куті шапки — сітка шапки
+   лишається на трьох колонках, як була з самою мовою */
+.switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+/* тимчасовий перемикач теми говорить тихіше за мову: та сама висота й
+   набір, але легша вага, поки на ньому не зупинилися */
+#theme button{font-weight:600}
+#theme button[aria-pressed="true"]{font-weight:800}
+/* найвужче два перемикачі вже не стають в один ряд із назвою — вони
+   йдуть власним рядком шапки, під розділами і по лівому краю верстки */
+@media (max-width:560px){
+  .switches{grid-column:1/-1;grid-row:3;padding-bottom:8px}
+  .switches .tgl button{padding-block:6px;min-height:0}
+  .switches > .tgl:first-child button:first-child{padding-left:0}
+}
 /* вузько три розділи вже не стають в один ряд із назвою й мовою —
    вони йдуть другим рядком шапки, вирівняні по лівому краю верстки */
 @media (max-width:760px){
@@ -203,18 +225,29 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   background:var(--deep); color:var(--deep-ink);
   --uline:2px;
   --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
-  /* кегль рядка винесено в змінну, бо від нього рахується і розмір марок —
-     інакше пропорція пливе між мобільним і десктопом */
+  /* кегль контактного рядка винесено в змінну, бо від нього рахується
+     і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
   --fs-line:clamp(28px,4.6vw,60px);
-  /* марки не в зріст великої літери, а в зріст малої: поряд із «mail» і
-     «hats» кружечок у 0.72em кричав, у 0.56em він у рядку, а не над ним */
-  --ic-cap:.56;
+  /* назви соцмереж — трохи менші за половину контактного рядка: чотири такі
+     рядки заввишки рівно з лівою половиною плашки, тож жодна з половин не
+     перетягує другу. max() тримає кегль читабельним на мобільному, де сам
+     контактний рядок уже вдвічі менший */
+  --fs-soc:max(15px, calc(var(--fs-line) * .47));
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
-.foot-in{padding-block:clamp(22px,3.85vh,52px)}
+/* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
+   тримають ліві десять колонок, соцмережі починаються з одинадцятої
+   лінії. Доти стовпчик просто тулився до правого краю, і його ліва межа
+   гуляла за довжиною найдовшої назви */
+.foot-in{
+  padding-block:clamp(22px,3.85vh,52px);
+  display:grid; grid-template-columns:repeat(12,1fr);
+  column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
+  align-items:start;
+}
+.foot-in .say{grid-column:1/span 10}
 .site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .site-foot a{color:inherit; text-decoration:none}
-/* текст ліворуч, марки притиснуті до правого краю колонки */
 .site-foot .lines{
   margin-top:.24em;
   display:flex; align-items:baseline; flex-wrap:wrap;
@@ -248,28 +281,48 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .site-foot .lines > a:active{color:var(--deep-ink)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
-/* марки соцмереж у тому ж рядку, що Email і WhatsApp. Низ марки лягає на
-   базову лінію тексту, тож вирівнювати нічим не треба — коробки збігаються
-   самі; зріст задає --ic-cap вище */
+/* соцмережі названі словами, а не марками: кожна своїм рядком, текст
+   вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
+   плашки тримає вагу, права її врівноважує і не сперечається за вісь */
 .socials{
-  display:inline-flex; align-items:center; vertical-align:baseline;
-  gap:clamp(12px,1.5vw,19px); margin-left:auto;
+  grid-column:11/span 2;
+  list-style:none; margin:0; padding:0; text-align:left;
+  display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
 }
-.socials a{display:block; line-height:0}
-.socials svg{
-  display:block; width:calc(var(--fs-line) * var(--ic-cap)); height:auto;
-  fill:color-mix(in srgb,var(--deep-ink) 60%,transparent);
-  transition:fill 260ms var(--ease), transform 380ms var(--ease);
+.socials a{
+  display:inline-block; position:relative;
+  font-size:var(--fs-soc); font-weight:300; text-transform:none;
+  letter-spacing:-.015em; line-height:1.24; font-variation-settings:"wdth" 96;
+  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  transition:color 260ms var(--ease);
+}
+.socials a::before{
+  content:""; position:absolute; left:0; right:0; bottom:.04em;
+  height:var(--pen); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+}
+/* та сама стрілка назовні, що й на Email з WhatsApp: усі шість посилань
+   виводять із сайту, тож вони мусять це показувати. Вона стоїть за межею
+   рядка, а не в ньому — інакше на ховері назви смикалися б управо */
+.socials a::after{
+  content:"↗"; position:absolute; left:100%; bottom:.14em;
+  margin-left:.24em; font-size:.42em; line-height:1;
+  opacity:0; transform:translate(-.35em,.35em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .socials a:hover svg{fill:var(--deep-ink); transform:translateY(-3px)}
+  .socials a:hover{color:var(--deep-ink)}
+  .socials a:hover::before{transform:scaleX(1)}
+  .socials a:hover::after{opacity:1; transform:none}
 }
-.socials a:active svg{fill:var(--deep-ink)}
-.socials a:focus-visible{outline:2px solid var(--deep-ink); outline-offset:4px}
-/* під 560px шість марок уже не вміщуються поряд із текстом — займають
-   власний рядок і вирівнюються по лівому краю, як усе інше в плашці */
-@media (max-width:560px){
-  .socials{flex-basis:100%; margin-left:0}
+.socials a:active{color:var(--deep-ink)}
+.socials a:active::before{transform:scaleX(1)}
+.socials a:active::after{opacity:1; transform:none}
+/* вузько стовпчик уже не стає поряд із контактами — він іде під ними,
+   лівим краєм по тій самій вертикалі, що й решта плашки */
+@media (max-width:640px){
+  .foot-in .say,.socials{grid-column:1/-1}
 }
 .site-foot .sub{
   margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
@@ -288,16 +341,18 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 .site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
-/* поле під стрілку зарезервоване падінгом, тож на ховері рядок не смикається */
-.foot-bar .arch{position:relative; padding-right:1.5em; transition:color 240ms var(--ease)}
+/* рядок стоїть рівно під лінійкою: його правий край — там само, де її
+   кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
+   не вкорочує і рядок на ховері не смикається */
+.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
 .foot-bar .arch::before{
-  content:""; position:absolute; left:0; right:1.5em; bottom:-3px;
+  content:""; position:absolute; left:0; right:0; bottom:-3px;
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 380ms var(--ease);
 }
 .foot-bar .arch::after{
-  content:"↗"; position:absolute; right:.2em; bottom:0; line-height:1;
+  content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
   opacity:0; transform:translate(-.3em,.3em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
