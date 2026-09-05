@@ -42,7 +42,13 @@
 }
 :root{
   --ease:cubic-bezier(.16,1,.3,1);
+  --pencil:#d64427;
   --bg:#f2f0ea; --ink:#201e1d; --accent:var(--ink);
+  /* підвал — глибокий темно-сірий, однаковий у обох темах */
+  --deep:#333230; --deep-ink:#f2f0ea;
+  --pad:clamp(16px,3.2vw,48px); --rule:2px;
+  /* далі 14" MacBook Pro Retina верстка не росте */
+  --maxw:1512px;
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
 }
@@ -59,8 +65,11 @@ body{
   font-family:"Roboto Flex",system-ui,-apple-system,sans-serif;
   font-size:15px; line-height:1.55;
   display:flex; flex-direction:column; justify-content:space-between;
-  padding:clamp(16px,3.2vw,48px);
 }
+/* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
+   (шапка й підвал на 404) */
+.wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
+body > .tiny{width:min(100%, var(--maxw)); margin-inline:auto; padding:var(--pad) var(--pad) 0}
 .tiny{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--mute)}
 main{display:flex; flex-direction:column; justify-content:center; flex:1; padding-block:clamp(40px,8vw,120px)}
 h1{
@@ -78,7 +87,81 @@ a.back{
 a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent); outline-offset:3px}
-footer{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+/* ── підвал сайту ─────────────────────────────────────────── */
+/* контактна плашка й нижній рядок живуть в одній темній плашці,
+   розділені такою ж лінійкою, як між рядками соцмереж — сторінка
+   на всіх розділах закінчується цим кольором */
+.site-foot{
+  background:var(--deep); color:var(--deep-ink);
+  --uline:2px;
+  --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
+}
+@media (min-width:700px){.site-foot{--uline:3px}}
+.foot-in{padding-block:clamp(22px,3.85vh,52px)}
+.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
+.site-foot a{color:inherit; text-decoration:none}
+.site-foot .lines{margin-top:.24em}
+.site-foot .lines a{
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  font-size:clamp(28px,4.6vw,60px); font-weight:300; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
+  position:relative;
+  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  transition:color 260ms var(--ease);
+}
+.site-foot .lines a + a{margin-left:clamp(7px,1.1vw,14px)}
+/* лінія окремим шаром і через transform — background-size тут не інтерполюється */
+.site-foot .lines a::before{
+  content:""; position:absolute; left:0; right:0; bottom:-.02em;
+  height:var(--uline); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+}
+/* ↗ — назовні, → — лишаємось на сайті */
+.site-foot .lines a.in::after{content:"→"}
+.site-foot .lines a::after{
+  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
+  vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .site-foot .lines a:hover{color:var(--deep-ink)}
+  .site-foot .lines a:hover::before{transform:scaleX(1)}
+  .site-foot .lines a:hover::after{opacity:1; transform:none}
+}
+.site-foot .lines a:active{color:var(--deep-ink)}
+.site-foot .lines a:active::before{transform:scaleX(1)}
+.site-foot .lines a:active::after{opacity:1; transform:none}
+.site-foot .sub{
+  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
+  color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
+}
+.foot-bar{
+  position:relative;
+  padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+}
+/* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
+   там, де лінійки між рядками соцмереж */
+.foot-bar::before{
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  height:var(--rule); background:var(--foot-rule);
+}
+.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+.site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
+.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
+.foot-bar .arch::after{
+  content:""; position:absolute; left:0; right:0; bottom:-3px;
+  height:var(--rule); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 380ms var(--ease);
+}
+@media (hover:hover){
+  .foot-bar .arch:hover{color:var(--deep-ink)}
+  .foot-bar .arch:hover::after{transform:scaleX(1)}
+}
+.site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
+@media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
 @keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
@@ -92,15 +175,29 @@ footer{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 </head>
 <body>
 <span class="tiny">Kyrylo Rusanivsky</span>
-<main>
+<main class="wrap">
   <h1>404</h1>
   <hr>
   <p>This page does not exist. It may have been moved, renamed, or it never existed at all.</p>
   <a class="back" href="/">← Back to the site</a>
 </main>
-<footer>
-  <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
-  <span class="tiny">Kyiv, Ukraine</span>
+<footer class="site-foot" aria-labelledby="ft">
+  <div class="wrap foot-in">
+    <p class="k" id="ft" data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
+    <div class="lines">
+      <a href="mailto:info@rusanivsky.com">Email</a>
+      <a href="https://wa.me/380938676581" target="_blank" rel="noopener" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
+      <a class="in" href="/contacts/">Socials</a>
+    </div>
+    <p class="sub" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
+  </div>
+  <div class="wrap foot-bar">
+    <div class="cols">
+      <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
+      <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
+    </div>
+    <div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">My photo galleries on Pixover</a></div>
+  </div>
 </footer>
 </body>
 </html>

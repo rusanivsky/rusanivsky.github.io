@@ -57,6 +57,9 @@
   --mute:color-mix(in srgb, #201e1d 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
+  /* далі 14" MacBook Pro Retina верстка не росте — на ширших
+     екранах краще поле з боків, ніж розтягнуті рядки */
+  --maxw:1512px;
   --rule:2px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
@@ -83,8 +86,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 :focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
-.wrap{padding-inline:var(--pad)}
-.rule{height:var(--rule); background:var(--divider); border:0; margin:0}
+/* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
+   (шапка й підвал на 404) */
+.wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
+/* лінійка живе в тій самій колонковій сітці, що й рядки переліків —
+   до самих країв сторінки йде тільки межа липкої шапки */
+.rule{height:var(--rule); background:var(--divider); border:0;
+  width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 
 /* ── marginalia bar ───────────────────────────────────────── */
 .meta{
@@ -171,45 +179,39 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   color:var(--mute); line-height:1;
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
-/* ── напрямки: підпис-колонка + сітка 2×2 з наскрізним хрестом ── */
-:root{
-  /* винесено в змінні, щоб .figwrap міг обчислити той самий відступ
-     точною формулою, а не підібраною кривою */
-  --work-label-w:clamp(90px,12vw,160px);
-  --work-gap:clamp(20px,3vw,44px);
-}
+/* ── напрямки: рядки того самого крою, що й перелік соцмереж ───── */
 .work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
-.work-in{
-  display:grid; grid-template-columns:var(--work-label-w) 1fr;
-  gap:var(--work-gap);
+.work h2{font-size:11px}
+.specs{list-style:none; padding:0; margin:0}
+/* та сама сітка й та сама лінійка, що в .row нижче: номер, велика назва,
+   перелік праворуч — блок читається як продовження того ж переліку */
+.spec{
+  display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
+  align-items:baseline; padding-block:clamp(16px,2.2vw,26px);
+  min-height:64px; position:relative;
 }
-.work-in h2{align-self:start; padding-top:.3em}
-.specs{
-  display:grid;
-  grid-template-columns:1fr clamp(24px,3.2vw,48px) 1fr;
-  grid-template-rows:auto clamp(28px,4vw,52px) auto;
-  list-style:none; padding:0; margin:0; position:relative;
+/* порожня колонка завширшки зі стрілкою переліку соцмереж — щоб праві краї
+   підписів у двох блоках стояли на одній вертикалі */
+.spec::before{
+  content:"↗"; grid-column:4; grid-row:1; visibility:hidden;
+  font-size:clamp(14px,1.3vw,20px);
 }
-/* хрест намальований не бордюрами окремих клітинок (їхня висота різна —
-   у Photography 6 посилань, у Street одне, тож межі розповзались), а
-   двома проміжними треками самої сітки — суцільна лінія на всю висоту/
-   ширину незалежно від того, наскільки нерівний вміст навколо */
-.specs::before{
-  content:""; grid-column:2; grid-row:1/-1;
-  width:var(--rule); background:var(--divider); justify-self:center;
+.spec:first-child{border-top:var(--rule) solid var(--divider)}
+.spec::after{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:var(--rule); background:var(--divider);
 }
-.specs::after{
-  content:""; grid-row:2; grid-column:1/-1;
-  height:var(--rule); background:var(--divider); align-self:center;
+.spec .no{font-size:11px; letter-spacing:.1em; font-weight:800; color:var(--mute)}
+/* той самий набір, що й назви в переліку соцмереж — без капітелі */
+.spec h3{
+  margin:0; font-size:clamp(28px,4.6vw,60px); font-weight:300;
+  letter-spacing:-.02em; line-height:1.02;
+  font-variation-settings:"wdth" 100; color:var(--ink);
 }
-.spec{position:relative; color:color-mix(in srgb,var(--ink) 76%,transparent)}
-.spec:nth-child(1){grid-column:1; grid-row:1}
-.spec:nth-child(2){grid-column:3; grid-row:1}
-.spec:nth-child(3){grid-column:1; grid-row:3}
-.spec:nth-child(4){grid-column:3; grid-row:3}
-.spec .no{
-  display:block; font-size:11px; letter-spacing:.1em; font-weight:800;
-  color:var(--mute); margin-bottom:14px;
+.spec ul{list-style:none; margin:0; padding:0; display:grid; gap:6px; justify-items:start}
+.spec li{
+  font-size:clamp(12px,1vw,14px); line-height:1.4; color:var(--mute);
+  letter-spacing:.01em; text-wrap:pretty;
 }
 .spec .it{
   color:inherit; text-decoration:none;
@@ -231,51 +233,17 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .spec .it:active{color:var(--ink); background-size:100% var(--rule)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
-/* та сама гарнітурна вісь, що й назви сторінок (wdth 98, вага 400) —
-   але капітеллю й чорним, бо це вже підпис під фото, а не заголовок */
-.spec h3{
-  font-size:clamp(22px,2vw,30px); font-weight:300; text-transform:uppercase;
-  letter-spacing:-.015em; font-variation-settings:"wdth" 98;
-  line-height:1.1; margin:0 0 10px; color:var(--ink);
-}
-.spec ul{list-style:none; margin:0; padding:0; display:grid; gap:4px}
-.spec li{
-  font-size:clamp(13px,1vw,15px); line-height:1.4; text-wrap:pretty;
-  position:relative;
-}
-/* вужче за 700px підпис-колонка й сітка вже не вміщуються поряд —
-   підпис стає звичайним рядком зверху, а 2×2 складається в один стовпець */
-@media (max-width:700px){
-  .work-in{display:block}
-  .work-in h2{padding-top:0; margin-bottom:clamp(20px,4vw,32px)}
-  .specs{grid-template-columns:1fr; grid-template-rows:none}
-  .specs::before,.specs::after{content:none}
-  .spec:nth-child(1),.spec:nth-child(2),.spec:nth-child(3),.spec:nth-child(4){
-    grid-column:1; grid-row:auto;
-  }
-  .spec:not(:last-child){
-    border-bottom:var(--rule) solid var(--divider);
-    padding-bottom:clamp(24px,6vw,36px); margin-bottom:clamp(24px,6vw,36px);
-  }
+/* вузько назва й перелік уже не стають поряд — перелік іде другим рядком
+   під назвою, як підпис у соцмережах */
+@media (max-width:640px){
+  .spec{grid-template-columns:auto 1fr; row-gap:8px; padding-block:14px}
+  .spec::before{content:none}
+  .spec .no{grid-column:1; grid-row:1}
+  .spec h3{grid-column:2; grid-row:1}
+  .spec ul{grid-column:2; grid-row:2}
 }
 /* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
 .figwrap{grid-column:6/span 3; align-self:start}
-/* зсув, щоб ліва межа портрета лягла на ліву межу 3-го блока в .specs
-   нижче — підібрано вимірюванням на 901..1920px, під 900px .figwrap і так
-   на всю ширину, тож зсув там вимкнено */
-/* точна формула замість підібраної кривої: .figwrap стоїть у 6-й колонці
-   12-колонкової сітки .about, а ціль — ліва межа спец-колонки .work-in
-   (підпис-колонка + gap). Обидва боки виражені через ті самі --pad/
-   --about-gap/--work-label-w/--work-gap, тож рівність точна на будь-якій
-   ширині, а не наближена */
-@media (min-width:901px){
-  .figwrap{
-    margin-left:calc(
-      var(--work-label-w) + var(--work-gap)
-      - (5 * (100vw - 2 * var(--pad) + var(--about-gap))) / 12
-    );
-  }
-}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
@@ -342,14 +310,21 @@ figcaption{display:none}
     .row .han{grid-column:2; grid-row:2}
   }
 
-/* ── poster ───────────────────────────────────────────────── */
-.poster{
-  background:var(--deep); color:var(--deep-ink); padding-block:clamp(22px,3.85vh,52px);
+/* ── підвал сайту ─────────────────────────────────────────── */
+/* контактна плашка й нижній рядок живуть в одній темній плашці,
+   розділені такою ж лінійкою, як між рядками соцмереж — сторінка
+   на всіх розділах закінчується цим кольором */
+.site-foot{
+  background:var(--deep); color:var(--deep-ink);
   --uline:2px;
+  --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
 }
-@media (min-width:700px){.poster{--uline:3px}}
-.poster .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
-.poster a{
+@media (min-width:700px){.site-foot{--uline:3px}}
+.foot-in{padding-block:clamp(22px,3.85vh,52px)}
+.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
+.site-foot a{color:inherit; text-decoration:none}
+.site-foot .lines{margin-top:.24em}
+.site-foot .lines a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
   font-size:clamp(28px,4.6vw,60px); font-weight:300; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
@@ -357,37 +332,57 @@ figcaption{display:none}
   color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
   transition:color 260ms var(--ease);
 }
+.site-foot .lines a + a{margin-left:clamp(7px,1.1vw,14px)}
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
-.poster a::before{
+.site-foot .lines a::before{
   content:""; position:absolute; left:0; right:0; bottom:-.02em;
   height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
-.poster a::after{
+.site-foot .lines a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
   vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .poster a:hover{color:var(--deep-ink)}
-  .poster a:hover::before{transform:scaleX(1)}
-  .poster a:hover::after{opacity:1; transform:none}
+  .site-foot .lines a:hover{color:var(--deep-ink)}
+  .site-foot .lines a:hover::before{transform:scaleX(1)}
+  .site-foot .lines a:hover::after{opacity:1; transform:none}
 }
-.poster a:active{color:var(--deep-ink)}
-.poster a:active::before{transform:scaleX(1)}
-.poster a:active::after{opacity:1; transform:none}
-.poster .lines{margin-top:.24em}
-.poster a + a{margin-left:clamp(7px,1.1vw,14px)}
-.poster .sub{margin-top:clamp(18px,3vw,36px); max-width:34ch; opacity:.9; color:color-mix(in srgb,var(--deep-ink) 72%,transparent)}
-
-/* ── footer ───────────────────────────────────────────────── */
-footer .arch{position:relative;color:var(--mute);transition:color 240ms var(--ease)}
-footer .arch::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:var(--rule);background:var(--pencil);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
-@media (hover:hover){footer .arch:hover{color:var(--ink)}footer .arch:hover::after{transform:scaleX(1)}}
-footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px); display:grid; grid-template-columns:1fr auto; gap:8px 24px}
-footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
-@media (max-width:560px){footer{grid-template-columns:1fr}}
+.site-foot .lines a:active{color:var(--deep-ink)}
+.site-foot .lines a:active::before{transform:scaleX(1)}
+.site-foot .lines a:active::after{opacity:1; transform:none}
+.site-foot .sub{
+  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
+  color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
+}
+.foot-bar{
+  position:relative;
+  padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+}
+/* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
+   там, де лінійки між рядками соцмереж */
+.foot-bar::before{
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  height:var(--rule); background:var(--foot-rule);
+}
+.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+.site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
+.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
+.foot-bar .arch::after{
+  content:""; position:absolute; left:0; right:0; bottom:-3px;
+  height:var(--rule); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 380ms var(--ease);
+}
+@media (hover:hover){
+  .foot-bar .arch:hover{color:var(--deep-ink)}
+  .foot-bar .arch:hover::after{transform:scaleX(1)}
+}
+.site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
+@media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 
 /* ── reveal ───────────────────────────────────────────────── */
 [data-rev]{opacity:0; transform:translateY(22px)}
@@ -465,7 +460,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
   <hr class="rule">
 
   <section class="wrap work" aria-labelledby="wk">
-    <div class="work-in">
       <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
       <ol class="specs">
         <li class="spec" data-rev style="--d:80ms">
@@ -507,7 +501,6 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
           </ul>
         </li>
       </ol>
-    </div>
   </section>
 
   <section class="wrap index" aria-labelledby="ix">
@@ -532,22 +525,24 @@ footer .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
     </a>
   </section>
 
-  <section class="poster wrap" aria-label="Contact">
-    <p class="k" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
+</main>
+
+<footer class="site-foot" aria-labelledby="ft">
+  <div class="wrap foot-in">
+    <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
     <div class="lines">
       <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
       <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
     </div>
     <p class="sub" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
-  </section>
-</main>
-
-<footer class="wrap">
-  <div class="cols">
-    <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
-    <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
   </div>
-  <div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">My photo galleries on Pixover</a></div>
+  <div class="wrap foot-bar">
+    <div class="cols">
+      <span class="tiny">© 2026 Kyrylo Rusanivsky</span>
+      <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
+    </div>
+    <div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">My photo galleries on Pixover</a></div>
+  </div>
 </footer>
 
 <script>
