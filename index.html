@@ -174,62 +174,66 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   grid-column:1/span 8; grid-row:2;
   display:flex; flex-direction:column; min-width:0;
 }
-/* одне речення замість абзацу на три рядки: розгорнутий перелік уже
-   стоїть нижче, у «Чим займаюсь», і вгорі його дублювати нема потреби.
-   Кегль більший за нинішній лід — це єдиний текст першого екрана */
+/* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
+   рядок ішов би на 880px. 50ch тримає його в половині колонки — це та
+   сама ширина, на якій читається абзац у книжці. Кегль трохи більший за
+   попередній: тут це єдиний суцільний текст першого екрана */
 .lede{
-  margin:0; max-width:32ch;
-  font-size:clamp(17px,1.5vw,22px); line-height:1.4; text-wrap:pretty;
+  margin:0; max-width:50ch;
+  font-size:clamp(16px,1.25vw,19px); line-height:1.5; text-wrap:pretty;
 }
-/* фахи — мітки, а не заголовки. Той самий набір, що .tiny у шапці:
-   вагу на першому екрані несуть ім'я і кнопка, а три ремесла лише
-   окреслюють межі роботи. Заголовковий рівень лишається заради
-   пошуку, від заголовкового вигляду лишається сама лише семантика */
-.crafts{
-  margin:clamp(26px,3.6vh,44px) 0 0;
-  display:flex; flex-wrap:wrap; align-items:center;
-  gap:.35em clamp(10px,1vw,14px);
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  font-weight:600; line-height:1; color:var(--mute);
-}
-/* крапка висить на попередньому слові, а не на наступному: як ::before
-   вона ставала окремим початком рядка, і при переносі «· ГРАФІЧНИЙ
-   ДИЗАЙН» починався з осиротілої крапки. Усередині span вона переходить
-   на новий рядок разом зі своїм словом або не переходить зовсім */
-.crafts span:not(:last-child)::after{
-  content:"·"; margin-left:clamp(10px,1vw,14px);
-  color:color-mix(in srgb,var(--mute) 55%,transparent);
-}
+/* margin-top:auto притискає дію до нижньої межі колонки, тобто до
+   нижнього краю портрета. Коли текст переростає портрет, auto
+   згортається в нуль сам, і ряд просто йде далі */
+/* по базовій лінії, а не по центру: дія тепер великий текстовий рядок,
+   а статус — 11px капітель, і центрування посадило б статус посеред
+   висоти слова замість його рядка */
 .act{
-  margin:clamp(20px,2.6vh,30px) 0 0; padding:0;
-  display:flex; flex-wrap:wrap; align-items:center;
-  gap:clamp(14px,1.6vw,24px);
+  margin:clamp(24px,3.2vh,36px) 0 0; padding:0;
+  display:flex; flex-wrap:wrap; align-items:baseline;
+  column-gap:clamp(16px,1.8vw,28px); row-gap:clamp(12px,1.6vh,18px);
 }
-/* розпір стоїть перед мітками, а не перед кнопкою: інакше auto притискав
-   донизу саму лише кнопку, а мітки лишалися висіти посеред колонки з
-   порожньою смугою під ними. Тепер колонка читається двома групами —
-   ім'я з реченням угорі, ремесла з дією внизу, повітря між ними.
-   Коли текст переростає портрет, auto згортається в нуль сам */
 @media (min-width:821px){
-  .crafts{margin-top:auto; padding-top:clamp(30px,4vh,52px)}
+  .act{margin-top:auto; padding-top:clamp(30px,4vh,52px)}
 }
-/* плашка — проста інверсія теми: колір тексту стає тлом і навпаки.
-   Спершу вона стояла на --deep, як підвал, але --deep (#333230) на
-   темному тлі (#171615) майже не видно — кнопка переставала читатися
-   як кнопка саме там, де вона найпотрібніша. Інверсія тримає контраст
-   у світлій і темній однаково, без окремого набору кольорів.
-   На ховері вона переходить у --pencil — колір, яким на сторінці вже
-   підкреслені рядки розділів */
+/* дія — не плашка, а великий текстовий рядок того самого крою, що й
+   «Email / WhatsApp» у підвалі: легка насиченість, вагу несе кегль.
+   Різниця одна — тут лінія під словом стоїть завжди, а не приходить на
+   ховері: у підвалі поруч є друге посилання й підпис, які пояснюють, що
+   це контакти, а на першому екрані рядок мусить сам себе оголосити
+   натискним. На ховері лінія з чорнильної стає --pencil */
+/* просвіт під словом відкушений падінгом, а не від'ємним bottom у лінії:
+   так остання фарба колонки — сама лінія — лягає рівно на нижню межу
+   коробки, тобто на нижній край портрета. З bottom:-.06em лінія
+   вибивалася за цю горизонталь на два пікселі */
 .cta{
-  display:inline-flex; align-items:center;
-  padding:clamp(13px,1.5vw,17px) clamp(22px,2.4vw,32px);
-  background:var(--ink); color:var(--bg);
-  font-size:13px; letter-spacing:.06em; text-transform:uppercase;
-  font-weight:700; line-height:1; white-space:nowrap;
-  transition:background 420ms var(--ease), color 420ms var(--ease);
+  position:relative; margin-right:.6em; padding-bottom:.08em;
+  font-size:clamp(26px,2.6vw,38px); font-weight:300;
+  letter-spacing:-.02em; line-height:1.02;
+  font-variation-settings:"wdth" 96; white-space:nowrap;
 }
-@media (hover:hover){ .cta:hover{background:var(--pencil); color:var(--deep-ink)} }
-.cta:active{background:var(--pencil); color:var(--deep-ink)}
+.cta::before{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:var(--pen); background:currentColor;
+  transition:background 320ms var(--ease);
+}
+/* стрілка стоїть поза коробкою посилання — на left:100%, як у підписі
+   підвалу. Усередині рядка вона потрапила б під ту саму лінію, що й
+   слово, а підкреслена стрілка читається як помилка набору. Місце під
+   неї тримає margin-right, щоб вона не наїхала на статус поруч.
+   bottom тут рахується від власного кегля псевдоелемента (.42em від
+   рядка), а не від батьківського — тому .85em, а не .35em: інакше
+   стрілка сідає на базову лінію і виглядає як випадковий знак */
+.cta::after{
+  content:"→"; position:absolute; left:100%; bottom:.85em;
+  margin-left:.16em; font-size:.42em; line-height:1;
+  transition:transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .cta:hover::before{background:var(--pencil)}
+  .cta:hover::after{transform:translateX(.3em)}
+}
+.cta:active::before{background:var(--pencil)}
 .status{
   margin:0; display:flex; align-items:center; gap:.6em;
   font-size:11px; letter-spacing:.1em; text-transform:uppercase;
@@ -710,13 +714,8 @@ figure{margin:0; position:relative; z-index:1}
       </figure>
     </div>
     <div class="hero-copy">
-      <p class="lede" data-rev style="--d:160ms" data-en="Thirteen years editing video, typesetting books and shooting events — in Kyiv and remotely." data-ua="13 років монтую відео, верстаю книжки і знімаю події — у Києві та віддалено.">Thirteen years editing video, typesetting books and shooting events — in Kyiv and remotely.</p>
-      <h2 class="crafts" data-rev style="--d:220ms">
-        <span data-en="Video editing" data-ua="Відеомонтаж">Video editing</span>
-        <span data-en="Photography" data-ua="Фотографія">Photography</span>
-        <span data-en="Graphic design" data-ua="Графічний дизайн">Graphic design</span>
-      </h2>
-      <div class="act" data-rev style="--d:280ms">
+      <p class="lede" data-rev style="--d:160ms" data-en="Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely." data-ua="Спеціаліст у креативній індустрії: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети. Працюю дистанційно.">Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely.</p>
+      <div class="act" data-rev style="--d:230ms">
         <a class="cta" href="mailto:info@rusanivsky.com" data-en="Get in touch" data-ua="Написати">Get in touch</a>
         <p class="status">
           <span class="dot" aria-hidden="true"></span>
