@@ -237,7 +237,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   --uline:2px;
   /* кегль контактного рядка винесено в змінну, бо від нього рахується
      і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  --fs-line:clamp(28px,4.6vw,60px);
+  --fs-line:clamp(26px,2.6vw,38px);
   /* назви соцмереж підібрані так, щоб увесь стовпчик був заввишки рівно з
      лівою половиною підвалу — жодна з половин не перетягує другу. Множник
      рахується від кількості рядків: при чотирьох це було .47, з появою
@@ -281,8 +281,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
+/* контактні рядки стоять під поясненням, а не над ним, і в тому ж
+     кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
+     дрібний рядок-мітка, просвіт, велике посилання */
 .site-foot .lines{
-  margin-top:.24em;
+  margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
   column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
 }
@@ -322,6 +325,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   list-style:none; margin:0; padding:0; text-align:left;
   display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
 }
+/* li як флекс-контейнер: інакше він додає до кожного рядка провід від
+   успадкованого line-height:1.55 — на п'ять марок це зайві 23px, і
+   стовпчик знову звисав нижче контактів */
+.socials li{display:flex}
 .socials a{
   display:inline-block; position:relative;
   font-size:var(--fs-soc); font-weight:300; text-transform:none;
@@ -358,7 +365,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .foot-in .say,.socials{grid-column:1/-1}
 }
 .site-foot .sub{
-  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
+  margin:0; max-width:34ch; text-wrap:pretty;
   color:var(--mute);
 }
 .foot-bar{

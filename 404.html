@@ -95,7 +95,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   --uline:2px;
   /* кегль контактного рядка винесено в змінну, бо від нього рахується
      і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  --fs-line:clamp(28px,4.6vw,60px);
+  --fs-line:clamp(26px,2.6vw,38px);
   /* назви соцмереж підібрані так, щоб увесь стовпчик був заввишки рівно з
      лівою половиною підвалу — жодна з половин не перетягує другу. Множник
      рахується від кількості рядків: при чотирьох це було .47, з появою
@@ -139,8 +139,11 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
+/* контактні рядки стоять під поясненням, а не над ним, і в тому ж
+     кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
+     дрібний рядок-мітка, просвіт, велике посилання */
 .site-foot .lines{
-  margin-top:.24em;
+  margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
   column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
 }
@@ -180,6 +183,10 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   list-style:none; margin:0; padding:0; text-align:left;
   display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
 }
+/* li як флекс-контейнер: інакше він додає до кожного рядка провід від
+   успадкованого line-height:1.55 — на п'ять марок це зайві 23px, і
+   стовпчик знову звисав нижче контактів */
+.socials li{display:flex}
 .socials a{
   display:inline-block; position:relative;
   font-size:var(--fs-soc); font-weight:300; text-transform:none;
@@ -216,7 +223,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   .foot-in .say,.socials{grid-column:1/-1}
 }
 .site-foot .sub{
-  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
+  margin:0; max-width:34ch; text-wrap:pretty;
   color:var(--mute);
 }
 .foot-bar{
@@ -277,11 +284,11 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   <div class="wrap foot-in">
     <p class="k" id="ft" data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
     <div class="say">
+      <p class="sub" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
       <div class="lines">
         <a href="mailto:info@rusanivsky.com">Email</a>
         <a href="https://wa.me/380938676581" target="_blank" rel="noopener" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
       </div>
-      <p class="sub" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
     </div>
     <ul class="socials">
       <li><a href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener">Upwork</a></li>
