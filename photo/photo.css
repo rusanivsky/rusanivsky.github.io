@@ -41,11 +41,12 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .wrap{padding-inline:var(--pad)}
-.rule{height:var(--rule);background:var(--divider);border:0;margin:0}
+/* лінійка живе в тій самій колонковій сітці, що й рядки переліків —
+   до самих країв сторінки йде тільки межа липкої шапки */
+.rule{height:var(--rule);background:var(--divider);border:0;margin:0 var(--pad)}
 .tiny{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mute)}
 
-.meta{display:grid;grid-template-columns:1fr auto auto;gap:var(--pad) clamp(14px,2vw,28px);padding-block:2px;align-items:center}
-@media (max-width:640px){.meta{grid-template-columns:1fr auto}.meta .nav{grid-column:1/-1;order:3}}
+.meta{display:grid;grid-template-columns:1fr auto;gap:var(--pad) clamp(14px,2vw,28px);padding-block:2px;align-items:center}
 .back{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
 .tgl{display:flex;align-items:center}
@@ -149,8 +150,6 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
    це правило йде після базового .head і перебивало його */
 .head{padding-top:clamp(10px,2vh,26px)}
 
-.meta .nav{position:relative;transition:color 240ms var(--ease)}
-@media (hover:hover){.meta .nav:hover{color:var(--accent)}}
 
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* контактна плашка й нижній рядок живуть в одній темній плашці,
@@ -200,9 +199,15 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
   color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
 }
 .foot-bar{
-  border-top:var(--rule) solid var(--foot-rule);
+  position:relative;
   padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
   display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+}
+/* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
+   там, де лінійки між рядками соцмереж */
+.foot-bar::before{
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  height:var(--rule); background:var(--foot-rule);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 .site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
