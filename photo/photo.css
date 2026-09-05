@@ -239,15 +239,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   --uline:2px;
   /* кегль контактного рядка винесено в змінну, бо від нього рахується
      і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  --fs-line:clamp(26px,2.6vw,38px);
-  /* назви соцмереж підібрані так, щоб увесь стовпчик був заввишки рівно з
-     лівою половиною підвалу — жодна з половин не перетягує другу. Множник
-     рахується від кількості рядків: при чотирьох це було .47, з появою
-     Upwork рядків стало п'ять, і при .47 стовпчик звисав на 53px нижче
-     контактів. (141 − 4×5) / (5 × 1.24) ≈ 19,5px від шістдесятого кеглю,
-     тобто .325. max() тримає кегль читабельним на мобільному, де сам
-     контактний рядок уже вдвічі менший, а половини й так ідуть у стос */
-  --fs-soc:max(15px, calc(var(--fs-line) * .325));
+  /* шість посилань в один рядок замість двох по 38: стеля підібрана за
+     виміряним запасом — на 1440 вони просять 802px із 1232 доступних,
+     тобто вміщаються до 44 кеглю, і 36 лишає близько чверті на запас.
+     Вузьке місце не там, а на 760, де тримає нижня межа 22: запас там
+     усього 8%. Нижче рядок переноситься, і перенос лягає між словами */
+  --fs-line:clamp(22px,2.5vw,36px);
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -264,7 +261,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:2/span 9}
+.foot-in .say{grid-column:2/-1}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -322,50 +319,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */
-.socials{
-  grid-column:11/span 2;
-  list-style:none; margin:0; padding:0; text-align:left;
-  display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
-}
-/* li як флекс-контейнер: інакше він додає до кожного рядка провід від
-   успадкованого line-height:1.55 — на п'ять марок це зайві 23px, і
-   стовпчик знову звисав нижче контактів */
-.socials li{display:flex}
-.socials a{
-  display:inline-block; position:relative;
-  font-size:var(--fs-soc); font-weight:300; text-transform:none;
-  letter-spacing:-.015em; line-height:1.24; font-variation-settings:"wdth" 96;
-  color:var(--mute);
-  transition:color 260ms var(--ease);
-}
-.socials a::before{
-  content:""; position:absolute; left:0; right:0; bottom:.04em;
-  height:var(--pen); background:var(--pencil);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform 420ms var(--ease);
-}
-/* та сама стрілка назовні, що й на Email з WhatsApp: усі шість посилань
-   виводять із сайту, тож вони мусять це показувати. Вона стоїть за межею
-   рядка, а не в ньому — інакше на ховері назви смикалися б управо */
-.socials a::after{
-  content:"↗"; position:absolute; left:100%; bottom:.14em;
-  margin-left:.24em; font-size:.42em; line-height:1;
-  opacity:0; transform:translate(-.35em,.35em);
-  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
-}
-@media (hover:hover){
-  .socials a:hover{color:var(--ink)}
-  .socials a:hover::before{transform:scaleX(1)}
-  .socials a:hover::after{opacity:1; transform:none}
-}
-.socials a:active{color:var(--ink)}
-.socials a:active::before{transform:scaleX(1)}
-.socials a:active::after{opacity:1; transform:none}
-/* вузько стовпчик уже не стає поряд із контактами — він іде під ними,
-   лівим краєм по тій самій вертикалі, що й решта плашки */
-@media (max-width:640px){
-  .foot-in .say,.socials{grid-column:1/-1}
-}
 .site-foot .sub{
   margin:0; max-width:34ch; text-wrap:pretty;
   color:var(--mute);
