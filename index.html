@@ -139,7 +139,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(50px,7.9vh,110px) clamp(2px,.5vh,7px);
+  align-items:end; padding-block:clamp(50px,7.9vh,110px) 0;
 }
 /* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
 .lede{grid-column:3/span 6; margin:0; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
@@ -153,10 +153,15 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   --about-gap:clamp(20px,2.6vw,40px);
   /* кегль фахів — від нього рахується і висота портрета */
   --role-fs:clamp(24px,5vw,72px);
+  /* однакове поле над блоком фахів і під ним; сусіди свої відступи з цього
+     боку віддають нулю, тож рівність тримається сама, а не підбором */
+  --sep:clamp(34px,6vh,84px);
+  /* кегль назв напрямків — від нього рахується зсув переліку під ними */
+  --spec-fs:clamp(28px,4.6vw,60px);
 }
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:var(--about-gap);
-  padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
+  padding-block:var(--sep) var(--sep);
 }
 /* фахи — сходами: кожен наступний із більшим відступом, так що блок
    заповнює простір ліворуч від портрета і сходить до його межі */
@@ -192,35 +197,54 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .note{margin-top:clamp(20px,3vw,40px); max-width:38ch; color:var(--mute); text-wrap:pretty}
 /* ── напрямки: рядки того самого крою, що й перелік соцмереж ───── */
-.work{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
+.work{padding-block:0 clamp(32px,5.5vh,75px)}
 .work h2{font-size:11px}
-.specs{list-style:none; padding:0; margin:0}
-/* номер, велика назва, перелік праворуч, наскрізна лінійка — той самий
-   крій, що й переліки категорій на внутрішніх сторінках */
+/* рядки живуть на тій самій 12-колонковій сітці, що й решта сторінки:
+   кожен .spec підхоплює її треки через subgrid, тож номери, назви й
+   переліки в усіх рядках стоять на спільних вертикалях. Раніше кожен
+   рядок був окремою сіткою з auto-колонками — праві краї збігались, а
+   ліві розповзались за довжиною слів */
+.specs{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  column-gap:var(--about-gap);
+  list-style:none; padding:0; margin:0;
+}
 .spec{
-  display:grid; grid-template-columns:auto 1fr auto auto; gap:clamp(14px,2.4vw,36px);
+  display:grid; grid-template-columns:subgrid; grid-column:1/-1;
   align-items:baseline; padding-block:clamp(16px,2.2vw,26px);
   min-height:64px; position:relative;
 }
-/* порожня колонка завширшки зі стрілкою — щоб праві краї підписів стояли
-   на тій самій вертикалі, що й у переліках з посиланнями */
-.spec::before{
-  content:"↗"; grid-column:4; grid-row:1; visibility:hidden;
-  font-size:clamp(14px,1.3vw,20px);
-}
+.spec .no{grid-column:1}
+/* 2..7 і 8..12 — межа підібрана не на око: найдовша назва закінчується
+   близько 7-ї лінії, а найдовший підпис від 8-ї ще вміщається до краю */
+.spec h3{grid-column:2/span 6}
+.spec ul{grid-column:8/span 5}
 .spec:first-child{border-top:var(--rule) solid var(--divider)}
 .spec::after{
   content:""; position:absolute; left:0; right:0; bottom:0;
   height:var(--rule); background:var(--divider);
 }
-.spec .no{font-size:11px; letter-spacing:.1em; font-weight:800; color:var(--mute)}
+/* під останнім рядком лінійки немає: далі й так починається темна плашка */
+.spec:last-child::after{content:none}
+/* фіксована ширина номера: «01» вужче за «02»..«04», а на вузькому екрані
+   номер стоїть в auto-колонці, тож перший рядок з'їжджав на 2px вліво.
+   tnum у цій гарнітурі не допомагає, тому ширина задана явно */
+.spec .no{
+  font-size:11px; letter-spacing:.1em; font-weight:800; color:var(--mute);
+  min-width:3ch;
+}
 /* той самий набір, що й назви в переліку соцмереж — без капітелі */
 .spec h3{
-  margin:0; font-size:clamp(28px,4.6vw,60px); font-weight:300;
+  margin:0; font-size:var(--spec-fs); font-weight:300;
   letter-spacing:-.02em; line-height:1.02;
   font-variation-settings:"wdth" 100; color:var(--ink);
 }
-.spec ul{list-style:none; margin:0; padding:0; display:grid; gap:6px; justify-items:start}
+/* перелік іде нижче за базову лінію назви, а не врівень із нею:
+   зсув рахується від кегля назви, тож тримається на всіх ширинах */
+.spec ul{
+  list-style:none; margin:calc(var(--spec-fs) * .55) 0 0; padding:0;
+  display:grid; gap:6px; justify-items:start;
+}
 .spec li{
   font-size:clamp(12px,1vw,14px); line-height:1.4; color:var(--mute);
   letter-spacing:.01em; text-wrap:pretty;
@@ -248,11 +272,14 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* вузько назва й перелік уже не стають поряд — перелік іде другим рядком
    під назвою, як підпис у соцмережах */
 @media (max-width:640px){
-  .spec{grid-template-columns:auto 1fr; row-gap:8px; padding-block:14px}
-  .spec::before{content:none}
+  .specs{display:block}
+  .spec{
+    display:grid; grid-template-columns:auto 1fr;
+    column-gap:clamp(14px,2.4vw,36px); row-gap:8px; padding-block:14px;
+  }
   .spec .no{grid-column:1; grid-row:1}
   .spec h3{grid-column:2; grid-row:1}
-  .spec ul{grid-column:2; grid-row:2}
+  .spec ul{grid-column:2; grid-row:2; margin-top:0}
 }
 /* портрет притиснутий до правого краю колонки, а заввишки — рівно у три
    рядки фахів: 3 рядки по line-height 1.08 плюс два проміжки по .14em */
@@ -437,8 +464,6 @@ figcaption{display:none}
       <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
     </div>
   </section>
-
-  <hr class="rule">
 
   <section class="wrap about" id="about" aria-label="About">
     <div class="roles">
