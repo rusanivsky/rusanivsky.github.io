@@ -119,7 +119,6 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .tgl button:first-child{padding-left:0}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
-.tgl span{padding:0; font-size:11px; color:var(--divider); line-height:1}
 @media (max-width:560px){
   .meta{grid-template-columns:1fr; gap:6px}
   .meta .cols{gap:14px}
@@ -140,36 +139,49 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(16px,2.75vh,37.5px) clamp(8px,1.4vh,18px);
+  align-items:end; padding-block:clamp(50px,7.9vh,110px) clamp(2px,.5vh,7px);
 }
 /* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
-.lede{grid-column:6/span 5; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
+.lede{grid-column:3/span 6; margin:0; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
 @media (max-width:900px){
   .lede{grid-column:1/span 12; justify-self:stretch}
 }
 
 
 /* ── portrait + statement ─────────────────────────────────── */
-:root{--about-gap:clamp(20px,2.6vw,40px)}
+:root{
+  --about-gap:clamp(20px,2.6vw,40px);
+  /* кегль фахів — від нього рахується і висота портрета */
+  --role-fs:clamp(24px,5vw,72px);
+}
 .about{
   display:grid; grid-template-columns:repeat(12,1fr); gap:var(--about-gap);
   padding-block:clamp(16px,2.75vh,37.5px) clamp(32px,5.5vh,75px);
 }
-/* 1..5, а не 1..6 — інакше .figwrap із 6-ї колонки конфліктує з цим
-   блоком і сітка зносить фото в наступний ряд */
-.roles{grid-column:1/span 5; align-self:start; position:relative; z-index:2}
-.roles h2{
-  font-size:clamp(12px,1.8vw,27px); font-weight:600; text-transform:uppercase;
-  letter-spacing:-.01em;
-  font-variation-settings:"wdth" 92; line-height:1.15; color:var(--pencil);
+/* фахи — сходами: кожен наступний із більшим відступом, так що блок
+   заповнює простір ліворуч від портрета і сходить до його межі */
+.roles{
+  grid-column:1/span 12; grid-row:1; align-self:start;
+  /* поле закінчується точно там, де починається портрет: його ширина —
+     та сама змінна (висота 3.52em при пропорції 4:5) плюс міжколонник */
+  padding-right:calc(var(--role-fs) * 2.816 + var(--about-gap));
 }
-.roles h2 span{display:block}
-.roles h2 .role{width:max-content}
-/* фахи розведені між собою; «графічний дизайнер» займає два рядки, тож
-   відступ ставиться між блоками, а не між рядками всередині фаху */
-.roles h2 .role + .role{margin-top:.45em}
-/* просто помаранчевий, без реакції на курсор */
-.roles h2 span{color:var(--pencil)}
+.roles h2{
+  font-size:var(--role-fs); font-weight:100; text-transform:uppercase;
+  /* справжнього курсиву в родині немає — це синтетичний нахил браузера.
+     oblique з явним кутом Blink ігнорує, тож кут тут браузерний (~14°) */
+  font-style:italic;
+  letter-spacing:-.02em;
+  font-variation-settings:"wdth" 96; line-height:1.08; color:var(--ink);
+}
+.roles .role{display:block; width:max-content}
+.roles .role + .role{margin-top:.14em}
+/* сходинки тримаються правого краю поля, а не заданого відступу зліва:
+   інакше найдовший рядок при фіксованому відступі налазить на портрет.
+   auto зліва сам добирає решту, тож ні кегль, ні довжина слова не ламають
+   ряд — українські назви довші за англійські */
+.roles .role:nth-child(2){margin-left:auto; margin-right:20%}
+.roles .role:nth-child(3){margin-left:auto}
 .pills{
   display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px); list-style:none; padding:0;
   margin:clamp(18px,2.4vw,28px) 0 0;
@@ -242,8 +254,11 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   .spec h3{grid-column:2; grid-row:1}
   .spec ul{grid-column:2; grid-row:2}
 }
-/* ліва межа збігається з лівою межею ліду — спільна колонкова лінія */
-.figwrap{grid-column:6/span 3; align-self:start}
+/* портрет притиснутий до правого краю колонки, а заввишки — рівно у три
+   рядки фахів: 3 рядки по line-height 1.08 плюс два проміжки по .14em */
+.figwrap{grid-column:10/span 3; grid-row:1; align-self:start}
+.figwrap figure{margin-left:auto; width:max-content}
+.figwrap .shot picture{height:calc(var(--role-fs) * 3.52); width:auto}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
@@ -261,8 +276,12 @@ figure{margin:0; position:relative; z-index:1}
 .shot img{width:100%; height:100%; object-fit:cover}
 figcaption{display:none}
 @media (max-width:900px){
-  .roles,.figwrap{grid-column:1/span 12}
+  .roles,.figwrap{grid-column:1/span 12; grid-row:auto}
+  .roles{padding-right:0}
+  .roles .role:nth-child(2),.roles .role:nth-child(3){margin-left:0; margin-right:0}
   .figwrap{order:-1}
+  .figwrap figure{width:auto}
+  .figwrap .shot picture{height:auto; width:100%}
   .shot picture{aspect-ratio:3/4}
 }
 
@@ -402,7 +421,7 @@ figcaption{display:none}
   </div>
   <div class="cols">
     <div class="tgl" id="lang" role="group" aria-label="Language">
-      <button type="button" data-lang="en" aria-pressed="true">EN</button><span>/</span><button type="button" data-lang="ua" aria-pressed="false">UA</button>
+      <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
     </div>
   </div>
 </header>
@@ -424,12 +443,9 @@ figcaption{display:none}
   <section class="wrap about" id="about" aria-label="About">
     <div class="roles">
       <h2 data-rev>
-        <span class="role">
-          <span data-en="Graphic" data-ua="Графічний">Graphic</span>
-          <span data-en="Designer" data-ua="дизайнер">Designer</span>
-        </span>
-        <span class="role"><span data-en="Video Editor" data-ua="Відеомонтажер">Video Editor</span></span>
-        <span class="role"><span data-en="Photographer" data-ua="Фотограф">Photographer</span></span>
+        <span class="role" data-en="Video Editor" data-ua="Режисер монтажу">Video Editor</span>
+        <span class="role" data-en="Graphic Designer" data-ua="Графічний дизайнер">Graphic Designer</span>
+        <span class="role" data-en="Photographer" data-ua="Фотограф">Photographer</span>
       </h2>
     </div>
     <div class="figwrap">
