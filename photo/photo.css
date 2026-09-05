@@ -192,6 +192,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:0;right:0;bottom:0;
   height:var(--rule);background:var(--divider);
 }
+/* під останнім рядком лінійки немає: ховер лягає на верхню межу рядка,
+   а нижня лишалась би самотньою межею перед підвалом — так само, як у
+   переліку напрямків на головній */
+.cat:last-of-type::before{content:none}
 .cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
   font-size:clamp(28px,4.6vw,60px);font-weight:300;
