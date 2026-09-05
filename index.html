@@ -189,10 +189,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* текст починається з другої колонки, а ім'я лишається на першій — той
    самий уступ, що й у переліку напрямків нижче, де номер стоїть у першій
    колонці, а назва починається з другої. Перша колонка стає полем, яке
-   проходить крізь усю сторінку */
+   проходить крізь усю сторінку.
+   flex-end садить абзац на нижню межу колонки: колонка розтягнута на
+   висоту портрета (другий ряд сітки — 1fr), тож остання лінія тексту
+   стає врівень з нижнім краєм знімка */
 .hero-copy{
   grid-column:2/span 7; grid-row:2;
-  display:flex; flex-direction:column; min-width:0;
+  display:flex; flex-direction:column; justify-content:flex-end; min-width:0;
 }
 /* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
    рядок ішов би на 880px. 50ch тримає його в половині колонки — це та
@@ -202,71 +205,6 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   margin:0; max-width:50ch;
   font-size:clamp(16px,1.25vw,19px); line-height:1.5; text-wrap:pretty;
 }
-/* статус стоїть над дією, а не поруч: у рядку 11px капітель тулилася до
-   38-пунктового слова і читалася як його підпис. Окремим рядком угорі
-   вона працює як мітка над кнопкою — спершу «коли», потім «як».
-   Дія йде одразу за текстом, а не притискається до низу колонки:
-   margin-top:auto ставив її на нижню межу портрета, і низ кнопки збігався
-   з низом знімка, але між текстом і дією лишалося 118px порожнечі.
-   Тепер зазор фіксований, а портрет просто нижчий за текстову колонку */
-.act{
-  margin:clamp(30px,4.4vh,48px) 0 0; padding:0;
-  display:flex; flex-direction:column; align-items:flex-start;
-  gap:clamp(12px,1.8vh,20px);
-}
-/* дія — не плашка, а великий текстовий рядок того самого крою, що й
-   «Email / WhatsApp» у підвалі: легка насиченість, вагу несе кегль.
-   Різниця одна — тут лінія під словом стоїть завжди, а не приходить на
-   ховері: у підвалі поруч є друге посилання й підпис, які пояснюють, що
-   це контакти, а на першому екрані рядок мусить сам себе оголосити
-   натискним. На ховері лінія з чорнильної стає --pencil */
-/* просвіт під словом відкушений падінгом, а не від'ємним bottom у лінії:
-   так остання фарба колонки — сама лінія — лягає рівно на нижню межу
-   коробки, тобто на нижній край портрета. З bottom:-.06em лінія
-   вибивалася за цю горизонталь на два пікселі */
-.cta{
-  position:relative; margin-right:.6em; padding-bottom:.08em;
-  font-size:clamp(26px,2.6vw,38px); font-weight:300;
-  letter-spacing:-.02em; line-height:1.02;
-  font-variation-settings:"wdth" 96; white-space:nowrap;
-}
-.cta::before{
-  content:""; position:absolute; left:0; right:0; bottom:0;
-  height:var(--pen); background:currentColor;
-  transition:background 320ms var(--ease);
-}
-/* стрілка стоїть поза коробкою посилання — на left:100%, як у підписі
-   підвалу. Усередині рядка вона потрапила б під ту саму лінію, що й
-   слово, а підкреслена стрілка читається як помилка набору. Місце під
-   неї тримає margin-right, щоб вона не наїхала на статус поруч.
-   bottom тут рахується від власного кегля псевдоелемента (.42em від
-   рядка), а не від батьківського — тому .85em, а не .35em: інакше
-   стрілка сідає на базову лінію і виглядає як випадковий знак */
-/* стрілка приходить на ховері, як і всюди на сторінці — у назвах
-   розділів і в підписі підвалу. Постійна вона була єдиним таким знаком
-   на сайті. Оскільки вона поза потоком, поява нічого не зсуває */
-.cta::after{
-  content:"→"; position:absolute; left:100%; bottom:.85em;
-  margin-left:.16em; font-size:.42em; line-height:1;
-  opacity:0; transform:translateX(-.3em);
-  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
-}
-@media (hover:hover){
-  .cta:hover::before{background:var(--pencil)}
-  .cta:hover::after{opacity:1; transform:none}
-}
-.cta:active::before{background:var(--pencil)}
-.cta:active::after{opacity:1; transform:none}
-.status{
-  margin:0; display:flex; align-items:center; gap:.6em;
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  font-weight:600; line-height:1; color:var(--mute);
-}
-.status .dot{
-  width:7px; height:7px; border-radius:50%;
-  background:var(--pencil); flex:none;
-}
-
 
 /* ── спільні міри сітки й розділів ────────────────────────── */
 :root{
@@ -420,12 +358,15 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   .spec ul{grid-column:2; grid-row:2; margin-top:0; align-self:auto}
   .spec.under ul{grid-column:2; grid-row:2; margin-top:0}
 }
-/* портрет тримає праві чотири колонки — ті самі, в яких нижче стоять
-   переліки категорій, тож його ліва межа лягає на 9-ту лінію сітки.
-   Він спанить обидва рядки героя: його висота і задає висоту текстової
-   колонки ліворуч. align-self:start лишає йому власну пропорцію 4:5,
-   а не розтягує під рядок */
-.figwrap{grid-column:9/span 4; grid-row:1/span 2; align-self:start}
+/* портрет на трьох правих колонках: правою межею він і далі стоїть на
+   краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
+   9-ї лінії на 10-ту. З чотирьох колонок вибирати не було з чого — при
+   трьох або права межа відходить від краю сторінки на цілу колонку, або
+   ліва сходить зі спільної вертикалі; розрив зі спільною вертикаллю
+   помітний менше, ніж діра завширшки 115px біля правого поля.
+   Він спанить обидва рядки героя: його висота задає висоту текстової
+   колонки ліворуч. align-self:start лишає йому пропорцію 4:5 */
+.figwrap{grid-column:10/span 3; grid-row:1/span 2; align-self:start}
 .figwrap figure{width:100%}
 .figwrap .shot picture{width:100%; height:auto}
 figure{margin:0; position:relative; z-index:1}
@@ -450,7 +391,7 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:1100px){
   .name{grid-column:1/span 7}
   .hero-copy{grid-column:2/span 6}
-  .figwrap{grid-column:8/span 5}
+  .figwrap{grid-column:9/span 4}
 }
 /* вузько колонки поряд не стоять: ім'я, портрет, текст і дія йдуть одне
    під одним. Портрет другим — обличчя одразу під іменем, — але кнопка
@@ -458,9 +399,12 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:820px){
   .hero{grid-template-rows:none; row-gap:clamp(22px,3.4vh,34px)}
   .name,.hero-copy,.figwrap{grid-column:1/-1; grid-row:auto}
+  /* спершу текст, потім знімок: клієнт читає, хто це і що робить, і аж
+     тоді бачить обличчя — на вузькому екрані фото між іменем і текстом
+     відсувало сам текст на другий екран */
   .name{order:1}
-  .figwrap{order:2; max-width:min(100%,460px)}
-  .hero-copy{order:3}
+  .hero-copy{order:2}
+  .figwrap{order:3; max-width:min(100%,460px)}
   .figwrap figure{width:auto}
   .figwrap .shot picture{height:auto; width:100%}
   /* горизонталь, а не вертикаль: у стосі кадр 3:4 виростав до 560px
@@ -549,15 +493,12 @@ figure{margin:0; position:relative; z-index:1}
   --uline:2px;
   /* кегль контактного рядка винесено в змінну, бо від нього рахується
      і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  --fs-line:clamp(26px,2.6vw,38px);
-  /* назви соцмереж підібрані так, щоб увесь стовпчик був заввишки рівно з
-     лівою половиною підвалу — жодна з половин не перетягує другу. Множник
-     рахується від кількості рядків: при чотирьох це було .47, з появою
-     Upwork рядків стало п'ять, і при .47 стовпчик звисав на 53px нижче
-     контактів. (141 − 4×5) / (5 × 1.24) ≈ 19,5px від шістдесятого кеглю,
-     тобто .325. max() тримає кегль читабельним на мобільному, де сам
-     контактний рядок уже вдвічі менший, а половини й так ідуть у стос */
-  --fs-soc:max(15px, calc(var(--fs-line) * .325));
+  /* шість посилань в один рядок замість двох по 38: стеля підібрана за
+     виміряним запасом — на 1440 вони просять 802px із 1232 доступних,
+     тобто вміщаються до 44 кеглю, і 36 лишає близько чверті на запас.
+     Вузьке місце не там, а на 760, де тримає нижня межа 22: запас там
+     усього 8%. Нижче рядок переноситься, і перенос лягає між словами */
+  --fs-line:clamp(22px,2.5vw,36px);
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -574,7 +515,7 @@ figure{margin:0; position:relative; z-index:1}
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:2/span 9}
+.foot-in .say{grid-column:2/-1}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -632,50 +573,6 @@ figure{margin:0; position:relative; z-index:1}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */
-.socials{
-  grid-column:11/span 2;
-  list-style:none; margin:0; padding:0; text-align:left;
-  display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
-}
-/* li як флекс-контейнер: інакше він додає до кожного рядка провід від
-   успадкованого line-height:1.55 — на п'ять марок це зайві 23px, і
-   стовпчик знову звисав нижче контактів */
-.socials li{display:flex}
-.socials a{
-  display:inline-block; position:relative;
-  font-size:var(--fs-soc); font-weight:300; text-transform:none;
-  letter-spacing:-.015em; line-height:1.24; font-variation-settings:"wdth" 96;
-  color:var(--mute);
-  transition:color 260ms var(--ease);
-}
-.socials a::before{
-  content:""; position:absolute; left:0; right:0; bottom:.04em;
-  height:var(--pen); background:var(--pencil);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform 420ms var(--ease);
-}
-/* та сама стрілка назовні, що й на Email з WhatsApp: усі шість посилань
-   виводять із сайту, тож вони мусять це показувати. Вона стоїть за межею
-   рядка, а не в ньому — інакше на ховері назви смикалися б управо */
-.socials a::after{
-  content:"↗"; position:absolute; left:100%; bottom:.14em;
-  margin-left:.24em; font-size:.42em; line-height:1;
-  opacity:0; transform:translate(-.35em,.35em);
-  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
-}
-@media (hover:hover){
-  .socials a:hover{color:var(--ink)}
-  .socials a:hover::before{transform:scaleX(1)}
-  .socials a:hover::after{opacity:1; transform:none}
-}
-.socials a:active{color:var(--ink)}
-.socials a:active::before{transform:scaleX(1)}
-.socials a:active::after{opacity:1; transform:none}
-/* вузько стовпчик уже не стає поряд із контактами — він іде під ними,
-   лівим краєм по тій самій вертикалі, що й решта плашки */
-@media (max-width:640px){
-  .foot-in .say,.socials{grid-column:1/-1}
-}
 .site-foot .sub{
   margin:0; max-width:34ch; text-wrap:pretty;
   color:var(--mute);
@@ -779,13 +676,6 @@ figure{margin:0; position:relative; z-index:1}
     </div>
     <div class="hero-copy">
       <p class="lede" data-rev style="--d:160ms" data-en="Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely." data-ua="Спеціаліст у креативній індустрії: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети. Працюю дистанційно.">Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely.</p>
-      <div class="act" data-rev style="--d:230ms">
-        <p class="status">
-          <span class="dot" aria-hidden="true"></span>
-          <span data-en="Available for new projects" data-ua="Вільний для нових проєктів">Available for new projects</span>
-        </p>
-        <a class="cta" href="mailto:info@rusanivsky.com" data-en="Get in touch" data-ua="Написати">Get in touch</a>
-      </div>
     </div>
   </section>
 
@@ -851,15 +741,12 @@ figure{margin:0; position:relative; z-index:1}
       <div class="lines">
         <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
         <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
+        <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener" data-rev style="--d:210ms">Instagram</a>
+        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:270ms">LinkedIn</a>
+        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:330ms">Facebook</a>
+        <a href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener" data-rev style="--d:390ms">Upwork</a>
       </div>
     </div>
-    <ul class="socials" data-rev style="--d:210ms">
-      <li><a href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener">Upwork</a></li>
-      <li><a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">Behance</a></li>
-      <li><a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener">LinkedIn</a></li>
-      <li><a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener">Facebook</a></li>
-    </ul>
   </div>
   <div class="wrap foot-bar">
     <div class="cols">
