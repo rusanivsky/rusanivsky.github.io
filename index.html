@@ -217,12 +217,14 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .roles h2{flex:1; display:flex; flex-direction:column; justify-content:space-between}
 .roles .role{display:block; width:max-content}
-/* сходинки тримаються правого краю поля, а не заданого відступу зліва:
-   інакше найдовший рядок при фіксованому відступі налазить на портрет.
-   auto зліва сам добирає решту, тож ні кегль, ні довжина слова не ламають
-   ряд — українські назви довші за англійські */
-.roles .role:nth-child(2){margin-left:auto; margin-right:20%}
-.roles .role:nth-child(3){margin-left:auto}
+/* сходинки стоять на колонкових лініях: кожен наступний рядок починається
+   на колонку правіше за попередній. Крок — одна колонка з міжколонником,
+   тобто (100% + gap) / 8 від восьмиколонкового блоку. Доти другий рядок
+   відсувався на 20% ширини, а третій тулився до правого краю, і жоден із
+   них не потрапляв на лінію. Третій рядок стоїть на колонку далі за крок,
+   бо він найкоротший і рівним кроком лишався б надто близько до другого */
+.roles .role:nth-child(2){margin-left:calc((100% + var(--about-gap)) / 8)}
+.roles .role:nth-child(3){margin-left:calc((100% + var(--about-gap)) * 3 / 8)}
 .pills{
   display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px); list-style:none; padding:0;
   margin:clamp(18px,2.4vw,28px) 0 0;
@@ -425,7 +427,7 @@ figure{margin:0; position:relative; z-index:1}
 .logos a:active .lg{color:var(--ink)}
 .logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
 .lg{
-  display:block; background:currentColor;
+  display:block; position:relative; background:currentColor;
   color:color-mix(in srgb,var(--ink) 70%,transparent);
   transition:color 280ms var(--ease);
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -436,6 +438,18 @@ figure{margin:0; position:relative; z-index:1}
 .lg.kmbs{--src:url(/img/clients/kmbs.svg); height:var(--lg); width:calc(var(--lg) * 3.09)}
 .lg.naukma{--src:url(/img/clients/naukma.png); height:calc(var(--lg) * 1.38); width:calc(var(--lg) * 1.46)}
 .lg.kooperativ{--src:url(/img/clients/kooperativ.svg); height:calc(var(--lg) * .91); width:calc(var(--lg) * 4.93)}
+/* у Kooperativ плашка фірмово червона — на наведенні вона нею і стає.
+   Друга маска має ту саму рамку, що й повна марка, тож при mask-size:contain
+   лягає точно на своє місце. Напис лишається чорнилом сторінки: у темній
+   темі оригінальний чорний просто зник би у фоні */
+.lg.kooperativ::after{
+  content:""; position:absolute; inset:0; background:#fa2b00;
+  -webkit-mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
+  mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
+  opacity:0; transition:opacity 280ms var(--ease);
+}
+@media (hover:hover){.logos a:hover .lg.kooperativ::after{opacity:1}}
+.logos a:active .lg.kooperativ::after{opacity:1}
 .lg.tsyronian{--src:url(/img/clients/tsyronian.png); height:calc(var(--lg) * .98); width:calc(var(--lg) * 3.38)}
 /* вузько четвірка вже не стає в один ряд. Самопливом вона ламалася на
    три і одну, і остання марка лишалася сама посеред порожнього ряду —
