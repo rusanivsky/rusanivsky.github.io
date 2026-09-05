@@ -111,17 +111,10 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */
+/* під переліком категорій лінійки немає: вона з'являлась і зникала на
+   кожному дотику до верху сторінки, і цей блимкіт читався як збій, а не
+   як межа. Шапку від вмісту відділяє власне лінійка над переліком */
 .topbar{position:sticky;top:0;z-index:30;background:var(--bg)}
-/* лінійка під шапкою — не межа на всю сторінку, а та сама лінійка по
-   ширині верстки; вона з'являється лише коли сторінку зрушили вниз,
-   бо доти шапці нема що від чого відділяти */
-.topbar::after{
-  content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:calc(min(100%, var(--maxw)) - 2 * var(--pad));
-  height:var(--rule);background:var(--divider);pointer-events:none;
-  opacity:0;transition:opacity 240ms var(--ease);
-}
-.topbar.is-stuck::after{opacity:1}
 .topbar .rule{margin-bottom:2px}
 
 /* ── поява блоків ─────────────────────────────────────────── */
@@ -130,6 +123,11 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .rev [data-rev].is-in{opacity:1; transform:none;
   transition:opacity 520ms var(--ease), transform 560ms var(--ease);
   transition-delay:var(--d,0ms)}
+/* те, що вже в кадрі на вході, не проявляється власним рухом: сторінку
+   і так вносить перехід між сторінками, а два підйоми поспіль — один на
+   14px за 380ms, другий на 22px за 560ms — і давали те смикання. Рух
+   лишається там, де він щось означає: у блоках, до яких догортали */
+.rev [data-rev].is-in.at-once{transition:none}
 
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }

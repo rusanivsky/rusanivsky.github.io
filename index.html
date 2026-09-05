@@ -418,9 +418,16 @@ figure{margin:0; position:relative; z-index:1}
    в два рядки. Спільна висота зробила б монограму вдвічі важчою за інших,
    спільна ширина — навпаки; тож зріст кожної заданий окремо, і множник
    вирівнює саме оптичну вагу. Ширина з нього ж і пропорції самої марки */
+/* марка — посилання на сайт клієнта; приглушена, доки на неї не навели,
+   як і назви категорій у рядках вище */
+.logos a{display:block; color:inherit}
+@media (hover:hover){.logos a:hover .lg{color:var(--ink)}}
+.logos a:active .lg{color:var(--ink)}
+.logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
 .lg{
   display:block; background:currentColor;
   color:color-mix(in srgb,var(--ink) 70%,transparent);
+  transition:color 280ms var(--ease);
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   -webkit-mask-position:center; mask-position:center;
   -webkit-mask-size:contain; mask-size:contain;
@@ -594,6 +601,11 @@ figure{margin:0; position:relative; z-index:1}
 .rev [data-rev]{opacity:0; transform:translateY(22px)}
 .rev [data-rev].is-in{opacity:1; transform:none; transition:opacity 520ms var(--ease), transform 560ms var(--ease)}
 .rev [data-rev].is-in{transition-delay:var(--d,0ms)}
+/* те, що вже в кадрі на вході, не проявляється власним рухом: сторінку
+   і так вносить перехід між сторінками, а два підйоми поспіль — один на
+   14px за 380ms, другий на 22px за 560ms — і давали те смикання. Рух
+   лишається там, де він щось означає: у блоках, до яких догортали */
+.rev [data-rev].is-in.at-once{transition:none}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
@@ -705,10 +717,10 @@ figure{margin:0; position:relative; z-index:1}
   <section class="wrap clients" aria-labelledby="cl">
     <h2 class="tiny" id="cl" data-rev data-en="Clients" data-ua="Клієнти">Clients</h2>
     <ul class="logos">
-      <li data-rev style="--d:80ms"><span class="lg kmbs" role="img" aria-label="kmbs — Kyiv-Mohyla Business School"></span></li>
-      <li data-rev style="--d:140ms"><span class="lg naukma" role="img" aria-label="National University of Kyiv-Mohyla Academy"></span></li>
-      <li data-rev style="--d:200ms"><span class="lg kooperativ" role="img" aria-label="Kooperativ"></span></li>
-      <li data-rev style="--d:260ms"><span class="lg tsyronian" role="img" aria-label="Tsyronian Publishing"></span></li>
+      <li data-rev style="--d:80ms"><a href="https://kmbs.ua/ua" target="_blank" rel="noopener"><span class="lg kmbs"></span><span class="sr">kmbs — Kyiv-Mohyla Business School</span></a></li>
+      <li data-rev style="--d:140ms"><a href="https://www.ukma.edu.ua/" target="_blank" rel="noopener"><span class="lg naukma"></span><span class="sr">National University of Kyiv-Mohyla Academy</span></a></li>
+      <li data-rev style="--d:200ms"><a href="https://www.kooperativ.cc" target="_blank" rel="noopener"><span class="lg kooperativ"></span><span class="sr">Kooperativ</span></a></li>
+      <li data-rev style="--d:260ms"><a href="https://www.instagram.com/tsyronian.publishing" target="_blank" rel="noopener"><span class="lg tsyronian"></span><span class="sr">Tsyronian Publishing</span></a></li>
     </ul>
   </section>
 </main>
@@ -755,9 +767,8 @@ figure{margin:0; position:relative; z-index:1}
     revs.forEach(function(el){
       if(el.getBoundingClientRect().top < innerHeight){ onload.push(el); } else { io.observe(el); }
     });
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){ onload.forEach(show); });
-    });
+    /* .at-once вимикає перехід — блок просто вже на місці */
+    onload.forEach(function(el){ el.classList.add('at-once'); show(el); });
   } else {
     revs.forEach(show);
   }

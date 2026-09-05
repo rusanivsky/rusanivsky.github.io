@@ -178,15 +178,6 @@
     fr.loading='lazy';
     f.replaceWith(fr);
   });
-  /* лінійка під шапкою — тільки коли сторінку зрушили вниз */
-  (function(){
-    var tb=document.querySelector('.topbar'); if(!tb) return;
-    var mark=function(){ tb.classList.toggle('is-stuck',(window.scrollY||document.documentElement.scrollTop||0)>2); };
-    mark();
-    addEventListener('scroll',mark,{passive:true});
-    addEventListener('pageshow',mark);
-  })();
-
   /* поява блоків — той самий рух, що й на головній. data-rev вішає сам
      скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, проявляється
      одразу після завантаження, решта — коли до неї догортали */
@@ -207,11 +198,8 @@
       (el.getBoundingClientRect().top < innerHeight ? onload : later).push(el);
     });
     later.forEach(function(el){ io.observe(el); });
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        onload.forEach(function(el){ el.classList.add('is-in'); });
-      });
-    });
+    /* .at-once вимикає перехід — блок просто вже на місці */
+    onload.forEach(function(el){ el.classList.add('at-once','is-in'); });
   })();
 })();
 </script>
