@@ -148,43 +148,74 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   background:var(--deep); color:var(--deep-ink);
   --uline:2px;
   --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
+  /* кегль рядка винесено в змінну, бо від нього рахується і розмір марок —
+     інакше пропорція пливе між мобільним і десктопом */
+  --fs-line:clamp(28px,4.6vw,60px);
+  /* марки рівно у зріст великої літери рядка (0.72em у Fixel) */
+  --ic-cap:.72;
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 .foot-in{padding-block:clamp(22px,3.85vh,52px)}
 .site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .site-foot a{color:inherit; text-decoration:none}
-.site-foot .lines{margin-top:.24em}
-.site-foot .lines a{
+/* текст ліворуч, марки притиснуті до правого краю колонки */
+.site-foot .lines{
+  margin-top:.24em;
+  display:flex; align-items:baseline; flex-wrap:wrap;
+  column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
+}
+.site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:clamp(28px,4.6vw,60px); font-weight:300; text-transform:none;
+  font-size:var(--fs-line); font-weight:300; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
   color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
   transition:color 260ms var(--ease);
 }
-.site-foot .lines a + a{margin-left:clamp(7px,1.1vw,14px)}
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
-.site-foot .lines a::before{
+.site-foot .lines > a::before{
   content:""; position:absolute; left:0; right:0; bottom:-.02em;
   height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
-/* ↗ — назовні, → — лишаємось на сайті */
-.site-foot .lines a.in::after{content:"→"}
-.site-foot .lines a::after{
+.site-foot .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
   vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .site-foot .lines a:hover{color:var(--deep-ink)}
-  .site-foot .lines a:hover::before{transform:scaleX(1)}
-  .site-foot .lines a:hover::after{opacity:1; transform:none}
+  .site-foot .lines > a:hover{color:var(--deep-ink)}
+  .site-foot .lines > a:hover::before{transform:scaleX(1)}
+  .site-foot .lines > a:hover::after{opacity:1; transform:none}
 }
-.site-foot .lines a:active{color:var(--deep-ink)}
-.site-foot .lines a:active::before{transform:scaleX(1)}
-.site-foot .lines a:active::after{opacity:1; transform:none}
+.site-foot .lines > a:active{color:var(--deep-ink)}
+.site-foot .lines > a:active::before{transform:scaleX(1)}
+.site-foot .lines > a:active::after{opacity:1; transform:none}
+/* марки соцмереж у тому ж рядку, що Email і WhatsApp, і рівно у зріст його
+   великої літери: розмір рахується від --fs-line, інакше пропорція пливе
+   між мобільним і десктопом. Низ марки лягає на базову лінію тексту, тож
+   вирівнювати нічим не треба — коробки збігаються самі */
+.socials{
+  display:inline-flex; align-items:center; vertical-align:baseline;
+  gap:clamp(13px,1.7vw,22px); margin-left:auto;
+}
+.socials a{display:block; line-height:0}
+.socials svg{
+  display:block; width:calc(var(--fs-line) * var(--ic-cap)); height:auto;
+  fill:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  transition:fill 260ms var(--ease), transform 380ms var(--ease);
+}
+@media (hover:hover){
+  .socials a:hover svg{fill:var(--deep-ink); transform:translateY(-3px)}
+}
+.socials a:active svg{fill:var(--deep-ink)}
+.socials a:focus-visible{outline:2px solid var(--deep-ink); outline-offset:4px}
+/* під 560px шість марок уже не вміщуються поряд із текстом — займають
+   власний рядок і вирівнюються по лівому краю, як усе інше в плашці */
+@media (max-width:560px){
+  .socials{flex-basis:100%; margin-left:0}
+}
 .site-foot .sub{
   margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
   color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
