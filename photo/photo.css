@@ -20,7 +20,10 @@
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
-  --pad:clamp(16px,3.2vw,48px); --rule:2px;
+  --pad:clamp(16px,3.2vw,48px);
+  /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
+     розділювач має мовчати, підкреслення — відповідати */
+  --rule:1px; --pen:2px;
   /* далі 14" MacBook Pro Retina верстка не росте — на ширших
      екранах краще поле з боків, ніж розтягнуті рядки */
   --maxw:1512px;
@@ -34,8 +37,7 @@
   }
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-html{overflow-x:hidden}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -43,40 +45,107 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 /* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
    (шапка й підвал на 404) */
 .wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
-/* лінійка живе в тій самій колонковій сітці, що й рядки переліків —
-   до самих країв сторінки йде тільки межа липкої шапки */
+/* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 .tiny{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mute)}
 
-.meta{display:grid;grid-template-columns:1fr auto;gap:var(--pad) clamp(14px,2vw,28px);padding-block:2px;align-items:center}
-.back{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
+/* ── шапка: назад, розділи, мова ──────────────────────────── */
+.meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
+  padding-block:2px;align-items:center}
+.back{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+  padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
+/* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
+   дрібним набором — це навігація, а не заголовок */
+.parts{display:flex;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
+.part{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+  color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
+  transition:color 220ms var(--ease)}
+.part::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:var(--pen);
+  background:var(--pencil);transform:scaleX(0);transform-origin:left;
+  transition:transform 380ms var(--ease)}
+@media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
+.part[aria-current]{color:var(--ink)}
 .tgl{display:flex;align-items:center}
-.tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
+.tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
+  font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
+/* вузько три розділи вже не стають в один ряд із назвою й мовою —
+   вони йдуть другим рядком шапки, вирівняні по лівому краю верстки */
+@media (max-width:760px){
+  .meta{grid-template-columns:1fr auto}
+  .parts{grid-column:1/-1;grid-row:2;padding-bottom:8px;overflow-x:auto;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .parts::-webkit-scrollbar{display:none}
+  .part{padding-block:0}
+  .part::after{bottom:-5px}
+}
 
-.head{padding-block:clamp(32px,5.5vh,75px) clamp(32px,5.5vh,75px)}
-/* те саме трактування, що й ім'я на головній: звичайний регістр,
-   легка насиченість, вагу несе кегль */
-.head h1{font-size:clamp(42px,7.4vw,112px);font-weight:400;letter-spacing:-.032em;line-height:1;font-variation-settings:"wdth" 98}
-.head .cnt{margin-top:14px}
+/* ── липка шапка ─────────────────────────────────────────── */
+.topbar{position:sticky;top:0;z-index:30;background:var(--bg)}
+/* лінійка під шапкою — не межа на всю сторінку, а та сама лінійка по
+   ширині верстки; вона з'являється лише коли сторінку зрушили вниз,
+   бо доти шапці нема що від чого відділяти */
+.topbar::after{
+  content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:calc(min(100%, var(--maxw)) - 2 * var(--pad));
+  height:var(--rule);background:var(--divider);pointer-events:none;
+  opacity:0;transition:opacity 240ms var(--ease);
+}
+.topbar.is-stuck::after{opacity:1}
+.topbar .rule{margin-bottom:2px}
+
+/* ── поява блоків ─────────────────────────────────────────── */
+/* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
+.rev [data-rev]{opacity:0; transform:translateY(22px)}
+.rev [data-rev].is-in{opacity:1; transform:none;
+  transition:opacity 520ms var(--ease), transform 560ms var(--ease);
+  transition-delay:var(--d,0ms)}
+
+/* ── плавний перехід між сторінками ──────────────────────── */
+@view-transition{ navigation:auto }
+@keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
+@keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
+::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
+::view-transition-new(root){ animation:vt-in 380ms var(--ease) 60ms both }
+/* запасний перехід для браузерів без @view-transition */
+@keyframes pt-in{ from{opacity:0} to{opacity:1} }
+@keyframes pt-out{ from{opacity:1} to{opacity:0} }
+html.pt-js body{ animation:pt-in 320ms var(--ease) both }
+html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important; transition:none!important}
+  .rev [data-rev]{opacity:1!important; transform:none!important}
+  ::view-transition-old(root),::view-transition-new(root){ animation:none }
+  html.pt-js body,html.pt-leave body{ animation:none }
+}
+
+/* ── перемикач категорій у шапці ─────────────────────────── */
+.secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.secs::-webkit-scrollbar{display:none}
+.sec{flex:0 0 auto;white-space:nowrap}
+.sec{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--mute);
+  padding-block:6px;position:relative;transition:color 240ms var(--ease)}
+.sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
+  background:var(--pencil);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
+@media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
+.sec.on,.sec[aria-current]{color:var(--ink)}
+.sec.on::after,.sec[aria-current]::after{transform:scaleX(1);background:var(--divider)}
+@media (hover:hover){.sec.on:hover::after,.sec[aria-current]:hover::after{background:var(--pencil)}}
 
 /* ── сітка знімків ───────────────────────────────────────── */
-.sec-h{padding-block:clamp(32px,5.5vh,75px) clamp(12px,2vh,20px);border-top:var(--rule) solid var(--divider);margin-top:clamp(26px,3.4vw,48px)}
-.sec-h:first-of-type{margin-top:0;border-top:0}
-.sec-h h2{font-size:clamp(22px,3.4vw,44px);font-weight:800;letter-spacing:-.03em;text-transform:uppercase;font-variation-settings:"wdth" 92}
-.sec-h .n{margin-top:8px}
 /* колонкова кладка. У сітці висоту рядка задавав найвищий кадр, і під
    горизонтальними знімками лишалася порожнеча на пів екрана; тут кожна
-   колонка тече своєю висотою, тож дірок не буває. Ціна — порядок читається
-   згори вниз у колонці, а не зліва направо. */
+   колонка тече своєю висотою, тож дірок не буває. */
 .shots{display:grid;gap:clamp(10px,1.4vw,20px);grid-template-columns:1fr;
-  padding-bottom:clamp(10px,1.4vw,20px)}
+  padding-block:clamp(28px,5vh,64px) clamp(10px,1.4vw,20px)}
 @media (min-width:640px){.shots{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1100px){.shots{grid-template-columns:repeat(3,1fr)}}
 .shots img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
@@ -89,24 +158,12 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
   .shots img.tall{grid-row:span 2;aspect-ratio:3/4;align-self:stretch;
     height:auto;object-position:center top}
 }
-/* ── перемикач категорій ─────────────────────────────────── */
-.secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.secs::-webkit-scrollbar{display:none}
-.sec{flex:0 0 auto;white-space:nowrap}
-.sec{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--mute);
-  padding-block:6px;position:relative;transition:color 240ms var(--ease)}
-.sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
-@media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
-
-.sec[aria-current]{color:var(--ink)}
-.sec[aria-current]::after{transform:scaleX(1);background:var(--divider)}
-@media (hover:hover){.sec[aria-current]:hover::after{background:var(--pencil)}}
 
 /* ── перелік категорій ───────────────────────────────────── */
-.cats{padding-bottom:clamp(30px,6vh,72px)}
+/* перший рядок стоїть там, де раніше починався заголовок сторінки */
+.cats{padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px)}
 .cat{
-  display:grid;grid-template-columns:auto 1fr auto auto;gap:clamp(14px,2.4vw,36px);
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,2.4vw,36px);
   align-items:baseline;padding-block:clamp(16px,2.2vw,26px);
   min-height:64px;position:relative;
 }
@@ -117,44 +174,26 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 }
 .cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:clamp(28px,4.6vw,60px);font-weight:300;letter-spacing:-.02em;
+  font-size:clamp(28px,4.6vw,60px);font-weight:300;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
-  transition:transform 380ms var(--ease);transform-origin:left;
+  transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
-.cat .qty{font-size:clamp(12px,1vw,14px);color:var(--mute);letter-spacing:.01em;font-variant-numeric:tabular-nums}
-.cat .arw{font-size:clamp(14px,1.3vw,20px);transition:transform 380ms var(--ease)}
 .cat::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:var(--rule);
+  content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
   background:var(--pencil);transform:scaleX(0);transform-origin:left;
   transition:transform 620ms var(--ease);
 }
 @media (hover:hover){
-  .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px))}
+  .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px));color:var(--pencil)}
   .cat:hover .num{color:var(--accent)}
-  .cat:hover .arw{transform:translate(6px,-6px)}
   .cat:hover::after{transform:scaleX(1)}
 }
-.cat:active .lab{transform:translateX(10px)}
+.cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
 @media (max-width:640px){
-  .cat{grid-template-columns:auto 1fr auto;row-gap:2px;padding-block:14px}
-  .cat .num{grid-column:1;grid-row:1}
-  .cat .lab{grid-column:2;grid-row:1}
-  .cat .arw{grid-column:3;grid-row:1;align-self:center}
-  .cat .qty{grid-column:2;grid-row:2}
+  .cat{padding-block:14px}
 }
-
-/* ── липка шапка ─────────────────────────────────────────── */
-.topbar{
-  position:sticky;top:0;z-index:30;background:var(--bg);
-  border-bottom:var(--rule) solid var(--divider);
-}
-.topbar .rule{margin-bottom:2px}
-/* той самий просвіт над заголовком, що і .hero на головній —
-   це правило йде після базового .head і перебивало його */
-.head{padding-top:clamp(10px,2vh,26px)}
-
 
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* контактна плашка й нижній рядок живуть в одній темній плашці,
@@ -167,8 +206,9 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
   /* кегль рядка винесено в змінну, бо від нього рахується і розмір марок —
      інакше пропорція пливе між мобільним і десктопом */
   --fs-line:clamp(28px,4.6vw,60px);
-  /* марки рівно у зріст великої літери рядка (0.72em у Fixel) */
-  --ic-cap:.72;
+  /* марки не в зріст великої літери, а в зріст малої: поряд із «mail» і
+     «hats» кружечок у 0.72em кричав, у 0.56em він у рядку, а не над ним */
+  --ic-cap:.56;
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 .foot-in{padding-block:clamp(22px,3.85vh,52px)}
@@ -208,13 +248,12 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .site-foot .lines > a:active{color:var(--deep-ink)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
-/* марки соцмереж у тому ж рядку, що Email і WhatsApp, і рівно у зріст його
-   великої літери: розмір рахується від --fs-line, інакше пропорція пливе
-   між мобільним і десктопом. Низ марки лягає на базову лінію тексту, тож
-   вирівнювати нічим не треба — коробки збігаються самі */
+/* марки соцмереж у тому ж рядку, що Email і WhatsApp. Низ марки лягає на
+   базову лінію тексту, тож вирівнювати нічим не треба — коробки збігаються
+   самі; зріст задає --ic-cap вище */
 .socials{
   display:inline-flex; align-items:center; vertical-align:baseline;
-  gap:clamp(13px,1.7vw,22px); margin-left:auto;
+  gap:clamp(12px,1.5vw,19px); margin-left:auto;
 }
 .socials a{display:block; line-height:0}
 .socials svg{
@@ -249,20 +288,27 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 .site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
-.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
-.foot-bar .arch::after{
-  content:""; position:absolute; left:0; right:0; bottom:-3px;
-  height:var(--rule); background:var(--pencil);
+/* поле під стрілку зарезервоване падінгом, тож на ховері рядок не смикається */
+.foot-bar .arch{position:relative; padding-right:1.5em; transition:color 240ms var(--ease)}
+.foot-bar .arch::before{
+  content:""; position:absolute; left:0; right:1.5em; bottom:-3px;
+  height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 380ms var(--ease);
 }
+.foot-bar .arch::after{
+  content:"↗"; position:absolute; right:.2em; bottom:0; line-height:1;
+  opacity:0; transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
 @media (hover:hover){
   .foot-bar .arch:hover{color:var(--deep-ink)}
-  .foot-bar .arch:hover::after{transform:scaleX(1)}
+  .foot-bar .arch:hover::before{transform:scaleX(1)}
+  .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
+.foot-bar .arch:active::before{transform:scaleX(1)}
+.foot-bar .arch:active::after{opacity:1; transform:none}
 .site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
-
-/* повітря між останнім блоком сторінки і темною плашкою — на галереях
-   знімки інакше впираються в підвал упритул */
+/* повітря між останнім блоком сторінки і темною плашкою */
 .site-foot{margin-top:clamp(28px,5vw,64px)}

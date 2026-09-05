@@ -60,7 +60,8 @@
   /* далі 14" MacBook Pro Retina верстка не росте — на ширших
      екранах краще поле з боків, ніж розтягнуті рядки */
   --maxw:1512px;
-  --rule:2px;
+  /* волосяна лінійка розділювачів, товща лінія ховера, і рамка портрета */
+  --rule:1px; --pen:2px; --frame:2px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
 @media (prefers-color-scheme:dark){
@@ -89,8 +90,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
    (шапка й підвал на 404) */
 .wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
-/* лінійка живе в тій самій колонковій сітці, що й рядки переліків —
-   до самих країв сторінки йде тільки межа липкої шапки */
+/* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 
@@ -127,24 +127,38 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* ── ім'я під шапкою ───────────────────────────────────────── */
 /* двома рядками: великий кегль, але легка насиченість —
    вагу несе розмір, а не жир */
-.name{
-  font-size:clamp(42px,7.4vw,112px); font-weight:400;
-  letter-spacing:-.032em; line-height:1; font-variation-settings:"wdth" 98;
-}
-.name span{display:block; white-space:nowrap}
-.hero{padding-block:clamp(5px,1vh,13px) 0}
-
-.hero-foot{
+/* ім'я тримає ліву половину, лід — праву, і обидва підбиті під один низ.
+   Доти лід висів окремим абзацом посеред сторінки, а верхній правий кут
+   лишався порожнім; тепер порожнеча зайнята текстом, а не повітрям,
+   і два блоки стоять на спільній горизонталі */
+.hero{
   display:grid; grid-template-columns:repeat(12,1fr);
   /* той самий gap, що і в .about — інакше колонкові лінії двох сіток
      розходяться і фото не стає рівно під ліву межу ліду */
   gap:clamp(20px,2.6vw,40px);
-  align-items:end; padding-block:clamp(50px,7.9vh,110px) 0;
+  align-items:end; padding-block:clamp(6px,1.2vh,16px) 0;
 }
-/* лід починається з лінії 6-ї колонки — по ній же вирівняне фото нижче */
-.lede{grid-column:3/span 6; margin:0; justify-self:start; max-width:46ch; font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
-@media (max-width:640px){
-  .lede{grid-column:1/span 12; justify-self:stretch}
+/* вісім колонок, а не сім: українське «Русанівський» довше за
+   «Rusanivsky» рівно настільки, що в семи вставало впритул до межі —
+   а рядок не переноситься */
+.name{
+  grid-column:1/span 8;
+  font-size:clamp(42px,7.4vw,112px); font-weight:400;
+  letter-spacing:-.032em; line-height:1; font-variation-settings:"wdth" 98;
+}
+.name span{display:block; white-space:nowrap}
+/* сторінка ділиться на 8 і 4 колонки: ліворуч ім'я, фахи й назви
+   розділів, праворуч лід, портрет і переліки категорій. Лід стоїть на тій
+   самій вертикалі, що й вони, і доходить до правого краю верстки.
+   .5em піднімає абзац із самого низу коробки імені на його базову лінію */
+.lede{grid-column:9/span 4; margin:0 0 .5em;
+  font-size:clamp(15px,1.15vw,18px); text-wrap:pretty}
+/* вужче лід поряд з іменем уже не стає, не розсипавши рядок —
+   тоді він іде під ім'ям на всю ширину */
+@media (max-width:1150px){
+  .hero{align-items:start}
+  .name{grid-column:1/-1}
+  .lede{grid-column:1/-1; max-width:52ch; margin:clamp(26px,4vh,48px) 0 0}
 }
 
 
@@ -166,21 +180,26 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* фахи — сходами: кожен наступний із більшим відступом, так що блок
    заповнює простір ліворуч від портрета і сходить до його межі */
 .roles{
-  grid-column:1/span 12; grid-row:1; align-self:start;
-  /* поле закінчується точно там, де починається портрет: його ширина —
-     та сама змінна (висота 3.52em при пропорції 4:5) плюс міжколонник */
-  padding-right:calc(var(--role-fs) * 2.816 + var(--about-gap));
+  /* портрет має власні колонки, тож поле під нього більше не доводиться
+     вираховувати падінгом від кегля — сітка тримає межу сама.
+     stretch + space-between розганяє три рядки рівно на висоту знімка:
+     верхній рядок стає врівень з його верхнім краєм, нижній — з нижнім,
+     і дві половини блоку важать однаково, замість того щоб під сходами
+     лишалася порожня смуга завширшки в пів сторінки */
+  grid-column:1/span 8; grid-row:1; align-self:stretch; display:flex;
+  /* правий край сходів лягає на ту саму 9-ту лінію, з якої починаються
+     лід угорі й переліки категорій нижче */
 }
 .roles h2{
   font-size:var(--role-fs); font-weight:100; text-transform:uppercase;
-  /* справжнього курсиву в родині немає — це синтетичний нахил браузера.
-     oblique з явним кутом Blink ігнорує, тож кут тут браузерний (~14°) */
-  font-style:italic;
-  letter-spacing:-.02em;
+  /* прямий, а не синтетичний нахил: тонкий гротеск у великому кеглі
+     сам по собі достатньо різкий, а фальшивий курсив ламав вертикалі
+     всієї сторінки */
+  letter-spacing:-.005em;
   font-variation-settings:"wdth" 96; line-height:1.08; color:var(--ink);
 }
+.roles h2{flex:1; display:flex; flex-direction:column; justify-content:space-between}
 .roles .role{display:block; width:max-content}
-.roles .role + .role{margin-top:.14em}
 /* сходинки тримаються правого краю поля, а не заданого відступу зліва:
    інакше найдовший рядок при фіксованому відступі налазить на портрет.
    auto зліва сам добирає решту, тож ні кегль, ні довжина слова не ламають
@@ -215,17 +234,25 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   min-height:64px; position:relative;
 }
 .spec .no{grid-column:1}
-/* 2..7 і 8..12 — межа підібрана не на око: найдовша назва закінчується
-   близько 7-ї лінії, а найдовший підпис від 8-ї ще вміщається до краю */
-.spec h3{grid-column:2/span 6}
-.spec ul{grid-column:8/span 5}
+/* та сама межа по 9-й лінії, що й у героя: назва розділу тримається
+   лівих восьми колонок, перелік — правих чотирьох */
+.spec h3{grid-column:2/span 7}
+.spec ul{grid-column:9/span 4}
 .spec:first-child{border-top:var(--rule) solid var(--divider)}
-.spec::after{
+.spec::before{
   content:""; position:absolute; left:0; right:0; bottom:0;
   height:var(--rule); background:var(--divider);
 }
 /* під останнім рядком лінійки немає: далі й так починається темна плашка */
-.spec:last-child::after{content:none}
+.spec:last-child::before{content:none}
+/* лінійка ховера — окремим шаром поверх розділювача, тож малює її повну
+   товщину, а не залишок під ним */
+.spec::after{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:var(--pen); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 620ms var(--ease);
+}
 /* фіксована ширина номера: «01» вужче за «02»..«04», а на вузькому екрані
    номер стоїть в auto-колонці, тож перший рядок з'їжджав на 2px вліво.
    tnum у цій гарнітурі не допомагає, тому ширина задана явно */
@@ -233,20 +260,38 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   font-size:11px; letter-spacing:.1em; font-weight:800; color:var(--mute);
   min-width:3ch;
 }
-/* той самий набір, що й назви в переліку соцмереж — без капітелі */
+/* той самий набір, що й назви в переліку соцмереж — без капітелі.
+   Вирівняні по правому краю своєї колонки: тепер назви впираються в ту
+   саму вертикаль, від якої починаються категорії, замість розповзатися
+   ліворуч за довжиною слова */
 .spec h3{
   margin:0; font-size:var(--spec-fs); font-weight:300;
   letter-spacing:-.02em; line-height:1.02;
   font-variation-settings:"wdth" 100; color:var(--ink);
+  text-align:right; padding-right:.9em;
 }
-/* перелік іде нижче за базову лінію назви, а не врівень із нею:
-   зсув рахується від кегля назви, тож тримається на всіх ширинах */
+.spec .sect{position:relative; display:inline-block; transition:color 260ms var(--ease)}
+/* стрілка вниз-праворуч: веде всередину сайту. Місце під неї тримає
+   падінг заголовка, тож на ховері рядок не смикається */
+.spec .sect::after{
+  content:"↘"; position:absolute; left:100%; bottom:.55em;
+  margin-left:.24em; font-size:.34em; line-height:1; color:var(--ink);
+  opacity:0; transform:translate(-.3em,-.3em);
+  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
+}
+/* розділ, що живе на сторонньому сайті, показує звичну стрілку назовні */
+.spec .sect[target]::after{content:"↗"; transform:translate(-.3em,.3em)}
+/* перелік іде на два свої рядки нижче, ніж стояв доти. align-self:start
+   виводить його з базового вирівнювання рядка — інакше саме він задавав
+   би базову лінію і тягнув номер із назвою вниз за собою */
 .spec ul{
-  list-style:none; margin:calc(var(--spec-fs) * .55) 0 0; padding:0;
+  list-style:none; padding:0; align-self:start;
+  font-size:clamp(12px,1vw,14px); line-height:1.4;
+  margin:calc(var(--spec-fs) * .55 + 2.8em) 0 0;
   display:grid; gap:6px; justify-items:start;
 }
 .spec li{
-  font-size:clamp(12px,1vw,14px); line-height:1.4; color:var(--mute);
+  font-size:inherit; line-height:inherit; color:var(--mute);
   letter-spacing:.01em; text-wrap:pretty;
 }
 .spec .it{
@@ -254,20 +299,28 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
   background-image:linear-gradient(var(--pencil),var(--pencil));
   background-repeat:no-repeat; background-position:0 100%;
-  background-size:0% var(--rule);
+  background-size:0% var(--pen);
   transition:background-size 380ms var(--ease), color 240ms var(--ease);
 }
-.spec a.it[target]::after{content:"↗"}
-.spec a.it::after{
-  content:"→"; display:inline-block; margin-left:.4em; font-size:.72em; color:var(--accent);
+/* у категорій стрілки більше немає — лишилась тільки там, де посилання
+   справді виводить із сайту */
+.spec a.it[target]::after{
+  content:"↗"; display:inline-block; margin-left:.35em; font-size:.9em; color:var(--ink);
   opacity:0; transform:translate(-3px,3px);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
 @media (hover:hover){
-  .spec .it:hover{color:var(--ink); background-size:100% var(--rule)}
-  .spec a.it:hover::after{opacity:1; transform:none}
+  /* наведення будь-де в рядку — і на розділ, і на категорію — фарбує
+     назву розділу й проводить лінійку під рядком */
+  .spec:hover .sect{color:var(--pencil)}
+  .spec:hover::after{transform:scaleX(1)}
+  .spec .sect:hover::after{opacity:1; transform:none}
+  .spec .it:hover{color:var(--ink); background-size:100% var(--pen)}
+  .spec a.it[target]:hover::after{opacity:1; transform:none}
 }
-.spec .it:active{color:var(--ink); background-size:100% var(--rule)}
+.spec:active .sect{color:var(--pencil)}
+.spec:active::after{transform:scaleX(1)}
+.spec .it:active{color:var(--ink); background-size:100% var(--pen)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 /* вузько назва й перелік уже не стають поряд — перелік іде другим рядком
    під назвою, як підпис у соцмережах */
@@ -279,13 +332,15 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   }
   .spec .no{grid-column:1; grid-row:1}
   .spec h3{grid-column:2; grid-row:1}
-  .spec ul{grid-column:2; grid-row:2; margin-top:0}
+  .spec ul{grid-column:2; grid-row:2; margin-top:0; align-self:auto}
 }
-/* портрет притиснутий до правого краю колонки, а заввишки — рівно у три
-   рядки фахів: 3 рядки по line-height 1.08 плюс два проміжки по .14em */
+/* портрет на всю ширину своїх трьох колонок. Доти він був заввишки рівно
+   у три рядки фахів — на тісний кадр «голова і плечі» цього вистачало, а
+   знімок із камерою, столом і стіною за спиною в такому розмірі не
+   читається: сюжет має право на власну вагу в композиції */
 .figwrap{grid-column:10/span 3; grid-row:1; align-self:start}
-.figwrap figure{margin-left:auto; width:max-content}
-.figwrap .shot picture{height:calc(var(--role-fs) * 3.52); width:auto}
+.figwrap figure{width:100%}
+.figwrap .shot picture{width:100%; height:auto}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
@@ -297,14 +352,18 @@ figure{margin:0; position:relative; z-index:1}
 /* обводка йде зовні — не наїжджає на знімок */
 .shot::after{
   content:""; position:absolute; pointer-events:none;
-  inset:calc(var(--rule) * -1);
-  border:var(--rule) solid var(--edge);
+  inset:calc(var(--frame) * -1);
+  border:var(--frame) solid var(--edge);
 }
 .shot img{width:100%; height:100%; object-fit:cover}
 figcaption{display:none}
 @media (max-width:640px){
   .roles,.figwrap{grid-column:1/span 12; grid-row:auto}
-  .roles{padding-right:0}
+  /* під портретом сходи не мають до чого тягнутися — рядки знову
+     стоять один під одним із власним просвітом */
+  .roles{align-self:start}
+  .roles h2{display:block}
+  .roles .role + .role{margin-top:.14em}
   .roles .role:nth-child(2),.roles .role:nth-child(3){margin-left:0; margin-right:0}
   .figwrap{order:-1}
   .figwrap figure{width:auto}
@@ -323,8 +382,9 @@ figcaption{display:none}
   /* кегль рядка винесено в змінну, бо від нього рахується і розмір марок —
      інакше пропорція пливе між мобільним і десктопом */
   --fs-line:clamp(28px,4.6vw,60px);
-  /* марки рівно у зріст великої літери рядка (0.72em у Fixel) */
-  --ic-cap:.72;
+  /* марки не в зріст великої літери, а в зріст малої: поряд із «mail» і
+     «hats» кружечок у 0.72em кричав, у 0.56em він у рядку, а не над ним */
+  --ic-cap:.56;
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 .foot-in{padding-block:clamp(22px,3.85vh,52px)}
@@ -364,13 +424,12 @@ figcaption{display:none}
 .site-foot .lines > a:active{color:var(--deep-ink)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
-/* марки соцмереж у тому ж рядку, що Email і WhatsApp, і рівно у зріст його
-   великої літери: розмір рахується від --fs-line, інакше пропорція пливе
-   між мобільним і десктопом. Низ марки лягає на базову лінію тексту, тож
-   вирівнювати нічим не треба — коробки збігаються самі */
+/* марки соцмереж у тому ж рядку, що Email і WhatsApp. Низ марки лягає на
+   базову лінію тексту, тож вирівнювати нічим не треба — коробки збігаються
+   самі; зріст задає --ic-cap вище */
 .socials{
   display:inline-flex; align-items:center; vertical-align:baseline;
-  gap:clamp(13px,1.7vw,22px); margin-left:auto;
+  gap:clamp(12px,1.5vw,19px); margin-left:auto;
 }
 .socials a{display:block; line-height:0}
 .socials svg{
@@ -405,28 +464,38 @@ figcaption{display:none}
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 .site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
-.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
-.foot-bar .arch::after{
-  content:""; position:absolute; left:0; right:0; bottom:-3px;
-  height:var(--rule); background:var(--pencil);
+/* поле під стрілку зарезервоване падінгом, тож на ховері рядок не смикається */
+.foot-bar .arch{position:relative; padding-right:1.5em; transition:color 240ms var(--ease)}
+.foot-bar .arch::before{
+  content:""; position:absolute; left:0; right:1.5em; bottom:-3px;
+  height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 380ms var(--ease);
 }
+.foot-bar .arch::after{
+  content:"↗"; position:absolute; right:.2em; bottom:0; line-height:1;
+  opacity:0; transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
 @media (hover:hover){
   .foot-bar .arch:hover{color:var(--deep-ink)}
-  .foot-bar .arch:hover::after{transform:scaleX(1)}
+  .foot-bar .arch:hover::before{transform:scaleX(1)}
+  .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
+.foot-bar .arch:active::before{transform:scaleX(1)}
+.foot-bar .arch:active::after{opacity:1; transform:none}
 .site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 
 /* ── reveal ───────────────────────────────────────────────── */
-[data-rev]{opacity:0; transform:translateY(22px)}
-[data-rev].is-in{opacity:1; transform:none; transition:opacity 520ms var(--ease), transform 560ms var(--ease)}
-[data-rev].is-in{transition-delay:var(--d,0ms)}
+/* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
+.rev [data-rev]{opacity:0; transform:translateY(22px)}
+.rev [data-rev].is-in{opacity:1; transform:none; transition:opacity 520ms var(--ease), transform 560ms var(--ease)}
+.rev [data-rev].is-in{transition-delay:var(--d,0ms)}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
-  [data-rev]{opacity:1!important; transform:none!important}
+  .rev [data-rev]{opacity:1!important; transform:none!important}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
@@ -438,6 +507,7 @@ figcaption{display:none}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
+<script>document.documentElement.classList.add('rev')</script>
 </head>
 <body>
 
@@ -460,9 +530,7 @@ figcaption{display:none}
       <span data-en="Kyrylo" data-ua="Кирило">Kyrylo</span>
       <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
     </h1>
-    <div class="hero-foot">
-      <p class="lede" data-rev style="--d:280ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
-    </div>
+    <p class="lede" data-rev style="--d:220ms" data-en="Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits." data-ua="Спеціаліст у креативній індустрії з 13-річним досвідом: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети.">Creative industry professional with 13 years of experience: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits.</p>
   </section>
 
   <section class="wrap about" id="about" aria-label="About">
@@ -479,7 +547,7 @@ figcaption{display:none}
           <picture>
         <source srcset="photo.avif" type="image/avif">
         <source srcset="photo.webp" type="image/webp">
-        <img src="photo.jpg" alt="Portrait of Kyrylo Rusanivsky" width="1600" height="1600" loading="lazy" decoding="async">
+        <img src="photo.jpg" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" loading="lazy" decoding="async">
       </picture>
         </div>
         <figcaption class="tiny"><span data-en="Kyiv · 2023" data-ua="Київ · 2023">Kyiv · 2023</span></figcaption>
@@ -492,7 +560,7 @@ figcaption{display:none}
       <ol class="specs">
         <li class="spec" data-rev style="--d:80ms">
           <span class="no" aria-hidden="true">01</span>
-          <h3 data-en="Video editing" data-ua="Відеомонтаж">Video editing</h3>
+          <h3><a class="sect" href="/video/" data-en="Video editing" data-ua="Відеомонтаж">Video editing</a></h3>
           <ul>
             <li><a class="it" href="/video/interviews/" data-en="Interviews" data-ua="Інтерв’ю">Interviews</a></li>
             <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
@@ -502,7 +570,7 @@ figcaption{display:none}
         </li>
         <li class="spec" data-rev style="--d:150ms">
           <span class="no" aria-hidden="true">02</span>
-          <h3 data-en="Print &amp; Design" data-ua="Друк і дизайн">Print &amp; Design</h3>
+          <h3><a class="sect" href="/design/" data-en="Print &amp; Design" data-ua="Друк і дизайн">Print &amp; Design</a></h3>
           <ul>
             <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
             <li><a class="it" href="/design/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
@@ -511,7 +579,7 @@ figcaption{display:none}
         </li>
         <li class="spec" data-rev style="--d:220ms">
           <span class="no" aria-hidden="true">03</span>
-          <h3 data-en="Photography" data-ua="Фотографія">Photography</h3>
+          <h3><a class="sect" href="/photo/" data-en="Photography" data-ua="Фотографія">Photography</a></h3>
           <ul>
             <li><a class="it" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a></li>
             <li><a class="it" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a></li>
@@ -523,7 +591,7 @@ figcaption{display:none}
         </li>
         <li class="spec" data-rev style="--d:290ms">
           <span class="no" aria-hidden="true">04</span>
-          <h3 data-en="Street photography" data-ua="Вулична фотографія">Street photography</h3>
+          <h3><a class="sect" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Street photography" data-ua="Вулична фотографія">Street photography</a></h3>
           <ul>
             <li><a class="it" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Ongoing series on Instagram" data-ua="Постійна серія в Instagram">Ongoing series on Instagram</a></li>
           </ul>
@@ -562,15 +630,23 @@ figcaption{display:none}
 (function(){
   var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* reveals */
+  /* reveals: що вже в кадрі — проявляється одразу після завантаження,
+     решта — коли до неї догортали */
   function show(el){ el.classList.add('is-in'); }
+  var revs = [].slice.call(document.querySelectorAll('[data-rev], .about'));
   if ('IntersectionObserver' in window && !rm){
     var io = new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting){ show(e.target); io.unobserve(e.target); } });
     }, {rootMargin:'0px 0px -8% 0px', threshold:0.12});
-    document.querySelectorAll('[data-rev], .about').forEach(function(el){ io.observe(el); });
+    var onload = [];
+    revs.forEach(function(el){
+      if(el.getBoundingClientRect().top < innerHeight){ onload.push(el); } else { io.observe(el); }
+    });
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ onload.forEach(show); });
+    });
   } else {
-    document.querySelectorAll('[data-rev], .about').forEach(show);
+    revs.forEach(show);
   }
   requestAnimationFrame(function(){ show(document.getElementById('hero')); });
 

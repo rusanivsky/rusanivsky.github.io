@@ -20,12 +20,18 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/photo/photo.css?v=4">
+<link rel="stylesheet" href="/photo/photo.css?v=5">
+<script>document.documentElement.classList.add('rev')</script>
 </head>
 <body>
 <div class="topbar">
 <header class="wrap meta">
   <a class="back" href="/" data-en="← Kyrylo Rusanivsky" data-ua="← Кирило Русанівський">← Kyrylo Rusanivsky</a>
+  <nav class="parts" aria-label="Sections">
+    <a class="part" href="/video/" data-en="Video" data-ua="Відео">Video</a>
+    <a class="part" href="/design/" data-en="Design" data-ua="Дизайн">Design</a>
+    <a class="part" href="/photo/" aria-current="page" data-en="Photo" data-ua="Фото">Photo</a>
+  </nav>
   <div class="tgl" id="lang" role="group" aria-label="Language">
     <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
   </div>
@@ -33,10 +39,7 @@
 <hr class="rule">
 <nav class="wrap secs"><a class="sec" href="/photo/public-events/" data-en="Public events" data-ua="Публічні заходи">Public events</a><a class="sec" href="/photo/art-events/" data-en="Art events" data-ua="Мистецькі події">Art events</a><a class="sec" href="/photo/backstage/" aria-current="page" data-en="Backstage" data-ua="Бекстейдж">Backstage</a><a class="sec" href="/photo/concerts-theatre/" data-en="Concerts &amp; theatre" data-ua="Концерти та вистави">Concerts &amp; theatre</a><a class="sec" href="/photo/parties/" data-en="Parties" data-ua="Вечірки">Parties</a><a class="sec" href="/photo/photo-sessions/" data-en="Photo sessions" data-ua="Фотосесії">Photo sessions</a></nav>
 </div>
-<section class="wrap head">
-  <h1 data-en="Backstage" data-ua="Бекстейдж">Backstage</h1>
-  <p class="tiny cnt">15</p>
-</section>
+<h1 class="sr" data-en="Backstage" data-ua="Бекстейдж">Backstage</h1>
 <section class="wrap shots">
     <img src="/photo/img/backstage/03-backstage-002.webp" alt="Бекстейдж" width="1396" height="933" loading="lazy" decoding="async">
     <img src="/photo/img/backstage/03-backstage-003.webp" alt="Бекстейдж" width="1396" height="933" loading="lazy" decoding="async">
@@ -149,6 +152,41 @@
     fr.loading='lazy';
     f.replaceWith(fr);
   });
+  /* лінійка під шапкою — тільки коли сторінку зрушили вниз */
+  (function(){
+    var tb=document.querySelector('.topbar'); if(!tb) return;
+    var mark=function(){ tb.classList.toggle('is-stuck',(window.scrollY||document.documentElement.scrollTop||0)>2); };
+    mark();
+    addEventListener('scroll',mark,{passive:true});
+    addEventListener('pageshow',mark);
+  })();
+
+  /* поява блоків — той самий рух, що й на головній. data-rev вішає сам
+     скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, проявляється
+     одразу після завантаження, решта — коли до неї догортали */
+  (function(){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+    var els=[].slice.call(document.querySelectorAll('.cats .cat, .grid > *, .shots > *'));
+    els.forEach(function(el,i){
+      el.setAttribute('data-rev','');
+      el.style.setProperty('--d',(i%3)*70+'ms');
+    });
+    els=els.concat([].slice.call(document.querySelectorAll('.site-foot [data-rev]')));
+    var onload=[], later=[];
+    els.forEach(function(el){
+      (el.getBoundingClientRect().top < innerHeight ? onload : later).push(el);
+    });
+    later.forEach(function(el){ io.observe(el); });
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        onload.forEach(function(el){ el.classList.add('is-in'); });
+      });
+    });
+  })();
 })();
 </script>
 <script>
