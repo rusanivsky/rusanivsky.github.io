@@ -221,10 +221,9 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    на колонку правіше за попередній. Крок — одна колонка з міжколонником,
    тобто (100% + gap) / 8 від восьмиколонкового блоку. Доти другий рядок
    відсувався на 20% ширини, а третій тулився до правого краю, і жоден із
-   них не потрапляв на лінію. Третій рядок стоїть на колонку далі за крок,
-   бо він найкоротший і рівним кроком лишався б надто близько до другого */
+   них не потрапляв на лінію: 46, 96 і 373 пікселя проти 46, 161 і 277 */
 .roles .role:nth-child(2){margin-left:calc((100% + var(--about-gap)) / 8)}
-.roles .role:nth-child(3){margin-left:calc((100% + var(--about-gap)) * 3 / 8)}
+.roles .role:nth-child(3){margin-left:calc((100% + var(--about-gap)) / 4)}
 .pills{
   display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,30px); list-style:none; padding:0;
   margin:clamp(18px,2.4vw,28px) 0 0;
@@ -262,10 +261,16 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   content:""; position:absolute; left:0; right:0; bottom:0;
   height:var(--rule); background:var(--divider);
 }
-/* лінійка ховера — окремим шаром поверх розділювача, тож малює її повну
-   товщину, а не залишок під ним */
+/* під останнім рядком лінійки немає: одразу за ним іде підпис секції
+   клієнтів зі своєю лінійкою, і дві поспіль ділили б сторінку намарно */
+.spec:last-child::before{content:none}
+/* лінійка ховера — окремим шаром поверх розділювача, тож малює його повну
+   товщину, а не залишок під ним. Вона лягає на верхню межу рядка, а не на
+   нижню: під останнім рядком розділювача більше немає, і знизу вона малювала б
+   лінію там, де її нема. -1px піднімає її рівно на розділювач, який стоїть
+   по той бік межі */
 .spec::after{
-  content:""; position:absolute; left:0; right:0; bottom:0;
+  content:""; position:absolute; left:0; right:0; top:calc(var(--rule) * -1);
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 620ms var(--ease);
@@ -412,7 +417,11 @@ figure{margin:0; position:relative; z-index:1}
    соцмереж у підвалі. Розтягнутий на всю ширину ряд робив би між ними
    поля по двісті пікселів, і четвірка переставала б читатися як група */
 .logos{
-  list-style:none; margin:clamp(22px,3.4vw,44px) 0 0; padding:0;
+  /* лінійка під заголовком — та сама, що відкриває перелік напрямків, і
+     стоїть так само: впритул до підпису, а далі те саме поле, що й у
+     рядках вище */
+  border-top:var(--rule) solid var(--divider);
+  list-style:none; margin:0; padding:clamp(16px,2.2vw,26px) 0 0;
   display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end;
   column-gap:clamp(26px,3.6vw,54px); row-gap:clamp(24px,4vw,40px);
 }
@@ -668,8 +677,8 @@ figure{margin:0; position:relative; z-index:1}
     <div class="roles">
       <h2 data-rev>
         <span class="role" data-en="Video Editor" data-ua="Режисер монтажу">Video Editor</span>
-        <span class="role" data-en="Graphic Designer" data-ua="Графічний дизайнер">Graphic Designer</span>
         <span class="role" data-en="Photographer" data-ua="Фотограф">Photographer</span>
+        <span class="role" data-en="Graphic Designer" data-ua="Графічний дизайнер">Graphic Designer</span>
       </h2>
     </div>
     <div class="figwrap">

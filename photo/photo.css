@@ -198,8 +198,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
+/* лінійка ховера лягає на верхню межу рядка — так само, як у переліку
+   напрямків на головній */
 .cat::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
+  content:"";position:absolute;left:0;right:0;top:calc(var(--rule) * -1);height:var(--pen);
   background:var(--pencil);transform:scaleX(0);transform-origin:left;
   transition:transform 620ms var(--ease);
 }
