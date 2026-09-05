@@ -15,8 +15,6 @@
 :root{
   --pencil:#d64427;
   --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
-  /* підвал — глибокий темно-сірий, однаковий у обох темах */
-  --deep:#333230; --deep-ink:#f2f0ea;
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
@@ -88,10 +86,17 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 /* тема й мова стоять однією групою в правому куті шапки — сітка шапки
    лишається на трьох колонках, як була з самою мовою */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
-/* тимчасовий перемикач теми говорить тихіше за мову: та сама висота й
-   набір, але легша вага, поки на ньому не зупинилися */
-#theme button{font-weight:600}
-#theme button[aria-pressed="true"]{font-weight:800}
+/* тема — двома іконками замість слів: «Світла/Темна» коштували в шапці
+   стільки ж місця, скільки все ліве поле з містом і часом, і при цьому
+   повторювали те, що видно з самої сторінки. Вибраний стан тримається на
+   тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
+   лише зміна тону читається заслабко */
+.tgl .ic{
+  display:block; width:15px; height:15px; fill:none; stroke:currentColor;
+  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke-width 220ms var(--ease);
+}
+#theme button[aria-pressed="true"] .ic{stroke-width:1.9}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
 @media (max-width:560px){
@@ -242,21 +247,27 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .pd{margin:0;font-size:clamp(13px,1vw,15px);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 
 /* ── підвал сайту ─────────────────────────────────────────── */
-/* контактна плашка й нижній рядок живуть в одній темній плашці,
-   розділені такою ж лінійкою, як між рядками соцмереж — сторінка
-   на всіх розділах закінчується цим кольором */
+/* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
+   такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
+   темною плашкою #333230, і сенс у ній був лише в світлій темі: на
+   #f2f0ea вона давала контраст 11,2:1 і читалася як подія, а на
+   темному #171615 — 1,41:1, тобто ледь помітну пляму замість блоку.
+   Прийом працював наполовину, а сторінка з волосяних лінійок і
+   повітря обходиться без суцільної заливки */
 .site-foot{
-  background:var(--deep); color:var(--deep-ink);
+  color:var(--ink);
   --uline:2px;
-  --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
   /* кегль контактного рядка винесено в змінну, бо від нього рахується
      і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  --fs-line:clamp(28px,4.6vw,60px);
-  /* назви соцмереж — трохи менші за половину контактного рядка: чотири такі
-     рядки заввишки рівно з лівою половиною плашки, тож жодна з половин не
-     перетягує другу. max() тримає кегль читабельним на мобільному, де сам
-     контактний рядок уже вдвічі менший */
-  --fs-soc:max(15px, calc(var(--fs-line) * .47));
+  --fs-line:clamp(26px,2.6vw,38px);
+  /* назви соцмереж підібрані так, щоб увесь стовпчик був заввишки рівно з
+     лівою половиною підвалу — жодна з половин не перетягує другу. Множник
+     рахується від кількості рядків: при чотирьох це було .47, з появою
+     Upwork рядків стало п'ять, і при .47 стовпчик звисав на 53px нижче
+     контактів. (141 − 4×5) / (5 × 1.24) ≈ 19,5px від шістдесятого кеглю,
+     тобто .325. max() тримає кегль читабельним на мобільному, де сам
+     контактний рядок уже вдвічі менший, а половини й так ідуть у стос */
+  --fs-soc:max(15px, calc(var(--fs-line) * .325));
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -264,16 +275,39 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    лінії. Доти стовпчик просто тулився до правого краю, і його ліва межа
    гуляла за довжиною найдовшої назви */
 .foot-in{
+  position:relative;
   padding-block:clamp(22px,3.85vh,52px);
   display:grid; grid-template-columns:repeat(12,1fr);
   column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
   align-items:start;
 }
-.foot-in .say{grid-column:1/span 10}
-.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
+/* контакти починаються з другої колонки — тим самим уступом, що ім'я з
+   текстом угорі й номери з назвами в переліку напрямків. Перша колонка
+   лишається наскрізним полем від шапки до підвалу */
+.foot-in .say{grid-column:2/span 9}
+/* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
+   «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
+   на всю ширину верстки, впритул до підпису, як border-top першого рядка
+   напрямків. Доти підпис був на 800 і повним чорнилом, а лінійка стояла
+   над ним; підвал єдиний на сторінці відкривався не так, як решта.
+   line-height:1 — бо тут це <p>, а не <h2> з глобальним line-height */
+.foot-in .k{
+  /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
+     лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
+  grid-column:1/-1; position:relative; margin:0; max-width:none;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; line-height:1; color:var(--mute);
+}
+.foot-in .k::after{
+  content:""; position:absolute; left:0; right:0; top:100%;
+  height:var(--rule); background:var(--divider);
+}
 .site-foot a{color:inherit; text-decoration:none}
+/* контактні рядки стоять під поясненням, а не над ним, і в тому ж
+     кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
+     дрібний рядок-мітка, просвіт, велике посилання */
 .site-foot .lines{
-  margin-top:.24em;
+  margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
   column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
 }
@@ -282,7 +316,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   font-size:var(--fs-line); font-weight:300; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
-  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  color:var(--mute);
   transition:color 260ms var(--ease);
 }
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
@@ -298,11 +332,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .site-foot .lines > a:hover{color:var(--deep-ink)}
+  .site-foot .lines > a:hover{color:var(--ink)}
   .site-foot .lines > a:hover::before{transform:scaleX(1)}
   .site-foot .lines > a:hover::after{opacity:1; transform:none}
 }
-.site-foot .lines > a:active{color:var(--deep-ink)}
+.site-foot .lines > a:active{color:var(--ink)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
@@ -313,11 +347,15 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   list-style:none; margin:0; padding:0; text-align:left;
   display:grid; justify-items:start; gap:clamp(1px,.4vw,5px);
 }
+/* li як флекс-контейнер: інакше він додає до кожного рядка провід від
+   успадкованого line-height:1.55 — на п'ять марок це зайві 23px, і
+   стовпчик знову звисав нижче контактів */
+.socials li{display:flex}
 .socials a{
   display:inline-block; position:relative;
   font-size:var(--fs-soc); font-weight:300; text-transform:none;
   letter-spacing:-.015em; line-height:1.24; font-variation-settings:"wdth" 96;
-  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  color:var(--mute);
   transition:color 260ms var(--ease);
 }
 .socials a::before{
@@ -336,11 +374,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .socials a:hover{color:var(--deep-ink)}
+  .socials a:hover{color:var(--ink)}
   .socials a:hover::before{transform:scaleX(1)}
   .socials a:hover::after{opacity:1; transform:none}
 }
-.socials a:active{color:var(--deep-ink)}
+.socials a:active{color:var(--ink)}
 .socials a:active::before{transform:scaleX(1)}
 .socials a:active::after{opacity:1; transform:none}
 /* вузько стовпчик уже не стає поряд із контактами — він іде під ними,
@@ -349,8 +387,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .foot-in .say,.socials{grid-column:1/-1}
 }
 .site-foot .sub{
-  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
-  color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
+  margin:0; max-width:34ch; text-wrap:pretty;
+  color:var(--mute);
 }
 .foot-bar{
   position:relative;
@@ -361,10 +399,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    там, де лінійки між рядками соцмереж */
 .foot-bar::before{
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
-  height:var(--rule); background:var(--foot-rule);
+  height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
-.site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається */
@@ -381,13 +418,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .foot-bar .arch:hover{color:var(--deep-ink)}
+  .foot-bar .arch:hover{color:var(--ink)}
   .foot-bar .arch:hover::before{transform:scaleX(1)}
   .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
 .foot-bar .arch:active::before{transform:scaleX(1)}
 .foot-bar .arch:active::after{opacity:1; transform:none}
-.site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 /* повітря між останнім блоком сторінки і темною плашкою */
 .site-foot{margin-top:clamp(28px,5vw,64px)}
