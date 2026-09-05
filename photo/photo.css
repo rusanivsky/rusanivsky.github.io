@@ -21,6 +21,9 @@
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px); --rule:2px;
+  /* далі 14" MacBook Pro Retina верстка не росте — на ширших
+     екранах краще поле з боків, ніж розтягнуті рядки */
+  --maxw:1512px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
 @media (prefers-color-scheme:dark){
@@ -40,10 +43,13 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.wrap{padding-inline:var(--pad)}
+/* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
+   (шапка й підвал на 404) */
+.wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
 /* лінійка живе в тій самій колонковій сітці, що й рядки переліків —
    до самих країв сторінки йде тільки межа липкої шапки */
-.rule{height:var(--rule);background:var(--divider);border:0;margin:0 var(--pad)}
+.rule{height:var(--rule); background:var(--divider); border:0;
+  width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 .tiny{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mute)}
 
 .meta{display:grid;grid-template-columns:1fr auto;gap:var(--pad) clamp(14px,2vw,28px);padding-block:2px;align-items:center}
@@ -181,6 +187,8 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
+/* ↗ — назовні, → — лишаємось на сайті */
+.site-foot .lines a.in::after{content:"→"}
 .site-foot .lines a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
   vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);

@@ -47,6 +47,8 @@
   /* підвал — глибокий темно-сірий, однаковий у обох темах */
   --deep:#333230; --deep-ink:#f2f0ea;
   --pad:clamp(16px,3.2vw,48px); --rule:2px;
+  /* далі 14" MacBook Pro Retina верстка не росте */
+  --maxw:1512px;
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
 }
@@ -64,8 +66,10 @@ body{
   font-size:15px; line-height:1.55;
   display:flex; flex-direction:column; justify-content:space-between;
 }
-.wrap{padding-inline:var(--pad)}
-body > .tiny{padding:var(--pad) var(--pad) 0}
+/* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
+   (шапка й підвал на 404) */
+.wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
+body > .tiny{width:min(100%, var(--maxw)); margin-inline:auto; padding:var(--pad) var(--pad) 0}
 .tiny{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--mute)}
 main{display:flex; flex-direction:column; justify-content:center; flex:1; padding-block:clamp(40px,8vw,120px)}
 h1{
@@ -113,6 +117,8 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
 }
+/* ↗ — назовні, → — лишаємось на сайті */
+.site-foot .lines a.in::after{content:"→"}
 .site-foot .lines a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
   vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
@@ -181,6 +187,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
     <div class="lines">
       <a href="mailto:info@rusanivsky.com">Email</a>
       <a href="https://wa.me/380938676581" target="_blank" rel="noopener" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
+      <a class="in" href="/contacts/">Socials</a>
     </div>
     <p class="sub" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
   </div>
