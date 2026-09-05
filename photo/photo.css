@@ -86,10 +86,17 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 /* тема й мова стоять однією групою в правому куті шапки — сітка шапки
    лишається на трьох колонках, як була з самою мовою */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
-/* тимчасовий перемикач теми говорить тихіше за мову: та сама висота й
-   набір, але легша вага, поки на ньому не зупинилися */
-#theme button{font-weight:600}
-#theme button[aria-pressed="true"]{font-weight:800}
+/* тема — двома іконками замість слів: «Світла/Темна» коштували в шапці
+   стільки ж місця, скільки все ліве поле з містом і часом, і при цьому
+   повторювали те, що видно з самої сторінки. Вибраний стан тримається на
+   тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
+   лише зміна тону читається заслабко */
+.tgl .ic{
+  display:block; width:15px; height:15px; fill:none; stroke:currentColor;
+  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke-width 220ms var(--ease);
+}
+#theme button[aria-pressed="true"] .ic{stroke-width:1.9}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
 @media (max-width:560px){
@@ -254,15 +261,27 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
   align-items:start;
 }
-/* лінійка над контактами — не border-top: той тягнеться по всій ширині
-   екрана, а всі лінійки сайту стоять по ширині верстки. Той самий засіб,
-   що й у .foot-bar::before нижче */
-.foot-in::before{
-  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+/* контакти починаються з другої колонки — тим самим уступом, що ім'я з
+   текстом угорі й номери з назвами в переліку напрямків. Перша колонка
+   лишається наскрізним полем від шапки до підвалу */
+.foot-in .say{grid-column:2/span 9}
+/* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
+   «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
+   на всю ширину верстки, впритул до підпису, як border-top першого рядка
+   напрямків. Доти підпис був на 800 і повним чорнилом, а лінійка стояла
+   над ним; підвал єдиний на сторінці відкривався не так, як решта.
+   line-height:1 — бо тут це <p>, а не <h2> з глобальним line-height */
+.foot-in .k{
+  /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
+     лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
+  grid-column:1/-1; position:relative; margin:0; max-width:none;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; line-height:1; color:var(--mute);
+}
+.foot-in .k::after{
+  content:""; position:absolute; left:0; right:0; top:100%;
   height:var(--rule); background:var(--divider);
 }
-.foot-in .say{grid-column:1/span 10}
-.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .site-foot a{color:inherit; text-decoration:none}
 .site-foot .lines{
   margin-top:.24em;

@@ -131,10 +131,28 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* тема й мова стоять однією групою в правому куті шапки — сітка шапки
    лишається на трьох колонках, як була з самою мовою */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
-/* тимчасовий перемикач теми говорить тихіше за мову: та сама висота й
-   набір, але легша вага, поки на ньому не зупинилися */
-#theme button{font-weight:600}
-#theme button[aria-pressed="true"]{font-weight:800}
+/* тема — двома іконками замість слів: «Світла/Темна» коштували в шапці
+   стільки ж місця, скільки все ліве поле з містом і часом, і при цьому
+   повторювали те, що видно з самої сторінки. Вибраний стан тримається на
+   тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
+   лише зміна тону читається заслабко */
+.tgl .ic{
+  display:block; width:15px; height:15px; fill:none; stroke:currentColor;
+  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke-width 220ms var(--ease);
+}
+#theme button[aria-pressed="true"] .ic{stroke-width:1.9}
+/* широко шапка стає на ту саму 12-колонкову сітку, що й сторінка:
+   перемикачі починаються з 11-ї колонки, а не просто тиснуться до
+   правого краю. space-between лишає мову на правій межі верстки, тож
+   група займає рівно дві останні колонки.
+   Нижче 1000px колонка 11 завузька для двох груп поспіль — там шапка
+   лишається на старій сітці «зліва інформація, справа перемикачі» */
+@media (min-width:1000px){
+  .meta{grid-template-columns:repeat(12,1fr); column-gap:var(--colgap)}
+  .meta > .cols:first-child{grid-column:1/span 8}
+  .meta .switches{grid-column:11/span 2; justify-content:space-between}
+}
 @media (max-width:560px){
   .meta{grid-template-columns:1fr; gap:6px}
   .meta .cols{gap:14px}
@@ -168,8 +186,12 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    самий низ колонки, тобто на нижню межу портрета. Верх імені і низ
    кнопки стають двома горизонталями, між якими затиснутий знімок —
    доти він висів у куті, ні до чого не прив'язаний */
+/* текст починається з другої колонки, а ім'я лишається на першій — той
+   самий уступ, що й у переліку напрямків нижче, де номер стоїть у першій
+   колонці, а назва починається з другої. Перша колонка стає полем, яке
+   проходить крізь усю сторінку */
 .hero-copy{
-  grid-column:1/span 8; grid-row:2;
+  grid-column:2/span 7; grid-row:2;
   display:flex; flex-direction:column; min-width:0;
 }
 /* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
@@ -183,13 +205,13 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 /* margin-top:auto притискає дію до нижньої межі колонки, тобто до
    нижнього краю портрета. Коли текст переростає портрет, auto
    згортається в нуль сам, і ряд просто йде далі */
-/* по базовій лінії, а не по центру: дія тепер великий текстовий рядок,
-   а статус — 11px капітель, і центрування посадило б статус посеред
-   висоти слова замість його рядка */
+/* статус стоїть над дією, а не поруч: у рядку 11px капітель тулилася до
+   38-пунктового слова і читалася як його підпис. Окремим рядком угорі
+   вона працює як мітка над кнопкою — спершу «коли», потім «як» */
 .act{
   margin:clamp(24px,3.2vh,36px) 0 0; padding:0;
-  display:flex; flex-wrap:wrap; align-items:baseline;
-  column-gap:clamp(16px,1.8vw,28px); row-gap:clamp(12px,1.6vh,18px);
+  display:flex; flex-direction:column; align-items:flex-start;
+  gap:clamp(12px,1.8vh,20px);
 }
 @media (min-width:821px){
   .act{margin-top:auto; padding-top:clamp(30px,4vh,52px)}
@@ -222,16 +244,21 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    bottom тут рахується від власного кегля псевдоелемента (.42em від
    рядка), а не від батьківського — тому .85em, а не .35em: інакше
    стрілка сідає на базову лінію і виглядає як випадковий знак */
+/* стрілка приходить на ховері, як і всюди на сторінці — у назвах
+   розділів і в підписі підвалу. Постійна вона була єдиним таким знаком
+   на сайті. Оскільки вона поза потоком, поява нічого не зсуває */
 .cta::after{
   content:"→"; position:absolute; left:100%; bottom:.85em;
   margin-left:.16em; font-size:.42em; line-height:1;
-  transition:transform 320ms var(--ease);
+  opacity:0; transform:translateX(-.3em);
+  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
 @media (hover:hover){
   .cta:hover::before{background:var(--pencil)}
-  .cta:hover::after{transform:translateX(.3em)}
+  .cta:hover::after{opacity:1; transform:none}
 }
 .cta:active::before{background:var(--pencil)}
+.cta:active::after{opacity:1; transform:none}
 .status{
   margin:0; display:flex; align-items:center; gap:.6em;
   font-size:11px; letter-spacing:.1em; text-transform:uppercase;
@@ -272,7 +299,11 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 .spec .no{grid-column:1}
 /* та сама межа по 9-й лінії, що й у героя: назва розділу тримається
    лівих восьми колонок, перелік — правих чотирьох */
-.spec h3{grid-column:2/span 7}
+/* назва впирається правим краєм у початок 8-ї колонки: коробка стоїть на
+   треках 2–7, а від'ємний margin (у правилі набору нижче — тут його
+   скидав би тамтешній margin:0) добирає рівно міжколонник, тож права
+   межа лягає не на кінець сьомої колонки, а на початок восьмої */
+.spec h3{grid-column:2/8}
 .spec ul{grid-column:9/span 4}
 .spec:first-child{border-top:var(--rule) solid var(--divider)}
 .spec::before{
@@ -301,14 +332,17 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   min-width:3ch;
 }
 /* той самий набір, що й назви в переліку соцмереж — без капітелі.
-   Вирівняні по правому краю своєї колонки: тепер назви впираються в ту
-   саму вертикаль, від якої починаються категорії, замість розповзатися
-   ліворуч за довжиною слова */
+   Вирівняні по правому краю своєї коробки, тож упираються в спільну
+   вертикаль замість розповзатися ліворуч за довжиною слова.
+   Падінга під стрілку тут немає: вона й так стоїть поза потоком, на
+   left:100%, тож на ховері рядок не смикається без нього, а з ним текст
+   відступав від своєї вертикалі на .9em — тобто на 54px при 60 кеглі */
 .spec h3{
-  margin:0; font-size:var(--spec-fs); font-weight:300;
+  margin:0 calc(var(--colgap) * -1) 0 0;
+  font-size:var(--spec-fs); font-weight:300;
   letter-spacing:-.02em; line-height:1.02;
   font-variation-settings:"wdth" 100; color:var(--ink);
-  text-align:right; padding-right:.9em;
+  text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:color 260ms var(--ease)}
 /* стрілка вниз-праворуч: веде всередину сайту. Місце під неї тримає
@@ -382,7 +416,9 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
     column-gap:clamp(14px,2.4vw,36px); row-gap:8px; padding-block:14px;
   }
   .spec .no{grid-column:1; grid-row:1}
-  .spec h3{grid-column:2; grid-row:1}
+  /* у вузькій сітці колонок-треків немає, тож і добирати міжколонник
+     від'ємним полем нема від чого */
+  .spec h3{grid-column:2; grid-row:1; margin-right:0}
   .spec ul{grid-column:2; grid-row:2; margin-top:0; align-self:auto}
   .spec.under ul{grid-column:2; grid-row:2; margin-top:0}
 }
@@ -414,7 +450,8 @@ figure{margin:0; position:relative; z-index:1}
    п'яту колонку за рахунок текстової — межа з'їжджає з 9-ї лінії на 8-му
    тільки тут, де переліків категорій поряд усе одно немає */
 @media (max-width:1100px){
-  .name,.hero-copy{grid-column:1/span 7}
+  .name{grid-column:1/span 7}
+  .hero-copy{grid-column:2/span 6}
   .figwrap{grid-column:8/span 5}
 }
 /* вузько колонки поряд не стоять: ім'я, портрет, текст і дія йдуть одне
@@ -536,15 +573,27 @@ figure{margin:0; position:relative; z-index:1}
   column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
   align-items:start;
 }
-/* лінійка над контактами — не border-top: той тягнеться по всій ширині
-   екрана, а всі лінійки сайту стоять по ширині верстки. Той самий засіб,
-   що й у .foot-bar::before нижче */
-.foot-in::before{
-  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+/* контакти починаються з другої колонки — тим самим уступом, що ім'я з
+   текстом угорі й номери з назвами в переліку напрямків. Перша колонка
+   лишається наскрізним полем від шапки до підвалу */
+.foot-in .say{grid-column:2/span 9}
+/* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
+   «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
+   на всю ширину верстки, впритул до підпису, як border-top першого рядка
+   напрямків. Доти підпис був на 800 і повним чорнилом, а лінійка стояла
+   над ним; підвал єдиний на сторінці відкривався не так, як решта.
+   line-height:1 — бо тут це <p>, а не <h2> з глобальним line-height */
+.foot-in .k{
+  /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
+     лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
+  grid-column:1/-1; position:relative; margin:0; max-width:none;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; line-height:1; color:var(--mute);
+}
+.foot-in .k::after{
+  content:""; position:absolute; left:0; right:0; top:100%;
   height:var(--rule); background:var(--divider);
 }
-.foot-in .say{grid-column:1/span 10}
-.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
 .site-foot a{color:inherit; text-decoration:none}
 .site-foot .lines{
   margin-top:.24em;
@@ -697,7 +746,7 @@ figure{margin:0; position:relative; z-index:1}
   </div>
   <div class="cols switches">
     <div class="tgl" id="theme" role="group" aria-label="Theme">
-      <button type="button" data-theme="light" aria-pressed="false" data-en="Light" data-ua="Світла">Light</button><button type="button" data-theme="dark" aria-pressed="false" data-en="Dark" data-ua="Темна">Dark</button>
+      <button type="button" data-theme="light" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.7v2.1M10 16.2v2.1M18.3 10h-2.1M3.8 10H1.7M15.9 4.1l-1.5 1.5M5.6 14.4l-1.5 1.5M15.9 15.9l-1.5-1.5M5.6 5.6 4.1 4.1"/></svg><span class="sr" data-en="Light" data-ua="Світла">Light</span></button><button type="button" data-theme="dark" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.4 12.3A7 7 0 0 1 7.7 3.6 7 7 0 1 0 16.4 12.3Z"/></svg><span class="sr" data-en="Dark" data-ua="Темна">Dark</span></button>
     </div>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
@@ -726,11 +775,11 @@ figure{margin:0; position:relative; z-index:1}
     <div class="hero-copy">
       <p class="lede" data-rev style="--d:160ms" data-en="Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely." data-ua="Спеціаліст у креативній індустрії: відеомонтажер і графічний дизайнер. Монтую інтерв'ю, YouTube-серії та ролики для соцмереж; проєктую і верстаю книжки, обкладинки та поліграфію. Також знімаю події й портрети. Працюю дистанційно.">Creative industry professional: video editor and graphic designer. I edit interviews, YouTube series and social media videos; I design and typeset books, covers and print materials. I also shoot events and portraits. I work remotely.</p>
       <div class="act" data-rev style="--d:230ms">
-        <a class="cta" href="mailto:info@rusanivsky.com" data-en="Get in touch" data-ua="Написати">Get in touch</a>
         <p class="status">
           <span class="dot" aria-hidden="true"></span>
           <span data-en="Available for new projects" data-ua="Вільний для нових проєктів">Available for new projects</span>
         </p>
+        <a class="cta" href="mailto:info@rusanivsky.com" data-en="Get in touch" data-ua="Написати">Get in touch</a>
       </div>
     </div>
   </section>
@@ -791,8 +840,8 @@ figure{margin:0; position:relative; z-index:1}
 
 <footer class="site-foot" aria-labelledby="ft">
   <div class="wrap foot-in">
+    <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
     <div class="say">
-      <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
       <div class="lines">
         <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
         <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
