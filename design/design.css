@@ -15,6 +15,8 @@
 :root{
   --pencil:#d64427;
   --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
+  /* підвал — глибокий темно-сірий, однаковий у обох темах */
+  --deep:#333230; --deep-ink:#f2f0ea;
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
@@ -95,7 +97,6 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .p img{width:100%;height:auto;background:var(--surface);display:block}
 .pt{font-size:clamp(18px,1.7vw,24px);font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
 .pd{margin:0;font-size:clamp(13px,1vw,15px);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
-footer{padding-block:clamp(32px,5.5vh,75px) clamp(24px,4vh,44px);display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;justify-content:space-between}
 
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }
@@ -105,3 +106,75 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (prefers-reduced-motion:reduce){
   html.pt-js body,html.pt-leave body{ animation:none }
 }
+
+/* ── підвал сайту ─────────────────────────────────────────── */
+/* контактна плашка й нижній рядок живуть в одній темній плашці,
+   розділені такою ж лінійкою, як між рядками соцмереж — сторінка
+   на всіх розділах закінчується цим кольором */
+.site-foot{
+  background:var(--deep); color:var(--deep-ink);
+  --uline:2px;
+  --foot-rule:color-mix(in srgb,var(--deep-ink) 26%,transparent);
+}
+@media (min-width:700px){.site-foot{--uline:3px}}
+.foot-in{padding-block:clamp(22px,3.85vh,52px)}
+.site-foot .k{margin:0; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; opacity:.8}
+.site-foot a{color:inherit; text-decoration:none}
+.site-foot .lines{margin-top:.24em}
+.site-foot .lines a{
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  font-size:clamp(28px,4.6vw,60px); font-weight:300; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
+  position:relative;
+  color:color-mix(in srgb,var(--deep-ink) 60%,transparent);
+  transition:color 260ms var(--ease);
+}
+.site-foot .lines a + a{margin-left:clamp(7px,1.1vw,14px)}
+/* лінія окремим шаром і через transform — background-size тут не інтерполюється */
+.site-foot .lines a::before{
+  content:""; position:absolute; left:0; right:0; bottom:-.02em;
+  height:var(--uline); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+}
+.site-foot .lines a::after{
+  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
+  vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .site-foot .lines a:hover{color:var(--deep-ink)}
+  .site-foot .lines a:hover::before{transform:scaleX(1)}
+  .site-foot .lines a:hover::after{opacity:1; transform:none}
+}
+.site-foot .lines a:active{color:var(--deep-ink)}
+.site-foot .lines a:active::before{transform:scaleX(1)}
+.site-foot .lines a:active::after{opacity:1; transform:none}
+.site-foot .sub{
+  margin:clamp(18px,3vw,36px) 0 0; max-width:34ch; text-wrap:pretty;
+  color:color-mix(in srgb,var(--deep-ink) 72%,transparent);
+}
+.foot-bar{
+  border-top:var(--rule) solid var(--foot-rule);
+  padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+}
+.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+.site-foot .tiny{color:color-mix(in srgb,var(--deep-ink) 62%,transparent)}
+.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
+.foot-bar .arch::after{
+  content:""; position:absolute; left:0; right:0; bottom:-3px;
+  height:var(--rule); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 380ms var(--ease);
+}
+@media (hover:hover){
+  .foot-bar .arch:hover{color:var(--deep-ink)}
+  .foot-bar .arch:hover::after{transform:scaleX(1)}
+}
+.site-foot :focus-visible{outline:2px solid var(--deep-ink); outline-offset:3px}
+@media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
+
+/* повітря між останнім блоком сторінки і темною плашкою — на галереях
+   знімки інакше впираються в підвал упритул */
+.site-foot{margin-top:clamp(28px,5vw,64px)}
