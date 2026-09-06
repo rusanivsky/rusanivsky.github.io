@@ -180,7 +180,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 /* та сама компакція, що й у сусідів по рядку */
 @media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
-.tgl button[aria-pressed="true"]{color:var(--ink)}
+.tgl button[aria-pressed="true"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
