@@ -349,7 +349,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
-<script>try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night'){document.documentElement.setAttribute('data-theme',t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content',t==='green'?'#415d43':t==='night'?'#111d13':'#eef1ec')})}}catch(e){}</script>
+<script>document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){var t=document.documentElement.getAttribute('data-theme');m.setAttribute('content',t==='green'?'#415d43':t==='night'?'#111d13':'#eef1ec')})</script>
 </head>
 <body>
 <span class="tiny">Kyrylo Rusanivsky</span>

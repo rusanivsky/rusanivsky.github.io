@@ -25,7 +25,7 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/design/design.css?v=18">
-<script>document.documentElement.classList.add('rev');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>document.documentElement.classList.add('rev');document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
 <div class="topbar">
@@ -132,16 +132,9 @@
     try{ saved = localStorage.getItem('kr-theme'); }catch(e){}
     if(saved === 'dark') saved = 'green';
     if(saved === 'light' || saved === 'green' || saved === 'night'){ setTheme(saved, true); return; }
-    /* без збереженого вибору кнопки лише показують, що зараз на екрані */
-    var sys = matchMedia('(prefers-color-scheme: dark)');
-    function mark(){
-      var v = sys.matches ? 'night' : 'light';
-      document.querySelectorAll('#theme button').forEach(function(b){
-        b.setAttribute('aria-pressed', String(b.dataset.theme === v));
-      });
-    }
-    mark();
-    sys.addEventListener ? sys.addEventListener('change', mark) : sys.addListener(mark);
+    /* Нові відвідувачі починають із зеленої теми; збережений вибір вище
+       має пріоритет і не перезаписується. */
+    setTheme('green', false);
   })();
   /* плавний перехід між сторінками там, де немає @view-transition */
   (function(){
