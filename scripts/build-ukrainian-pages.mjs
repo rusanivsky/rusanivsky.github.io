@@ -1,5 +1,4 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -68,12 +67,7 @@ function localiseLinks(html) {
 
 await rm(path.join(root, 'ua'), { recursive: true, force: true });
 for (const [route, source, title, description] of pages) {
-  let english;
-  try {
-    english = execFileSync('git', ['show', `HEAD:${source}`], { cwd: root, encoding: 'utf8' });
-  } catch {
-    english = await readFile(path.join(root, source), 'utf8');
-  }
+  let english = await readFile(path.join(root, source), 'utf8');
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
