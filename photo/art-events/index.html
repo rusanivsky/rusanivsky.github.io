@@ -188,6 +188,7 @@
   var n=document.querySelector('.secs');
   var a=n&&n.querySelector('[aria-current]');
   if(!n||!a) return;
+  if(matchMedia('(max-width:760px)').matches){n.scrollLeft=0;return;}
   var x=a.offsetLeft-parseFloat(getComputedStyle(n).paddingLeft||0)-16;
   if(x>0 && n.scrollWidth>n.clientWidth) n.scrollLeft=x;
 })();
