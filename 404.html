@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="green">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>404 — Kyrylo Rusanivsky</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#eef1ec" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111d13" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="/favicon.ico?v=3" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<meta name="theme-color" content="#415d43">
+<link rel="icon" href="/favicon.ico?v=4" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -79,24 +78,19 @@
      самий, і лінійка його підпису має стояти на тій самій вертикалі */
   --colgap:clamp(20px,2.6vw,40px);
   --gridw:calc(min(100vw, var(--maxw)) - 2 * var(--pad));
-  --label-w:106px;
-  --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
+  /* найдовший підпис — «ЧИМ ЗАЙМАЮСЬ»; на 13px він просить стільки, і
+     колонка не буває вужчою за нього. Доти міру рахували з відніманням
+     поля сторінки, і підпис вилазив за ліву межу верстки: «ЗАМОВЛЕННЯ»
+     на 21px, а «ЧИМ ЗАЙМАЮСЬ» ще й переносилось на другий рядок */
+  --label-w:120px;
+  --col1:max(var(--label-w), calc((var(--gridw) - 11 * var(--colgap)) / 12));
   --col2:calc(var(--col1) + var(--colgap));
 }
-/* темний набір оголошено двічі: під системну тему — і тільки поки її
-   не перебили вручну — та під явно вибрану темну. Перемикач у шапці
-   ставить html[data-theme], а без нього все як було */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-       Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
-    --pencil:#a1cca5;
-    --bg:#415d43; --ink:#eaf1e7;
-    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
-  }
-}
+/* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
+   зелений для головної, нічний для відео. Вибирає їх не гість і не його
+   система, а сама сторінка — data-theme стоїть у <html> ще до першого
+   байта стилів. Доти набір залежав ще й від prefers-color-scheme, і той,
+   хто колись натиснув «світлу», носив її за собою по всьому сайту */
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
@@ -106,15 +100,6 @@
   --bg:#415d43; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
-}
-/* Системна темна схема лишається нічною, а зелена й нічна можуть бути вибрані явно. */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme]){
-    color-scheme:dark; --pencil:#8fb996;
-    --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
-  }
 }
 :root[data-theme="night"]{
   color-scheme:dark; --pencil:#8fb996;
@@ -183,7 +168,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:2/-1}
+.foot-in .say{grid-column:1/-1; margin-left:var(--col2)}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -258,12 +243,15 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
 .foot-bar{
   position:relative;
   padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  /* .wrap відбиває полем сторінки, а сам рядок починається з другої
+     колонки — разом із контактами над ним і з рядками всієї сторінки */
+  padding-left:calc(var(--pad) + var(--col2));
   display:grid; grid-template-columns:1fr auto; gap:8px 24px;
 }
 /* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
    там, де лінійки між рядками соцмереж */
 .foot-bar::before{
-  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  content:""; position:absolute; top:0; left:calc(var(--pad) + var(--col2)); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
@@ -296,11 +284,14 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
-@media (max-width:640px){
-  /* підпис стає вертикальним: горизонтально він просив під себе сто з
-     гаком пікселів, і на телефоні від рядка лишалась половина. Повернутий,
-     він займає ширину одного рядка, а не всього напису, — решта віддана
-     вмісту, і трохи повітря лишається між ним і лінійкою.
+/* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
+   чверть рядка — там підпис лягає вертикально, а колонка сходить до
+   20px: те саме, що доти вмикалось аж на телефоні */
+@media (max-width:960px){
+  /* підпис стає вертикальним: горизонтально він просить під себе колонку
+     на 120px, а вузько це чверть рядка. Повернутий, він займає ширину
+     одного рядка, а не всього напису, — решта віддана вмісту, і трохи
+     повітря лишається між ним і лінійкою.
      Коробка лишається нульової висоти й на своєму місці: обертання не
      чіпає верстки, тож лінійка й далі стоїть на межі напису — тільки
      тепер це його ліва межа, а не верхня. rotate(90deg) translateY(-1em)
@@ -331,13 +322,14 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
        висоти сторінки порожнечею. Тепер коробка завширшки з напис */
     width:max-content;
   }
+}
+@media (max-width:640px){
   .foot-in{grid-template-columns:1fr}
   /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
      на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
      вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
-  .foot-in .say{grid-column:1; margin-left:var(--col2)}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
@@ -349,7 +341,7 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
-<script>document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){var t=document.documentElement.getAttribute('data-theme');m.setAttribute('content',t==='green'?'#415d43':t==='night'?'#111d13':'#eef1ec')})</script>
+
 </head>
 <body>
 <span class="tiny">Kyrylo Rusanivsky</span>

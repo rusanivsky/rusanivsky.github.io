@@ -74,31 +74,26 @@
   /* ширина сітки через vw, а не 100%: --col1 і --col2 мають означати одну
      й ту саму відстань у будь-якій коробці */
   --gridw:calc(min(100vw, var(--maxw)) - 2 * var(--pad));
-  /* найдовший нерозбивний підпис — «ЗАМОВЛЕННЯ»; на 13px він просить
-     стільки. Довший за колонку напис росте ліворуч у поле сторінки */
-  --label-w:106px;
-  /* перша колонка — наскрізне поле: у ньому стоїть підпис підвалу,
-     вирівняний по її правому краю, а лінійки з номерами під ними
-     починаються з другої. Не вужча за ту частину підпису, якої не бере
-     на себе поле сторінки, — інакше напис обрізало б краєм */
-  --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
+  /* найдовший підпис — «ЧИМ ЗАЙМАЮСЬ»; на 13px він просить стільки, і
+     колонка не буває вужчою за нього. Доти міру рахували з відніманням
+     поля сторінки, і підпис вилазив за ліву межу верстки: «ЗАМОВЛЕННЯ»
+     на 21px, а «ЧИМ ЗАЙМАЮСЬ» ще й переносилось на другий рядок */
+  --label-w:120px;
+  /* перша колонка — наскрізне поле сторінки: у ньому стоять підписи,
+     вирівняні по її правому краю, а лінійки з номерами під ними
+     починаються з другої. Ширина — не менша за сам підпис: колонка сітки
+     на 1440 дає 78px, і рештою напис висів у полі сторінки, за межами
+     верстки. Вузько поле на 120px коштує чверть рядка — від 960 підпис
+     лягає вертикально, і колонка сходить до 20px */
+  --col1:max(var(--label-w), calc((var(--gridw) - 11 * var(--colgap)) / 12));
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
-/* темний набір оголошено двічі: під системну тему — і тільки поки її
-   не перебили вручну — та під явно вибрану темну. Перемикач у шапці
-   ставить html[data-theme], а без нього все як було */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-       Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
-    --pencil:#a1cca5;
-    --bg:#415d43; --surface:#111d13; --ink:#eaf1e7;
-    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
-  }
-}
+/* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
+   зелений для головної, нічний для відео. Вибирає їх не гість і не його
+   система, а сама сторінка — data-theme стоїть у <html> ще до першого
+   байта стилів. Доти набір залежав ще й від prefers-color-scheme, і той,
+   хто колись натиснув «світлу», носив її за собою по всьому сайту */
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
@@ -108,15 +103,6 @@
   --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
-}
-/* Системна темна схема лишається нічною, а зелена й нічна можуть бути вибрані явно. */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme]){
-    color-scheme:dark; --pencil:#8fb996;
-    --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
-  }
 }
 :root[data-theme="night"]{
   color-scheme:dark; --pencil:#8fb996;
@@ -164,26 +150,14 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
 .part[aria-current]{color:var(--ink)}
 .tgl{display:flex;align-items:center}
-#theme{display:none}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
   font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
-/* тема й мова стоять однією групою в правому куті шапки — сітка шапки
-   лишається на трьох колонках, як була з самою мовою */
+/* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
+   колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
-/* тема — двома іконками замість слів: «Світла/Темна» коштували в шапці
-   стільки ж місця, скільки все ліве поле з містом і часом, і при цьому
-   повторювали те, що видно з самої сторінки. Вибраний стан тримається на
-   тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
-   лише зміна тону читається заслабко */
-.tgl .ic{
-  display:block; width:17px; height:17px; fill:none; stroke:currentColor;
-  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
-  transition:stroke-width 220ms var(--ease);
-}
-#theme button[aria-pressed="true"] .ic{stroke-width:1.9}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
 @media (max-width:560px){
@@ -328,20 +302,24 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
-/* вузько колонок-треків немає: рядок стає парою «номер — назва», а
-   лінійки йдуть від краю верстки */
-@media (max-width:640px){
-  /* підпис стає вертикальним: горизонтально він просив під себе сто з
-     гаком пікселів, і на телефоні від рядка лишалась половина. Повернутий,
-     він займає ширину одного рядка, а не всього напису, — решта віддана
-     вмісту, і трохи повітря лишається між ним і лінійкою.
+/* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
+   чверть рядка — там підпис лягає вертикально, а колонка сходить до
+   20px: те саме, що доти вмикалось аж на телефоні */
+@media (max-width:960px){
+  /* підпис стає вертикальним: горизонтально він просить під себе колонку
+     на 120px, а вузько це чверть рядка. Повернутий, він займає ширину
+     одного рядка, а не всього напису, — решта віддана вмісту, і трохи
+     повітря лишається між ним і лінійкою.
      Коробка лишається нульової висоти й на своєму місці: обертання не
      чіпає верстки, тож лінійка й далі стоїть на межі напису — тільки
      тепер це його ліва межа, а не верхня. rotate(90deg) translateY(-1em)
      повертає за годинниковою довкола лівого верхнього кута і піднімає на
      висоту рядка, щоб напис пішов униз від тієї самої точки */
   :root{--col1:20px}
-
+}
+/* вузько колонок-треків немає: рядок стає парою «номер — назва», а
+   лінійки йдуть від краю верстки */
+@media (max-width:640px){
   /* перша колонка лишається і тут — у ній стоїть підпис підвалу. Перелік
      відходить за неї цілим блоком, тож лінійки й номери всередині нього
      стоять від його ж краю, на спільній із підписом вертикалі */
@@ -389,7 +367,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:3/-1;min-width:0}
+.foot-in .say{grid-column:1/-1;margin-left:var(--col2);min-width:0}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -419,7 +397,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    контакти. Доти підпис стояв над лінійкою, і на лінії лежала його нижня
    межа */
 .foot-in .k::after{
-  content:""; position:absolute; left:var(--col3); right:0; top:0;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
@@ -471,12 +449,15 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .foot-bar{
   position:relative;
   padding-block:clamp(18px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  /* .wrap відбиває полем сторінки, а сам рядок починається з другої
+     колонки — разом із контактами над ним і з рядками всієї сторінки */
+  padding-left:calc(var(--pad) + var(--col2));
   display:grid; grid-template-columns:1fr auto; gap:8px 24px;
 }
 /* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
    там, де лінійки між рядками соцмереж */
 .foot-bar::before{
-  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  content:""; position:absolute; top:0; left:calc(var(--pad) + var(--col2)); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
@@ -512,18 +493,17 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){
   .foot-in{grid-template-columns:1fr}
-  .foot-in .say{grid-column:1; margin-left:var(--col2)}
   /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
      на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
      вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
   .cats{padding-block:clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
-  /* повернутий підпис тягне за собою і свою лінійку — вона малювалась
-     вертикально вздовж усього підвалу. Тут лінійку малює сама плашка:
-     на висоті свого верхнього поля, тобто там, де стоїть перший рядок.
-     Усе це стоїть наприкінці файлу, після базових правил підвала: раніше
-     блок ішов перед ними і вони його ж і перебивали */
+}
+/* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
+   20px. Блок стоїть наприкінці файлу, після базових правил підвала:
+   раніше він ішов перед ними і вони його ж і перебивали */
+@media (max-width:960px){
   .foot-in .k::after{content:none}
   .foot-in::before{
     content:""; position:absolute; top:var(--foot-pad);

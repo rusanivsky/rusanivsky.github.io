@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
-  ['/contacts/', 'contacts/index.html', 'Умови роботи — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
+  ['/terms/', 'terms/index.html', 'Умови роботи — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -84,10 +84,10 @@ function localiseLinks(html) {
 }
 
 function addContactsLink(html, route) {
-  const current = route === '/contacts/' ? ' aria-current="page"' : '';
-  const link = `<a class="tiny contact-link" href="/contacts/"${current} data-en="Work terms" data-ua="Умови роботи">Work terms</a>`;
+  const current = route === '/terms/' ? ' aria-current="page"' : '';
+  const link = `<a class="tiny contact-link" href="/terms/"${current} data-en="Work terms" data-ua="Умови роботи">Work terms</a>`;
   if (html.includes('class="tiny contact-link"')) {
-    return html.replace(/<a class="tiny contact-link" href="\/contacts\/"(?: aria-current="page")? data-en="Work terms" data-ua="Умови роботи">Work terms<\/a>/, link);
+    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms)\/"(?: aria-current="page")? data-en="Work terms" data-ua="Умови роботи">Work terms<\/a>/, link);
   }
   return html.replace(
     '<div class="tgl" id="lang"',
@@ -101,19 +101,15 @@ function renameWorkTerms(html) {
     .replace(/(Telegram|Behance|Threads|TikTok) @rusanivsky/g, '$1');
 }
 
+const themeColour = { light: '#eef1ec', green: '#415d43', night: '#111d13' };
+
+// Тему сторінки вирішує її розділ, а не гість: перемикача в шапці немає,
+// нічого не читається з localStorage і нічого не залежить від системної
+// схеми. Атрибут стоїть у <html>, тобто ще до першого байта стилів.
 function applyThemePolicy(html, route) {
-  const lockedTheme = lightPortfolioRoutes.has(route) ? 'light' : nightPortfolioRoutes.has(route) ? 'night' : null;
-  html = html.replace(/<html lang="en"(?: data-theme-lock="(?:light|night)")?>/, lockedTheme
-    ? `<html lang="en" data-theme-lock="${lockedTheme}">`
-    : '<html lang="en">');
-  html = html.replace(
-    "document.documentElement.classList.add('rev');document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}",
-    "document.documentElement.classList.add('rev');var q=document.documentElement.getAttribute('data-theme-lock');document.documentElement.setAttribute('data-theme',q||'green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(!q&&(t==='light'||t==='green'||t==='night'))document.documentElement.setAttribute('data-theme',t)}catch(e){}",
-  );
-  html = html.replace(
-    "var saved = null;\n    try{ saved = localStorage.getItem('kr-theme'); }catch(e){}",
-    "var locked = root.getAttribute('data-theme-lock');\n    if(locked){ setTheme(locked, false); return; }\n    var saved = null;\n    try{ saved = localStorage.getItem('kr-theme'); }catch(e){}",
-  );
+  const theme = lightPortfolioRoutes.has(route) ? 'light' : nightPortfolioRoutes.has(route) ? 'night' : 'green';
+  html = html.replace(/<html lang="en"(?: data-theme="(?:light|green|night)")?>/, `<html lang="en" data-theme="${theme}">`);
+  html = html.replace(/<meta name="theme-color" content="#[0-9a-f]{6}">/, `<meta name="theme-color" content="${themeColour[theme]}">`);
   return html;
 }
 
@@ -134,6 +130,35 @@ for (const [route, source, title, description] of pages) {
   const output = path.join(root, uaRoute(route), 'index.html');
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, ukrainian);
+}
+
+// Сторінки, що переїхали. Заглушка лишається на старій адресі в обох мовах:
+// GitHub Pages не вміє 301, а посилання на /contacts/ уже роздані.
+const moved = [['/contacts/', '/terms/']];
+for (const [from, to] of moved) {
+  for (const [oldRoute, newRoute, lang, title, sentence] of [
+    [from, to, 'en', 'Moved — Kyrylo Rusanivsky', `This page moved to <a href="${to}">${to}</a>.`],
+    [uaRoute(from), uaRoute(to), 'uk', 'Сторінку перенесено — Кирило Русанівський',
+      `Сторінку перенесено на <a href="${uaRoute(to)}">${uaRoute(to)}</a>.`],
+  ]) {
+    const html = `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<title>${title}</title>
+<link rel="canonical" href="${absolute(newRoute)}">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=${newRoute}">
+</head>
+<body>
+<p>${sentence}</p>
+</body>
+</html>
+`;
+    const out = path.join(root, oldRoute, 'index.html');
+    await mkdir(path.dirname(out), { recursive: true });
+    await writeFile(out, html);
+  }
 }
 
 const sitemapUrls = pages.flatMap(([route]) => [route, uaRoute(route)]);
