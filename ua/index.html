@@ -411,7 +411,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 }
 @media (hover:hover){
   /* наведення будь-де в рядку — і на розділ, і на категорію — фарбує
-     назву розділу й проводить лінійку під рядком */
+     назву розділу та зсуває її вправо */
   .spec:hover .sect{color:var(--pencil);transform:translateX(clamp(8px,1.4vw,22px))}
   .spec:hover::after{transform:scaleX(1)}
   .spec .sect:hover::after{opacity:1; transform:none}
