@@ -83,7 +83,7 @@
    не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
    верстці верхнє поле першого пункта другої колонки зсувало б її вниз
    відносно першої */
-.pts{grid-column:4/-1;list-style:none;margin:0;padding:0;columns:2;column-gap:var(--colgap)}
+.pts{grid-column:4/-1;list-style:none;margin:0;padding:0;columns:1}
 .pts li{break-inside:avoid;margin:0 0 clamp(10px,1.2vw,16px);text-wrap:pretty}
 .pts li:last-child{margin-bottom:0}
 /* приписка наприкінці сторінки: те саме приглушене чорнило, що й підписи,
@@ -102,10 +102,6 @@
     transform-origin:.5em .5em;rotate:90deg;width:max-content;
   }
 }
-
-/* Процес і терміни читаються як цілі блоки, без внутрішніх лінійок. */
-.tsec[aria-labelledby="s-flow"] .trow::before,
-.tsec[aria-labelledby="s-time"] .trow::before{display:none}
 
 /* Контакти починаються одразу під підписом розділу, а не після
    додаткового верхнього поля .cats. */
