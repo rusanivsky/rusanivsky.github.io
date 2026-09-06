@@ -24,7 +24,7 @@
       var compact=delta > 0;
       if(performance.now() >= cooldownUntil && topbar.classList.contains('is-compact') !== compact){
         topbar.classList.toggle('is-compact', compact);
-        cooldownUntil=performance.now()+360;
+        cooldownUntil=performance.now()+480;
       }
       lastY=y;
     }
