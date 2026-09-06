@@ -211,9 +211,8 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   position:sticky;top:0;z-index:30;background:var(--bg)
 }
 .topbar .rule{margin-bottom:2px}
-/* На сторінці умов роботи шапка звичайна: без sticky та glass. */
+/* На сторінці умов роботи sticky лишається, але без glass-ефекту. */
 body:has(.contact-head) .topbar{
-  position:static;
   background:var(--bg);
   border-bottom:0;
   box-shadow:none;
