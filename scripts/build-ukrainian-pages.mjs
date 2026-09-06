@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
-  ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
+  ['/contacts/', 'contacts/index.html', 'Умови роботи — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -87,8 +87,13 @@ function addContactsLink(html) {
   if (html.includes('class="tiny contact-link"')) return html;
   return html.replace(
     '<div class="tgl" id="lang"',
-    '<a class="tiny contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>\n    <div class="tgl" id="lang"',
+    '<a class="tiny contact-link" href="/contacts/" data-en="Work terms" data-ua="Умови роботи">Work terms</a>\n    <div class="tgl" id="lang"',
   );
+}
+
+function renameWorkTerms(html) {
+  return html.replace(/data-en="Contacts" data-ua="Контакти"/g, 'data-en="Work terms" data-ua="Умови роботи"')
+    .replace(/>Contacts</g, '>Work terms<');
 }
 
 function applyThemePolicy(html, route) {
@@ -114,6 +119,7 @@ for (const [route, source, title, description] of pages) {
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
   english = addContactsLink(english);
+  english = renameWorkTerms(english);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
