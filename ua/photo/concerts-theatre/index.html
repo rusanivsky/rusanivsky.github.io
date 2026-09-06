@@ -25,7 +25,7 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/photo/photo.css?v=18">
-<script>document.documentElement.classList.add('rev');try{var t=localStorage.getItem('kr-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>document.documentElement.classList.add('rev');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
 <div class="topbar">
@@ -38,7 +38,7 @@
   </nav>
   <div class="switches">
     <div class="tgl" id="theme" role="group" aria-label="Theme">
-      <button type="button" data-theme="light" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.7v2.1M10 16.2v2.1M18.3 10h-2.1M3.8 10H1.7M15.9 4.1l-1.5 1.5M5.6 14.4l-1.5 1.5M15.9 15.9l-1.5-1.5M5.6 5.6 4.1 4.1"/></svg><span class="sr" data-en="Light" data-ua="Світла">Світла</span></button><button type="button" data-theme="dark" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.4 12.3A7 7 0 0 1 7.7 3.6 7 7 0 1 0 16.4 12.3Z"/></svg><span class="sr" data-en="Dark" data-ua="Темна">Темна</span></button>
+      <button type="button" data-theme="light" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.7v2.1M10 16.2v2.1M18.3 10h-2.1M3.8 10H1.7M15.9 4.1l-1.5 1.5M5.6 14.4l-1.5 1.5M15.9 15.9l-1.5-1.5M5.6 5.6 4.1 4.1"/></svg><span class="sr" data-en="Solar" data-ua="Сонячна">Сонячна</span></button><button type="button" data-theme="green" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 7.5h8L10.6 3H5.4L4 7.5ZM8 7.5v7M5 17h7"/><path d="M14.5 9.5v5M12.5 14.5h4"/></svg><span class="sr" data-en="Green" data-ua="Зелена">Зелена</span></button><button type="button" data-theme="night" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.4 12.3A7 7 0 0 1 7.7 3.6 7 7 0 1 0 16.4 12.3Z"/></svg><span class="sr" data-en="Night" data-ua="Нічна">Нічна</span></button>
     </div>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button>
@@ -142,13 +142,13 @@
   /* тема: вибір користувача перебиває системну і живе в localStorage.
      Поки вибору не було, атрибута немає і все вирішує prefers-color-scheme */
   function setTheme(v, save){
-    if(v !== 'light' && v !== 'dark') return;
+    if(v !== 'light' && v !== 'green' && v !== 'night') return;
     root.setAttribute('data-theme', v);
     if(save){ try{ localStorage.setItem('kr-theme', v); }catch(e){} }
     /* колір системної панелі браузера тримаємо в парі з вибором — але
        чіпаємо його тільки тоді, коли вибір справді був */
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', v === 'dark' ? '#171a15' : '#ebede7');
+      m.setAttribute('content', v === 'green' ? '#14532d' : v === 'night' ? '#171a15' : '#ebede7');
     });
     document.querySelectorAll('#theme button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.theme === v));
@@ -160,11 +160,12 @@
   (function(){
     var saved = null;
     try{ saved = localStorage.getItem('kr-theme'); }catch(e){}
-    if(saved === 'light' || saved === 'dark'){ setTheme(saved, true); return; }
+    if(saved === 'dark') saved = 'green';
+    if(saved === 'light' || saved === 'green' || saved === 'night'){ setTheme(saved, true); return; }
     /* без збереженого вибору кнопки лише показують, що зараз на екрані */
     var sys = matchMedia('(prefers-color-scheme: dark)');
     function mark(){
-      var v = sys.matches ? 'dark' : 'light';
+      var v = sys.matches ? 'night' : 'light';
       document.querySelectorAll('#theme button').forEach(function(b){
         b.setAttribute('aria-pressed', String(b.dataset.theme === v));
       });
