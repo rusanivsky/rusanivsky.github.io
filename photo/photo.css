@@ -216,6 +216,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 @media (max-width:760px){
   .topbar .meta,.topbar > .rule{
     height:var(--meta-height,auto);max-height:none;
+    align-content:start;
     will-change:height,opacity,transform;
     transition:height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease);
     overflow:hidden;
