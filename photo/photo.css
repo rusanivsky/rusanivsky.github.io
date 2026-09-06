@@ -207,7 +207,9 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* під переліком категорій лінійки немає: вона з'являлась і зникала на
    кожному дотику до верху сторінки, і цей блимкіт читався як збій, а не
    як межа. Шапку від вмісту відділяє власне лінійка над переліком */
-.topbar{position:sticky;top:0;z-index:30;background:var(--bg);overflow-anchor:none}
+.topbar{
+  position:sticky;top:0;z-index:30;background:var(--bg)
+}
 .topbar .rule{margin-bottom:2px}
 /* На телефоні категорії залишаються єдиною липкою смугою під час читання.
    Верхні три рядки й розділювач стискаються при русі вниз та повертаються
@@ -222,12 +224,14 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   .topbar.is-compact .meta{
     max-height:0;
     opacity:0;
+    visibility:hidden;
     transform:translateY(-12px);
     padding-block:0;
   }
   .topbar.is-compact > .rule{
     max-height:0;
     opacity:0;
+    visibility:hidden;
     transform:translateY(-4px);
     margin-block:0;
   }
