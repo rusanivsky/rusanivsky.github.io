@@ -266,7 +266,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 :root[data-theme="green"] .sec[aria-current],
 :root[data-theme="night"] .part[aria-current],
 :root[data-theme="night"] .sec.on,
-:root[data-theme="night"] .sec[aria-current]{font-weight:600;font-variation-settings:"wght" 600}
+:root[data-theme="night"] .sec[aria-current],
+:root[data-theme="green"] .tgl button[aria-pressed="true"],
+:root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:600;font-variation-settings:"wght" 600}
 
 /* ── сітка відео ───────────────────────────────────────── */
 .grid{display:grid;gap:clamp(26px,3.4vw,52px);grid-template-columns:1fr;
