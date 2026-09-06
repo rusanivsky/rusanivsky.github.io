@@ -13,14 +13,14 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#d64427;
+  --pencil:#14532d;
   color-scheme:light;
-  --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
-  --divider:color-mix(in srgb,#201e1d 40%,transparent);
+  --bg:#ebede7; --surface:#dfe2da; --ink:#1e211c; --accent:var(--ink);
+  --divider:color-mix(in srgb,#1e211c 40%,transparent);
   /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
      розділи 52%, тобто той самий сірий був на різних сторінках різної
      сили. Лишилось сильніше з двох — воно й читається краще */
-  --mute:color-mix(in srgb,#201e1d 65%,transparent);
+  --mute:color-mix(in srgb,#1e211c 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
@@ -90,17 +90,23 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
-    --divider:color-mix(in srgb,#f0eeec 34%,transparent);
-    --mute:color-mix(in srgb,#f0eeec 55%,transparent);
+    /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
+       Той самий зелений, тільки світліший: на #171a15 він тримає 5,5:1 */
+    --pencil:#3fa06a;
+    --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
+    --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
+    --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
   }
 }
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
-  --divider:color-mix(in srgb,#f0eeec 34%,transparent);
-  --mute:color-mix(in srgb,#f0eeec 55%,transparent);
+  /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
+     Той самий зелений, тільки світліший: на #171a15 він тримає 5,5:1 */
+  --pencil:#3fa06a;
+  --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
+  --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
+  --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
@@ -332,9 +338,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
    такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
-   темною плашкою #333230, і сенс у ній був лише в світлій темі: на
-   #f2f0ea вона давала контраст 11,2:1 і читалася як подія, а на
-   темному #171615 — 1,41:1, тобто ледь помітну пляму замість блоку.
+   темною плашкою, і сенс у ній був лише в світлій темі: на папері вона
+   давала контраст 11,2:1 і читалася як подія, а на темному тлі — 1,41:1,
+   тобто ледь помітну пляму замість блоку.
    Прийом працював наполовину, а сторінка з волосяних лінійок і
    повітря обходиться без суцільної заливки */
 .site-foot{
