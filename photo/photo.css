@@ -137,7 +137,10 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
 .meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
-  padding-block:2px;align-items:center}
+  /* та сама міра, що на головній: там рядок теж дихає, а не тулиться
+     до лінійки. Доти тут стояло фіксовані 2px, і шапка на кожній
+     сторінці розділу виходила нижчою за головну */
+  padding-block:clamp(4px,.8vh,10px);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
@@ -152,10 +155,21 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   transition:transform 380ms var(--ease);will-change:transform}
 @media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
 .part[aria-current]{color:var(--ink)}
+/* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
+   зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
+   розділи поряд — ні, і на дотик шапка розділів виходила вищою за
+   головну, де таких посилань немає. Лінійку ховера зсунуто разом:
+   вона мала стояти на 11px від низу поля, а не від низу тексту */
+@media (pointer:fine){
+  .back,.part{padding-block:9px; line-height:1}
+  .part::after{bottom:5px}
+}
 .tgl{display:flex;align-items:center}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
   font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
+/* та сама компакція, що й у сусідів по рядку */
+@media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох

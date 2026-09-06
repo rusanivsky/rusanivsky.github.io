@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
-  ['/terms/', 'terms/index.html', 'Умови роботи — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
+  ['/terms/', 'terms/index.html', 'Умови роботи та ціни — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -85,9 +85,12 @@ function localiseLinks(html) {
 
 function addContactsLink(html, route) {
   const current = route === '/terms/' ? ' aria-current="page"' : '';
-  const link = `<a class="tiny contact-link" href="/terms/"${current} data-en="Work terms" data-ua="Умови роботи">Work terms</a>`;
+  const en = 'Work terms & Prices', ua = 'Умови роботи та ціни';
+  const link = `<a class="tiny contact-link" href="/terms/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   if (html.includes('class="tiny contact-link"')) {
-    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms)\/"(?: aria-current="page")? data-en="Work terms" data-ua="Умови роботи">Work terms<\/a>/, link);
+    // не прив'язано до конкретного напису — регекс ловить будь-яку
+    // попередню версію тексту, тож наступний прогін лишається ідемпотентним
+    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/, link);
   }
   return html.replace(
     '<div class="tgl" id="lang"',
