@@ -83,17 +83,22 @@ function localiseLinks(html) {
   return html;
 }
 
-function addContactsLink(html) {
-  if (html.includes('class="tiny contact-link"')) return html;
+function addContactsLink(html, route) {
+  const current = route === '/contacts/' ? ' aria-current="page"' : '';
+  const link = `<a class="tiny contact-link" href="/contacts/"${current} data-en="Work terms" data-ua="Умови роботи">Work terms</a>`;
+  if (html.includes('class="tiny contact-link"')) {
+    return html.replace(/<a class="tiny contact-link" href="\/contacts\/"(?: aria-current="page")? data-en="Work terms" data-ua="Умови роботи">Work terms<\/a>/, link);
+  }
   return html.replace(
     '<div class="tgl" id="lang"',
-    '<a class="tiny contact-link" href="/contacts/" data-en="Work terms" data-ua="Умови роботи">Work terms</a>\n    <div class="tgl" id="lang"',
+    `${link}\n    <div class="tgl" id="lang"`,
   );
 }
 
 function renameWorkTerms(html) {
   return html.replace(/data-en="Contacts" data-ua="Контакти"/g, 'data-en="Work terms" data-ua="Умови роботи"')
-    .replace(/>Contacts</g, '>Work terms<');
+    .replace(/>Contacts</g, '>Work terms<')
+    .replace(/(Telegram|Behance|Threads|TikTok) @rusanivsky/g, '$1');
 }
 
 function applyThemePolicy(html, route) {
@@ -118,7 +123,7 @@ for (const [route, source, title, description] of pages) {
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
-  english = addContactsLink(english);
+  english = addContactsLink(english, route);
   english = renameWorkTerms(english);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);

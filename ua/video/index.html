@@ -142,6 +142,8 @@
     if(locked){ setTheme(locked, false); return; }
     var locked = root.getAttribute('data-theme-lock');
     if(locked){ setTheme(locked, false); return; }
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
     var saved = null;
     try{ saved = localStorage.getItem('kr-theme'); }catch(e){}
     if(saved === 'dark') saved = 'green';

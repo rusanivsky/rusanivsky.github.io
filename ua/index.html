@@ -58,7 +58,7 @@
   --pad:clamp(16px,3.2vw,48px);
   /* Трохи ширше за попередню міру: герой отримує повітря між іменем і
      портретом, а довжина текстових рядків лишається контрольованою. */
-  --maxw:1280px;
+  --maxw:1440px;
   /* волосяна лінійка розділювачів і товща лінія ховера */
   --rule:1px; --pen:2px;
   /* ── шкала кеглів: шість щаблів на весь сайт ────────────────
@@ -179,6 +179,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .tiny b{font-weight:700; color:var(--ink); letter-spacing:var(--ls-tiny)}
+.contact-link[aria-current="page"]{color:var(--ink)}
 .tgl{display:flex; gap:0; align-items:center}
 #theme{display:none}
 .tgl button{
@@ -1069,6 +1070,8 @@ figure{margin:0; position:relative; z-index:1}
     b.addEventListener('click', function(){ setTheme(b.dataset.theme, true); });
   });
   (function(){
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
     var locked = root.getAttribute('data-theme-lock');
     if(locked){ setTheme(locked, false); return; }
     var locked = root.getAttribute('data-theme-lock');
