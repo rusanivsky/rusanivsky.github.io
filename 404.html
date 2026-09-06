@@ -248,10 +248,11 @@ a.back:hover,a.back:focus-visible{border-bottom-color:var(--accent)}
   padding-left:calc(var(--pad) + var(--col2));
   display:grid; grid-template-columns:1fr auto; gap:8px 24px;
 }
-/* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
-   там, де лінійки між рядками соцмереж */
+/* остання лінійка сторінки йде на всю ширину верстки, від поля до поля:
+   рядки вище вона не повторює — вона їх закриває. Не border-top: той
+   тягнувся б і по падінгу */
 .foot-bar::before{
-  content:""; position:absolute; top:0; left:calc(var(--pad) + var(--col2)); right:var(--pad);
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}

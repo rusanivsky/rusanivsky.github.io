@@ -160,6 +160,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .tiny b{font-weight:700; color:var(--ink); letter-spacing:var(--ls-tiny)}
+/* та сама реакція, що й у розділів поряд: наведення й активна
+   сторінка засвічуються тим самим кольором тексту */
+@media (hover:hover){.contact-link:hover{color:var(--ink)}}
 .contact-link[aria-current="page"]{color:var(--ink)}
 .tgl{display:flex; gap:0; align-items:center}
 .tgl button{
@@ -730,10 +733,11 @@ figure{margin:0; position:relative; z-index:1}
   padding-left:calc(var(--pad) + var(--col2));
   display:grid; grid-template-columns:1fr auto; gap:8px 24px;
 }
-/* не border-top: той тягнеться і по падінгу, а лінійка має стояти рівно
-   там, де лінійки між рядками соцмереж */
+/* остання лінійка сторінки йде на всю ширину верстки, від поля до поля:
+   рядки вище вона не повторює — вона їх закриває. Не border-top: той
+   тягнувся б і по падінгу */
 .foot-bar::before{
-  content:""; position:absolute; top:0; left:calc(var(--pad) + var(--col2)); right:var(--pad);
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
@@ -843,7 +847,7 @@ figure{margin:0; position:relative; z-index:1}
     <span class="tiny" data-en="Kyiv, UA" data-ua="Київ, UA">Київ, UA</span>
     <span class="tiny"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span id="clock">—:—</span> <span id="tz">EET</span></span>
   </div>
-  <div class="cols switches">
+  <div class="switches">
     <a class="tiny contact-link" href="/ua/terms/" data-en="Work terms" data-ua="Умови роботи">Умови роботи</a>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button>
