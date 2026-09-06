@@ -249,6 +249,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .sec::after{content:none}
 @media (hover:hover){.sec:hover{color:var(--accent)}}
 .sec.on,.sec[aria-current]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
+:root[data-theme="green"] .part[aria-current],
+:root[data-theme="green"] .sec.on,
+:root[data-theme="green"] .sec[aria-current],
+:root[data-theme="night"] .part[aria-current],
+:root[data-theme="night"] .sec.on,
+:root[data-theme="night"] .sec[aria-current]{font-weight:600;font-variation-settings:"wght" 600}
 
 /* ── перелік категорій ───────────────────────────────────── */
 /* перший рядок стоїть там, де раніше починався заголовок сторінки.
