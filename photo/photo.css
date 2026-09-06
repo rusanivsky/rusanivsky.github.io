@@ -217,7 +217,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   .topbar .meta,.topbar > .rule{
     height:var(--meta-height,auto);max-height:none;
     will-change:height,opacity,transform;
-    transition:height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease),padding 520ms var(--ease),margin 520ms var(--ease);
+    transition:height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease);
     overflow:hidden;
   }
   .topbar > .rule{height:1px;max-height:none}
@@ -225,13 +225,11 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
     height:0;max-height:none;
     opacity:0;
     transform:translateY(-18px);
-    padding-block:0;
   }
   .topbar.is-compact > .rule{
     height:0;max-height:none;
     opacity:0;
     transform:translateY(-6px);
-    margin-block:0;
   }
   .topbar.is-compact .secs{
     padding-block:8px;
