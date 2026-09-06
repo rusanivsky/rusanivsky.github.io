@@ -208,29 +208,9 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    кожному дотику до верху сторінки, і цей блимкіт читався як збій, а не
    як межа. Шапку від вмісту відділяє власне лінійка над переліком */
 .topbar{
-  position:sticky;top:0;z-index:30;
-  padding-top:env(safe-area-inset-top);
-  /* Liquid Glass: контент під липкою шапкою лишається видимим, але
-     розмиття зберігає контраст навігації. Непрозорий фон нижче — fallback. */
-  background:var(--bg);
-  background:linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent env(safe-area-inset-top),
-    color-mix(in srgb,var(--bg) 76%,transparent) env(safe-area-inset-top),
-    color-mix(in srgb,var(--bg) 76%,transparent) 100%
-  );
-  -webkit-backdrop-filter:blur(18px) saturate(1.15);
-  backdrop-filter:blur(18px) saturate(1.15);
-  border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent);
+  position:sticky;top:0;z-index:30;background:var(--bg)
 }
 .topbar .rule{margin-bottom:2px}
-/* На телефонах шапка накладається на документ повністю, з safe-area.
-   Реальну висоту вимірює /header.js, щоб вміст не стрибав під неї. */
-@media (max-width:760px){
-  html.fixed-topbar body{padding-top:var(--topbar-height,0px)}
-  html.fixed-topbar .topbar{position:fixed;inset:0 0 auto;width:100%}
-}
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
