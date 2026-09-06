@@ -5,7 +5,7 @@
 
   var lastY=window.scrollY || 0;
   var ticking=false;
-  var threshold=8;
+  var threshold=18;
   var cooldownUntil=0;
   var touchY=null;
 
@@ -17,7 +17,7 @@
     if(performance.now() < cooldownUntil) return;
     if(topbar.classList.contains('is-compact') === compact) return;
     topbar.classList.toggle('is-compact',compact);
-    cooldownUntil=performance.now()+480;
+    cooldownUntil=performance.now()+620;
   }
 
   function update(){
@@ -28,7 +28,7 @@
     if(y <= 2){
       topbar.classList.remove('is-compact');
       cooldownUntil=0;
-    }else if(maxY-y < 28){
+    }else if(maxY-y < 80){
       /* На нижньому еластичному відскоку Safari може кілька разів
          змінити scrollTop. Не перемикаємо шапку в цій зоні. */
       lastY=y;
@@ -57,11 +57,11 @@
     if(!e.touches.length || touchY===null) return;
     var nextY=e.touches[0].clientY;
     var delta=touchY-nextY;
-    if(Math.abs(delta)>=4){
+    if(Math.abs(delta)>=10){
       var y=scrollY();
       var maxY=Math.max(0,document.documentElement.scrollHeight-window.innerHeight);
       if(y<=2) topbar.classList.remove('is-compact');
-      else if(maxY-y>=28) setCompact(delta>0);
+      else if(maxY-y>=80) setCompact(delta>0);
       touchY=nextY;
     }
   },{passive:true});
