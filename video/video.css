@@ -164,7 +164,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   transition:color 220ms var(--ease)}
 .part::after{content:none}
 @media (hover:hover){.part:hover{color:var(--accent)}}
-.part[aria-current]{color:var(--active)}
+.part[aria-current]{color:var(--active);font-weight:700}
 /* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
    зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
    розділи поряд — ні, і на дотик шапка розділів виходила вищою за
@@ -248,7 +248,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
 .sec::after{content:none}
 @media (hover:hover){.sec:hover{color:var(--accent)}}
-.sec.on,.sec[aria-current]{color:var(--active)}
+.sec.on,.sec[aria-current]{color:var(--active);font-weight:700}
 
 /* ── сітка відео ───────────────────────────────────────── */
 .grid{display:grid;gap:clamp(26px,3.4vw,52px);grid-template-columns:1fr;
@@ -440,7 +440,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
 .site-foot .lines > a::before{
-  content:""; position:absolute; left:0; right:0; bottom:-.02em;
+  content:none;
+  position:absolute; left:0; right:0; bottom:-.02em;
   height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
