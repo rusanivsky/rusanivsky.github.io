@@ -4,6 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
+  ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -20,6 +21,22 @@ const pages = [
   ['/design/covers/', 'design/covers/index.html', 'Дизайн обкладинок — Кирило Русанівський', 'Дизайнер книжкових обкладинок у Києві. Обкладинки, редакційна типографіка, верстка книжок і поліграфія для видавців, авторів і культурних проєктів.'],
 ];
 
+const lightPortfolioRoutes = new Set([
+  '/design/covers/',
+  '/photo/public-events/',
+  '/photo/art-events/',
+  '/photo/backstage/',
+  '/photo/concerts-theatre/',
+  '/photo/parties/',
+  '/photo/photo-sessions/',
+]);
+const nightPortfolioRoutes = new Set([
+  '/video/interviews/',
+  '/video/music/',
+  '/video/documentary/',
+  '/video/vlogs/',
+]);
+
 const absolute = (route) => `https://rusanivsky.com${route}`;
 const uaRoute = (route) => route === '/' ? '/ua/' : `/ua${route}`;
 
@@ -34,7 +51,7 @@ function alternates(route) {
 function updateHead(html, route, title, description, ukrainian) {
   const canonical = absolute(ukrainian ? uaRoute(route) : route);
   html = html.replace(/\n<link rel="alternate" hreflang="(?:en|uk|x-default)" href="[^"]+">/g, '');
-  html = html.replace(/<html lang="en">/, `<html lang="${ukrainian ? 'uk' : 'en'}">`);
+  html = html.replace(/<html lang="en"/, `<html lang="${ukrainian ? 'uk' : 'en'}"`);
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`);
   html = html.replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${canonical}">\n${alternates(route)}`);
@@ -52,6 +69,7 @@ function ukrainianiseContent(html) {
   // literal server-delivered text rather than relying on JavaScript to swap it.
   html = html.replace(/(<([a-z][\w-]*)(?:\s[^>]*)?\sdata-en="[^"]*"\sdata-ua="([^"]*)"(?:\s[^>]*)?>)([^<]*)(<\/\2>)/gi, '$1$3$5');
   html = html.replace(/try\{\s*setLang\(detect\w*\(\),\s*false\);\s*\}catch\(e\)\{\s*setLang\('en',\s*false\);\s*\}/, "try{ setLang('ua', false); }catch(e){}");
+  html = html.replace("L(D(),false);", "L('ua',false);");
   html = html.replace(/(<button type="button" data-lang="en" aria-pressed=")true("[^>]*>EN<\/button><button type="button" data-lang="ua" aria-pressed=")false/, '$1false$2true');
   return html;
 }
@@ -65,12 +83,38 @@ function localiseLinks(html) {
   return html;
 }
 
+function addContactsLink(html) {
+  if (html.includes('class="tiny contact-link"')) return html;
+  return html.replace(
+    '<div class="tgl" id="lang"',
+    '<a class="tiny contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>\n    <div class="tgl" id="lang"',
+  );
+}
+
+function applyThemePolicy(html, route) {
+  const lockedTheme = lightPortfolioRoutes.has(route) ? 'light' : nightPortfolioRoutes.has(route) ? 'night' : null;
+  html = html.replace(/<html lang="en"(?: data-theme-lock="(?:light|night)")?>/, lockedTheme
+    ? `<html lang="en" data-theme-lock="${lockedTheme}">`
+    : '<html lang="en">');
+  html = html.replace(
+    "document.documentElement.classList.add('rev');document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}",
+    "document.documentElement.classList.add('rev');var q=document.documentElement.getAttribute('data-theme-lock');document.documentElement.setAttribute('data-theme',q||'green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(!q&&(t==='light'||t==='green'||t==='night'))document.documentElement.setAttribute('data-theme',t)}catch(e){}",
+  );
+  html = html.replace(
+    "var saved = null;\n    try{ saved = localStorage.getItem('kr-theme'); }catch(e){}",
+    "var locked = root.getAttribute('data-theme-lock');\n    if(locked){ setTheme(locked, false); return; }\n    var saved = null;\n    try{ saved = localStorage.getItem('kr-theme'); }catch(e){}",
+  );
+  return html;
+}
+
 await rm(path.join(root, 'ua'), { recursive: true, force: true });
 for (const [route, source, title, description] of pages) {
   let english = await readFile(path.join(root, source), 'utf8');
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
+  english = addContactsLink(english);
+  english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
   let ukrainian = ukrainianiseContent(english);

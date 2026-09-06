@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-lock="night">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,7 @@
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="stylesheet" href="/video/video.css?v=18">
-<script>document.documentElement.classList.add('rev');document.documentElement.setAttribute('data-theme','green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(t==='light'||t==='green'||t==='night')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>document.documentElement.classList.add('rev');var q=document.documentElement.getAttribute('data-theme-lock');document.documentElement.setAttribute('data-theme',q||'green');try{var t=localStorage.getItem('kr-theme');if(t==='dark')t='green';if(!q&&(t==='light'||t==='green'||t==='night'))document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
 <div class="topbar">
@@ -41,6 +41,7 @@
     <div class="tgl" id="theme" role="group" aria-label="Theme">
       <button type="button" data-theme="light" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.7v2.1M10 16.2v2.1M18.3 10h-2.1M3.8 10H1.7M15.9 4.1l-1.5 1.5M5.6 14.4l-1.5 1.5M15.9 15.9l-1.5-1.5M5.6 5.6 4.1 4.1"/></svg><span class="sr" data-en="Solar" data-ua="Сонячна">Solar</span></button><button type="button" data-theme="green" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 7.5h8L10.6 3H5.4L4 7.5ZM8 7.5v7M5 17h7"/><path d="M14.5 9.5v5M12.5 14.5h4"/></svg><span class="sr" data-en="Green" data-ua="Зелена">Green</span></button><button type="button" data-theme="night" aria-pressed="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.4 12.3A7 7 0 0 1 7.7 3.6 7 7 0 1 0 16.4 12.3Z"/></svg><span class="sr" data-en="Night" data-ua="Нічна">Night</span></button>
     </div>
+    <a class="tiny contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
     </div>
@@ -154,6 +155,14 @@
     b.addEventListener('click', function(){ setTheme(b.dataset.theme, true); });
   });
   (function(){
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
     var saved = null;
     try{ saved = localStorage.getItem('kr-theme'); }catch(e){}
     if(saved === 'dark') saved = 'green';

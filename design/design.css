@@ -162,6 +162,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 @media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
 .part[aria-current]{color:var(--ink)}
 .tgl{display:flex;align-items:center}
+#theme{display:none}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
   font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
