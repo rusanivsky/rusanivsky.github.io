@@ -69,7 +69,12 @@ function ukrainianiseContent(html) {
   // literal server-delivered text rather than relying on JavaScript to swap it.
   html = html.replace(/(<([a-z][\w-]*)(?:\s[^>]*)?\sdata-en="[^"]*"\sdata-ua="([^"]*)"(?:\s[^>]*)?>)([^<]*)(<\/\2>)/gi, '$1$3$5');
   html = html.replace(/try\{\s*setLang\(detect\w*\(\),\s*false\);\s*\}catch\(e\)\{\s*setLang\('en',\s*false\);\s*\}/, "try{ setLang('ua', false); }catch(e){}");
-  html = html.replace("L(D(),false);", "L('ua',false);");
+  // без крапки з комою: у джерелі виклик стоїть як L(D(),false)})();, тож
+  // точний рядок із ; не збігався ніколи. Сторінка умов — єдина, що
+  // використовує цю коротку форму скрипта (решта ловиться регексом на
+  // setLang вище), і саме вона віддавалась з українським текстом, а потім
+  // сама перемикала себе на англійську за мовою браузера
+  html = html.replace("L(D(),false)", "L('ua',false)");
   html = html.replace(/(<button type="button" data-lang="en" aria-pressed=")true("[^>]*>EN<\/button><button type="button" data-lang="ua" aria-pressed=")false/, '$1false$2true');
   return html;
 }
