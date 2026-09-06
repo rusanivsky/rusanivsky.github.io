@@ -19,6 +19,7 @@
      темна, майже бронзова: 6,5:1 */
   --pencil:#6f5220;
   --highlight:#e6bb7c;
+  --active:#b52f3b;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
@@ -108,7 +109,7 @@
   color-scheme:dark;
   /* та сама охра, світліша й тепліша — на #415d43 вона тримає 4,1:1.
      Не яскравіше: це підкреслення, а не заклик */
-  --pencil:#e6bb7c;
+  --pencil:#e6bb7c; --active:#e6bb7c;
   --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
@@ -116,7 +117,7 @@
 :root[data-theme="night"]{
   /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
      рости: 6,5:1 */
-  color-scheme:dark; --pencil:#d9a05e;
+  color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
@@ -144,7 +145,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
 @media (hover:hover){.contact-link:hover{color:var(--accent)}}
-.contact-link[aria-current="page"]{color:var(--ink)}
+.contact-link[aria-current="page"]{color:var(--active)}
 
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
 .meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
@@ -163,7 +164,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   transition:color 220ms var(--ease)}
 .part::after{content:none}
 @media (hover:hover){.part:hover{color:var(--accent)}}
-.part[aria-current]{color:#111d13;background:var(--highlight);padding-inline:4px;margin-inline:-4px}
+.part[aria-current]{color:var(--active)}
 /* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
    зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
    розділи поряд — ні, і на дотик шапка розділів виходила вищою за
@@ -247,7 +248,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
 .sec::after{content:none}
 @media (hover:hover){.sec:hover{color:var(--accent)}}
-.sec.on,.sec[aria-current]{color:#111d13;background:var(--highlight);padding-inline:4px;margin-inline:-4px}
+.sec.on,.sec[aria-current]{color:var(--active)}
 
 /* ── сітка знімків ───────────────────────────────────────── */
 /* колонкова кладка. У сітці висоту рядка задавав найвищий кадр, і під
@@ -303,13 +304,19 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 /* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
    від тієї самої вертикалі — так само, як у переліку напрямків на головній */
-.cat::after{content:none}
+.cat::after{
+  content:"";position:absolute;left:var(--col2);right:0;top:0;height:var(--pen);
+  background:var(--pencil);transform:scaleX(0);transform-origin:left;
+  transition:transform 620ms var(--ease);will-change:transform;
+}
 @media (hover:hover){
   .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px));color:var(--pencil)}
   .cat:hover .num{color:var(--accent)}
+  .cat:hover::after{transform:scaleX(1)}
 }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
+.cat:active::after{transform:scaleX(1)}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
    чверть рядка — там підпис лягає вертикально, а колонка сходить до
    20px: те саме, що доти вмикалось аж на телефоні */
@@ -447,9 +454,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
-@media (hover:hover){
-  .site-foot .lines > a:hover::before,.foot-bar .arch:hover::before{transform:scaleX(0)}
-}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */
@@ -481,13 +485,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
    --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
 .foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
-.foot-bar .arch::before{
-  content:""; position:absolute; left:0; right:0; bottom:-3px;
-  height:var(--pen); background:var(--pencil);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform 380ms var(--ease);
-  will-change:transform;
-}
 .foot-bar .arch::after{
   content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
   opacity:0; transform:translate(-.3em,.3em);
@@ -495,10 +492,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 @media (hover:hover){
   .foot-bar .arch:hover{color:var(--accent)}
-  .foot-bar .arch:hover::before{transform:scaleX(1)}
   .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
-.foot-bar .arch:active::before{transform:scaleX(1)}
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
