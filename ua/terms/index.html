@@ -6,13 +6,297 @@
 <link rel="alternate" hreflang="en" href="https://rusanivsky.com/terms/">
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/terms/">
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/terms/"><meta name="theme-color" content="#415d43"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=19">
-<style>.contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) clamp(24px,4vh,52px)}.contact-head .intro{grid-column:3/-1;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}.contact-list{padding-top:0}@media(max-width:640px){.contact-head{display:block}}</style>
+<style>
+/* ── шапка сторінки ───────────────────────────────────────── */
+.contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
+.contact-head .intro{grid-column:3/-1;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
+.contact-list{padding-top:0}
+@media(max-width:640px){.contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}}
+
+/* ── умови роботи ─────────────────────────────────────────────
+   Сторінка говорить тією самою мовою, що й головна, і не заводить
+   власної: підпис розділу стоїть у першій колонці — тій наскрізній
+   смузі, у якій там стоять «Чим займаюсь» і «Клієнти»; вміст іде з
+   третьої; лінійка кожного рядка лягає на його верхню межу й починається
+   з другої — від тієї самої вертикалі, що й у переліку напрямків.
+   Ховера тут немає навмисно: жоден рядок не посилання, а охра на цьому
+   сайті означає «сюди можна натиснути» */
+.tsec{padding-top:clamp(30px,5.5vh,68px)}
+/* нульова висота й вирівнювання по правому краю першої колонки — точно
+   як .work h2 на головній: лінійка першого рядка лягає рівно на верхню
+   межу напису, а не під нього. nowrap — бо при height:0 перенесений
+   рядок звисав би в порожнечу під підписом */
+.tsec > h2{
+  line-height:1;height:0;white-space:nowrap;position:relative;z-index:1;
+  display:flex;justify-content:flex-end;align-items:flex-start;
+  text-align:right;padding-right:calc(100% - var(--col1));
+}
+/* тіло розділу — та сама 12-колонкова сітка, що й уся сторінка; рядки
+   підхоплюють її треки через subgrid, тож назви, ціни й описи в усіх
+   розділах стоять на спільних вертикалях */
+.tbody{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap)}
+/* розпірка в першій колонці — точна копія коробки номера: поле в --col2
+   плюс власна ширина «01». Саме вона на головній розсовує перший трек
+   зі 78 до 183px, і саме тому там назви розділів стоять на 372, а не на
+   277. Без неї розділи з номерами й розділи без них рахували б треки
+   по-різному: «Процес» ставав би на 372, «Ціни» — на 277, і сторінка
+   мала б два різні ліві краї. Тепер вертикалі всіх розділів збігаються
+   між собою, з переліком контактів унизу і з рештою сайту.
+   height:0 і порожній вміст: розпірка нічого не малює й нічого не
+   зсуває — вона лише міряє трек */
+.tbody::before,.contact-head::before{
+  content:"";grid-column:1;grid-row:1;height:0;
+  margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label);
+}
+.trow{
+  display:grid;grid-template-columns:subgrid;grid-column:1/-1;
+  padding-block:var(--rule-gap);position:relative;align-items:baseline;
+}
+.trow::before{content:"";position:absolute;left:var(--col2);right:0;top:0;
+  height:var(--rule);background:var(--divider)}
+/* суцільний текст тримається лівої половини — треків 3–8, як назва
+   розділу на головній: міра рядка лишається читною, а права половина
+   віддана ціні або опису */
+.tsec .lead,.tsec .copy,.tsec .note{grid-column:3/9;margin:0;max-width:56ch;text-wrap:pretty}
+.tsec .copy > p{margin:0;text-wrap:pretty}
+.tsec .copy > p + p{margin-top:var(--rule-gap)}
+.tsec .note{color:var(--mute)}
+/* підзаголовок групи говорить тією самою капітеллю, що й підпис розділу,
+   але повним чорнилом: підпис стоїть у полі й має мовчати, підзаголовок
+   стоїть у верстці — інакше два рівні читалися б як один */
+.grp{grid-column:3/-1;margin:0;font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;font-weight:600;line-height:1}
+/* рядок ціни тієї самої будови, що .spec на головній: назва на лівих
+   треках, число починається там, де там починається перелік */
+.prow .svc{grid-column:3/9;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
+.prow .fee{grid-column:9/span 4;margin:0;font-weight:400;text-wrap:pretty}
+/* нумеровані кроки: номер стоїть не на другому треку, а рівно там, де
+   починається лінійка — коли підпис ширший за колонку, --col2 відходить
+   від треку, і номер має відійти разом із ним */
+.steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
+.step .no{grid-column:1;margin-left:var(--col2);min-width:3ch;
+  font-size:var(--fs-label);letter-spacing:var(--ls-tiny);font-weight:600;color:var(--mute)}
+.step h3{grid-column:3/9;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
+.step p{grid-column:9/span 4;margin:0;text-wrap:pretty}
+/* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
+   треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
+   не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
+   верстці верхнє поле першого пункта другої колонки зсувало б її вниз
+   відносно першої */
+.pts{grid-column:3/-1;list-style:none;margin:0;padding:0;columns:2;column-gap:var(--colgap)}
+.pts li{break-inside:avoid;margin:0 0 var(--rule-gap);text-wrap:pretty}
+.pts li:last-child{margin-bottom:0}
+/* приписка наприкінці сторінки: те саме приглушене чорнило, що й підписи,
+   і та сама міра, що в решти суцільного тексту */
+.fine{padding-block:clamp(30px,5.5vh,68px) 0}
+.fine p{grid-column:3/-1;margin:0;max-width:74ch;color:var(--mute);
+  font-size:var(--fs-label);letter-spacing:0;text-transform:none;line-height:1.55;text-wrap:pretty}
+
+/* поле на 120px варте себе, поки сторінка широка. Від 960 підпис лягає
+   вертикально — той самий поворот, що й на головній: rotate окремою
+   властивістю, бо transform:none у правилі появи має вищу вагу й з'їдав
+   би його */
+@media (max-width:960px){
+  .tsec > h2{
+    justify-content:flex-start;padding-right:0;
+    transform-origin:.5em .5em;rotate:90deg;width:max-content;
+  }
+}
+/* вузько колонок-треків немає: рядок стає парою «підпис — значення», а
+   тіло розділу відходить за першу колонку цілим блоком, тож лінійки
+   всередині нього стоять від його ж краю — на спільній із підписом
+   вертикалі */
+@media (max-width:640px){
+  .tbody{display:block;margin-left:var(--col2)}
+  .trow::before{left:0}
+  .trow{display:grid;grid-template-columns:auto 1fr;
+    column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
+  .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts,
+  .prow .svc,.prow .fee{grid-column:1/-1;max-width:none}
+  .steps{display:block}
+  .step .no{grid-column:1;grid-row:1;margin-left:0}
+  .step h3{grid-column:2;grid-row:1}
+  .step p{grid-column:2;grid-row:2}
+  .pts{columns:1}
+  .fine p{max-width:none}
+}
+</style>
 <link rel="stylesheet" href="/photo/photo.css?v=22">
 <script>document.documentElement.classList.add('rev')</script>
 </head>
 <body><div class="topbar"><header class="wrap meta"><a class="back" href="/ua/" data-en="← Kyrylo Rusanivsky" data-ua="← Кирило Русанівський">← Кирило Русанівський</a><nav class="parts" aria-label="Sections"><a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a><a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a><a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a></nav><div class="switches"><a class="tiny contact-link" href="/ua/terms/" aria-current="page" data-en="Work terms & Prices" data-ua="Умови роботи та ціни">Умови роботи та ціни</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button></div></div></header><hr class="rule"></div>
-<main><section class="wrap contact-head"><h1 class="sr" data-en="Work terms & Prices" data-ua="Умови роботи та ціни">Умови роботи та ціни</h1><p class="intro" data-en="Tell me the format, deadline and budget. Detailed terms and pricing will appear here next." data-ua="Напишіть формат, дедлайн і бюджет. Детальні умови та ціни додамо сюди далі.">Напишіть формат, дедлайн і бюджет. Детальні умови та ціни додамо сюди далі.</p></section><section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">TikTok</span></a></section></main>
+<main>
+<section class="wrap contact-head"><h1 class="sr" data-en="Work terms & Prices" data-ua="Умови роботи та ціни">Умови роботи та ціни</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
+
+<section class="wrap tsec" aria-labelledby="s-price">
+  <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Ціни</h2>
+  <div class="tbody">
+    <div class="trow"><p class="lead" data-en="Price depends on scope, complexity and deadline. The figures below are baselines — I quote the exact amount after the brief. Prices are set in hryvnia; the dollar figures are converted at the current rate and are indicative." data-ua="Ціна залежить від обсягу, складності та термінів. Нижче — базові орієнтири; точну суму називаю після брифу. Ціни встановлені в гривні.">Ціна залежить від обсягу, складності та термінів. Нижче — базові орієнтири; точну суму називаю після брифу. Ціни встановлені в гривні.</p></div>
+    <div class="trow"><h3 class="grp" data-en="Video editing" data-ua="Відеомонтаж">Відеомонтаж</h3></div>
+    <div class="trow prow"><h4 class="svc" data-en="Hourly rate" data-ua="Погодинна ставка">Погодинна ставка</h4><p class="fee" data-en="$15 / hour" data-ua="600 грн / год">600 грн / год</p></div>
+    <div class="trow prow"><h4 class="svc" data-en="Interview or talking-head video, up to 60 min of finished material" data-ua="Інтерв’ю, розмовне відео — до 60 хв готового матеріалу">Інтерв’ю, розмовне відео — до 60 хв готового матеріалу</h4><p class="fee" data-en="from $150" data-ua="від 6 000 грн">від 6 000 грн</p></div>
+    <div class="trow prow"><h4 class="svc" data-en="Social media video, vertical format, up to 60 s" data-ua="Ролик для соцмереж, вертикальний формат — до 60 с">Ролик для соцмереж, вертикальний формат — до 60 с</h4><p class="fee" data-en="from $150" data-ua="від 6 000 грн">від 6 000 грн</p></div>
+    <div class="trow"><h3 class="grp" data-en="Design and typesetting" data-ua="Дизайн і верстка">Дизайн і верстка</h3></div>
+    <div class="trow prow"><h4 class="svc" data-en="Book typesetting" data-ua="Верстка книжки">Верстка книжки</h4><p class="fee" data-en="from $250 per project, or $2.50–6 per page depending on genre and layout complexity" data-ua="від 10 000 грн за проєкт або 100–250 грн за сторінку залежно від жанру і складності макету">від 10 000 грн за проєкт або 100–250 грн за сторінку залежно від жанру і складності макету</p></div>
+    <div class="trow prow"><h4 class="svc" data-en="Cover design" data-ua="Обкладинка">Обкладинка</h4><p class="fee" data-en="from $85" data-ua="від 3 500 грн">від 3 500 грн</p></div>
+    <div class="trow prow"><h4 class="svc" data-en="Print work — booklet, poster, letterhead" data-ua="Поліграфія — буклет, афіша, бланк">Поліграфія — буклет, афіша, бланк</h4><p class="fee" data-en="from $30" data-ua="від 1 200 грн">від 1 200 грн</p></div>
+    <div class="trow prow"><h4 class="svc" data-en="Small edits and ongoing support" data-ua="Дрібні правки та супровід">Дрібні правки та супровід</h4><p class="fee" data-en="$12–17 / hour" data-ua="500–700 грн / год">500–700 грн / год</p></div>
+    <div class="trow"><h3 class="grp" data-en="What moves the price" data-ua="Що впливає на ціну">Що впливає на ціну</h3></div>
+    <div class="trow"><ul class="pts">
+      <li data-en="Urgency. Weekend work or a same-day start adds 40%." data-ua="Терміновість. Робота у вихідні або старт у день звернення — плюс 40%.">Терміновість. Робота у вихідні або старт у день звернення — плюс 40%.</li>
+      <li data-en="Volume of source material: two hours of footage and twenty hours are different jobs." data-ua="Обсяг вихідного матеріалу: 2 години зйомки і 20 годин — це різні задачі.">Обсяг вихідного матеріалу: 2 години зйомки і 20 годин — це різні задачі.</li>
+      <li data-en="Number of final versions and formats. Horizontal, vertical and square are three separate edits, not one." data-ua="Кількість фінальних версій і форматів. Горизонталь, вертикаль і квадрат — три різні монтажі, не один.">Кількість фінальних версій і форматів. Горизонталь, вертикаль і квадрат — три різні монтажі, не один.</li>
+      <li data-en="Whether a brief, a script or a brand book already exists." data-ua="Наявність готового ТЗ, сценарію, бренд-буку.">Наявність готового ТЗ, сценарію, бренд-буку.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-flow">
+  <h2 class="tiny" id="s-flow" data-en="Process" data-ua="Процес">Процес</h2>
+  <div class="tbody">
+    <ol class="steps">
+      <li class="trow step"><span class="no" aria-hidden="true">01</span><h3 data-en="Brief" data-ua="Бриф">Бриф</h3><p data-en="You describe the task, the deadline, and show me the material." data-ua="Ви описуєте задачу, терміни й показуєте матеріал.">Ви описуєте задачу, терміни й показуєте матеріал.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">02</span><h3 data-en="Estimate" data-ua="Оцінка">Оцінка</h3><p data-en="Within 1–2 business days I send you the price, the timeline and the scope of work." data-ua="Протягом 1–2 робочих днів надсилаю вартість, терміни та обсяг робіт.">Протягом 1–2 робочих днів надсилаю вартість, терміни та обсяг робіт.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">03</span><h3 data-en="Start" data-ua="Старт">Старт</h3><p data-en="Invoice and a 50% deposit. Once it is paid, the task goes into the schedule." data-ua="Рахунок і передоплата 50%. Після оплати задача стає в графік.">Рахунок і передоплата 50%. Після оплати задача стає в графік.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">04</span><h3 data-en="Work" data-ua="Робота">Робота</h3><p data-en="Work-in-progress versions come to you for approval at the key stages." data-ua="Проміжні версії на погодження — на ключових етапах.">Проміжні версії на погодження — на ключових етапах.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">05</span><h3 data-en="Revisions" data-ua="Правки">Правки</h3><p data-en="Two rounds are included in the price." data-ua="Два раунди входять у вартість.">Два раунди входять у вартість.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">06</span><h3 data-en="Delivery" data-ua="Фінал">Фінал</h3><p data-en="After full payment I hand over the final files." data-ua="Після повної оплати передаю фінальні файли й акт наданих послуг.">Після повної оплати передаю фінальні файли й акт наданих послуг.</p></li>
+    </ol>
+    <div class="trow"><p class="note" data-en="Everything we agree on is put in writing — in correspondence or in the contract." data-ua="Домовленості фіксуються письмово — у листуванні або в договорі.">Домовленості фіксуються письмово — у листуванні або в договорі.</p></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-time">
+  <h2 class="tiny" id="s-time" data-en="Timelines" data-ua="Терміни">Терміни</h2>
+  <div class="tbody">
+    <div class="trow"><p class="lead" data-en="I give the timeline after looking at the material — a lot depends on the current workload. Roughly:" data-ua="Терміни називаю після оцінки матеріалу — багато залежить від поточної завантаженості. Орієнтовно:">Терміни називаю після оцінки матеріалу — багато залежить від поточної завантаженості. Орієнтовно:</p></div>
+    <div class="trow"><ul class="pts">
+      <li data-en="Short social media video — from 2 business days." data-ua="Короткий ролик для соцмереж — від 2 робочих днів.">Короткий ролик для соцмереж — від 2 робочих днів.</li>
+      <li data-en="Interview or talking-head video — from 3 business days." data-ua="Інтерв’ю або розмовне відео — від 3 робочих днів.">Інтерв’ю або розмовне відео — від 3 робочих днів.</li>
+      <li data-en="Cover — from 4 business days." data-ua="Обкладинка — від 4 робочих днів.">Обкладинка — від 4 робочих днів.</li>
+      <li data-en="Book typesetting — from 2 weeks." data-ua="Верстка книжки — від 2 тижнів.">Верстка книжки — від 2 тижнів.</li>
+    </ul></div>
+    <div class="trow"><p class="note" data-en="The clock starts the moment all the materials and the deposit are in. A delay on your side — material not sent, a long approval — moves the deadline by the same number of days." data-ua="Відлік починається з моменту, коли отримано всі матеріали й передоплату. Затримка з вашого боку (не надіслані матеріали, довге погодження) зсуває дедлайн на відповідну кількість днів.">Відлік починається з моменту, коли отримано всі матеріали й передоплату. Затримка з вашого боку (не надіслані матеріали, довге погодження) зсуває дедлайн на відповідну кількість днів.</p></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-rev">
+  <h2 class="tiny" id="s-rev" data-en="Revisions" data-ua="Правки">Правки</h2>
+  <div class="tbody">
+    <div class="trow"><p class="lead" data-en="Two rounds of revisions are included in the price. A round is one consolidated list of comments, not ten separate messages over the course of a day." data-ua="У вартість входить два раунди правок. Раунд — це один зведений список коментарів, а не десять окремих повідомлень протягом дня.">У вартість входить два раунди правок. Раунд — це один зведений список коментарів, а не десять окремих повідомлень протягом дня.</p></div>
+    <div class="trow"><h3 class="grp" data-en="Billed separately" data-ua="Окремо оплачуються">Окремо оплачуються</h3></div>
+    <div class="trow"><ul class="pts">
+      <li data-en="The third and any further rounds — $10 / hour." data-ua="Третій і наступні раунди — 400 грн / год.">Третій і наступні раунди — 400 грн / год.</li>
+      <li data-en="Changes after a stage has been approved: re-editing a structure already signed off, a new cover concept." data-ua="Зміни після затвердження етапу: перемонтаж уже погодженої структури, нова концепція обкладинки.">Зміни після затвердження етапу: перемонтаж уже погодженої структури, нова концепція обкладинки.</li>
+      <li data-en="New inputs that were not there at the start: extra material, a changed script, a different running time." data-ua="Нові вхідні дані, яких не було на старті: додатковий матеріал, змінений сценарій, інший хронометраж.">Нові вхідні дані, яких не було на старті: додатковий матеріал, змінений сценарій, інший хронометраж.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-need">
+  <h2 class="tiny" id="s-need" data-en="From you" data-ua="Від вас">Від вас</h2>
+  <div class="tbody">
+    <div class="trow"><ul class="pts">
+      <li data-en="One person in charge who makes the decisions. When revisions come from three people and contradict each other, the work stops." data-ua="Один відповідальний контакт, який ухвалює рішення. Коли правки приходять від трьох людей і суперечать одна одній, робота зупиняється.">Один відповідальний контакт, який ухвалює рішення. Коли правки приходять від трьох людей і суперечать одна одній, робота зупиняється.</li>
+      <li data-en="Material in the agreed form: source video not compressed by messengers, text in an editable format, logo in vector." data-ua="Матеріали в узгодженому вигляді: вихідне відео без стиснення месенджерами, тексти в редагованому форматі, лого у векторі.">Матеріали в узгодженому вигляді: вихідне відео без стиснення месенджерами, тексти в редагованому форматі, лого у векторі.</li>
+      <li data-en="Billing details — at the invoice stage." data-ua="Реквізити для документів — на етапі рахунку.">Реквізити для документів — на етапі рахунку.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-pay">
+  <h2 class="tiny" id="s-pay" data-en="Payment" data-ua="Оплата">Оплата</h2>
+  <div class="tbody">
+    <div class="trow"><ul class="pts">
+      <li data-en="Registered sole proprietor in Ukraine, single-tax group III, not registered for VAT. All prices exclude VAT." data-ua="ФОП Таранюк-Русанівський Кирило Геннадійович, ІІІ група єдиного податку, не платник ПДВ. Усі ціни — без ПДВ.">ФОП Таранюк-Русанівський Кирило Геннадійович, ІІІ група єдиного податку, не платник ПДВ. Усі ціни — без ПДВ.</li>
+      <li data-en="Payment by bank transfer. Clients in Ukraine — to my hryvnia business account; clients abroad — SWIFT in US dollars to my business currency account." data-ua="Оплата безготівкова. Українським замовникам — на розрахунковий рахунок у гривні; закордонним — SWIFT у доларах на валютний рахунок.">Оплата безготівкова. Українським замовникам — на розрахунковий рахунок у гривні; закордонним — SWIFT у доларах на валютний рахунок.</li>
+      <li data-en="Payoneer, if that is easier on your side." data-ua="Payoneer — якщо так зручніше на вашому боці.">Payoneer — якщо так зручніше на вашому боці.</li>
+      <li data-en="Intermediary bank fees on an international transfer are on the sender’s side." data-ua="Комісії банків-посередників за міжнародним переказом — на боці відправника.">Комісії банків-посередників за міжнародним переказом — на боці відправника.</li>
+      <li data-en="Documents: an invoice, and a service agreement if you need one." data-ua="Документи: рахунок-фактура, акт наданих послуг, за потреби — договір про надання послуг.">Документи: рахунок-фактура, акт наданих послуг, за потреби — договір про надання послуг.</li>
+      <li data-en="No withholding is required on your side — I pay my own taxes in Ukraine." data-ua="Для юридичних осіб і ФОП: податки з виплати утримувати не потрібно, я сплачую їх самостійно.">Для юридичних осіб і ФОП: податки з виплати утримувати не потрібно, я сплачую їх самостійно.</li>
+      <li data-en="A Ukrainian tax residency certificate on request, for double taxation treaty purposes." data-ua="Довідка про податкове резидентство України — за запитом, для угод про уникнення подвійного оподаткування.">Довідка про податкове резидентство України — за запитом, для угод про уникнення подвійного оподаткування.</li>
+      <li data-en="A 50% deposit, the balance after the final version is approved and before the files are handed over. With new clients I do not start without a deposit." data-ua="Передоплата 50%, решта — після затвердження фінальної версії, до передачі файлів. З новими замовниками без передоплати не працюю.">Передоплата 50%, решта — після затвердження фінальної версії, до передачі файлів. З новими замовниками без передоплати не працюю.</li>
+      <li data-en="For ongoing clients, invoicing at the end of the month is possible." data-ua="Для постійних клієнтів можлива післяплата за підсумками місяця.">Для постійних клієнтів можлива післяплата за підсумками місяця.</li>
+      <li data-en="Full payment details come with the invoice." data-ua="Повні реквізити для оплати надаю в рахунку.">Повні реквізити для оплати надаю в рахунку.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-files">
+  <h2 class="tiny" id="s-files" data-en="Delivery" data-ua="Файли">Файли</h2>
+  <div class="tbody">
+    <div class="trow"><ul class="pts">
+      <li data-en="Final files are delivered through Google Drive." data-ua="Фінальні файли передаю через Google Drive.">Фінальні файли передаю через Google Drive.</li>
+      <li data-en="Video formats: MP4 H.264, 1080p or 4K. Others on request." data-ua="Формати відео: MP4 H.264, 1080p / 4K, за запитом — інші.">Формати відео: MP4 H.264, 1080p / 4K, за запитом — інші.</li>
+      <li data-en="Design: print-ready PDF/X-4 with bleeds and marks, plus JPG or PNG for screen." data-ua="Дизайн: PDF для друку — PDF/X-4, з вильотами й мітками, плюс JPG/PNG для мережі.">Дизайн: PDF для друку — PDF/X-4, з вильотами й мітками, плюс JPG/PNG для мережі.</li>
+      <li data-en="Working project files — the edit project, the layout — on request, at no extra charge." data-ua="Робочі файли проєкту — монтажний проєкт, макет — надаю за запитом без додаткової оплати.">Робочі файли проєкту — монтажний проєкт, макет — надаю за запитом без додаткової оплати.</li>
+      <li data-en="Approved final files I keep indefinitely." data-ua="Фінальні затверджені файли зберігаю безстроково.">Фінальні затверджені файли зберігаю безстроково.</li>
+      <li data-en="Your source material — footage, photos — I keep for 90 days after delivery, then delete. This is not a backup: keep your own copy. If you need it held longer, say so up front." data-ua="Ваші вихідні матеріали — відзняте відео, фото — тримаю 90 днів після здачі, далі видаляю. Це не бекап: копію залишайте собі. Якщо потрібне довше зберігання, скажіть заздалегідь.">Ваші вихідні матеріали — відзняте відео, фото — тримаю 90 днів після здачі, далі видаляю. Це не бекап: копію залишайте собі. Якщо потрібне довше зберігання, скажіть заздалегідь.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-rights">
+  <h2 class="tiny" id="s-rights" data-en="Rights" data-ua="Права">Права</h2>
+  <div class="tbody">
+    <div class="trow"><div class="copy">
+      <p data-en="Ownership of the finished work passes to the client after full payment. Until then the files remain mine." data-ua="Майнові права на готову роботу переходять до замовника після повної оплати. До того моменту файли залишаються моїми.">Майнові права на готову роботу переходять до замовника після повної оплати. До того моменту файли залишаються моїми.</p>
+      <p data-en="I reserve the right to show completed work in my portfolio, on social media and on this site. If the material is confidential or has to be released later, tell me at the start and we will agree an embargo or an NDA." data-ua="Я залишаю за собою право показувати виконану роботу в портфоліо, соцмережах і на цьому сайті. Якщо матеріал конфіденційний або має вийти пізніше — попередьте на старті, узгодимо ембарго або NDA.">Я залишаю за собою право показувати виконану роботу в портфоліо, соцмережах і на цьому сайті. Якщо матеріал конфіденційний або має вийти пізніше — попередьте на старті, узгодимо ембарго або NDA.</p>
+      <p data-en="Licences for third-party material — fonts, music, stock footage and photos — are paid for by the client unless we agree otherwise. I do not use such material without a licence." data-ua="Ліцензії на сторонні матеріали — шрифти, музика, стокові кадри й фото — оплачує замовник, якщо не домовились інакше. Без ліцензії такі матеріали не використовую.">Ліцензії на сторонні матеріали — шрифти, музика, стокові кадри й фото — оплачує замовник, якщо не домовились інакше. Без ліцензії такі матеріали не використовую.</p>
+      <p data-en="Factual accuracy of text, names, dates and figures in the layouts is the client’s responsibility. A final proofread before printing is a required step on your side; once the layout is approved, printing errors are not mine to answer for." data-ua="Відповідальність за фактичну точність текстів, імен, дат і цифр у макетах — на замовнику. Фінальна вичитка перед друком — обов’язковий етап з вашого боку; після затвердження макета помилки в друці не є моєю зоною відповідальності.">Відповідальність за фактичну точність текстів, імен, дат і цифр у макетах — на замовнику. Фінальна вичитка перед друком — обов’язковий етап з вашого боку; після затвердження макета помилки в друці не є моєю зоною відповідальності.</p>
+    </div></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-risk">
+  <h2 class="tiny" id="s-risk" data-en="Risks" data-ua="Ризики">Ризики</h2>
+  <div class="tbody">
+    <div class="trow"><ul class="pts">
+      <li data-en="Cancellation after the start: the deposit covers the work already done and is not refunded. If more has been done than the deposit covers, the actual volume is billed." data-ua="Скасування після старту: передоплата покриває вже виконану роботу й не повертається. Якщо зроблено більше, ніж покриває передоплата, — оплачується фактичний обсяг.">Скасування після старту: передоплата покриває вже виконану роботу й не повертається. Якщо зроблено більше, ніж покриває передоплата, — оплачується фактичний обсяг.</li>
+      <li data-en="Rescheduling a project is discussed separately." data-ua="Перенесення термінів проєкту обговорюється окремо.">Перенесення термінів проєкту обговорюється окремо.</li>
+      <li data-en="I am in Ukraine. Air raid alerts, blackouts and connection outages happen. I have backup power and internet, so most days this changes nothing — but during long outages or shelling the timeline can shift. I flag it as soon as I see the risk." data-ua="Я в Україні. Тривоги, блекаути й перебої зі зв’язком трапляються. У мене є резервне живлення й інтернет, тож більшість днів це ні на що не впливає — але за тривалих відключень або обстрілів терміни можуть зсунутися. Попереджаю одразу, щойно бачу ризик.">Я в Україні. Тривоги, блекаути й перебої зі зв’язком трапляються. У мене є резервне живлення й інтернет, тож більшість днів це ні на що не впливає — але за тривалих відключень або обстрілів терміни можуть зсунутися. Попереджаю одразу, щойно бачу ризик.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-no">
+  <h2 class="tiny" id="s-no" data-en="Out of scope" data-ua="Не беруся">Не беруся</h2>
+  <div class="tbody">
+    <div class="trow"><ul class="pts">
+      <li data-en="I do not take projects for exposure, for a percentage, or for views." data-ua="Не беруся за проєкт «за портфоліо», за відсоток або за перегляди.">Не беруся за проєкт «за портфоліо», за відсоток або за перегляди.</li>
+      <li data-en="I do not do unpaid test assignments." data-ua="Не роблю тестові завдання безкоштовно.">Не роблю тестові завдання безкоштовно.</li>
+      <li data-en="I do not guarantee reach, sales or any other result that does not depend on the edit." data-ua="Не гарантую охоплення, продажі чи інші результати, які залежать не від монтажу.">Не гарантую охоплення, продажі чи інші результати, які залежать не від монтажу.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap tsec" aria-labelledby="s-contact">
+  <h2 class="tiny" id="s-contact" data-en="Contact" data-ua="Контакти">Контакти</h2>
+</section>
+<section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">TikTok</span></a></section>
+
+<section class="wrap fine tbody">
+  <p data-en="Paying the invoice means you accept these terms. Revised 6 September 2026. The current version is always on this page; prices and terms may change, but orders already paid for are governed by the terms in force on the date of payment." data-ua="Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.">Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.</p>
+</section>
+</main>
 <footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span><span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Київ, Україна</span></div><div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">Мої фотогалереї на Pixover</a></div></div></footer>
-<script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}return(navigator.language||'').slice(0,2)==='uk'?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();</script>
+<script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}return(navigator.language||'').slice(0,2)==='uk'?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();
+/* поява блоків — той самий рух, що й на решті сайту. data-rev вішає сам
+   скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, стоїть на
+   місці одразу, решта проявляється, коли до неї догортали */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+  var els=[].slice.call(document.querySelectorAll('.tsec > h2, .trow, .cats .cat, .fine p'));
+  els.forEach(function(el){ el.setAttribute('data-rev',''); });
+  var onload=[], later=[];
+  els.forEach(function(el){ (el.getBoundingClientRect().top < innerHeight ? onload : later).push(el); });
+  later.forEach(function(el){ io.observe(el); });
+  onload.forEach(function(el){ el.classList.add('at-once','is-in'); });
+})();
+</script>
 </body></html>
