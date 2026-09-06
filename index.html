@@ -25,8 +25,8 @@
 <meta name="twitter:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
 <meta name="twitter:description" content="Kyrylo Rusanivsky — graphic designer, video editor and photographer based in Kyiv. Book typesetting, cover and print design; interview, vlog and social video editing; street, event and portrait photography.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=2">
-<meta name="theme-color" content="#f2f0ea" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171615" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ebede7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171a15" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico?v=3" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
@@ -48,11 +48,11 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#d64427;
+  --pencil:#14532d;
   color-scheme:light;
-  --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
-  --divider:color-mix(in srgb, #201e1d 40%, transparent);
-  --mute:color-mix(in srgb, #201e1d 65%, transparent);
+  --bg:#ebede7; --surface:#dfe2da; --ink:#1e211c; --accent:var(--ink);
+  --divider:color-mix(in srgb, #1e211c 40%, transparent);
+  --mute:color-mix(in srgb, #1e211c 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
   /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
@@ -105,17 +105,23 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
-    --divider:color-mix(in srgb, #f0eeec 34%, transparent);
-    --mute:color-mix(in srgb, #f0eeec 55%, transparent);
+    /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
+       Той самий зелений, тільки світліший: на #171a15 він тримає 5,5:1 */
+    --pencil:#3fa06a;
+    --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
+    --divider:color-mix(in srgb, #e7e9e3 34%, transparent);
+    --mute:color-mix(in srgb, #e7e9e3 55%, transparent);
   }
 }
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
-  --divider:color-mix(in srgb, #f0eeec 34%, transparent);
-  --mute:color-mix(in srgb, #f0eeec 55%, transparent);
+  /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
+     Той самий зелений, тільки світліший: на #171a15 він тримає 5,5:1 */
+  --pencil:#3fa06a;
+  --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
+  --divider:color-mix(in srgb, #e7e9e3 34%, transparent);
+  --mute:color-mix(in srgb, #e7e9e3 55%, transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -613,9 +619,9 @@ figure{margin:0; position:relative; z-index:1}
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
    такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
-   темною плашкою #333230, і сенс у ній був лише в світлій темі: на
-   #f2f0ea вона давала контраст 11,2:1 і читалася як подія, а на
-   темному #171615 — 1,41:1, тобто ледь помітну пляму замість блоку.
+   темною плашкою, і сенс у ній був лише в світлій темі: на папері вона
+   давала контраст 11,2:1 і читалася як подія, а на темному тлі — 1,41:1,
+   тобто ледь помітну пляму замість блоку.
    Прийом працював наполовину, а сторінка з волосяних лінійок і
    повітря обходиться без суцільної заливки */
 .site-foot{
@@ -834,9 +840,20 @@ figure{margin:0; position:relative; z-index:1}
     <div class="figwrap">
       <figure data-rev style="--d:80ms">
         <div class="shot">
+          <!-- Портрет — найбільший елемент першого екрана, тож він і задає LCP.
+               1280px потрібні тільки телефону з подвійною щільністю: широко
+               знімок стоїть у трьох колонках, тобто близько 310px, і навіть на
+               2x йому досить 640. sizes описує ці три випадки, і браузер сам
+               бере менший файл — 19КБ замість 49 на десктопі.
+               JPEG лишається один: це запасний шлях для браузерів без webp і
+               avif, і сьогодні ним не ходить майже ніхто -->
           <picture>
-            <source srcset="photo.avif" type="image/avif">
-            <source srcset="photo.webp" type="image/webp">
+            <source type="image/avif"
+                    srcset="photo-640.avif 640w, photo.avif 1280w"
+                    sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
+            <source type="image/webp"
+                    srcset="photo-640.webp 640w, photo.webp 1280w"
+                    sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
             <img src="photo.jpg" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
           </picture>
         </div>
@@ -1000,7 +1017,7 @@ figure{margin:0; position:relative; z-index:1}
     /* колір системної панелі браузера тримаємо в парі з вибором — але
        чіпаємо його тільки тоді, коли вибір справді був */
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', v === 'dark' ? '#171615' : '#f2f0ea');
+      m.setAttribute('content', v === 'dark' ? '#171a15' : '#ebede7');
     });
     document.querySelectorAll('#theme button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.theme === v));

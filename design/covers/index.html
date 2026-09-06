@@ -6,8 +6,8 @@
 <title>Cover design — Kyrylo Rusanivsky</title>
 <meta name="description" content="Book covers, bibliographic indexes and printed matter designed by Kyrylo Rusanivsky, Kyiv.">
 <link rel="canonical" href="https://rusanivsky.com/design/covers/">
-<meta name="theme-color" content="#f2f0ea" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171615" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ebede7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171a15" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico?v=3" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/design/design.css?v=16">
+<link rel="stylesheet" href="/design/design.css?v=17">
 <script>document.documentElement.classList.add('rev');try{var t=localStorage.getItem('kr-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
@@ -135,7 +135,7 @@
     /* колір системної панелі браузера тримаємо в парі з вибором — але
        чіпаємо його тільки тоді, коли вибір справді був */
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', v === 'dark' ? '#171615' : '#f2f0ea');
+      m.setAttribute('content', v === 'dark' ? '#171a15' : '#ebede7');
     });
     document.querySelectorAll('#theme button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.theme === v));
