@@ -14,6 +14,7 @@
 }
 :root{
   --pencil:#d64427;
+  color-scheme:light;
   --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
   --mute:color-mix(in srgb,#201e1d 52%,transparent);
@@ -22,29 +23,79 @@
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
   --rule:1px; --pen:2px;
+  /* ── шкала кеглів: шість щаблів на весь сайт ────────────────
+     1  chrome  12                    службовий рядок: місто, годинник,
+                                      перемикачі, навігація, копірайт,
+                                      мітка платформи
+     2  label   13                    підписи розділів, номери рядків,
+                                      підписи під картками
+     3  text    16–19                 увесь суцільний текст: база, лід,
+                                      категорії, назви й описи карток
+     4  link    19–28                 контактні посилання в підвалі
+     5  title   26–46                 назви розділів і категорій
+     6  name    42–112                ім'я
+     Між 1 і 2 всього піксель — це навмисно: службовий рядок має бути
+     тихішим за підписи, а не іншим за характером. Решта щаблів іде з
+     розгоном, тож на око вони не плутаються */
+  --fs-chrome:12px;
+  --fs-label:13px;
+  --fs-text:clamp(16px,1.25vw,19px);
+  --fs-link:clamp(19px,1.95vw,28px);
+  --fs-title:clamp(26px,3.6vw,46px);
+  --fs-name:clamp(42px,7.4vw,112px);
+  /* розрядка капітелі: на 13px .1em розсипає слово і робить підпис ширшим
+     за колонку, у якій він має стояти */
+  --ls-tiny:.06em;
+  /* просвіт між лінійкою і тим, що під нею починається. Був у трьох
+     місцях трьома різними числами: рядок переліку відбивав 14px, марки
+     клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
+     висота підпису. Тепер одне число на всі три */
+  --rule-gap:clamp(22px,2.6vw,32px);
   /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
      не росте, скільки б не було екрана — поле з боків краще за довгі рядки */
   --maxw:1440px;
   --ease:cubic-bezier(.16,1,.3,1);
+  /* та сама 12-колонкова сітка, що й на головній: міжколонник, зсув у другу
+     колонку (перша лишається наскрізним полем, у якому не стоїть нічого,
+     крім підписів) і спільний кегль назв категорій */
+  --colgap:clamp(20px,2.6vw,40px);
+  /* ширина сітки через vw, а не 100%: --col1 і --col2 мають означати одну
+     й ту саму відстань у будь-якій коробці */
+  --gridw:calc(min(100vw, var(--maxw)) - 2 * var(--pad));
+  /* найдовший нерозбивний підпис — «ЗАМОВЛЕННЯ»; на 13px він просить
+     стільки. Довший за колонку напис росте ліворуч у поле сторінки */
+  --label-w:106px;
+  /* перша колонка — наскрізне поле: у ньому стоїть підпис підвалу,
+     вирівняний по її правому краю, а лінійки з номерами під ними
+     починаються з другої. Не вужча за ту частину підпису, якої не бере
+     на себе поле сторінки, — інакше напис обрізало б краєм */
+  --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
+  --col2:calc(var(--col1) + var(--colgap));
 }
 /* темний набір оголошено двічі: під системну тему — і тільки поки її
    не перебили вручну — та під явно вибрану темну. Перемикач у шапці
    ставить html[data-theme], а без нього все як було */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
     --divider:color-mix(in srgb,#f0eeec 34%,transparent);
     --mute:color-mix(in srgb,#f0eeec 55%,transparent);
   }
 }
+:root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
   --divider:color-mix(in srgb,#f0eeec 34%,transparent);
   --mute:color-mix(in srgb,#f0eeec 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;overflow-x:hidden}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55}
+/* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
+   спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
+   вони були до гортання */
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--fs-text);line-height:1.55}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
@@ -58,28 +109,28 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 /* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
-.tiny{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.tiny{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
 
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
 .meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
   padding-block:2px;align-items:center}
-.back{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+.back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;
   padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
 .parts{display:flex;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
-.part{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+.part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
   transition:color 220ms var(--ease)}
 .part::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:var(--pen);
   background:var(--pencil);transform:scaleX(0);transform-origin:left;
-  transition:transform 380ms var(--ease)}
+  transition:transform 380ms var(--ease);will-change:transform}
 @media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
 .part[aria-current]{color:var(--ink)}
 .tgl{display:flex;align-items:center}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
-  font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  font:inherit;font-size:var(--fs-chrome);font-weight:800;letter-spacing:var(--ls-tiny);text-transform:uppercase;
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
@@ -92,7 +143,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
    тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
    лише зміна тону читається заслабко */
 .tgl .ic{
-  display:block; width:15px; height:15px; fill:none; stroke:currentColor;
+  display:block; width:17px; height:17px; fill:none; stroke:currentColor;
   stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
   transition:stroke-width 220ms var(--ease);
 }
@@ -156,10 +207,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .secs::-webkit-scrollbar{display:none}
 .sec{flex:0 0 auto;white-space:nowrap}
-.sec{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--mute);
+.sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;color:var(--mute);
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
 .sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;transition:transform 380ms var(--ease)}
+  background:var(--pencil);transform:scaleX(0);transform-origin:left;
+  transition:transform 380ms var(--ease);will-change:transform}
 @media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
 .sec.on,.sec[aria-current]{color:var(--ink)}
 .sec.on::after,.sec[aria-current]::after{transform:scaleX(1);background:var(--divider)}
@@ -178,39 +230,55 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid #f3f2f2;border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}
 @media (hover:hover){.fac:hover img{transform:scale(1.04);opacity:.82}.fac:hover .pl i{transform:scale(1.1)}}
 .v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
-.vt{font-size:clamp(16px,1.4vw,19px);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
-.vc{margin:0;font-size:12px;line-height:1.45;color:var(--mute);text-wrap:pretty}
-.plat{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+/* назва картки — третій щабель, як і решта суцільного тексту;
+   від опису під нею її відрізняє накреслення, а не кегль */
+.vt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
+/* підпис під карткою — другий щабель, той самий, що й підписи розділів */
+.vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
+.plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;color:var(--accent)}
 
 /* ── перелік категорій ───────────────────────────────────── */
-/* перший рядок стоїть там, де раніше починався заголовок сторінки */
-.cats{padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px)}
+/* перший рядок стоїть там, де раніше починався заголовок сторінки.
+   Рядки підхоплюють треки сторінкової сітки через subgrid, тож номери й
+   назви стоять на тих самих вертикалях, що й перелік напрямків на
+   головній: номер у другій колонці, назва з третьої */
+.cats{
+  display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
+  padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px);
+}
 .cat{
-  display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,2.4vw,36px);
-  align-items:baseline;padding-block:clamp(16px,2.2vw,26px);
+  display:grid;grid-template-columns:subgrid;grid-column:1/-1;
+  align-items:baseline;padding-block:var(--rule-gap);
   min-height:64px;position:relative;
 }
-.cat:first-of-type{border-top:var(--rule) solid var(--divider)}
+/* номер стоїть не на другому треку сітки, а рівно там, де починається
+   лінійка: коли підпис підвалу ширший за колонку, --col2 відходить від
+   треку на кілька пікселів, і номер має відійти разом із ним */
+.cat .num{grid-column:1; margin-left:var(--col2)}
+.cat .lab{grid-column:3/-1}
+/* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
+   останнім рядком її немає сама собою — доти це доводилось окремо
+   скасовувати, а першому рядку дописувати border-top. Ліва межа — початок
+   другої колонки, як і на головній */
 .cat::before{
-  content:"";position:absolute;left:0;right:0;bottom:0;
+  content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-/* під останнім рядком лінійки немає: ховер лягає на верхню межу рядка,
-   а нижня лишалась би самотньою межею перед підвалом — так само, як у
-   переліку напрямків на головній */
-.cat:last-of-type::before{content:none}
-.cat .num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-size:var(--fs-label);font-weight:800;letter-spacing:var(--ls-tiny);color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:clamp(28px,4.6vw,60px);font-weight:300;
+  font-size:var(--fs-title);font-weight:400;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
-/* лінійка ховера лягає на верхню межу рядка — так само, як у переліку
-   напрямків на головній */
+/* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
+   від тієї самої вертикалі — так само, як у переліку напрямків на головній */
 .cat::after{
-  content:"";position:absolute;left:0;right:0;top:calc(var(--rule) * -1);height:var(--pen);
+  content:"";position:absolute;left:var(--col2);right:0;top:0;height:var(--pen);
   background:var(--pencil);transform:scaleX(0);transform-origin:left;
   transition:transform 620ms var(--ease);
+  /* смуга живе на власному шарі постійно, а не лише поки їде: інакше після
+     гортання з наведеним рядком стара позиція лишалась неперемальованою */
+  will-change:transform;
 }
 @media (hover:hover){
   .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px));color:var(--pencil)}
@@ -220,8 +288,34 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
+/* вузько колонок-треків немає: рядок стає парою «номер — назва», а
+   лінійки йдуть від краю верстки */
 @media (max-width:640px){
-  .cat{padding-block:14px}
+  /* підпис стає вертикальним: горизонтально він просив під себе сто з
+     гаком пікселів, і на телефоні від рядка лишалась половина. Повернутий,
+     він займає ширину одного рядка, а не всього напису, — решта віддана
+     вмісту, і трохи повітря лишається між ним і лінійкою.
+     Коробка лишається нульової висоти й на своєму місці: обертання не
+     чіпає верстки, тож лінійка й далі стоїть на межі напису — тільки
+     тепер це його ліва межа, а не верхня. rotate(90deg) translateY(-1em)
+     повертає за годинниковою довкола лівого верхнього кута і піднімає на
+     висоту рядка, щоб напис пішов униз від тієї самої точки */
+  :root{--col1:20px}
+
+  /* перша колонка лишається і тут — у ній стоїть підпис підвалу. Перелік
+     відходить за неї цілим блоком, тож лінійки й номери всередині нього
+     стоять від його ж краю, на спільній із підписом вертикалі */
+  /* .cats — це сам .wrap із width:100%, тож зсувати його від'ємним полем
+     не можна: ширина лишиться та сама і блок вийде за край екрана. Зсуває
+     падінг — у border-box він іде всередину коробки */
+  .cats{display:block; padding-left:calc(var(--pad) + var(--col2))}
+  .cat::before,.cat::after{left:0}
+  .cat{
+    display:grid;grid-template-columns:auto 1fr;
+    column-gap:clamp(14px,2.4vw,36px);
+  }
+  .cat .num{grid-column:1; margin-left:0}
+  .cat .lab{grid-column:2}
 }
 
 /* ── підвал сайту ─────────────────────────────────────────── */
@@ -235,14 +329,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .site-foot{
   color:var(--ink);
   --uline:2px;
-  /* кегль контактного рядка винесено в змінну, бо від нього рахується
-     і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  /* шість посилань в один рядок замість двох по 38: стеля підібрана за
-     виміряним запасом — на 1440 вони просять 802px із 1232 доступних,
-     тобто вміщаються до 44 кеглю, і 36 лишає близько чверті на запас.
-     Вузьке місце не там, а на 760, де тримає нижня межа 22: запас там
-     усього 8%. Нижче рядок переноситься, і перенос лягає між словами */
-  --fs-line:clamp(22px,2.5vw,36px);
+  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
+     доводиться малювати не від нього, а від самої плашки — і треба знати,
+     на якій висоті в ній стоїть перший рядок */
+  --foot-pad:clamp(22px,3.85vh,52px);
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -251,9 +341,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    гуляла за довжиною найдовшої назви */
 .foot-in{
   position:relative;
-  padding-block:clamp(22px,3.85vh,52px);
+  padding-block:var(--foot-pad);
   display:grid; grid-template-columns:repeat(12,1fr);
-  column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
+  column-gap:var(--colgap); row-gap:var(--rule-gap);
   align-items:start;
 }
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
@@ -270,11 +360,26 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
      лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
   grid-column:1/-1; position:relative; margin:0; max-width:none;
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-size:var(--fs-label); letter-spacing:var(--ls-tiny); text-transform:uppercase;
   font-weight:600; line-height:1; color:var(--mute);
+  /* коробка тексту завширшки з першу колонку, напис по її правому краю —
+     тому самому місці, від якого за міжколонником починається лінійка.
+     Флекс, а не text-align: коли підпис ширший за колонку, text-align
+     лишає його на лівій межі й пускає через лінійку, а flex-end тримає
+     праву межу і вирощує напис ліворуч, у поле сторінки */
+  display:flex; justify-content:flex-end; align-items:flex-start;
+  text-align:right; padding-right:calc(100% - var(--col1));
+  /* нульова висота, як і в підписів розділів: інакше до просвіту під
+     лінійкою додавалася б ще й висота самого підпису, і підвал відбивав
+     би вдвічі більше за решту сторінки */
+  height:0;
 }
+/* та сама лінійка, що й у переліку категорій вище: по верхній межі
+   підпису і від початку другої колонки — тієї, з якої починаються самі
+   контакти. Доти підпис стояв над лінійкою, і на лінії лежала його нижня
+   межа */
 .foot-in .k::after{
-  content:""; position:absolute; left:0; right:0; top:100%;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
@@ -288,7 +393,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:var(--fs-line); font-weight:300; text-transform:none;
+  font-size:var(--fs-link); font-weight:300; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
   color:var(--mute);
@@ -300,6 +405,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
+  will-change:transform;
 }
 .site-foot .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
@@ -336,12 +442,17 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається */
-.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
+/* колір заданий тут, а не класом .tiny: .site-foot a{color:inherit} має
+   вищу вагу за .tiny і забирав приглушення — рядок світився повним
+   чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
+   --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
+.foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
 .foot-bar .arch::before{
   content:""; position:absolute; left:0; right:0; bottom:-3px;
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 380ms var(--ease);
+  will-change:transform;
 }
 .foot-bar .arch::after{
   content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
@@ -356,5 +467,26 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .foot-bar .arch:active::before{transform:scaleX(1)}
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
+/* вузько сітка підвалу згортається в одну колонку, а контакти відходять
+   за першу — за ту саму вертикаль, від якої йде лінійка над ними */
+@media (max-width:640px){
+  .foot-in{grid-template-columns:1fr}
+  .foot-in .say{grid-column:1; margin-left:var(--col2)}
+  /* повернутий підпис тягне за собою і свою лінійку — вона малювалась
+     вертикально вздовж усього підвалу. Тут лінійку малює сама плашка:
+     на висоті свого верхнього поля, тобто там, де стоїть перший рядок.
+     Усе це стоїть наприкінці файлу, після базових правил підвала: раніше
+     блок ішов перед ними і вони його ж і перебивали */
+  .foot-in .k::after{content:none}
+  .foot-in::before{
+    content:""; position:absolute; top:var(--foot-pad);
+    left:calc(var(--pad) + var(--col2)); right:var(--pad);
+    height:var(--rule); background:var(--divider);
+  }
+  .foot-in .k{
+    justify-content:flex-start; padding-right:0;
+    transform-origin:0 0; transform:rotate(90deg) translateY(-1em);
+  }
+}
 /* повітря між останнім блоком сторінки і темною плашкою */
 .site-foot{margin-top:clamp(28px,5vw,64px)}

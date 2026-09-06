@@ -49,7 +49,7 @@
 }
 :root{
   --pencil:#d64427;
-  --edge:transparent;
+  color-scheme:light;
   --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
   --divider:color-mix(in srgb, #201e1d 40%, transparent);
   --mute:color-mix(in srgb, #201e1d 65%, transparent);
@@ -58,9 +58,36 @@
   /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
      не росте, скільки б не було екрана — поле з боків краще за довгі рядки */
   --maxw:1440px;
-  /* волосяна лінійка розділювачів, товща лінія ховера, і рамка портрета —
-     рамка тієї ж товщини, що й розділювачі, щоб на сторінці була одна вага лінії */
-  --rule:1px; --pen:2px; --frame:var(--rule);
+  /* волосяна лінійка розділювачів і товща лінія ховера */
+  --rule:1px; --pen:2px;
+  /* ── шкала кеглів: шість щаблів на весь сайт ────────────────
+     1  chrome  12                    службовий рядок: місто, годинник,
+                                      перемикачі, навігація, копірайт,
+                                      мітка платформи
+     2  label   13                    підписи розділів, номери рядків,
+                                      підписи під картками
+     3  text    16–19                 увесь суцільний текст: база, лід,
+                                      категорії, назви й описи карток
+     4  link    19–28                 контактні посилання в підвалі
+     5  title   26–46                 назви розділів і категорій
+     6  name    42–112                ім'я
+     Між 1 і 2 всього піксель — це навмисно: службовий рядок має бути
+     тихішим за підписи, а не іншим за характером. Решта щаблів іде з
+     розгоном, тож на око вони не плутаються */
+  --fs-chrome:12px;
+  --fs-label:13px;
+  --fs-text:clamp(16px,1.25vw,19px);
+  --fs-link:clamp(19px,1.95vw,28px);
+  --fs-title:clamp(26px,3.6vw,46px);
+  --fs-name:clamp(42px,7.4vw,112px);
+  /* розрядка капітелі: на 13px .1em розсипає слово і робить підпис ширшим
+     за колонку, у якій він має стояти */
+  --ls-tiny:.06em;
+  /* просвіт між лінійкою і тим, що під нею починається. Був у трьох
+     місцях трьома різними числами: рядок переліку відбивав 14px, марки
+     клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
+     висота підпису. Тепер одне число на всі три */
+  --rule-gap:clamp(22px,2.6vw,32px);
   --ease:cubic-bezier(.16,1,.3,1);
 }
 /* темний набір оголошено двічі: під системну тему — і тільки поки її
@@ -68,24 +95,29 @@
    ставить html[data-theme], а без нього все як було */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
     --divider:color-mix(in srgb, #f0eeec 34%, transparent);
     --mute:color-mix(in srgb, #f0eeec 55%, transparent);
-    --edge:#ffffff;
   }
 }
+:root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --bg:#171615; --surface:#201e1d; --ink:#f0eeec;
   --divider:color-mix(in srgb, #f0eeec 34%, transparent);
   --mute:color-mix(in srgb, #f0eeec 55%, transparent);
-  --edge:#ffffff;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink);
-  font-family:var(--font); font-size:15px; line-height:1.55; font-weight:400;
-  overflow-x:hidden;
+  font-family:var(--font); font-size:var(--fs-text); line-height:1.55; font-weight:400;
+  /* clip, а не hidden: hidden робить із body контейнер прокрутки, і саме
+     на ньому спотикалась інвалідація шарів — сліди від смуг ховера
+     лишались там, де вони були до гортання. clip ріже так само, але
+     контейнера прокрутки не заводить */
+  overflow-x:hidden; overflow-x:clip;
 }
 img{display:block; max-width:100%}
 a{color:inherit; text-decoration:none}
@@ -110,16 +142,16 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
 .tiny{
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-size:var(--fs-chrome); letter-spacing:var(--ls-tiny); text-transform:uppercase;
   font-weight:600; color:var(--mute);
 }
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
-.tiny b{font-weight:800; color:var(--ink); letter-spacing:.1em}
+.tiny b{font-weight:800; color:var(--ink); letter-spacing:var(--ls-tiny)}
 .tgl{display:flex; gap:0; align-items:center}
 .tgl button{
   appearance:none; background:transparent; border:0; cursor:pointer; color:var(--mute);
-  font:inherit; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  font:inherit; font-size:var(--fs-chrome); font-weight:800; letter-spacing:var(--ls-tiny); text-transform:uppercase;
   padding:16px 8px; min-height:44px; line-height:1; transition:color 220ms var(--ease);
 }
 /* 44px — це вимога до тач-цілі; з мишею вона зайва і лише піднімає шапку */
@@ -137,7 +169,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    тому ж кольорі, що й у мови, плюс товща лінія — на 15 пікселях сама
    лише зміна тону читається заслабко */
 .tgl .ic{
-  display:block; width:15px; height:15px; fill:none; stroke:currentColor;
+  display:block; width:17px; height:17px; fill:none; stroke:currentColor;
   stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
   transition:stroke-width 220ms var(--ease);
 }
@@ -178,7 +210,9 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    а рядок не переноситься */
 .name{
   grid-column:1/span 8; grid-row:1;
-  font-size:clamp(42px,7.4vw,112px); font-weight:400;
+  /* трохи жирніше за 400: на такому кеглі тонкий накреслення читалося як
+     недонабране, а 500 лишає ім'я легким і водночас дає йому вагу */
+  font-size:var(--fs-name); font-weight:500;
   letter-spacing:-.032em; line-height:1; font-variation-settings:"wdth" 98;
 }
 .name span{display:block; white-space:nowrap}
@@ -194,7 +228,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    висоту портрета (другий ряд сітки — 1fr), тож остання лінія тексту
    стає врівень з нижнім краєм знімка */
 .hero-copy{
-  grid-column:2/span 7; grid-row:2;
+  grid-column:1/span 8; grid-row:2; padding-left:var(--col2);
   display:flex; flex-direction:column; justify-content:flex-end; min-width:0;
 }
 /* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
@@ -203,7 +237,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    попередній: тут це єдиний суцільний текст першого екрана */
 .lede{
   margin:0; max-width:50ch;
-  font-size:clamp(16px,1.25vw,19px); line-height:1.5; text-wrap:pretty;
+  font-size:var(--fs-text); line-height:1.5; text-wrap:pretty;
 }
 
 /* ── спільні міри сітки й розділів ────────────────────────── */
@@ -211,12 +245,44 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   /* міжколонник, спільний для героя і переліку напрямків: обидва стоять
      на одній 12-колонковій сітці, і їхні вертикалі мають збігатися */
   --colgap:clamp(20px,2.6vw,40px);
-  /* кегль назв напрямків — від нього рахується зсув переліку під ними */
-  --spec-fs:clamp(28px,4.6vw,60px);
+  /* ширина сітки, від якої рахується перша колонка. Через vw, а не 100%:
+     --col1 і --col2 мають означати одну й ту саму відстань у будь-якій
+     коробці — і в рядку, що спанить усі дванадцять треків, і в підписі
+     розділу, який стоїть сам по собі */
+  --gridw:calc(min(100vw, var(--maxw)) - 2 * var(--pad));
+  /* найдовший нерозбивний підпис — «ЗАМОВЛЕННЯ»; на 13px він просить
+     стільки. Напис, довший за колонку, росте ліворуч у поле сторінки, і
+     поки поле його вміщає, обрізати нічого */
+  --label-w:106px;
+  /* перша колонка — наскрізне поле сторінки: у ньому стоять підписи
+     розділів, вирівняні по її правому краю, а лінійки з номерами під
+     ними починаються з другої. Ширина — колонка сітки, але не менша за
+     ту частину підпису, якої не бере на себе поле сторінки: у сітці на
+     вузькому екрані колонка сходить до дванадцяти пікселів, і напис
+     обрізало б краєм. Ширше за 1200 стеля не спрацьовує — там колонка
+     сітки й так більша, тож вертикаль лінійок точно та сама, що в сітці */
+  --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
+  --col2:calc(var(--col1) + var(--colgap));
 }
 /* ── напрямки: рядки того самого крою, що й перелік соцмереж ───── */
 .work{padding-block:0 clamp(32px,5.5vh,75px)}
-.work h2{font-size:11px}
+/* підпис розділу стоїть у першій колонці — тій, яку лінійка звільнила, —
+   і вирівняний по її правому краю: права межа напису впирається в те саме
+   місце, від якого за міжколонником починається лінійка.
+   Нульова висота, а не від'ємне поле: лінійка сусіднього блоку лягає рівно
+   на верхню межу тексту, і якщо довший український підпис переноситься,
+   зайвий рядок звисає в порожню колонку замість зсувати все під собою.
+   Флекс, а не text-align: коли підпис ширший за колонку (українські довші
+   за англійські), text-align лишає його на лівій межі й пускає через
+   лінійку — заміряно: «ЗАМОВЛЕННЯ» в коробці на 60px малюється від 200 до
+   288. justify-content:flex-end тримає праву межу на місці й вирощує напис
+   ліворуч, у поле сторінки, де для нього є місце */
+.work h2,.clients h2{
+  font-size:var(--fs-label); line-height:1; height:0;
+  display:flex; justify-content:flex-end; align-items:flex-start;
+  text-align:right; padding-right:calc(100% - var(--col1));
+  position:relative; z-index:1;
+}
 /* рядки живуть на тій самій 12-колонковій сітці, що й решта сторінки:
    кожен .spec підхоплює її треки через subgrid, тож номери, назви й
    переліки в усіх рядках стоять на спільних вертикалях. Раніше кожен
@@ -229,42 +295,51 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
 }
 .spec{
   display:grid; grid-template-columns:subgrid; grid-column:1/-1;
-  align-items:baseline; padding-block:clamp(16px,2.2vw,26px);
+  align-items:baseline; padding-block:var(--rule-gap);
   min-height:64px; position:relative;
 }
-.spec .no{grid-column:1}
+/* номер стоїть не на другому треку сітки, а рівно там, де починається
+   лінійка: коли підпис розділу ширший за колонку, --col2 відходить від
+   треку на кілька пікселів, і номер має відійти разом із ним — інакше він
+   висить трохи лівіше за власну лінійку */
+.spec .no{grid-column:1; margin-left:var(--col2)}
 /* та сама межа по 9-й лінії, що й у героя: назва розділу тримається
    лівих восьми колонок, перелік — правих чотирьох */
 /* назва впирається правим краєм у початок 8-ї колонки: коробка стоїть на
-   треках 2–7, а від'ємний margin (у правилі набору нижче — тут його
-   скидав би тамтешній margin:0) добирає рівно міжколонник, тож права
-   межа лягає не на кінець сьомої колонки, а на початок восьмої */
-.spec h3{grid-column:2/8}
+   треках 3–7 (перша колонка — наскрізне поле, друга під номером), а
+   від'ємний margin (у правилі набору нижче — тут його скидав би тамтешній
+   margin:0) добирає рівно міжколонник, тож права межа лягає не на кінець
+   сьомої колонки, а на початок восьмої */
+.spec h3{grid-column:3/8}
 .spec ul{grid-column:9/span 4}
-.spec:first-child{border-top:var(--rule) solid var(--divider)}
+/* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
+   останнім рядком її немає сама собою — доти це доводилось окремо
+   скасовувати, а першому рядку дописувати border-top. Ліва межа — початок
+   другої колонки: перша лишається наскрізним полем, у якому стоїть підпис
+   розділу */
 .spec::before{
-  content:""; position:absolute; left:0; right:0; bottom:0;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
-/* під останнім рядком лінійки немає: одразу за ним іде підпис секції
-   клієнтів зі своєю лінійкою, і дві поспіль ділили б сторінку намарно */
-.spec:last-child::before{content:none}
 /* лінійка ховера — окремим шаром поверх розділювача, тож малює його повну
-   товщину, а не залишок під ним. Вона лягає на верхню межу рядка, а не на
-   нижню: під останнім рядком розділювача більше немає, і знизу вона малювала б
-   лінію там, де її нема. -1px піднімає її рівно на розділювач, який стоїть
-   по той бік межі */
+   товщину, а не залишок під ним. Стоїть там само, де розділювач: на верхній
+   межі рядка і від тієї самої вертикалі */
 .spec::after{
-  content:""; position:absolute; left:0; right:0; top:calc(var(--rule) * -1);
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 620ms var(--ease);
+  /* смуга живе на власному шарі постійно, а не лише поки їде. Доти шар їй
+     видавали на час анімації і забирали після — і якщо в цей час сторінку
+     ще й гортали, стара позиція лишалась подекуди неперемальованою: під
+     назвою висів шматок червоної лінії, а по літерах ішли світлі крихти */
+  will-change:transform;
 }
 /* фіксована ширина номера: «01» вужче за «02»..«04», а на вузькому екрані
    номер стоїть в auto-колонці, тож перший рядок з'їжджав на 2px вліво.
    tnum у цій гарнітурі не допомагає, тому ширина задана явно */
 .spec .no{
-  font-size:11px; letter-spacing:.1em; font-weight:800; color:var(--mute);
+  font-size:var(--fs-label); letter-spacing:var(--ls-tiny); font-weight:800; color:var(--mute);
   min-width:3ch;
 }
 /* той самий набір, що й назви в переліку соцмереж — без капітелі.
@@ -275,7 +350,7 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    відступав від своєї вертикалі на .9em — тобто на 54px при 60 кеглі */
 .spec h3{
   margin:0 calc(var(--colgap) * -1) 0 0;
-  font-size:var(--spec-fs); font-weight:300;
+  font-size:var(--fs-title); font-weight:400;
   letter-spacing:-.02em; line-height:1.02;
   font-variation-settings:"wdth" 100; color:var(--ink);
   text-align:right;
@@ -296,8 +371,8 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
    би базову лінію і тягнув номер із назвою вниз за собою */
 .spec ul{
   list-style:none; padding:0; align-self:start;
-  font-size:clamp(12px,1vw,14px); line-height:1.4;
-  margin:calc(var(--spec-fs) * .55 + 2.8em) 0 0;
+  font-size:var(--fs-text); line-height:1.4;
+  margin:calc(var(--fs-title) * .55 + 2.8em) 0 0;
   display:grid; gap:6px; justify-items:start;
 }
 .spec li{
@@ -340,23 +415,49 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.02em; line-height:1}
   grid-column:2/span 7; grid-row:2;
   /* просвіт рахується від кегля назви, як і зсув переліків у сусідніх
      рядках, — тоді він тримається однаковим на всіх ширинах */
-  margin:calc(var(--spec-fs) * .55) 0 0;
+  margin:calc(var(--fs-title) * .55) 0 0;
   justify-items:end; text-align:right; padding-right:.9em;
 }
 /* вузько назва й перелік уже не стають поряд — перелік іде другим рядком
    під назвою, як підпис у соцмережах */
 @media (max-width:640px){
-  .specs{display:block}
+  /* підпис стає вертикальним: горизонтально він просив під себе сто з
+     гаком пікселів, і на телефоні від рядка лишалась половина. Повернутий,
+     він займає ширину одного рядка, а не всього напису, — решта віддана
+     вмісту, і трохи повітря лишається між ним і лінійкою.
+     Коробка лишається нульової висоти й на своєму місці: обертання не
+     чіпає верстки, тож лінійка й далі стоїть на межі напису — тільки
+     тепер це його ліва межа, а не верхня. rotate(90deg) translateY(-1em)
+     повертає за годинниковою довкола лівого верхнього кута і піднімає на
+     висоту рядка, щоб напис пішов униз від тієї самої точки */
+  :root{--col1:20px}
+  .work h2,.clients h2{
+    justify-content:flex-start; padding-right:0;
+    transform-origin:0 0; transform:rotate(90deg) translateY(-1em);
+  }
+
+  /* дванадцяти колонок тут уже немає, але перша лишається: підпис розділу
+     стоїть у ній так само, як на широкому екрані. Перелік відходить за неї
+     цілим блоком, тож лінійки й номери всередині нього стоять від його ж
+     краю — і від тієї самої вертикалі, що й підпис */
+  .specs{display:block; margin-left:var(--col2)}
+  .spec::before,.spec::after{left:0}
   .spec{
     display:grid; grid-template-columns:auto 1fr;
-    column-gap:clamp(14px,2.4vw,36px); row-gap:8px; padding-block:14px;
+    column-gap:clamp(14px,2.4vw,36px); row-gap:8px;
   }
-  .spec .no{grid-column:1; grid-row:1}
+  .spec .no{grid-column:1; grid-row:1; margin-left:0}
   /* у вузькій сітці колонок-треків немає, тож і добирати міжколонник
      від'ємним полем нема від чого */
+  /* min-width:0 — щоб трек 1fr не роздувався до найдовшого слова назви:
+     на 320px «фотографія» розпирала рядок і виносила сторінку за край */
+  .spec h3,.spec ul{min-width:0}
   .spec h3{grid-column:2; grid-row:1; margin-right:0}
   .spec ul{grid-column:2; grid-row:2; margin-top:0; align-self:auto}
-  .spec.under ul{grid-column:2; grid-row:2; margin-top:0}
+  /* падінг праворуч тут скинуто: він добирав оптичну межу під назву, яка
+     широко стоїть із від'ємним полем. Вузько того поля немає — назва йде
+     впритул до правого краю, і підпис під нею має ставати рівно під нею */
+  .spec.under ul{grid-column:2; grid-row:2; margin-top:0; padding-right:0}
 }
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
@@ -377,12 +478,6 @@ figure{margin:0; position:relative; z-index:1}
   display:block; position:relative; flex:1 1 auto; aspect-ratio:4/5;
   overflow:hidden;
 }
-/* обводка йде зовні — не наїжджає на знімок */
-.shot::after{
-  content:""; position:absolute; pointer-events:none;
-  inset:calc(var(--frame) * -1);
-  border:var(--frame) solid var(--edge);
-}
 .shot img{width:100%; height:100%; object-fit:cover}
 /* середні екрани: ім'я на 7,4vw ще тримається у восьми колонках, але
    портрет у чотирьох стає завузьким, щоб сюжет читався. Віддаємо йому
@@ -390,7 +485,7 @@ figure{margin:0; position:relative; z-index:1}
    тільки тут, де переліків категорій поряд усе одно немає */
 @media (max-width:1100px){
   .name{grid-column:1/span 7}
-  .hero-copy{grid-column:2/span 6}
+  .hero-copy{grid-column:1/span 7}
   .figwrap{grid-column:9/span 4}
 }
 /* вузько колонки поряд не стоять: ім'я, портрет, текст і дія йдуть одне
@@ -399,6 +494,9 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:820px){
   .hero{grid-template-rows:none; row-gap:clamp(22px,3.4vh,34px)}
   .name,.hero-copy,.figwrap{grid-column:1/-1; grid-row:auto}
+  /* у стосі абзац читається на всю ширину: тримати під нього поле в
+     сімдесят із гаком пікселів на телефоні дорожче, ніж воно варте */
+  .hero-copy{padding-left:0}
   /* спершу текст, потім знімок: клієнт читає, хто це і що робить, і аж
      тоді бачить обличчя — на вузькому екрані фото між іменем і текстом
      відсувало сам текст на другий екран */
@@ -427,13 +525,22 @@ figure{margin:0; position:relative; z-index:1}
    соцмереж у підвалі. Розтягнутий на всю ширину ряд робив би між ними
    поля по двісті пікселів, і четвірка переставала б читатися як група */
 .logos{
-  /* лінійка під заголовком — та сама, що відкриває перелік напрямків, і
-     стоїть так само: впритул до підпису, а далі те саме поле, що й у
-     рядках вище */
-  border-top:var(--rule) solid var(--divider);
-  list-style:none; margin:0; padding:clamp(16px,2.2vw,26px) 0 0;
+  /* лінійка над марками — та сама, що відкриває перелік напрямків, і
+     стоїть так само: по верхній межі підпису і від початку другої колонки.
+     Не border-top, бо його ліву межу не зсунути; absolute виводить псевдо
+     з флекс-потоку, тож марок він не чіпає */
+  position:relative;
+  /* марки стоять рівно в тій коробці, яку окреслює лінійка над ними: доти
+     ряд ішов на всю ширину верстки і на вузькому екрані заходив у першу
+     колонку, під підпис. Тепер він починається там, де починається лінійка,
+     а що не вміщається — переноситься другим рядом */
+  list-style:none; margin:0 0 0 var(--col2); padding:var(--rule-gap) 0 0;
   display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end;
   column-gap:clamp(26px,3.6vw,54px); row-gap:clamp(24px,4vw,40px);
+}
+.logos::before{
+  content:""; position:absolute; left:0; right:0; top:0;
+  height:var(--rule); background:var(--divider);
 }
 /* марки приходять різними форматами — від квадратної монограми до напису
    в два рядки. Спільна висота зробила б монограму вдвічі важчою за інших,
@@ -491,14 +598,10 @@ figure{margin:0; position:relative; z-index:1}
 .site-foot{
   color:var(--ink);
   --uline:2px;
-  /* кегль контактного рядка винесено в змінну, бо від нього рахується
-     і перелік соцмереж — інакше пропорція пливе між мобільним і десктопом */
-  /* шість посилань в один рядок замість двох по 38: стеля підібрана за
-     виміряним запасом — на 1440 вони просять 802px із 1232 доступних,
-     тобто вміщаються до 44 кеглю, і 36 лишає близько чверті на запас.
-     Вузьке місце не там, а на 760, де тримає нижня межа 22: запас там
-     усього 8%. Нижче рядок переноситься, і перенос лягає між словами */
-  --fs-line:clamp(22px,2.5vw,36px);
+  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
+     доводиться малювати не від нього, а від самої плашки — і треба знати,
+     на якій висоті в ній стоїть перший рядок */
+  --foot-pad:clamp(22px,3.85vh,52px);
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -507,9 +610,9 @@ figure{margin:0; position:relative; z-index:1}
    гуляла за довжиною найдовшої назви */
 .foot-in{
   position:relative;
-  padding-block:clamp(22px,3.85vh,52px);
+  padding-block:var(--foot-pad);
   display:grid; grid-template-columns:repeat(12,1fr);
-  column-gap:clamp(20px,2.6vw,40px); row-gap:clamp(24px,4vw,40px);
+  column-gap:var(--colgap); row-gap:var(--rule-gap);
   align-items:start;
 }
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
@@ -526,11 +629,22 @@ figure{margin:0; position:relative; z-index:1}
   /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
      лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
   grid-column:1/-1; position:relative; margin:0; max-width:none;
-  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  font-size:var(--fs-label); letter-spacing:var(--ls-tiny); text-transform:uppercase;
   font-weight:600; line-height:1; color:var(--mute);
+  /* так само, як підписи розділів вище: коробка завширшки з першу
+     колонку, напис по її правому краю. Висоту тут лишаємо: підпис із
+     одного слова не переноситься, тож ряд сітки не поїде */
+  display:flex; justify-content:flex-end; align-items:flex-start;
+  text-align:right; padding-right:calc(100% - var(--col1));
+  /* нульова висота, як і в підписів розділів: інакше до просвіту під
+     лінійкою додавалася б ще й висота самого підпису, і підвал відбивав
+     би вдвічі більше за решту сторінки */
+  height:0;
 }
+/* та сама лінійка, що й у розділах вище: по верхній межі підпису і від
+   початку другої колонки — тієї, з якої починаються самі контакти */
 .foot-in .k::after{
-  content:""; position:absolute; left:0; right:0; top:100%;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
@@ -544,7 +658,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:var(--fs-line); font-weight:300; text-transform:none;
+  font-size:var(--fs-link); font-weight:300; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
   color:var(--mute);
@@ -556,6 +670,7 @@ figure{margin:0; position:relative; z-index:1}
   height:var(--uline); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 420ms var(--ease);
+  will-change:transform;
 }
 .site-foot .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
@@ -591,13 +706,18 @@ figure{margin:0; position:relative; z-index:1}
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
-   не вкорочує і рядок на ховері не смикається */
-.foot-bar .arch{position:relative; transition:color 240ms var(--ease)}
+   не вкорочує і рядок на ховері не смикається.
+   Колір заданий тут, а не класом .tiny: .site-foot a{color:inherit} має
+   вищу вагу за .tiny і забирав приглушення — рядок світився повним
+   чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
+   --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
+.foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
 .foot-bar .arch::before{
   content:""; position:absolute; left:0; right:0; bottom:-3px;
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 380ms var(--ease);
+  will-change:transform;
 }
 .foot-bar .arch::after{
   content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
@@ -612,6 +732,25 @@ figure{margin:0; position:relative; z-index:1}
 .foot-bar .arch:active::before{transform:scaleX(1)}
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
+/* вузько сітка підвалу згортається в одну колонку, а контакти відходять
+   за першу — за ту саму вертикаль, від якої йде лінійка над ними */
+@media (max-width:640px){
+  .foot-in{grid-template-columns:1fr}
+  .foot-in .say{grid-column:1; margin-left:var(--col2)}
+  /* повернутий підпис тягне за собою і свою лінійку — вона малювалась
+     вертикально вздовж усього підвалу. Тут лінійку малює сама плашка:
+     на висоті свого верхнього поля, тобто там, де стоїть перший рядок */
+  .foot-in .k::after{content:none}
+  .foot-in::before{
+    content:""; position:absolute; top:var(--foot-pad);
+    left:calc(var(--pad) + var(--col2)); right:var(--pad);
+    height:var(--rule); background:var(--divider);
+  }
+  .foot-in .k{
+    justify-content:flex-start; padding-right:0;
+    transform-origin:0 0; transform:rotate(90deg) translateY(-1em);
+  }
+}
 /* ── reveal ───────────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; transform:translateY(22px)}
@@ -710,14 +849,14 @@ figure{margin:0; position:relative; z-index:1}
           <ul>
             <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting and layout for book editions" data-ua="Верстка книжкових видань">Typesetting and layout for book editions</a></li>
             <li><a class="it" href="/design/covers/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter, from proof to press" data-ua="Друкована продукція — від макета до друкарні">Printed matter, from proof to press</a></li>
+            <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Printed matter" data-ua="Друкована продукція">Printed matter</a></li>
           </ul>
         </li>
         <li class="spec under" data-rev style="--d:290ms">
           <span class="no" aria-hidden="true">04</span>
           <h3><a class="sect" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Street photography" data-ua="Вулична фотографія">Street photography</a></h3>
           <ul>
-            <li data-en="Ongoing series on Instagram" data-ua="Постійна серія в Instagram">Ongoing series on Instagram</li>
+            <li data-en="Photo series on Instagram" data-ua="Серія світлин в Instagram">Photo series on Instagram</li>
           </ul>
         </li>
       </ol>
@@ -726,8 +865,8 @@ figure{margin:0; position:relative; z-index:1}
     <h2 class="tiny" id="cl" data-rev data-en="Clients" data-ua="Клієнти">Clients</h2>
     <ul class="logos">
       <li data-rev style="--d:80ms"><a href="https://kmbs.ua/ua" target="_blank" rel="noopener"><span class="lg kmbs"></span><span class="sr">kmbs — Kyiv-Mohyla Business School</span></a></li>
-      <li data-rev style="--d:140ms"><a href="https://www.ukma.edu.ua/" target="_blank" rel="noopener"><span class="lg naukma"></span><span class="sr">National University of Kyiv-Mohyla Academy</span></a></li>
-      <li data-rev style="--d:200ms"><a href="https://www.kooperativ.cc" target="_blank" rel="noopener"><span class="lg kooperativ"></span><span class="sr">Kooperativ</span></a></li>
+      <li data-rev style="--d:140ms"><a href="https://www.kooperativ.cc" target="_blank" rel="noopener"><span class="lg kooperativ"></span><span class="sr">Kooperativ</span></a></li>
+      <li data-rev style="--d:200ms"><a href="https://www.ukma.edu.ua/" target="_blank" rel="noopener"><span class="lg naukma"></span><span class="sr">National University of Kyiv-Mohyla Academy</span></a></li>
       <li data-rev style="--d:260ms"><a href="https://www.instagram.com/tsyronian.publishing" target="_blank" rel="noopener"><span class="lg tsyronian"></span><span class="sr">Tsyronian Publishing</span></a></li>
     </ul>
   </section>
