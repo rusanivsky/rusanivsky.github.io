@@ -209,6 +209,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    як межа. Шапку від вмісту відділяє власне лінійка над переліком */
 .topbar{
   position:sticky;top:0;z-index:30;
+  padding-top:env(safe-area-inset-top);
   /* Liquid Glass: контент під липкою шапкою лишається видимим, але
      розмиття зберігає контраст навігації. Непрозорий фон нижче — fallback. */
   background:var(--bg);
