@@ -48,9 +48,17 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#415d43;
+  /* охра — єдиний теплий колір на сайті: лінія-підкреслення на ховері,
+     кільце фокуса й виділення тексту (--accent нижче) тепер справді
+     кольорові, а не просто інший відтінок зеленого. На світлому тлі —
+     темна, майже бронзова: 6,5:1 */
+  --pencil:#6f5220;
   color-scheme:light;
-  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13; --accent:var(--ink);
+  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
+     дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
+     самий --pencil, що малює лінію під ховером */
+  --accent:var(--pencil);
   --divider:color-mix(in srgb, #111d13 40%, transparent);
   --mute:color-mix(in srgb, #111d13 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
@@ -107,15 +115,17 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-     Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
-  --pencil:#a1cca5;
+  /* та сама охра, світліша й тепліша — на #415d43 вона тримає 4,1:1.
+     Не яскравіше: це підкреслення, а не заклик */
+  --pencil:#e6bb7c;
   --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
   --divider:color-mix(in srgb, #eaf1e7 34%, transparent);
   --mute:color-mix(in srgb, #eaf1e7  80%, transparent);
 }
 :root[data-theme="night"]{
-  color-scheme:dark; --pencil:#8fb996;
+  /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
+     рости: 6,5:1 */
+  color-scheme:dark; --pencil:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
@@ -162,7 +172,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 .tiny b{font-weight:700; color:var(--ink); letter-spacing:var(--ls-tiny)}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
-@media (hover:hover){.contact-link:hover{color:var(--ink)}}
+@media (hover:hover){.contact-link:hover{color:var(--accent)}}
 .contact-link[aria-current="page"]{color:var(--ink)}
 .tgl{display:flex; gap:0; align-items:center}
 .tgl button{
@@ -711,11 +721,11 @@ figure{margin:0; position:relative; z-index:1}
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .site-foot .lines > a:hover{color:var(--ink)}
+  .site-foot .lines > a:hover{color:var(--accent)}
   .site-foot .lines > a:hover::before{transform:scaleX(1)}
   .site-foot .lines > a:hover::after{opacity:1; transform:none}
 }
-.site-foot .lines > a:active{color:var(--ink)}
+.site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
@@ -762,7 +772,7 @@ figure{margin:0; position:relative; z-index:1}
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .foot-bar .arch:hover{color:var(--ink)}
+  .foot-bar .arch:hover{color:var(--accent)}
   .foot-bar .arch:hover::before{transform:scaleX(1)}
   .foot-bar .arch:hover::after{opacity:1; transform:none}
 }

@@ -13,9 +13,17 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#415d43;
+  /* охра — єдиний теплий колір на сайті: лінія-підкреслення на ховері,
+     кільце фокуса й виділення тексту (--accent нижче) тепер справді
+     кольорові, а не просто інший відтінок зеленого. На світлому тлі —
+     темна, майже бронзова: 6,5:1 */
+  --pencil:#6f5220;
   color-scheme:light;
-  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13; --accent:var(--ink);
+  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
+     дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
+     самий --pencil, що малює лінію під ховером */
+  --accent:var(--pencil);
   --divider:color-mix(in srgb,#111d13 40%,transparent);
   /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
      розділи 52%, тобто той самий сірий був на різних сторінках різної
@@ -97,15 +105,17 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-     Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
-  --pencil:#a1cca5;
+  /* та сама охра, світліша й тепліша — на #415d43 вона тримає 4,1:1.
+     Не яскравіше: це підкреслення, а не заклик */
+  --pencil:#e6bb7c;
   --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
 }
 :root[data-theme="night"]{
-  color-scheme:dark; --pencil:#8fb996;
+  /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
+     рости: 6,5:1 */
+  color-scheme:dark; --pencil:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
@@ -132,7 +142,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 .tiny{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
-@media (hover:hover){.contact-link:hover{color:var(--ink)}}
+@media (hover:hover){.contact-link:hover{color:var(--accent)}}
 .contact-link[aria-current="page"]{color:var(--ink)}
 
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
@@ -253,7 +263,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--surface);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit}
 .fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
-.fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--accent);position:relative;transition:transform 300ms var(--ease)}
+.fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--ink);position:relative;transition:transform 300ms var(--ease)}
 /* трикутник кольору тла сторінки, а не жорсткого #f3f2f2: кружок під ним
    малюється чорнилом, і в темній темі чорнило — це #eaf1e7, тобто той
    самий майже-білий, що й був у трикутника. Контраст виходив 1,02:1, і
@@ -266,7 +276,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .vt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
-.plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--accent)}
+.plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--ink)}
 
 /* ── перелік категорій ───────────────────────────────────── */
 /* перший рядок стоїть там, де раніше починався заголовок сторінки.
@@ -449,11 +459,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .site-foot .lines > a:hover{color:var(--ink)}
+  .site-foot .lines > a:hover{color:var(--accent)}
   .site-foot .lines > a:hover::before{transform:scaleX(1)}
   .site-foot .lines > a:hover::after{opacity:1; transform:none}
 }
-.site-foot .lines > a:active{color:var(--ink)}
+.site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
@@ -500,7 +510,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .foot-bar .arch:hover{color:var(--ink)}
+  .foot-bar .arch:hover{color:var(--accent)}
   .foot-bar .arch:hover::before{transform:scaleX(1)}
   .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
