@@ -18,6 +18,7 @@
      кольорові, а не просто інший відтінок зеленого. На світлому тлі —
      темна, майже бронзова: 6,5:1 */
   --pencil:#6f5220;
+  --highlight:#e6bb7c;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
@@ -160,11 +161,9 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
   transition:color 220ms var(--ease)}
-.part::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:var(--pen);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;
-  transition:transform 380ms var(--ease);will-change:transform}
-@media (hover:hover){.part:hover{color:var(--accent)}.part:hover::after{transform:scaleX(1)}}
-.part[aria-current]{color:var(--ink)}
+.part::after{content:none}
+@media (hover:hover){.part:hover{color:var(--accent)}}
+.part[aria-current]{color:#111d13;background:var(--highlight);padding-inline:4px;margin-inline:-4px}
 /* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
    зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
    розділи поряд — ні, і на дотик шапка розділів виходила вищою за
@@ -246,13 +245,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .sec{flex:0 0 auto;white-space:nowrap}
 .sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute);
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
-.sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;
-  transition:transform 380ms var(--ease);will-change:transform}
-@media (hover:hover){.sec:hover{color:var(--accent)}.sec:hover::after{transform:scaleX(1)}}
-.sec.on,.sec[aria-current]{color:var(--ink)}
-.sec.on::after,.sec[aria-current]::after{transform:scaleX(1);background:var(--divider)}
-@media (hover:hover){.sec.on:hover::after,.sec[aria-current]:hover::after{background:var(--pencil)}}
+.sec::after{content:none}
+@media (hover:hover){.sec:hover{color:var(--accent)}}
+.sec.on,.sec[aria-current]{color:#111d13;background:var(--highlight);padding-inline:4px;margin-inline:-4px}
 
 /* ── перелік категорій ───────────────────────────────────── */
 /* перший рядок стоїть там, де раніше починався заголовок сторінки.
@@ -289,22 +284,13 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 /* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
    від тієї самої вертикалі — так само, як у переліку напрямків на головній */
-.cat::after{
-  content:"";position:absolute;left:var(--col2);right:0;top:0;height:var(--pen);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;
-  transition:transform 620ms var(--ease);
-  /* смуга живе на власному шарі постійно, а не лише поки їде: інакше після
-     гортання з наведеним рядком стара позиція лишалась неперемальованою */
-  will-change:transform;
-}
+.cat::after{content:none}
 @media (hover:hover){
   .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px));color:var(--pencil)}
   .cat:hover .num{color:var(--accent)}
-  .cat:hover::after{transform:scaleX(1)}
 }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
-.cat:active::after{transform:scaleX(1)}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
    чверть рядка — там підпис лягає вертикально, а колонка сходить до
    20px: те саме, що доти вмикалось аж на телефоні */
@@ -480,6 +466,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
+@media (hover:hover){
+  .site-foot .lines > a:hover::before,.foot-bar .arch:hover::before{transform:scaleX(0)}
+}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */

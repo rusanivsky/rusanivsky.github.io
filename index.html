@@ -53,6 +53,7 @@
      кольорові, а не просто інший відтінок зеленого. На світлому тлі —
      темна, майже бронзова: 6,5:1 */
   --pencil:#6f5220;
+  --highlight:#e6bb7c;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
@@ -340,17 +341,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 /* лінійка ховера — окремим шаром поверх розділювача, тож малює його повну
    товщину, а не залишок під ним. Стоїть там само, де розділювач: на верхній
    межі рядка і від тієї самої вертикалі */
-.spec::after{
-  content:""; position:absolute; left:var(--col2); right:0; top:0;
-  height:var(--pen); background:var(--pencil);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform 620ms var(--ease);
-  /* смуга живе на власному шарі постійно, а не лише поки їде. Доти шар їй
-     видавали на час анімації і забирали після — і якщо в цей час сторінку
-     ще й гортали, стара позиція лишалась подекуди неперемальованою: під
-     назвою висів шматок червоної лінії, а по літерах ішли світлі крихти */
-  will-change:transform;
-}
+.spec::after{content:none}
 /* фіксована ширина номера: «01» вужче за «02»..«04», а на вузькому екрані
    номер стоїть в auto-колонці, тож перший рядок з'їжджав на 2px вліво.
    tnum у цій гарнітурі не допомагає, тому ширина задана явно */
@@ -371,7 +362,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   font-variation-settings:"wdth" 100; color:var(--ink);
   text-align:right;
 }
-.spec .sect{position:relative; display:inline-block; transition:color 260ms var(--ease)}
+.spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
 /* стрілка вниз-праворуч: веде всередину сайту. Місце під неї тримає
    падінг заголовка, тож на ховері рядок не смикається */
 .spec .sect::after{
@@ -412,16 +403,14 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 }
 @media (hover:hover){
   /* наведення будь-де в рядку — і на розділ, і на категорію — фарбує
-     назву розділу й проводить лінійку під рядком */
-  .spec:hover .sect{color:var(--pencil)}
-  .spec:hover::after{transform:scaleX(1)}
+     назву розділу та зсуває її вправо */
+  .spec:hover .sect{color:var(--pencil);transform:translateX(clamp(8px,1.4vw,22px))}
   .spec .sect:hover::after{opacity:1; transform:none}
-  .spec .it:hover{color:var(--ink); background-size:100% var(--pen)}
+  .spec .it:hover{color:var(--accent)}
   .spec a.it[target]:hover::after{opacity:1; transform:none}
 }
-.spec:active .sect{color:var(--pencil)}
-.spec:active::after{transform:scaleX(1)}
-.spec .it:active{color:var(--ink); background-size:100% var(--pen)}
+.spec:active .sect{color:var(--pencil);transform:translateX(10px)}
+.spec .it:active{color:var(--accent)}
 .spec a.it:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 /* в останньому рядку категорія одна, і в правій колонці вона висіла
    самотньою стрічкою навпроти порожнечі. Тут вона стоїть під назвою й
@@ -728,6 +717,9 @@ figure{margin:0; position:relative; z-index:1}
 .site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
+@media (hover:hover){
+  .site-foot .lines > a:hover::before,.foot-bar .arch:hover::before{transform:scaleX(0)}
+}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */
