@@ -239,7 +239,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
 .fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--accent);position:relative;transition:transform 300ms var(--ease)}
-.fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid #f3f2f2;border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}
+/* трикутник кольору тла сторінки, а не жорсткого #f3f2f2: кружок під ним
+   малюється чорнилом, і в темній темі чорнило — це #f0eeec, тобто той
+   самий майже-білий, що й був у трикутника. Контраст виходив 1,02:1, і
+   стрілка просто зникала — лишався порожній кружок */
+.fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid var(--bg);border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}
 @media (hover:hover){.fac:hover img{transform:scale(1.04);opacity:.82}.fac:hover .pl i{transform:scale(1.1)}}
 .v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
 /* назва картки — третій щабель, як і решта суцільного тексту;
