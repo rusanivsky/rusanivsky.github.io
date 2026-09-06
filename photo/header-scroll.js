@@ -2,12 +2,6 @@
   function init(){
     var topbar=document.querySelector('.topbar');
     if(!topbar) return;
-    var meta=topbar.querySelector('.meta');
-    function measureMeta(){
-      if(meta) topbar.style.setProperty('--meta-height',meta.scrollHeight+'px');
-    }
-    measureMeta();
-    if(meta && 'ResizeObserver' in window) new ResizeObserver(measureMeta).observe(meta);
 
   var lastY=window.scrollY || 0;
   var ticking=false;
