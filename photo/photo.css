@@ -225,7 +225,10 @@ body:has(.contact-head) .topbar{
   background:var(--bg);
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
+  border-bottom:0;
+  box-shadow:none;
 }
+body:has(.contact-head) .topbar .rule{display:none}
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
