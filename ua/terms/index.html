@@ -69,29 +69,23 @@
 /* рядок ціни тієї самої будови, що .spec на головній: назва на лівих
    треках, число починається там, де там починається перелік */
 .prow .svc{grid-column:4/10;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
-.prow .fee{grid-column:10/span 3;margin:0;font-weight:400;text-wrap:pretty}
+.prow .fee{grid-column:10/span 3;margin:0 0 0 calc(-1 * var(--colgap));font-weight:400;text-wrap:pretty}
 /* нумеровані кроки: номер стоїть не на другому треку, а рівно там, де
    починається лінійка — коли підпис ширший за колонку, --col2 відходить
    від треку, і номер має відійти разом із ним */
 .steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
-.step .no{grid-column:3;min-width:3ch;
+.step .no{grid-column:1;position:absolute;left:var(--col3);top:var(--rule-gap);min-width:3ch;
   font-size:var(--fs-label);letter-spacing:var(--ls-tiny);font-weight:600;color:var(--mute)}
-.step h3{grid-column:4/10;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
-.step p{grid-column:10/span 3;margin:0;text-wrap:pretty}
+.step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
+.step p{grid-column:6/10;margin:0;text-wrap:pretty}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
    треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
    не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
    верстці верхнє поле першого пункта другої колонки зсувало б її вниз
    відносно першої */
-.pts{grid-column:4/-1;list-style:none;margin:0;padding:0;columns:1}
+.pts{grid-column:4/10;max-width:56ch;list-style:none;margin:0;padding:0;columns:1}
 .pts li{break-inside:avoid;margin:0 0 clamp(10px,1.2vw,16px);text-wrap:pretty}
 .pts li:last-child{margin-bottom:0}
-/* приписка наприкінці сторінки: те саме приглушене чорнило, що й підписи,
-   і та сама міра, що в решти суцільного тексту */
-.fine{padding-block:clamp(30px,5.5vh,68px) 0}
-.fine p{grid-column:4/10;margin:0;max-width:74ch;color:var(--mute);
-  font-size:var(--fs-label);letter-spacing:0;text-transform:none;line-height:1.55;text-wrap:pretty}
-
 /* поле на 120px варте себе, поки сторінка широка. Від 960 підпис лягає
    вертикально — той самий поворот, що й на головній: rotate окремою
    властивістю, бо transform:none у правилі появи має вищу вагу й з'їдав
@@ -102,6 +96,19 @@
     transform-origin:.5em .5em;rotate:90deg;width:max-content;
   }
 }
+
+/* У процесі лінійка починається з третьої колонки, а описи — з шостої. */
+.tsec[aria-labelledby="s-flow"] .trow::before{left:var(--col3)}
+
+/* У «Термінах» і «Правках» не потрібне велике повітря між внутрішніми
+   рядками: кожен блок і так читається одним потоком. */
+.tsec[aria-labelledby="s-rev"] .trow,
+.tsec[aria-labelledby="s-time"] .trow{padding-block:clamp(8px,1.2vw,16px)}
+
+/* У «Правках» і «Термінах» верхня межа блоку лишається, а внутрішні
+   лінійки між його рядками прибрані. */
+.tsec[aria-labelledby="s-rev"] .tbody > .trow:not(:first-child)::before,
+.tsec[aria-labelledby="s-time"] .tbody > .trow:not(:first-child)::before{display:none}
 
 /* Контакти починаються одразу під підписом розділу, а не після
    додаткового верхнього поля .cats. */
@@ -116,13 +123,13 @@
   .trow{display:grid;grid-template-columns:auto 1fr;
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
   .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts,
-  .prow .svc,.prow .fee{grid-column:1/-1;max-width:none}
+  .prow .svc,.prow .fee{grid-column:1/-1;max-width:none;margin-left:0}
   .steps{display:block}
-  .step .no{grid-column:1;grid-row:1;margin-left:0}
+  .step .no{position:static;grid-column:1;grid-row:1;margin-left:0}
   .step h3{grid-column:2;grid-row:1}
   .step p{grid-column:2;grid-row:2}
+  .tsec[aria-labelledby="s-flow"] .trow::before{left:0}
   .pts{columns:1}
-  .fine p{max-width:none}
 }
 </style>
 <link rel="stylesheet" href="/photo/photo.css?v=22">
@@ -275,14 +282,17 @@
   </div>
 </section>
 
+<section class="wrap tsec" aria-labelledby="s-note">
+  <h2 class="tiny" id="s-note" data-en="Note" data-ua="Примітка">Примітка</h2>
+  <div class="tbody">
+    <div class="trow"><p class="lead" data-en="Paying the invoice means you accept these terms. Revised 6 September 2026. The current version is always on this page; prices and terms may change, but orders already paid for are governed by the terms in force on the date of payment." data-ua="Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.">Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.</p></div>
+  </div>
+</section>
+
 <section class="wrap tsec" aria-labelledby="s-contact">
   <h2 class="tiny" id="s-contact" data-en="Contact" data-ua="Контакти">Контакти</h2>
 </section>
 <section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">TikTok</span></a></section>
-
-<section class="wrap fine tbody">
-  <p data-en="Paying the invoice means you accept these terms. Revised 6 September 2026. The current version is always on this page; prices and terms may change, but orders already paid for are governed by the terms in force on the date of payment." data-ua="Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.">Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати.</p>
-</section>
 </main>
 <footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span><span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Київ, Україна</span></div><div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">Мої фотогалереї на Pixover</a></div></div></footer>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}return(navigator.language||'').slice(0,2)==='uk'?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();
@@ -295,7 +305,7 @@
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
   },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
-  var els=[].slice.call(document.querySelectorAll('.tsec > h2, .trow, .cats .cat, .fine p'));
+  var els=[].slice.call(document.querySelectorAll('.tsec > h2, .trow, .cats .cat'));
   els.forEach(function(el){ el.setAttribute('data-rev',''); });
   var onload=[], later=[];
   els.forEach(function(el){ (el.getBoundingClientRect().top < innerHeight ? onload : later).push(el); });
