@@ -126,8 +126,9 @@
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
    спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
    вони були до гортання */
-html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip;overflow-anchor:none}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--fs-text);line-height:1.55}
+body{overflow-anchor:none}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
@@ -207,11 +208,11 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* під переліком категорій лінійки немає: вона з'являлась і зникала на
    кожному дотику до верху сторінки, і цей блимкіт читався як збій, а не
    як межа. Шапку від вмісту відділяє власне лінійка над переліком */
-.topbar{position:sticky;top:0;z-index:30;background:var(--bg);overflow-anchor:none}
+.topbar{position:-webkit-sticky;position:sticky;top:0;z-index:30;background:var(--bg);overflow-anchor:none;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .topbar .rule{margin-bottom:2px}
 @media (max-width:760px){
   .topbar .meta,.topbar > .rule{
-    max-height:220px;will-change:max-height,opacity,transform;
+    max-height:220px;will-change:opacity,transform;
     transition:max-height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease),padding 520ms var(--ease),margin 520ms var(--ease);
     overflow:hidden;
   }
