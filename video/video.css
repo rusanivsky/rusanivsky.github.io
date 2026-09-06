@@ -212,13 +212,13 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 .topbar .rule{margin-bottom:2px}
 @media (max-width:760px){
   .topbar .meta,.topbar > .rule{
-    max-height:220px;will-change:opacity,transform;
-    transition:max-height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease),padding 520ms var(--ease),margin 520ms var(--ease);
+    height:var(--meta-height,auto);max-height:none;will-change:height,opacity,transform;
+    transition:height 520ms var(--ease),opacity 360ms ease,transform 520ms var(--ease),padding 520ms var(--ease),margin 520ms var(--ease);
     overflow:hidden;
   }
-  .topbar > .rule{max-height:4px}
-  .topbar.is-compact .meta{max-height:0;opacity:0;transform:translateY(-18px);padding-block:0}
-  .topbar.is-compact > .rule{max-height:0;opacity:0;transform:translateY(-6px);margin-block:0}
+  .topbar > .rule{height:1px;max-height:none}
+  .topbar.is-compact .meta{height:0;max-height:none;opacity:0;transform:translateY(-18px);padding-block:0}
+  .topbar.is-compact > .rule{height:0;max-height:none;opacity:0;transform:translateY(-6px);margin-block:0}
   .topbar.is-compact .secs{padding-block:8px}
 }
 
