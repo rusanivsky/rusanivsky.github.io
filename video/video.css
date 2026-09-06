@@ -17,7 +17,10 @@
   color-scheme:light;
   --bg:#f2f0ea; --surface:#e7e4dc; --ink:#201e1d; --accent:var(--ink);
   --divider:color-mix(in srgb,#201e1d 40%,transparent);
-  --mute:color-mix(in srgb,#201e1d 52%,transparent);
+  /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
+     розділи 52%, тобто той самий сірий був на різних сторінках різної
+     сили. Лишилось сильніше з двох — воно й читається краще */
+  --mute:color-mix(in srgb,#201e1d 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
@@ -32,7 +35,7 @@
      3  text    16–19                 увесь суцільний текст: база, лід,
                                       категорії, назви й описи карток
      4  link    19–28                 контактні посилання в підвалі
-     5  title   26–46                 назви розділів і категорій
+     5  title   24–40                 назви розділів і категорій
      6  name    42–112                ім'я
      Між 1 і 2 всього піксель — це навмисно: службовий рядок має бути
      тихішим за підписи, а не іншим за характером. Решта щаблів іде з
@@ -41,11 +44,20 @@
   --fs-label:13px;
   --fs-text:clamp(16px,1.25vw,19px);
   --fs-link:clamp(19px,1.95vw,28px);
-  --fs-title:clamp(26px,3.6vw,46px);
+  /* менший, ніж був: на 700 назва набирає ваги, і 46 починали
+     сперечатися з іменем угорі */
+  --fs-title:clamp(24px,3.1vw,40px);
   --fs-name:clamp(42px,7.4vw,112px);
   /* розрядка капітелі: на 13px .1em розсипає слово і робить підпис ширшим
      за колонку, у якій він має стояти */
   --ls-tiny:.06em;
+  /* ── ваги: три, і кожна зі своєю роботою ────────────────────
+     400  суцільний текст: база, лід, категорії, описи, контакти
+     600  капітель: службовий рядок, підписи, номери, навігація
+     700  вітрина: ім'я, назви розділів, назви карток
+     Доти їх було шість — 300, 400, 500, 600, 700, 800 — і ролі одного
+     рівня стояли на різних: назва картки у відео на 700, у дизайні на
+     800; підпис розділу на 600, а номер поряд із ним на 800 */
   /* просвіт між лінійкою і тим, що під нею починається. Був у трьох
      місцях трьома різними числами: рядок переліку відбивав 14px, марки
      клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
@@ -98,7 +110,7 @@ html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--fs-text);line-height:1.55}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
+h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -114,13 +126,13 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
 .meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
   padding-block:2px;align-items:center}
-.back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;
+.back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
 .parts{display:flex;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
-.part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;
+.part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
   transition:color 220ms var(--ease)}
 .part::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:var(--pen);
@@ -130,7 +142,7 @@ h1,h2{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1}
 .part[aria-current]{color:var(--ink)}
 .tgl{display:flex;align-items:center}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
-  font:inherit;font-size:var(--fs-chrome);font-weight:800;letter-spacing:var(--ls-tiny);text-transform:uppercase;
+  font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
   padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
 .tgl button[aria-pressed="true"]{color:var(--ink)}
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
@@ -207,7 +219,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .secs::-webkit-scrollbar{display:none}
 .sec{flex:0 0 auto;white-space:nowrap}
-.sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;color:var(--mute);
+.sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute);
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
 .sec::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--pen);
   background:var(--pencil);transform:scaleX(0);transform-origin:left;
@@ -235,7 +247,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .vt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
-.plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:800;color:var(--accent)}
+.plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--accent)}
 
 /* ── перелік категорій ───────────────────────────────────── */
 /* перший рядок стоїть там, де раніше починався заголовок сторінки.
@@ -264,9 +276,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-size:var(--fs-label);font-weight:800;letter-spacing:var(--ls-tiny);color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-tiny);color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:var(--fs-title);font-weight:400;
+  font-size:var(--fs-title);font-weight:700;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
@@ -393,7 +405,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:var(--fs-link); font-weight:300; text-transform:none;
+  font-size:var(--fs-link); font-weight:400; text-transform:none;
   letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
   position:relative;
   color:var(--mute);
@@ -485,7 +497,13 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .foot-in .k{
     justify-content:flex-start; padding-right:0;
-    transform-origin:0 0; transform:rotate(90deg) translateY(-1em);
+    /* окрема властивість rotate, а не transform: підписи мають data-rev,
+       а правило появи .rev [data-rev].is-in ставить transform:none і має
+       вищу вагу — воно й з'їдало поворот. rotate до нього не належить.
+       Центр обертання .5em .5em: за годинниковою довкола нього рядок
+       лягає рівно в колонку завширшки з себе, від тієї самої верхньої
+       межі, на якій стоїть лінійка */
+    transform-origin:.5em .5em; rotate:90deg;
   }
 }
 /* повітря між останнім блоком сторінки і темною плашкою */
