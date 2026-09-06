@@ -225,6 +225,12 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent);
 }
 .topbar .rule{margin-bottom:2px}
+/* На телефонах шапка накладається на документ повністю, з safe-area.
+   Реальну висоту вимірює /header.js, щоб вміст не стрибав під неї. */
+@media (max-width:760px){
+  html.fixed-topbar body{padding-top:var(--topbar-height,0px)}
+  html.fixed-topbar .topbar{position:fixed;inset:0 0 auto;width:100%}
+}
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
