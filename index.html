@@ -295,6 +295,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
      сітки й так більша, тож вертикаль лінійок точно та сама, що в сітці */
   --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
   --col2:calc(var(--col1) + var(--colgap));
+  --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
 /* ── напрямки: рядки того самого крою, що й перелік соцмереж ───── */
 .work{padding-block:0 clamp(32px,5.5vh,75px)}
@@ -669,7 +670,7 @@ figure{margin:0; position:relative; z-index:1}
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:2/-1}
+.foot-in .say{grid-column:3/-1}
 .foot-in .say,.foot-in .k,.foot-bar > .cols{min-width:0}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
@@ -696,7 +697,7 @@ figure{margin:0; position:relative; z-index:1}
 /* та сама лінійка, що й у розділах вище: по верхній межі підпису і від
    початку другої колонки — тієї, з якої починаються самі контакти */
 .foot-in .k::after{
-  content:""; position:absolute; left:var(--col2); right:0; top:0;
+  content:""; position:absolute; left:var(--col3); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
@@ -1068,6 +1069,8 @@ figure{margin:0; position:relative; z-index:1}
     b.addEventListener('click', function(){ setTheme(b.dataset.theme, true); });
   });
   (function(){
+    var locked = root.getAttribute('data-theme-lock');
+    if(locked){ setTheme(locked, false); return; }
     var locked = root.getAttribute('data-theme-lock');
     if(locked){ setTheme(locked, false); return; }
     var locked = root.getAttribute('data-theme-lock');

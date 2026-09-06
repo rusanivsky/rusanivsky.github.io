@@ -83,6 +83,7 @@
      на себе поле сторінки, — інакше напис обрізало б краєм */
   --col1:max(76px, calc(var(--label-w) - var(--pad)), calc((var(--gridw) - 11 * var(--colgap)) / 12));
   --col2:calc(var(--col1) + var(--colgap));
+  --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
 /* темний набір оголошено двічі: під системну тему — і тільки поки її
    не перебили вручну — та під явно вибрану темну. Перемикач у шапці
@@ -382,7 +383,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* контакти починаються з другої колонки — тим самим уступом, що ім'я з
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
-.foot-in .say{grid-column:2/-1;min-width:0}
+.foot-in .say{grid-column:3/-1;min-width:0}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -412,7 +413,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    контакти. Доти підпис стояв над лінійкою, і на лінії лежала його нижня
    межа */
 .foot-in .k::after{
-  content:""; position:absolute; left:var(--col2); right:0; top:0;
+  content:""; position:absolute; left:var(--col3); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 .site-foot a{color:inherit; text-decoration:none}
