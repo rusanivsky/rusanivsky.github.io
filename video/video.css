@@ -13,14 +13,14 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#14532d;
+  --pencil:#415d43;
   color-scheme:light;
-  --bg:#ebede7; --surface:#dfe2da; --ink:#20211f; --accent:var(--ink);
-  --divider:color-mix(in srgb,#20211f 40%,transparent);
+  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13; --accent:var(--ink);
+  --divider:color-mix(in srgb,#111d13 40%,transparent);
   /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
      розділи 52%, тобто той самий сірий був на різних сторінках різної
      сили. Лишилось сильніше з двох — воно й читається краще */
-  --mute:color-mix(in srgb,#20211f 65%,transparent);
+  --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
@@ -91,37 +91,37 @@
   :root:not([data-theme="light"]){
     color-scheme:dark;
     /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-       Той самий зелений, тільки світліший: на #14532d він тримає 5,5:1 */
-    --pencil:#b7e4c1;
-    --bg:#14532d; --surface:#20211f; --ink:#f0f6ed;
-    --divider:color-mix(in srgb,#f0f6ed 34%,transparent);
-    --mute:color-mix(in srgb,#f0f6ed 55%,transparent);
+       Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
+    --pencil:#a1cca5;
+    --bg:#415d43; --surface:#111d13; --ink:#eaf1e7;
+    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
   }
 }
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
   /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-     Той самий зелений, тільки світліший: на #14532d він тримає 5,5:1 */
-  --pencil:#b7e4c1;
-  --bg:#14532d; --surface:#20211f; --ink:#f0f6ed;
-  --divider:color-mix(in srgb,#f0f6ed 34%,transparent);
-  --mute:color-mix(in srgb,#f0f6ed 55%,transparent);
+     Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
+  --pencil:#a1cca5;
+  --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
+  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
 }
 /* Системна темна схема лишається нічною, а зелена й нічна можуть бути вибрані явно. */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme]){
-    color-scheme:dark; --pencil:#3fa06a;
-    --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
-    --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
-    --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
+    color-scheme:dark; --pencil:#8fb996;
+    --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
+    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
   }
 }
 :root[data-theme="night"]{
-  color-scheme:dark; --pencil:#3fa06a;
-  --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
-  --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
-  --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
+  color-scheme:dark; --pencil:#8fb996;
+  --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
+  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
@@ -261,7 +261,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
 .fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--accent);position:relative;transition:transform 300ms var(--ease)}
 /* трикутник кольору тла сторінки, а не жорсткого #f3f2f2: кружок під ним
-   малюється чорнилом, і в темній темі чорнило — це #f0f6ed, тобто той
+   малюється чорнилом, і в темній темі чорнило — це #eaf1e7, тобто той
    самий майже-білий, що й був у трикутника. Контраст виходив 1,02:1, і
    стрілка просто зникала — лишався порожній кружок */
 .fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid var(--bg);border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}

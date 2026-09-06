@@ -26,8 +26,8 @@
 <meta name="twitter:title" content="Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф">
 <meta name="twitter:description" content="Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=2">
-<meta name="theme-color" content="#ebede7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171a15" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef1ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111d13" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico?v=3" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
@@ -49,11 +49,11 @@
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 :root{
-  --pencil:#14532d;
+  --pencil:#415d43;
   color-scheme:light;
-  --bg:#ebede7; --surface:#dfe2da; --ink:#20211f; --accent:var(--ink);
-  --divider:color-mix(in srgb, #20211f 40%, transparent);
-  --mute:color-mix(in srgb, #20211f 65%, transparent);
+  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13; --accent:var(--ink);
+  --divider:color-mix(in srgb, #111d13 40%, transparent);
+  --mute:color-mix(in srgb, #111d13 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --pad:clamp(16px,3.2vw,48px);
   /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
@@ -107,37 +107,37 @@
   :root:not([data-theme="light"]){
     color-scheme:dark;
     /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-       Той самий зелений, тільки світліший: на #14532d він тримає 5,5:1 */
-    --pencil:#b7e4c1;
-    --bg:#14532d; --surface:#1b6337; --ink:#f0f6ed;
-    --divider:color-mix(in srgb, #f0f6ed 34%, transparent);
-    --mute:color-mix(in srgb, #f0f6ed 55%, transparent);
+       Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
+    --pencil:#a1cca5;
+    --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
+    --divider:color-mix(in srgb, #eaf1e7 34%, transparent);
+    --mute:color-mix(in srgb, #eaf1e7 55%, transparent);
   }
 }
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
   /* пляшковий на темному тлі дав би 1,6:1 — лінія ховера просто зникла б.
-     Той самий зелений, тільки світліший: на #14532d він тримає 5,5:1 */
-  --pencil:#b7e4c1;
-  --bg:#14532d; --surface:#1b6337; --ink:#f0f6ed;
-  --divider:color-mix(in srgb, #f0f6ed 34%, transparent);
-  --mute:color-mix(in srgb, #f0f6ed 55%, transparent);
+     Той самий зелений, тільки світліший: на #415d43 він тримає 5,5:1 */
+  --pencil:#a1cca5;
+  --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
+  --divider:color-mix(in srgb, #eaf1e7 34%, transparent);
+  --mute:color-mix(in srgb, #eaf1e7  80%, transparent);
 }
 /* Системна темна схема лишається нічною, а зелена й нічна можуть бути вибрані явно. */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme]){
-    color-scheme:dark; --pencil:#3fa06a;
-    --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
-    --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
-    --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
+    color-scheme:dark; --pencil:#8fb996;
+    --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
+    --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+    --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
   }
 }
 :root[data-theme="night"]{
-  color-scheme:dark; --pencil:#3fa06a;
-  --bg:#171a15; --surface:#1e211c; --ink:#e7e9e3;
-  --divider:color-mix(in srgb,#e7e9e3 34%,transparent);
-  --mute:color-mix(in srgb,#e7e9e3 55%,transparent);
+  color-scheme:dark; --pencil:#8fb996;
+  --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
+  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -212,9 +212,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    Нижче 1000px колонка 11 завузька для двох груп поспіль — там шапка
    лишається на старій сітці «зліва інформація, справа перемикачі» */
 @media (min-width:1000px){
-  .meta{grid-template-columns:repeat(12,1fr); column-gap:var(--colgap)}
-  .meta > .cols:first-child{grid-column:1/span 8}
-  .meta .switches{grid-column:11/span 2; justify-content:space-between}
+  .meta{grid-template-columns:1fr auto; column-gap:clamp(24px,3vw,48px)}
+  .meta > .cols:first-child{grid-column:auto}
+  .meta .switches{grid-column:auto; justify-content:flex-end; flex-wrap:nowrap}
 }
 @media (max-width:560px){
   .meta{grid-template-columns:1fr; gap:6px}
@@ -240,7 +240,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    «Rusanivsky» рівно настільки, що в семи вставало впритул до межі —
    а рядок не переноситься */
 .name{
-  grid-column:1/span 8; grid-row:1;
+  grid-column:1/span 7; grid-row:1;
   /* трохи жирніше за 400: на такому кеглі тонкий накреслення читалося як
      недонабране, а 500 лишає ім'я легким і водночас дає йому вагу */
   font-size:var(--fs-name); font-weight:700;
@@ -259,7 +259,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    висоту портрета (другий ряд сітки — 1fr), тож остання лінія тексту
    стає врівень з нижнім краєм знімка */
 .hero-copy{
-  grid-column:1/span 8; grid-row:2; padding-left:var(--col2);
+  grid-column:1/span 7; grid-row:2; padding-left:var(--col2);
   display:flex; flex-direction:column; justify-content:flex-end; min-width:0;
 }
 /* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
@@ -517,7 +517,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    помітний менше, ніж діра завширшки 115px біля правого поля.
    Він спанить обидва рядки героя: його висота задає висоту текстової
    колонки ліворуч. align-self:start лишає йому пропорцію 4:5 */
-.figwrap{grid-column:10/span 3; grid-row:1/span 2; align-self:start}
+.figwrap{grid-column:9/span 4; grid-row:1/span 2; align-self:start}
 .figwrap figure{width:100%}
 .figwrap .shot picture{width:100%; height:auto}
 figure{margin:0; position:relative; z-index:1}
@@ -541,7 +541,7 @@ figure{margin:0; position:relative; z-index:1}
 /* вузько колонки поряд не стоять: ім'я, портрет, текст і дія йдуть одне
    під одним. Портрет другим — обличчя одразу під іменем, — але кнопка
    лишається над згином, бо кадр тут ширший і нижчий за вертикальний */
-@media (max-width:820px){
+@media (max-width:960px){
   .hero{grid-template-rows:none; row-gap:clamp(22px,3.4vh,34px)}
   .name,.hero-copy,.figwrap{grid-column:1/-1; grid-row:auto}
   /* у стосі абзац читається на всю ширину: тримати під нього поле в
@@ -552,8 +552,8 @@ figure{margin:0; position:relative; z-index:1}
      відсувало сам текст на другий екран */
   .name{order:1}
   .hero-copy{order:2}
-  .figwrap{order:3; max-width:min(100%,460px)}
-  .figwrap figure{width:auto}
+  .figwrap{order:3; width:min(100%,420px); max-width:none; justify-self:center}
+  .figwrap figure{width:100%}
   .figwrap .shot picture{height:auto; width:100%}
   /* горизонталь, а не вертикаль: у стосі кадр 3:4 виростав до 560px
      заввишки і сам виштовхував кнопку за згин планшета. Сюжет знімка
@@ -1054,7 +1054,7 @@ figure{margin:0; position:relative; z-index:1}
     /* колір системної панелі браузера тримаємо в парі з вибором — але
        чіпаємо його тільки тоді, коли вибір справді був */
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', v === 'green' ? '#14532d' : v === 'night' ? '#171a15' : '#ebede7');
+      m.setAttribute('content', v === 'green' ? '#415d43' : v === 'night' ? '#111d13' : '#eef1ec');
     });
     document.querySelectorAll('#theme button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.theme === v));

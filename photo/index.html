@@ -10,8 +10,8 @@
 <link rel="alternate" hreflang="en" href="https://rusanivsky.com/photo/">
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/photo/">
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/photo/">
-<meta name="theme-color" content="#ebede7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171a15" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef1ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111d13" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico?v=3" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
@@ -121,7 +121,7 @@
     /* колір системної панелі браузера тримаємо в парі з вибором — але
        чіпаємо його тільки тоді, коли вибір справді був */
     document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', v === 'green' ? '#14532d' : v === 'night' ? '#171a15' : '#ebede7');
+      m.setAttribute('content', v === 'green' ? '#415d43' : v === 'night' ? '#111d13' : '#eef1ec');
     });
     document.querySelectorAll('#theme button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.theme === v));
