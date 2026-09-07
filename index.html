@@ -197,6 +197,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches .contact-link{white-space:nowrap}
 /* широко шапка стає на ту саму 12-колонкову сітку, що й сторінка:
    перемикачі починаються з 11-ї колонки, а не просто тиснуться до
    правого краю. space-between лишає мову на правій межі верстки, тож
@@ -224,7 +225,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
      в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
   .meta .switches > .tgl{display:none}
+  .meta .switches > .mobile-contact-link{display:none}
   .language-slot > .tgl{display:flex}
+  .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
+  .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
+  .language-slot > .tgl button:first-child{padding-left:0}
 }
 
 /* ── герой ─────────────────────────────────────────────────── */
@@ -883,6 +888,7 @@ figure{margin:0; position:relative; z-index:1}
   </div>
   <div class="switches">
     <a class="tiny contact-link" href="/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
+    <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
     </div>

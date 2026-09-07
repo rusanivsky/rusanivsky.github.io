@@ -5,6 +5,7 @@ const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
+  ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -91,22 +92,24 @@ function localiseLinks(html) {
 function addContactsLink(html, route) {
   const current = route === '/rates/' ? ' aria-current="page"' : '';
   const en = 'Rates & Terms', ua = 'Умови співпраці';
-  const link = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
+  const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
+  const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
+  const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
-  const existing = html.match(/<a class="(?:part )?tiny contact-link" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/)?.[0];
-  if (existing) html = html.replace(existing, '');
+  html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
-  return html.replace(
+  html = html.replace(
     /\s*<div class="tgl" id="lang"/,
-    `\n    ${link}\n    <div class="tgl" id="lang"`,
+    `\n    ${termsLink}\n    ${contactsLink}\n    <div class="tgl" id="lang"`,
   );
+  return html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
 }
 
 function renameWorkTerms(html) {
-  return html.replace(/data-en="Contacts" data-ua="Контакти"/g, 'data-en="Work terms" data-ua="Умови роботи"')
-    .replace(/>Contacts</g, '>Work terms<')
+  return html.replace(/(<h[1-6][^>]*id="s-contact"[^>]*?)data-en="Contacts" data-ua="Контакти"/g, '$1data-en="Work terms" data-ua="Умови роботи"')
+    .replace(/(<h[1-6][^>]*id="s-contact"[^>]*>)Contacts(<\/h[1-6]>)/g, '$1Work terms$2')
     .replace(/(Telegram|Behance|Threads|TikTok) @rusanivsky/g, '$1');
 }
 
@@ -128,8 +131,8 @@ for (const [route, source, title, description] of pages) {
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
-  english = addContactsLink(english, route);
   english = renameWorkTerms(english);
+  english = addContactsLink(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
@@ -142,8 +145,8 @@ for (const [route, source, title, description] of pages) {
 }
 
 // Сторінки, що переїхали. Заглушка лишається на старій адресі в обох мовах:
-// GitHub Pages не вміє 301, а посилання на /contacts/ уже роздані.
-const moved = [['/contacts/', '/rates/'], ['/terms/', '/rates/']];
+// GitHub Pages не вміє 301.
+const moved = [['/terms/', '/rates/']];
 for (const [from, to] of moved) {
   for (const [oldRoute, newRoute, lang, title, sentence] of [
     [from, to, 'en', 'Moved — Kyrylo Rusanivsky', `This page moved to <a href="${to}">${to}</a>.`],

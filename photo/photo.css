@@ -219,7 +219,11 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
      в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
   .meta .switches > .tgl{display:none}
+  .meta .switches > .mobile-contact-link{display:none}
   .language-slot > .tgl{display:flex}
+  .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
+  .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
+  .language-slot > .tgl button:first-child{padding-left:0}
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */
