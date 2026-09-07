@@ -7,6 +7,19 @@
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/rates/">
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#415d43"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=19">
 <style>
+/* іменовані зони та вертикальний ритм цієї сторінки */
+:root{
+  --z-label:1 / 3;
+  --z-body:3 / 9;
+  --z-body-in:4 / 9;
+  --z-rail:9 / 13;
+  --z-wide:1 / 13;
+  --z-hero:1 / 9;
+  --gy-1:clamp(16px,1.6vw,24px);
+  --gy-2:clamp(32px,3.2vw,48px);
+  --gy-3:clamp(48px,4.8vw,72px);
+  --gy-4:clamp(72px,7.2vw,108px);
+}
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
 .contact-head .intro{grid-column:var(--z-body);margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
@@ -227,6 +240,13 @@
   .contact-list .cat .lab{grid-column:2}
   .contact-list .cat::before,.contact-list .cat::after{left:0;right:0}
 }
+/* діагностична сітка: існує лише на localhost або з ?grid=1 */
+.grid-overlay{position:fixed;inset:0;z-index:1000;display:none;pointer-events:none}
+.grid-overlay.is-on{display:block}
+.grid-overlay__inner{height:100%;width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 var(--colgap)}
+.grid-overlay__inner i{display:block;background:color-mix(in srgb,var(--pencil) 12%,transparent);border-inline:1px solid color-mix(in srgb,var(--pencil) 35%,transparent)}
+@media (min-width:641px) and (max-width:1024px){.grid-overlay__inner{grid-template-columns:repeat(8,minmax(0,1fr))}.grid-overlay__inner i:nth-child(n+9){display:none}}
+@media (max-width:640px){.grid-overlay__inner{grid-template-columns:repeat(4,minmax(0,1fr))}.grid-overlay__inner i:nth-child(n+5){display:none}}
 </style>
 <link rel="stylesheet" href="/photo/photo.css?v=25">
 <script>document.documentElement.classList.add('rev')</script>
@@ -392,6 +412,23 @@
 <section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">TikTok</span></a></section>
 </main>
 <footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div></footer>
+<script>
+(function(){
+  var local=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  var allowed=local || new URLSearchParams(location.search).get('grid')==='1';
+  if(!allowed) return;
+  var overlay=document.createElement('div');
+  overlay.className='grid-overlay'; overlay.setAttribute('aria-hidden','true');
+  var inner=document.createElement('div'); inner.className='grid-overlay__inner';
+  for(var i=0;i<12;i++) inner.appendChild(document.createElement('i'));
+  overlay.appendChild(inner); document.body.appendChild(overlay);
+  function toggle(){overlay.classList.toggle('is-on')}
+  if(new URLSearchParams(location.search).get('grid')==='1') toggle();
+  document.addEventListener('keydown',function(e){
+    if(e.key.toLowerCase()==='g' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.target.matches('input,textarea,select,[contenteditable]')) toggle();
+  });
+})();
+</script>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();
 /* активний пункт змісту тримається на тій секції, що зараз читається */
 (function(){
