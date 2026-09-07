@@ -1025,7 +1025,7 @@ figure{margin:0; position:relative; z-index:1}
     root.setAttribute('lang', v === 'ua' ? 'uk' : 'en');
     document.querySelectorAll('[data-en]').forEach(function(el){
       var t = el.getAttribute('data-' + v);
-      if(t) el.textContent = t;
+      if(t !== null) el.textContent = t;
     });
     if(save){
       try{ localStorage.setItem('kr-lang', v); }catch(e){}
