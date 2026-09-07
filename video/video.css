@@ -299,6 +299,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .fac .pl i::after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-left:clamp(13px,1.5vw,17px) solid var(--bg);border-top:clamp(9px,1vw,11px) solid transparent;border-bottom:clamp(9px,1vw,11px) solid transparent}
 @media (hover:hover){.fac:hover img{transform:scale(1.04);opacity:.82}.fac:hover .pl i{transform:scale(1.1)}}
 .v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
+.v video{width:100%;height:auto;aspect-ratio:9/16;display:block;background:#000;object-fit:contain}
+.short-form-grid{grid-template-columns:minmax(0,420px)}
+@media (max-width:759px){.short-form-grid{grid-template-columns:1fr}}
 /* назва картки — третій щабель, як і решта суцільного тексту;
    від опису під нею її відрізняє накреслення, а не кегль */
 .vt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
