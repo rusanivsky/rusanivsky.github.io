@@ -196,11 +196,12 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    підпис назад тут забирає місце, потрібне навігації */
 @media (max-width:760px){
   .meta{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(12px,1.8vw,26px)}
-  /* 44px тач-поле навколо стрілки; від’ємні поля не розсувають її відступ
-     від VIDEO, який має дорівнювати відступу між сусідніми розділами */
+  /* Велика стрілка не збільшує рядок: 44px тач-поле живе в ::after,
+     а видимий знак вирівняний по горизонтальній осі навігаційних букв. */
   .back{grid-column:1;grid-row:1;font-size:0;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
-    padding:14px;margin:-14px;line-height:1}
-  .back::before{content:"←";font-size:var(--fs-text);letter-spacing:0}
+    position:relative;width:max-content;height:19px;min-height:0;padding:0;margin:0;line-height:1}
+  .back::before{content:"←";font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;line-height:1;transform:translateY(-4px)}
+  .back::after{content:"";position:absolute;inset:-12.5px -6px}
   /* Terms стоїть праворуч від розділів у тому самому рядку. Мова
      зникає з шапки до 640px, тож вузький рядок не переповнюється. */
   .switches{grid-column:3;grid-row:1;padding-bottom:8px;justify-content:flex-end;min-width:0}
