@@ -496,18 +496,17 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 @media (min-width:641px){
   .spec{align-items:start}
 }
-/* вузько зберігаємо горизонтальну логіку десктопа: номер, назва розділу
-   ліворуч і перелік категорій у сусідній правій колонці */
+/* вузько назва розділу й перелік знову стоять один під одним, але всі
+   переліки починаються з однієї лівої вертикалі */
 @media (max-width:640px){
-  /* дванадцяти колонок тут уже немає, але їхня роль лишається: підпис
-     розділу займає ліву половину рядка, категорії — праву */
+  /* дванадцяти колонок тут уже немає, але перша лишається для номера,
+     а назва й категорії живуть у спільній другій колонці */
   .specs{display:block; margin-left:var(--col2)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .spec::before,.spec::after{left:0}
   .spec{
-    display:grid; grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);
-    column-gap:clamp(12px,2.4vw,24px); row-gap:0;
-    align-items:start;
+    display:grid; grid-template-columns:minmax(3ch,auto) minmax(0,1fr);
+    column-gap:clamp(14px,2.4vw,36px); row-gap:8px;
   }
   .spec .no{grid-column:1; grid-row:1; margin-left:0; text-align:left}
   /* у вузькій сітці колонок-треків немає, тож і добирати міжколонник
@@ -515,9 +514,15 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   /* min-width:0 — щоб трек 1fr не роздувався до найдовшого слова назви:
      на 320px «фотографія» розпирала рядок і виносила сторінку за край */
   .spec h3,.spec ul{min-width:0}
-  .spec h3{grid-column:2; grid-row:1; margin:0}
-  .spec ul{grid-column:3; grid-row:1; margin:0; align-self:start}
-  .spec.under ul{grid-column:3; grid-row:1; margin:0}
+  .spec h3{grid-column:2; grid-row:1; margin-right:0}
+  .spec ul{
+    grid-column:2; grid-row:2; margin:0; align-self:auto;
+    justify-items:start; text-align:left;
+  }
+  .spec.under ul{
+    grid-column:2; grid-row:2; margin:0;
+    justify-items:start; text-align:left;
+  }
 }
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
