@@ -321,6 +321,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   align-items:baseline;padding-block:var(--rule-gap);
   min-height:64px;position:relative;
 }
+/* На десктопі рядки мають той самий великий ритм, що й у головному списку:
+   більше повітря між лінійками й назвами; вузькі екрани лишають компактними. */
+@media (min-width:641px){
+  .cat{padding-block:clamp(72px,7.2vw,108px)}
+}
 /* номер стоїть на початку лінійки, як у списку контактів в умовах роботи. */
 .cat .num{grid-column:1; margin-left:var(--col2)}
 .cat .lab{grid-column:3/-1}
