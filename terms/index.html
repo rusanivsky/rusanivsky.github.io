@@ -130,14 +130,19 @@
 .tsec[aria-labelledby="s-price"] .prow::before{
   left:calc(var(--col3) - .75rem) !important
 }
-/* Два розділювачі між першими ціновими позиціями — на колонку правіше. */
+/* Внутрішні розділювачі обох цінових груп повторюють точний відступ
+   верхньої лінійки від заголовка групи. У .tbody перший трек дорівнює
+   --col1 + --colgap + 3ch, решта одинадцять — ділять залишок; формула
+   ставить лінійку відносно фактичної четвертої лінії subgrid, а не від
+   приблизного rem-зсуву. */
 @media (min-width:641px){
   .tsec[aria-labelledby="s-price"] .prow:nth-child(4)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(5)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(8)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(9)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(10)::before{
-    left:calc(var(--col3) + var(--col1) + var(--colgap)) !important
+    font-size:var(--fs-label);
+    left:calc(2 * var(--col1) + 3 * var(--colgap) + (100% - 12 * var(--colgap) - var(--col1) - 3ch) / 11 - .75rem) !important
   }
 }
 /* Категорія одразу після вступного абзацу має стандартний просвіт
