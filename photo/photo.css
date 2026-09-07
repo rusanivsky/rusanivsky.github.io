@@ -295,15 +295,23 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
   padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px);
 }
+/* Посилання на повні свіжі репортажі стоїть після переліку категорій і
+   до «Enquiries»: з другої колонки та в тому самому кеглі, що контакти
+   підвала. */
+.photo-pixover{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-bottom:clamp(30px,6vh,72px)}
+.photo-pixover p{grid-column:1/-1;margin:0 0 0 var(--col2);font-size:var(--fs-text);line-height:1.55;max-width:34ch;color:var(--mute)}
+.photo-pixover a{color:inherit;transition:color 260ms var(--ease)}
+.photo-pixover .pixover-link::after{content:"↗";display:inline-block;margin-left:.22em;font-size:.55em;vertical-align:.78em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);transition:opacity 320ms var(--ease),transform 320ms var(--ease)}
+@media (hover:hover){.photo-pixover a:hover{color:var(--accent)}.photo-pixover .pixover-link:hover::after{opacity:1;transform:none}}
 .cat{
   display:grid;grid-template-columns:subgrid;grid-column:1/-1;
   align-items:baseline;padding-block:var(--rule-gap);
   min-height:64px;position:relative;
 }
-/* номер стоїть не на другому треку сітки, а рівно там, де починається
-   лінійка: коли підпис підвалу ширший за колонку, --col2 відходить від
-   треку на кілька пікселів, і номер має відійти разом із ним */
-.cat .num{grid-column:1; margin-left:var(--col2)}
+/* номер стоїть від лінійки на той самий 1.4rem, що й номер кроку в
+   «Процесі»: лінійка починається на --col3 - .75rem, номер — на
+   --col3 + .65rem. */
+.cat .num{grid-column:1; margin-left:calc(var(--col2) + 1.4rem)}
 .cat .lab{grid-column:3/-1}
 /* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
    останнім рядком її немає сама собою — доти це доводилось окремо
@@ -522,6 +530,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
      на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
      вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
   .cats{padding-block:clamp(24px,6vw,32px)}
+  .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
 }

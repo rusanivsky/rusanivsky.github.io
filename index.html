@@ -318,11 +318,10 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   align-items:baseline; padding-block:var(--rule-gap);
   min-height:64px; position:relative;
 }
-/* номер стоїть не на другому треку сітки, а рівно там, де починається
-   лінійка: коли підпис розділу ширший за колонку, --col2 відходить від
-   треку на кілька пікселів, і номер має відійти разом із ним — інакше він
-   висить трохи лівіше за власну лінійку */
-.spec .no{grid-column:1; margin-left:var(--col2)}
+/* номер стоїть від лінійки на той самий 1.4rem, що й номер кроку в
+   «Процесі»: лінійка починається на --col3 - .75rem, номер — на
+   --col3 + .65rem. */
+.spec .no{grid-column:1; margin-left:calc(var(--col2) + 1.4rem)}
 /* та сама межа по 9-й лінії, що й у героя: назва розділу тримається
    лівих восьми колонок, перелік — правих чотирьох */
 /* назва впирається правим краєм у початок 8-ї колонки: коробка стоїть на
@@ -477,6 +476,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
      цілим блоком, тож лінійки й номери всередині нього стоять від його ж
      краю — і від тієї самої вертикалі, що й підпис */
   .specs{display:block; margin-left:var(--col2)}
+  .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .spec::before,.spec::after{left:0}
   .spec{
     display:grid; grid-template-columns:auto 1fr;
@@ -962,9 +962,8 @@ figure{margin:0; position:relative; z-index:1}
   <div class="wrap foot-bar">
     <div class="cols">
 <span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span>
-      <span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span>
     </div>
-    <div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">My photo galleries on Pixover</a></div>
+
   </div>
 </footer>
 
@@ -1024,13 +1023,8 @@ figure{margin:0; position:relative; z-index:1}
       var saved = localStorage.getItem('kr-lang');
       if(saved === 'en' || saved === 'ua') return saved;
     }catch(e){}
-    var list = navigator.languages || [navigator.language || ''];
-    for(var i = 0; i < list.length; i++){
-      var l = String(list[i]).toLowerCase();
-      if(l.indexOf('uk') === 0) return 'ua';
-      if(l.indexOf('en') === 0) return 'en';
-    }
-    return 'en';
+    var l = String((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase();
+    return(l.indexOf('uk')===0||l.indexOf('ru')===0)?'ua':'en';
   }
   try{ setLang(detectLang(), false); }catch(e){ setLang('en', false); }
 
@@ -1131,11 +1125,10 @@ figure{margin:0; position:relative; z-index:1}
       "https://www.behance.net/rusanivsky",
       "https://www.instagram.com/rusanivsky/",
       "https://www.linkedin.com/in/rusanivsky/",
-      "https://www.facebook.com/rusanivsky",
-      "https://pixover.com/p/rusanivsky"
+      "https://www.facebook.com/rusanivsky"
     ]
   }
 }
 </script>
-</body>
+<script src="/scripts/move-language-switcher.js"></script></body>
 </html>

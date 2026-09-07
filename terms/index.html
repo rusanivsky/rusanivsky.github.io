@@ -10,7 +10,10 @@
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
 .contact-head .intro{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
-.contact-list{padding-top:0}
+/* Contact повторює сітку .tbody над ним: перший трек тримає відступ
+   лінійки й коробку номера, тому назви платформ на третій лінії рівні
+   тексту секції Note, а не від'їжджають за шириною номера. */
+.cats.contact-list{padding-top:0;font-size:var(--fs-label);grid-template-columns:calc(var(--col2) + 3ch) repeat(11,minmax(0,1fr))}
 @media(max-width:640px){.contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}}
 
 /* ── умови роботи ─────────────────────────────────────────────
@@ -202,7 +205,7 @@
   .pts{columns:1}
 }
 </style>
-<link rel="stylesheet" href="/photo/photo.css?v=22">
+<link rel="stylesheet" href="/photo/photo.css?v=25">
 <script>document.documentElement.classList.add('rev')</script>
 </head>
 <body><div class="topbar"><header class="wrap meta"><a class="back" href="/" data-en="← Kyrylo Rusanivsky" data-ua="← Кирило Русанівський">← Kyrylo Rusanivsky</a><nav class="parts" aria-label="Sections"><a class="part" href="/video/" data-en="Video" data-ua="Відео">Video</a><a class="part" href="/photo/" data-en="Photo" data-ua="Фото">Photo</a><a class="part" href="/design/" data-en="Design" data-ua="Дизайн">Design</a></nav><div class="switches"><a class="tiny contact-link" href="/terms/" aria-current="page" data-en="Work terms & Prices" data-ua="Умови роботи та ціни">Work terms & Prices</a>
@@ -364,8 +367,8 @@
 </section>
 <section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">TikTok</span></a></section>
 </main>
-<footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span><span class="tiny" data-en="Kyiv, Ukraine" data-ua="Київ, Україна">Kyiv, Ukraine</span></div><div class="cols"><a class="tiny arch" href="https://pixover.com/p/rusanivsky" target="_blank" rel="noopener" data-en="My photo galleries on Pixover" data-ua="Мої фотогалереї на Pixover">My photo galleries on Pixover</a></div></div></footer>
-<script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}return(navigator.language||'').slice(0,2)==='uk'?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();
+<footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div></footer>
+<script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();
 /* поява блоків — той самий рух, що й на решті сайту. data-rev вішає сам
    скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, стоїть на
    місці одразу, решта проявляється, коли до неї догортали */
@@ -383,4 +386,4 @@
   onload.forEach(function(el){ el.classList.add('at-once','is-in'); });
 })();
 </script>
-</body></html>
+<script src="/scripts/move-language-switcher.js"></script></body></html>
