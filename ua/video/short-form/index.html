@@ -50,7 +50,7 @@
 <section class="wrap grid short-form-grid">
   <article class="v">
     <div class="local-fac">
-      <video controls playsinline preload="metadata" poster="/video/short-form/dyvoshyv-poster.jpg" width="1080" height="1920">
+      <video controls controlslist="nodownload" playsinline preload="metadata" poster="/video/short-form/dyvoshyv-poster.jpg" width="1080" height="1920">
         <source src="/video/short-form/dyvoshyv.mp4" type="video/mp4">
       </video>
       <button class="fac local-play" type="button" aria-label="Play Dyvoshyv video"><span class="pl"><i></i></span></button>
@@ -83,7 +83,7 @@
   function detect(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en';}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s;}catch(e){}var x=String((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase();return x.indexOf('uk')===0||x.indexOf('ru')===0?'ua':'en';}
   document.querySelectorAll('#lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang,true);});});
   try{ setLang('ua', false); }catch(e){}
-  document.querySelectorAll('.local-fac').forEach(function(wrap){var video=wrap.querySelector('video'),play=wrap.querySelector('.local-play');play.addEventListener('click',function(){if(video.paused)video.play();else video.pause();});video.addEventListener('play',function(){wrap.classList.add('is-playing');});video.addEventListener('pause',function(){wrap.classList.remove('is-playing');});video.addEventListener('ended',function(){wrap.classList.remove('is-playing');});});
+  document.querySelectorAll('.local-fac').forEach(function(wrap){var video=wrap.querySelector('video'),play=wrap.querySelector('.local-play');play.addEventListener('click',function(){if(video.paused)video.play();else video.pause();});video.addEventListener('contextmenu',function(e){e.preventDefault();});video.addEventListener('play',function(){wrap.classList.add('is-playing');});video.addEventListener('pause',function(){wrap.classList.remove('is-playing');});video.addEventListener('ended',function(){wrap.classList.remove('is-playing');});});
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.08});var els=[].slice.call(document.querySelectorAll('.grid > *, .site-foot [data-rev]'));els.forEach(function(el,i){el.setAttribute('data-rev','');el.style.setProperty('--d',(i%3)*70+'ms');if(el.getBoundingClientRect().top<innerHeight)el.classList.add('at-once','is-in');else io.observe(el);});}
 })();
 </script>
