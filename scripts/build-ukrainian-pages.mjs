@@ -92,14 +92,15 @@ function addContactsLink(html, route) {
   const current = route === '/rates/' ? ' aria-current="page"' : '';
   const en = 'Rates & Terms', ua = 'Умови співпраці';
   const link = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
-  if (html.includes('contact-link')) {
-    // не прив'язано до конкретного напису — регекс ловить будь-яку
-    // попередню версію тексту, тож наступний прогін лишається ідемпотентним
-    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/, link);
-  }
+  // On the home page the link sits next to the language switcher. Keep the
+  // same desktop header on every page, including pages whose older source had
+  // the link as the fourth item in .parts.
+  const existing = html.match(/<a class="(?:part )?tiny contact-link" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/)?.[0];
+  if (existing) html = html.replace(existing, '');
+  html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   return html.replace(
-    '<div class="tgl" id="lang"',
-    `${link}\n    <div class="tgl" id="lang"`,
+    /\s*<div class="tgl" id="lang"/,
+    `\n    ${link}\n    <div class="tgl" id="lang"`,
   );
 }
 
