@@ -198,10 +198,10 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    вони йдуть другим рядком шапки, вирівняні по лівому краю верстки */
 @media (max-width:760px){
   .meta{grid-template-columns:1fr auto}
-  /* У мобільній шапці справа має бути лише один короткий рядок з Terms.
-     Мовний перемикач іще залишається в шапці до 640px. */
-  .switches{grid-column:1/-1;grid-row:3;padding-bottom:8px;justify-content:flex-end;min-width:0}
-  .parts{grid-column:1/-1;grid-row:2;padding-bottom:8px;overflow-x:auto;
+  /* Terms займає праву клітинку того самого рядка, що й розділи.
+     Мова зникає з шапки до 640px, тож вузький рядок не переповнюється. */
+  .switches{grid-column:2;grid-row:2;padding-bottom:8px;justify-content:flex-end;min-width:0}
+  .parts{grid-column:1;grid-row:2;padding-bottom:8px;overflow-x:auto;
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
   .part{padding-block:0}
