@@ -151,11 +151,21 @@
 .tsec[aria-labelledby="s-flow"] .trow:not(:first-child)::before{
   left:calc(var(--col3) - .75rem)
 }
+/* Перед підсумковою приміткою в «Процесі» лінійка не потрібна. */
+.tsec[aria-labelledby="s-flow"] .steps + .trow::before{display:none}
 
 /* У «Термінах» і «Правках» не потрібне велике повітря між внутрішніми
    рядками: кожен блок і так читається одним потоком. */
 .tsec[aria-labelledby="s-rev"] .trow,
 .tsec[aria-labelledby="s-time"] .trow{padding-block:clamp(8px,1.2vw,16px)}
+
+/* Заголовок «Billed separately» починається на спільній із текстом
+   правок вертикалі. */
+.tsec[aria-labelledby="s-rev"] .grp{grid-column:3/-1}
+@media (min-width:641px){
+  .tsec[aria-labelledby="s-rev"] .pts,
+  .tsec[aria-labelledby="s-time"] .pts{grid-column:4/10}
+}
 
 /* У «Правках» і «Термінах» верхня межа блоку лишається, а внутрішні
    лінійки між його рядками прибрані. */
@@ -182,6 +192,8 @@
   .tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{left:0}
   .tsec[aria-labelledby="s-flow"] .trow:not(:first-child)::before{left:0}
   .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:1/-1}
+  .tsec[aria-labelledby="s-rev"] .pts,
+  .tsec[aria-labelledby="s-time"] .pts{grid-column:1/-1}
   .pts{columns:1}
 }
 </style>
