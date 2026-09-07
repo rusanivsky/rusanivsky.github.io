@@ -300,6 +300,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (hover:hover){.fac:hover img{transform:scale(1.04);opacity:.82}.fac:hover .pl i{transform:scale(1.1)}}
 .v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
 .v video{width:100%;height:auto;aspect-ratio:9/16;display:block;background:#000;object-fit:contain}
+.local-fac{position:relative;overflow:hidden;background:#000}
+.local-play{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:1;background:transparent}
+.local-fac.is-playing .local-play{opacity:0;pointer-events:none}
+.local-play .pl i{transition:transform 300ms var(--ease)}
+@media (hover:hover){.local-play:hover .pl i{transform:scale(1.1)}}
 .short-form-grid{grid-template-columns:minmax(0,420px)}
 @media (max-width:759px){.short-form-grid{grid-template-columns:1fr}}
 /* назва картки — третій щабель, як і решта суцільного тексту;
