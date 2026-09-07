@@ -285,7 +285,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   min-height:64px;position:relative;
 }
 /* номер стоїть на початку лінійки, як у списку контактів в умовах роботи. */
-.cat .num{grid-column:2; margin-left:0}
+.cat .num{grid-column:1; margin-left:var(--col2)}
 .cat .lab{grid-column:3/-1}
 /* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
    останнім рядком її немає сама собою — доти це доводилось окремо
@@ -299,7 +299,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat .lab{
   font-size:var(--fs-title);font-weight:700;
   letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
-  margin-left:12px;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
 /* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
@@ -348,7 +347,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
     column-gap:clamp(14px,2.4vw,36px);
   }
   .cat .num{grid-column:1; margin-left:0}
-  .cat .lab{grid-column:2; margin-left:0}
+  .cat .lab{grid-column:2}
 }
 
 /* два з трьох напрямків живуть на Behance — вони одразу показують стрілку
