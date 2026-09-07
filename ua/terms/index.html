@@ -74,7 +74,7 @@
    починається лінійка — коли підпис ширший за колонку, --col2 відходить
    від треку, і номер має відійти разом із ним */
 .steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
-.step .no{grid-column:1;position:absolute;left:var(--col3);top:var(--rule-gap);min-width:3ch;
+.step .no{grid-column:1;position:absolute;left:calc(var(--col3) + .65rem);top:var(--rule-gap);min-width:3ch;
   font-size:var(--fs-label);letter-spacing:var(--ls-tiny);font-weight:600;color:var(--mute)}
 .step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
 .step p{grid-column:6/10;margin:0;text-wrap:pretty}
@@ -109,18 +109,36 @@
    краю основного тексту, а не від наскрізної лінійки розділу. */
 .tsec[aria-labelledby="s-price"] .trow::before{left:var(--col3)}
 /* Верхня лінійка навпроти підпису «Ціни» лишається на другій колонці. */
-.tsec[aria-labelledby="s-price"] .trow:first-child::before{display:none}
+.tsec[aria-labelledby="s-price"] .trow:first-child::before{left:var(--col2)}
 /* Внутрішні лінійки йдуть від початку основного тексту на третій колонці;
    верхня лінійка секції лишається на другій. */
 .tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{
   left:calc(var(--col3) - .75rem)
 }
+/* Назви груп у «Цінах» стоять на одну колонку лівіше за позиції. */
+@media (min-width:641px){
+  .tsec[aria-labelledby="s-price"] .grp{grid-column:3/-1}
+}
 /* Рядок заголовка групи не малює окремої лінійки над «Video editing». */
 .tsec[aria-labelledby="s-price"] .trow:nth-child(2)::before{display:none}
-/* Лінійки самих цінових позицій починаються з тієї ж вертикалі,
-   що й звужена ліва смуга тексту — на колонку правіше за лінійку групи. */
+/* Перед заголовком «Дизайн і верстка» розділювача також не потрібно. */
+.tsec[aria-labelledby="s-price"] .trow:nth-child(6)::before{display:none}
+/* Перед заголовком «Що впливає на ціну» розділювача також не потрібно. */
+.tsec[aria-labelledby="s-price"] .trow:nth-child(11)::before{display:none}
+/* Лінійки цінових позицій від «Відеомонтаж» до «Дрібні правки»
+   тимчасово починаються з четвертої колонки. */
 .tsec[aria-labelledby="s-price"] .prow::before{
-  left:var(--col2) !important
+  left:var(--col3) !important
+}
+/* Два розділювачі між першими ціновими позиціями — на колонку правіше. */
+@media (min-width:641px){
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(4)::before,
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(5)::before,
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(8)::before,
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(9)::before,
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(10)::before{
+    left:calc(var(--col3) + var(--col1) + var(--colgap)) !important
+  }
 }
 /* Категорія одразу після вступного абзацу має стандартний просвіт
    після повернення своєї лінійки. */
