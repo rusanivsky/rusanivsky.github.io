@@ -92,7 +92,7 @@ function addContactsLink(html, route) {
   const current = route === '/terms/' ? ' aria-current="page"' : '';
   const en = 'Work terms & Prices', ua = 'Умови роботи та ціни';
   const link = `<a class="tiny contact-link" href="/terms/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
-  if (html.includes('class="tiny contact-link"')) {
+  if (html.includes('contact-link')) {
     // не прив'язано до конкретного напису — регекс ловить будь-яку
     // попередню версію тексту, тож наступний прогін лишається ідемпотентним
     return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/, link);
