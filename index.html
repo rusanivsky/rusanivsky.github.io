@@ -205,11 +205,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   .meta .switches{grid-column:auto; justify-content:flex-end; flex-wrap:nowrap}
 }
 @media (max-width:560px){
-  .meta{grid-template-columns:1fr; gap:6px}
+  .meta{grid-template-columns:minmax(0,1fr) auto; column-gap:12px; row-gap:0}
   .meta .cols{gap:14px}
-  /* На мобільному Terms лишається в шапці, але вирівнюється до правого
-     краю. Перемикач мови ховається нижче до його перенесення у футер. */
-  .meta .switches{justify-content:flex-end}
+  /* Terms лишається праворуч від міста й часу; мова нижче 640px
+     переноситься у футер, тому перший рядок не перевантажується. */
+  .meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
 }
 @media (max-width:640px){
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
