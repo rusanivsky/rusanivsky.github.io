@@ -188,22 +188,29 @@
    всередині нього стоять від його ж краю — на спільній із підписом
    вертикалі */
 @media (max-width:640px){
+  /* На мобільному верхня межа шапки не потрібна: контент уже відділений
+     власним ритмом, як на головній сторінці. */
+  body:has(.contact-head) .topbar .rule{display:none}
+
+  /* Як у .specs на головній: тіло відходить за вертикальний підпис, а
+     лінійка починається від його власного лівого краю, не повертається
+     назад у поле сторінки. */
   .tbody{display:block;margin-left:var(--col2)}
-  .trow::before{left:calc(-1 * var(--col2))}
+  .trow::before{left:0}
   .trow{display:grid;grid-template-columns:auto 1fr;
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
   .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts,
   .prow .svc,.prow .fee{grid-column:1/-1;max-width:none;margin-left:0}
   .tsec[aria-labelledby="s-price"] .trow::before,
-  .tsec[aria-labelledby="s-flow"] .trow::before{left:calc(-1 * var(--col2))}
-  .tsec[aria-labelledby="s-price"] .trow:first-child::before{left:calc(-1 * var(--col2))}
-  .tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{left:calc(-1 * var(--col2))}
-  .tsec[aria-labelledby="s-flow"] .trow:not(:first-child)::before{left:calc(-1 * var(--col2))}
+  .tsec[aria-labelledby="s-flow"] .trow::before,
+  .tsec[aria-labelledby="s-price"] .prow::before{left:0 !important}
   .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:1/-1}
   .tsec[aria-labelledby="s-rev"] .pts,
   .tsec[aria-labelledby="s-time"] .pts{grid-column:1/-1}
   .pts{columns:1}
-  .tsec[aria-labelledby="s-rev"] .grp{text-align:left;justify-self:start}
+  .grp,.tsec[aria-labelledby="s-rev"] .grp{
+    grid-column:1/-1;text-align:left;justify-self:start
+  }
 }
 </style>
 <link rel="stylesheet" href="/photo/photo.css?v=25">
