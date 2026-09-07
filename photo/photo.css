@@ -198,13 +198,21 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    вони йдуть другим рядком шапки, вирівняні по лівому краю верстки */
 @media (max-width:760px){
   .meta{grid-template-columns:1fr auto}
-  .switches{justify-content:flex-end}
+  /* У мобільній шапці справа має бути лише один короткий рядок з Terms.
+     Мовний перемикач іще залишається в шапці до 640px. */
+  .switches{grid-column:1/-1;grid-row:3;padding-bottom:8px;justify-content:flex-end;min-width:0}
   .parts{grid-column:1/-1;grid-row:2;padding-bottom:8px;overflow-x:auto;
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
   .part{padding-block:0}
   .parts .contact-link{margin-left:8px}
   .part::after{bottom:-5px}
+}
+@media (max-width:640px){
+  /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
+     в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
+  .meta .switches > .tgl{display:none}
+  .language-slot > .tgl{display:flex}
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */

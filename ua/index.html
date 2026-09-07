@@ -207,6 +207,15 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 @media (max-width:560px){
   .meta{grid-template-columns:1fr; gap:6px}
   .meta .cols{gap:14px}
+  /* На мобільному Terms лишається в шапці, але вирівнюється до правого
+     краю. Перемикач мови ховається нижче до його перенесення у футер. */
+  .meta .switches{justify-content:flex-end}
+}
+@media (max-width:640px){
+  /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
+     в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
+  .meta .switches > .tgl{display:none}
+  .language-slot > .tgl{display:flex}
 }
 
 /* ── герой ─────────────────────────────────────────────────── */
