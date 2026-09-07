@@ -413,7 +413,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
      назву розділу та зсуває її вправо */
   .spec:hover .sect{color:var(--pencil);transform:translateX(clamp(8px,1.4vw,22px))}
   .spec:hover::after{transform:scaleX(1)}
-  .spec .sect:hover::after{opacity:1; transform:none}
+  /* Стрілка перших трьох основних напрямків приходить разом із жовтим
+     станом усього рядка, а не лише коли курсор уже на самій назві.
+     Відокремлений нижній рядок .under зберігає власну поведінку. */
+  .work .spec:not(.under):hover .sect::after{opacity:1;transform:none;color:var(--pencil)}
+  .work .spec.under .sect:hover::after{opacity:1; transform:none}
   .spec .it:hover{color:var(--accent)}
   .spec a.it[target]:hover::after{opacity:1; transform:none}
 }
