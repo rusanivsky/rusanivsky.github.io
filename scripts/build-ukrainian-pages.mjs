@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
-  ['/terms/', 'terms/index.html', 'Умови роботи та ціни — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
+  ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю в Києві: редакційні та розмовні відео, інтерв’ю для YouTube і контент для соціальних мереж.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
@@ -89,13 +89,13 @@ function localiseLinks(html) {
 }
 
 function addContactsLink(html, route) {
-  const current = route === '/terms/' ? ' aria-current="page"' : '';
-  const en = 'Work terms & Prices', ua = 'Умови роботи та ціни';
-  const link = `<a class="tiny contact-link" href="/terms/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
+  const current = route === '/rates/' ? ' aria-current="page"' : '';
+  const en = 'Rates & Terms', ua = 'Умови співпраці';
+  const link = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   if (html.includes('contact-link')) {
     // не прив'язано до конкретного напису — регекс ловить будь-яку
     // попередню версію тексту, тож наступний прогін лишається ідемпотентним
-    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/, link);
+    return html.replace(/<a class="tiny contact-link" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/, link);
   }
   return html.replace(
     '<div class="tgl" id="lang"',
@@ -142,7 +142,7 @@ for (const [route, source, title, description] of pages) {
 
 // Сторінки, що переїхали. Заглушка лишається на старій адресі в обох мовах:
 // GitHub Pages не вміє 301, а посилання на /contacts/ уже роздані.
-const moved = [['/contacts/', '/terms/']];
+const moved = [['/contacts/', '/rates/'], ['/terms/', '/rates/']];
 for (const [from, to] of moved) {
   for (const [oldRoute, newRoute, lang, title, sentence] of [
     [from, to, 'en', 'Moved — Kyrylo Rusanivsky', `This page moved to <a href="${to}">${to}</a>.`],
