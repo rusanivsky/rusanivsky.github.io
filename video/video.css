@@ -162,8 +162,16 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
   transition:color 220ms var(--ease)}
-.part::after{content:none}
-@media (hover:hover){.part:hover{color:var(--accent)}}
+@media (min-width:761px){
+  .part::after{content:"";position:absolute;left:0;right:0;bottom:5px;height:var(--pen);
+    background:var(--pencil);transform:scaleX(0);transform-origin:left;
+    transition:transform 380ms var(--ease);will-change:transform}
+  .part[aria-current]::after{transform:scaleX(1)}
+}
+@media (min-width:761px) and (hover:hover){
+  .part:hover{color:var(--accent)}
+  .part:hover::after{transform:scaleX(1)}
+}
 .part[aria-current]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
 /* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
    зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
