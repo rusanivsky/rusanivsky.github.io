@@ -308,10 +308,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   align-items:baseline;padding-block:var(--rule-gap);
   min-height:64px;position:relative;
 }
-/* номер стоїть не на другому треку сітки, а рівно там, де починається
-   лінійка: коли підпис підвалу ширший за колонку, --col2 відходить від
-   треку на кілька пікселів, і номер має відійти разом із ним */
-.cat .num{grid-column:1; margin-left:var(--col2)}
+/* номер стоїть від лінійки на той самий 1.4rem, що й номер кроку в
+   «Процесі»: лінійка починається на --col3 - .75rem, номер — на
+   --col3 + .65rem. */
+.cat .num{grid-column:1; margin-left:calc(var(--col2) + 1.4rem)}
 .cat .lab{grid-column:3/-1}
 /* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
    останнім рядком її немає сама собою — доти це доводилось окремо
