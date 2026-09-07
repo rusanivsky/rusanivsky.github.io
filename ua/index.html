@@ -157,6 +157,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 /* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
+.meta + .rule{margin-bottom:2px}
 
 /* ── marginalia bar ───────────────────────────────────────── */
 .meta{
@@ -213,6 +214,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   /* Terms лишається праворуч від міста й часу; мова нижче 640px
      переноситься у футер, тому перший рядок не перевантажується. */
   .meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
+}
+@media (max-width:760px){
+  /* На головній у рядку немає навігації з її нижнім 8px-полем, тому
+     додаємо його до шапки, щоб лінійка стояла на тій самій висоті. */
+  .meta{padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
 }
 @media (max-width:640px){
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
