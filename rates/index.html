@@ -17,8 +17,17 @@
 /* Контакти мають той самий просвіт, що й рядки напрямків на головній.
    Явне правило тримає rates синхронним навіть під час оновлення кешу CSS. */
 .contact-list .cat{padding-block:var(--rule-gap)}
-.contact-list .cat .num{text-align:right}
-@media(max-width:640px){.contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}}
+.contact-list .cat .num{
+  /* Контакти мають нестандартний перший трек, який тримає їхні назви на
+     вертикалі тіла умов. Номер використовує те саме поле до лінійки, що й
+     головна сітка. */
+  grid-column:1; margin-left:var(--col2); min-width:3ch;
+  text-align:right
+}
+@media(max-width:640px){
+  .contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}
+  .contact-list .cat .num{margin-left:0;min-width:0;text-align:left}
+}
 
 /* ── умови роботи ─────────────────────────────────────────────
    Сторінка говорить тією самою мовою, що й головна, і не заводить

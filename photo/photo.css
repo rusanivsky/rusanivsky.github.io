@@ -326,8 +326,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   align-items:baseline;padding-block:var(--rule-gap);
   min-height:64px;position:relative;
 }
-/* номер стоїть на початку лінійки, як у списку контактів в умовах роботи. */
-.cat .num{grid-column:1; margin-left:var(--col2)}
+/* Номер живе в першому треку з полем до початку лінійки — тим самим
+   правилом, що й на головній. Поле входить у мінімальну ширину треку, тому
+   номер завжди лишається праворуч від лінійки, а не виїжджає за її початок. */
+.cat .num{grid-column:1; margin-left:var(--col2); min-width:3ch; text-align:right}
 .cat .lab{grid-column:3/-1}
 /* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
    останнім рядком її немає сама собою — доти це доводилось окремо
@@ -388,7 +390,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
     display:grid;grid-template-columns:auto 1fr;
     column-gap:clamp(14px,2.4vw,36px);
   }
-  .cat .num{grid-column:1; margin-left:0}
+  .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
 }
 
