@@ -195,9 +195,12 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* вузько стрілка, три розділи й умови стоять одним рядком: довгий
    підпис назад тут забирає місце, потрібне навігації */
 @media (max-width:760px){
-  .meta{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(8px,2vw,14px)}
-  .back{grid-column:1;grid-row:1;font-size:0;letter-spacing:0;padding-block:0;line-height:1}
-  .back::before{content:"←";font-size:var(--fs-chrome);letter-spacing:0}
+  .meta{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(12px,1.8vw,26px)}
+  /* 44px тач-поле навколо стрілки; від’ємні поля не розсувають її відступ
+     від VIDEO, який має дорівнювати відступу між сусідніми розділами */
+  .back{grid-column:1;grid-row:1;font-size:0;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
+    padding:14px;margin:-14px;line-height:1}
+  .back::before{content:"←";font-size:var(--fs-text);letter-spacing:0}
   /* Terms стоїть праворуч від розділів у тому самому рядку. Мова
      зникає з шапки до 640px, тож вузький рядок не переповнюється. */
   .switches{grid-column:3;grid-row:1;padding-bottom:8px;justify-content:flex-end;min-width:0}
