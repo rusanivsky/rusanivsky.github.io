@@ -9,11 +9,7 @@
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
-.contact-head .intro{grid-column:var(--z-body);margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
-.rates-toc{grid-column:var(--z-rail);position:sticky;top:clamp(72px,10vh,128px);align-self:start;display:grid;gap:clamp(8px,1vw,14px);margin:0;padding:0;list-style:none}
-.rates-toc a{color:var(--mute);font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;transition:color 220ms var(--ease)}
-.rates-toc a:hover,.rates-toc a.is-active{color:var(--active)}
-@media(max-width:1024px){.rates-toc{display:none}}
+.contact-head .intro{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
 /* Contact повторює сітку .tbody над ним: перший трек тримає відступ
    лінійки й коробку номера, тому назви платформ на третій лінії рівні
    тексту секції Note, а не від'їжджають за шириною номера. */
@@ -56,42 +52,42 @@
   margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label);
 }
 .trow{
-  display:grid;grid-template-columns:subgrid;grid-column:var(--z-wide);
+  display:grid;grid-template-columns:subgrid;grid-column:1/-1;
   padding-block:var(--rule-gap);position:relative;align-items:baseline;
 }
-.trow::before{content:"";position:absolute;left:0;right:0;top:0;
+.trow::before{content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider)}
 /* суцільний текст тримається лівої половини — треків 3–8, як назва
    розділу на головній: міра рядка лишається читною, а права половина
    віддана ціні або опису */
-.tsec .lead,.tsec .copy,.tsec .note{grid-column:var(--z-body);margin:0;max-width:56ch;text-wrap:pretty}
+.tsec .lead,.tsec .copy,.tsec .note{grid-column:3/9;margin:0;max-width:56ch;text-wrap:pretty}
 .tsec .copy > p{margin:0;text-wrap:pretty}
 .tsec .copy > p + p{margin-top:clamp(8px,1vw,14px)}
 .tsec .note{color:inherit}
 /* підзаголовок групи говорить тією самою капітеллю, що й підпис розділу,
    але повним чорнилом: підпис стоїть у полі й має мовчати, підзаголовок
    стоїть у верстці — інакше два рівні читалися б як один */
-.grp{grid-column:var(--z-body-in);margin:0;font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
+.grp{grid-column:4/-1;margin:0;font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
   text-transform:uppercase;font-weight:600;line-height:1}
 /* рядок ціни тієї самої будови, що .spec на головній: назва на лівих
    треках, число починається там, де там починається перелік */
-.prow .svc{grid-column:var(--z-body-in);margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
-.prow .fee{grid-column:var(--z-rail);margin:0;font-weight:400;text-wrap:pretty}
+.prow .svc{grid-column:4/8;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
+.prow .fee{grid-column:9/span 3;margin:0 0 0 calc(-1 * var(--colgap));font-weight:400;text-wrap:pretty}
 /* нумеровані кроки: номер стоїть не на другому треку, а рівно там, де
    починається лінійка — коли підпис ширший за колонку, --col2 відходить
    від треку, і номер має відійти разом із ним */
-.steps{display:grid;grid-template-columns:subgrid;grid-column:var(--z-wide);list-style:none;margin:0;padding:0}
-.step .no{grid-column:var(--z-label);position:absolute;left:var(--col2);top:var(--rule-gap);min-width:3ch;
+.steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
+.step .no{grid-column:1;position:absolute;left:calc(var(--col3) + .65rem);top:var(--rule-gap);min-width:3ch;
   font-size:var(--fs-label);letter-spacing:var(--ls-tiny);font-weight:600;color:var(--mute)}
-.step h3{grid-column:var(--z-body);margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
-.step p{grid-column:var(--z-body);margin:0;text-wrap:pretty}
+.step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
+.step p{grid-column:6/10;margin:0;text-wrap:pretty}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
    треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
    не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
    верстці верхнє поле першого пункта другої колонки зсувало б її вниз
    відносно першої */
-.pts{grid-column:var(--z-body);max-width:56ch;list-style:none;margin:0;padding:0;columns:1}
-.tsec[aria-labelledby="s-price"] .pts{grid-column:var(--z-body-in)}
+.pts{grid-column:3/9;max-width:56ch;list-style:none;margin:0;padding:0;columns:1}
+.tsec[aria-labelledby="s-price"] .pts{grid-column:4/10}
 .pts li{break-inside:avoid;margin:0 0 clamp(10px,1.2vw,16px);text-wrap:pretty}
 .pts li:last-child{margin-bottom:0}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 підпис лягає
@@ -118,15 +114,17 @@
 
 /* У цінах внутрішні рядки починаються з третьої колонки — від лівого
    краю основного тексту, а не від наскрізної лінійки розділу. */
-.tsec[aria-labelledby="s-price"] .trow::before{left:0}
+.tsec[aria-labelledby="s-price"] .trow::before{left:var(--col3)}
 /* Верхня лінійка навпроти підпису «Ціни» лишається на другій колонці. */
-.tsec[aria-labelledby="s-price"] .trow:first-child::before{left:0}
+.tsec[aria-labelledby="s-price"] .trow:first-child::before{left:var(--col2)}
 /* Внутрішні лінійки йдуть від початку основного тексту на третій колонці;
    верхня лінійка секції лишається на другій. */
-.tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{left:0}
+.tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{
+  left:calc(var(--col3) - .75rem)
+}
 /* Назви груп у «Цінах» стоять на одну колонку лівіше за позиції. */
 @media (min-width:641px){
-  .tsec[aria-labelledby="s-price"] .grp{grid-column:var(--z-body)}
+  .tsec[aria-labelledby="s-price"] .grp{grid-column:3/-1}
 }
 /* Рядок заголовка групи не малює окремої лінійки над «Video editing». */
 .tsec[aria-labelledby="s-price"] .trow:nth-child(2)::before{display:none}
@@ -137,7 +135,7 @@
 /* Лінійки цінових позицій від «Відеомонтаж» до «Дрібні правки»
    мають той самий лівий край, що й лінійка під «Що впливає на ціну». */
 .tsec[aria-labelledby="s-price"] .prow::before{
-  left:0 !important
+  left:calc(var(--col3) - .75rem) !important
 }
 /* Внутрішні розділювачі обох цінових груп повторюють точний відступ
    верхньої лінійки від заголовка групи. У .tbody перший трек дорівнює
@@ -151,7 +149,7 @@
   .tsec[aria-labelledby="s-price"] .prow:nth-child(9)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(10)::before{
     font-size:var(--fs-label);
-    left:0 !important
+    left:calc(2 * var(--col1) + 3 * var(--colgap) + (100% - 12 * var(--colgap) - var(--col1) - 3ch) / 11 - .75rem) !important
   }
 }
 /* Категорія одразу після вступного абзацу має стандартний просвіт
@@ -159,11 +157,11 @@
 .tsec[aria-labelledby="s-price"] .tbody > .trow:nth-child(2){padding-top:0}
 /* Перший абзац секції починається разом з основним текстом — із третьої
    колонки; його лінійка при цьому лишається на другій. */
-.tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:var(--z-body)}
+.tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:3/9}
 /* У процесі перша лінійка задає край секції, а наступні починаються з
    вертикалі нумерації — номер лежить під лінійкою. */
 .tsec[aria-labelledby="s-flow"] .trow:not(:first-child)::before{
-  left:0
+  left:calc(var(--col3) - .75rem)
 }
 /* Перед підсумковою приміткою в «Процесі» лінійка не потрібна. */
 .tsec[aria-labelledby="s-flow"] .steps + .trow::before{display:none}
@@ -175,10 +173,10 @@
 
 /* Заголовок «Billed separately» починається на спільній із текстом
    правок вертикалі. */
-.tsec[aria-labelledby="s-rev"] .grp{grid-column:var(--z-body)}
+.tsec[aria-labelledby="s-rev"] .grp{grid-column:3/-1}
 @media (min-width:641px){
   .tsec[aria-labelledby="s-rev"] .pts,
-  .tsec[aria-labelledby="s-time"] .pts{grid-column:var(--z-body-in)}
+  .tsec[aria-labelledby="s-time"] .pts{grid-column:4/10}
 }
 
 /* У «Правках» і «Термінах» верхня межа блоку лишається, а внутрішні
@@ -214,13 +212,6 @@
     grid-column:1/-1;text-align:left;justify-self:start
   }
 }
-@media (min-width:641px){
-  .contact-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--colgap);row-gap:0}
-  .contact-list .cat{grid-column:auto;display:grid;grid-template-columns:auto 1fr;column-gap:clamp(10px,1.4vw,20px);padding-block:var(--rule-gap)}
-  .contact-list .cat .num{grid-column:1;margin-left:0}
-  .contact-list .cat .lab{grid-column:2}
-  .contact-list .cat::before,.contact-list .cat::after{left:0;right:0}
-}
 </style>
 <link rel="stylesheet" href="/photo/photo.css?v=25">
 <script>document.documentElement.classList.add('rev')</script>
@@ -229,7 +220,7 @@
     <a class="tiny contact-link" href="/rates/" aria-current="page" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button></div></div></header><hr class="rule"></div>
 <main>
-<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.</p><nav class="rates-toc" aria-label="Sections"><a href="#s-price" data-en="Pricing" data-ua="Ціни">Pricing</a><a href="#s-flow" data-en="Process" data-ua="Процес">Process</a><a href="#s-time" data-en="Timelines" data-ua="Терміни">Timelines</a><a href="#s-rev" data-en="Revisions" data-ua="Правки">Revisions</a><a href="#s-pay" data-en="Payment" data-ua="Оплата">Payment</a><a href="#s-rights" data-en="Rights" data-ua="Права">Rights</a><a href="#s-risk" data-en="Risks" data-ua="Ризики">Risks</a></nav></section>
+<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.</p></section>
 
 <section class="wrap tsec" aria-labelledby="s-price">
   <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Pricing</h2>
@@ -387,21 +378,6 @@
 </main>
 <footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div></footer>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();
-/* активний пункт змісту тримається на тій секції, що зараз читається */
-(function(){
-  var toc=document.querySelector('.rates-toc');
-  if(!toc || !('IntersectionObserver' in window)) return;
-  var links=[].slice.call(toc.querySelectorAll('a'));
-  var sections=links.map(function(a){return document.querySelector(a.getAttribute('href'))}).filter(Boolean);
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting){
-        links.forEach(function(a){a.classList.toggle('is-active',a.getAttribute('href')==='#'+e.target.id)});
-      }
-    });
-  },{rootMargin:'-18% 0px -68% 0px',threshold:0});
-  sections.forEach(function(s){io.observe(s)});
-})();
 /* поява блоків — той самий рух, що й на решті сайту. data-rev вішає сам
    скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, стоїть на
    місці одразу, решта проявляється, коли до неї догортали */
