@@ -244,7 +244,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    «Rusanivsky» рівно настільки, що в семи вставало впритул до межі —
    а рядок не переноситься */
 .name{
-  grid-column:var(--z-hero); grid-row:1;
+  grid-column:1/span 7; grid-row:1;
   /* трохи жирніше за 400: на такому кеглі тонкий накреслення читалося як
      недонабране, а 500 лишає ім'я легким і водночас дає йому вагу */
   font-size:var(--fs-name); font-weight:700;
@@ -263,7 +263,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    висоту портрета (другий ряд сітки — 1fr), тож остання лінія тексту
    стає врівень з нижнім краєм знімка */
 .hero-copy{
-  grid-column:var(--z-hero); grid-row:2; padding-left:var(--col2);
+  grid-column:1/span 7; grid-row:2; padding-left:var(--col2);
   display:flex; flex-direction:column; justify-content:flex-end; min-width:0;
 }
 /* лід стоїть у восьми колонках, а не в чотирьох, тож без обмеження міри
@@ -345,22 +345,22 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    від'ємний margin (у правилі набору нижче — тут його скидав би тамтешній
    margin:0) добирає рівно міжколонник, тож права межа лягає не на кінець
    сьомої колонки, а на початок восьмої */
-.spec h3{grid-column:var(--z-body)}
-.spec ul{grid-column:var(--z-rail)}
+.spec h3{grid-column:3/8}
+.spec ul{grid-column:9/span 4}
 /* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
    останнім рядком її немає сама собою — доти це доводилось окремо
    скасовувати, а першому рядку дописувати border-top. Ліва межа — початок
    другої колонки: перша лишається наскрізним полем, у якому стоїть підпис
    розділу */
 .spec::before{
-  content:""; position:absolute; left:0; right:0; top:0;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
 /* лінійка ховера — окремим шаром поверх розділювача, тож малює його повну
    товщину, а не залишок під ним. Стоїть там само, де розділювач: на верхній
    межі рядка і від тієї самої вертикалі */
 .spec::after{
-  content:""; position:absolute; left:0; right:0; top:0;
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--pen); background:var(--pencil);
   transform:scaleX(0); transform-origin:left;
   transition:transform 620ms var(--ease); will-change:transform;
@@ -454,7 +454,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    Просвіт рахується від кегля назви, як і зсув переліків у сусідніх
    рядках, — тоді він тримається однаковим на всіх ширинах */
 .spec.under ul{
-  grid-column:var(--z-body); grid-row:2;
+  grid-column:3/8; grid-row:2;
   margin:calc(var(--fs-title) * .55) 0 0;
   justify-items:end; text-align:right;
 }
@@ -525,7 +525,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    помітний менше, ніж діра завширшки 115px біля правого поля.
    Він спанить обидва рядки героя: його висота задає висоту текстової
    колонки ліворуч. align-self:start лишає йому пропорцію 4:5 */
-.figwrap{grid-column:var(--z-rail); grid-row:1/span 2; align-self:start}
+.figwrap{grid-column:9/span 4; grid-row:1/span 2; align-self:start}
 .figwrap figure{width:100%}
 .figwrap .shot picture{width:100%; height:auto}
 figure{margin:0; position:relative; z-index:1}
@@ -542,9 +542,9 @@ figure{margin:0; position:relative; z-index:1}
    п'яту колонку за рахунок текстової — межа з'їжджає з 9-ї лінії на 8-му
    тільки тут, де переліків категорій поряд усе одно немає */
 @media (max-width:1100px){
-  .name{grid-column:var(--z-hero)}
-  .hero-copy{grid-column:var(--z-hero)}
-  .figwrap{grid-column:var(--z-rail)}
+  .name{grid-column:1/span 7}
+  .hero-copy{grid-column:1/span 7}
+  .figwrap{grid-column:9/span 4}
 }
 /* вузько колонки поряд не стоять: ім'я, портрет, текст і дія йдуть одне
    під одним. Портрет другим — обличчя одразу під іменем, — але кнопка
@@ -595,14 +595,6 @@ figure{margin:0; position:relative; z-index:1}
   list-style:none; margin:0 0 0 var(--col2); padding:var(--rule-gap) 0 0;
   display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end;
   column-gap:clamp(26px,3.6vw,54px); row-gap:clamp(24px,4vw,40px);
-}
-@media (min-width:641px){
-  .logos{
-    margin-left:0; padding-top:var(--rule-gap);
-    display:grid; grid-template-columns:repeat(12,1fr); column-gap:var(--colgap);
-    row-gap:clamp(24px,4vw,40px); justify-content:initial;
-  }
-  .logos li{grid-column:span 3; min-width:0}
 }
 .logos::before{
   content:""; position:absolute; left:0; right:0; top:0;
@@ -686,7 +678,7 @@ figure{margin:0; position:relative; z-index:1}
    третьої й були єдиним блоком сайту зі своїм уступом. Не grid-column:2,
    а поле в --col2: трек сітки й наскрізне поле сторінки — різні міри,
    відколи колонка тримає під собою підпис */
-.foot-in .say{grid-column:var(--z-body); margin-left:0}
+.foot-in .say{grid-column:1/-1; margin-left:var(--col2)}
 .foot-in .say,.foot-in .k,.foot-bar > .cols{min-width:0}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
@@ -697,14 +689,14 @@ figure{margin:0; position:relative; z-index:1}
 .foot-in .k{
   /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
      лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
-  grid-column:var(--z-label); position:relative; margin:0; max-width:none;
+  grid-column:1/-1; position:relative; margin:0; max-width:none;
   font-size:var(--fs-label); letter-spacing:var(--ls-tiny); text-transform:uppercase;
   font-weight:600; line-height:1; color:var(--mute);
   /* так само, як підписи розділів вище: коробка завширшки з першу
      колонку, напис по її правому краю. Висоту тут лишаємо: підпис із
      одного слова не переноситься, тож ряд сітки не поїде */
   display:flex; justify-content:flex-end; align-items:flex-start;
-  text-align:right; padding-right:0;
+  text-align:right; padding-right:calc(100% - var(--col1));
   /* нульова висота, як і в підписів розділів: інакше до просвіту під
      лінійкою додавалася б ще й висота самого підпису, і підвал відбивав
      би вдвічі більше за решту сторінки */
@@ -802,7 +794,6 @@ figure{margin:0; position:relative; z-index:1}
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){
   .foot-in{grid-template-columns:1fr}
-  .foot-in .say,.foot-in .k{grid-column:1}
   /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти.
      Усі ці просвіти стояли на vh, і на телефоні 844px заввишки вони
      виходили такі самі, як на десктопі, — але екран удвічі вужчий, тож
