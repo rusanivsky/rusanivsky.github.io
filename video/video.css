@@ -307,7 +307,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (hover:hover){.local-play:hover .pl i{transform:scale(1.1)}}
 .short-form-grid{grid-template-columns:1fr}
 @media (min-width:760px){.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 /* назва картки — третій щабель, як і решта суцільного тексту;
    від опису під нею її відрізняє накреслення, а не кегль */
 .vt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
