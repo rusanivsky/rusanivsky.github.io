@@ -301,7 +301,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    головній: номер у другій колонці, назва з третьої */
 .cats{
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
-  padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px);
+  padding-block:clamp(48px,9vh,112px) clamp(30px,6vh,72px);
 }
 .cat{
   display:grid;grid-template-columns:subgrid;grid-column:1/-1;

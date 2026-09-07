@@ -304,7 +304,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    головній: номер у другій колонці, назва з третьої */
 .cats{
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
-  padding-block:clamp(28px,5vh,64px) clamp(30px,6vh,72px);
+  padding-block:clamp(48px,9vh,112px) clamp(30px,6vh,72px);
 }
 /* Посилання на повні свіжі репортажі стоїть після переліку категорій і
    до «Enquiries»: з другої колонки та в тому самому кеглі, що контакти
