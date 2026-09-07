@@ -305,8 +305,18 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .local-fac.is-playing .local-play{opacity:0;pointer-events:none}
 .local-play .pl i{transition:transform 300ms var(--ease)}
 @media (hover:hover){.local-play:hover .pl i{transform:scale(1.1)}}
+.short-form-rail{position:relative}
 .short-form-grid{grid-template-columns:1fr}
-@media (max-width:759px){.short-form-grid{grid-template-columns:65%;justify-content:start}}
+.carousel-next{display:none}
+@media (max-width:759px){
+  .short-form-grid{grid-template-columns:repeat(2,minmax(65%,65%));justify-content:initial;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .short-form-grid::-webkit-scrollbar{display:none}
+  .short-form-grid .v{scroll-snap-align:start}
+  .carousel-next{display:grid;place-items:center;position:absolute;right:0;top:clamp(28px,5vh,64px);z-index:3;width:44px;height:44px;padding:0;border:1px solid var(--divider);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--ink);font:400 28px/1 var(--font);cursor:pointer;transition:color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease)}
+  .carousel-next[hidden]{display:none}
+}
+@media (hover:hover){.carousel-next:hover{color:var(--accent);background:var(--surface);transform:translateX(2px)}}
+.carousel-next:active{color:var(--accent);transform:translateX(2px)}
 @media (min-width:760px){.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 /* назва картки — третій щабель, як і решта суцільного тексту;
