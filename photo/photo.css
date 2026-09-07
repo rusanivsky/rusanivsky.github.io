@@ -186,6 +186,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches .contact-link{white-space:nowrap;text-align:right}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
 @media (max-width:560px){
@@ -197,6 +198,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
    вони йдуть другим рядком шапки, вирівняні по лівому краю верстки */
 @media (max-width:760px){
   .meta{grid-template-columns:1fr auto}
+  .switches{justify-content:flex-end}
   .parts{grid-column:1/-1;grid-row:2;padding-bottom:8px;overflow-x:auto;
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
