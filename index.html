@@ -600,7 +600,7 @@ figure{margin:0; position:relative; z-index:1}
      колонку, під підпис. Тепер він починається там, де починається лінійка,
      а що не вміщається — переноситься другим рядом */
   list-style:none; margin:0 0 0 var(--col2); padding:var(--rule-gap) 0 0;
-  display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-start;
   column-gap:clamp(26px,3.6vw,54px); row-gap:clamp(24px,4vw,40px);
 }
 .logos::before{
@@ -651,10 +651,6 @@ figure{margin:0; position:relative; z-index:1}
   .clients{--lg:clamp(18px,5.6vw,24px)}
   .logos{column-gap:clamp(12px,4vw,20px); row-gap:clamp(18px,5vw,26px)}
 }
-@media (max-width:640px){
-  .logos{justify-content:flex-start}
-}
-
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
    такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
