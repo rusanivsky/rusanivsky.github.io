@@ -543,7 +543,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
      на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
      вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
-  .cats{padding-block:clamp(24px,6vw,32px)}
+  .cats{padding-block:clamp(48px,9vh,112px) clamp(24px,6vw,32px)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
