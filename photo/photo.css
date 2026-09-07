@@ -299,7 +299,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    до «Enquiries»: з другої колонки та в тому самому кеглі, що контакти
    підвала. */
 .photo-pixover{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-bottom:clamp(30px,6vh,72px)}
-.photo-pixover p{grid-column:1/-1;margin:0 0 0 var(--col2);font-size:var(--fs-text);line-height:1.55;max-width:34ch;color:var(--mute)}
+.photo-pixover p{grid-column:1/-1;margin:0 0 0 var(--col2);font-size:var(--fs-link);font-weight:400;letter-spacing:-.02em;line-height:1.02;font-variation-settings:"wdth" 96;max-width:34ch;color:var(--mute)}
 .photo-pixover a{color:inherit;transition:color 260ms var(--ease)}
 .photo-pixover .pixover-link::after{content:"↗";display:inline-block;margin-left:.22em;font-size:.55em;vertical-align:.78em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);transition:opacity 320ms var(--ease),transform 320ms var(--ease)}
 @media (hover:hover){.photo-pixover a:hover{color:var(--accent)}.photo-pixover .pixover-link:hover::after{opacity:1;transform:none}}
