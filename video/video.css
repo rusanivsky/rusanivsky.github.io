@@ -319,11 +319,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .short-form-grid{grid-template-columns:none;grid-template-rows:auto;grid-auto-flow:column;grid-auto-columns:65%;justify-content:initial;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .short-form-grid::-webkit-scrollbar{display:none}
   .short-form-grid .v{scroll-snap-align:start}
-  .carousel-next{display:grid;place-items:center;position:absolute;right:0;top:clamp(28px,5vh,64px);z-index:3;width:44px;height:44px;padding:0;border:1px solid var(--divider);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--mute);font:600 calc(var(--fs-text) + var(--fs-text))/1 var(--font);cursor:pointer;transition:color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease)}
+  .carousel-next{display:grid;place-items:center;position:absolute;right:clamp(12px,2vw,22px);top:50%;z-index:3;width:52px;height:52px;padding:0;border:1px solid color-mix(in srgb,var(--pencil) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--pencil);font:600 clamp(26px,3.5vw,38px)/1 var(--font);cursor:pointer;transform:translateY(-50%);transition:color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease)}
   .carousel-next[hidden]{display:none}
 }
-@media (hover:hover){.carousel-next:hover{color:var(--accent);background:var(--surface);transform:translateX(2px)}}
-.carousel-next:active{color:var(--accent);transform:translateX(2px)}
+@media (hover:hover){.carousel-next:hover{color:var(--pencil);background:var(--surface);transform:translate(2px,-50%)}}
+.carousel-next:active{color:var(--pencil);transform:translate(2px,-50%)}
 @media (min-width:760px){.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 /* назва картки — третій щабель, як і решта суцільного тексту;
