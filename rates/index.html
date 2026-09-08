@@ -19,6 +19,7 @@
 .rates-nav .part{padding-block:6px}
 @media (hover:hover){.rates-nav .part:hover{color:var(--accent)}}
 .tsec > h2{scroll-margin-top:clamp(56px,8vh,96px)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* Contact повторює сітку .tbody над ним: перший трек тримає відступ
    лінійки й коробку номера, тому назви платформ на третій лінії рівні
    тексту секції Note, а не від'їжджають за шириною номера. */
@@ -258,8 +259,6 @@
     <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button></div></div></header><hr class="rule"></div>
 <main>
-<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.</p></section>
-
 <nav class="wrap rates-nav" aria-label="On this page">
   <a class="part" href="#s-price" data-en="Pricing" data-ua="Ціни">Pricing</a>
   <a class="part" href="#s-flow" data-en="Process" data-ua="Процес">Process</a>
@@ -274,6 +273,8 @@
   <a class="part" href="#s-note" data-en="Note" data-ua="Примітка">Note</a>
   <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Contact</a>
 </nav>
+
+<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.</p></section>
 
 <section class="wrap tsec" aria-labelledby="s-price">
   <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Pricing</h2>
