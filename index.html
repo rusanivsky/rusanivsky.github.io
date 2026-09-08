@@ -217,6 +217,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   .meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
 }
 @media (max-width:760px){
+  /* The browser chrome is not a reliable source of visual top air on phones;
+     keep the page header optically balanced inside the page itself. */
+  .meta{padding-top:clamp(16px,3vw,24px)}
   /* На головній у рядку немає навігації з її нижнім 8px-полем, тому
      додаємо його до шапки, щоб лінійка стояла на тій самій висоті. */
   .meta{padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}

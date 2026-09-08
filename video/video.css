@@ -196,6 +196,9 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
 /* вузько стрілка, три розділи й умови стоять одним рядком: довгий
    підпис назад тут забирає місце, потрібне навігації */
 @media (max-width:760px){
+  /* The browser chrome is not a reliable source of visual top air on phones;
+     give the header its own optical top margin. */
+  .meta{padding-top:clamp(16px,3vw,24px)}
   .meta{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(12px,1.8vw,26px)}
   /* Велика стрілка не збільшує рядок: 44px тач-поле живе в ::after,
      а видимий знак вирівняний по горизонтальній осі навігаційних букв.
