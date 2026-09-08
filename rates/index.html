@@ -169,6 +169,9 @@
 /* Категорія одразу після вступного абзацу має стандартний просвіт
    після повернення своєї лінійки. */
 .tsec[aria-labelledby="s-price"] .tbody > .trow:nth-child(2){padding-top:0}
+.tsec[aria-labelledby="s-price"] .tbody > .trow:nth-child(2),
+.tsec[aria-labelledby="s-price"] .tbody > .trow:nth-child(6),
+.tsec[aria-labelledby="s-price"] .tbody > .trow:nth-child(11){padding-bottom:clamp(8px,1.2vw,16px)}
 /* Перший абзац секції починається разом з основним текстом — із третьої
    колонки; його лінійка при цьому лишається на другій. */
 .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:3/9}
@@ -250,7 +253,7 @@
     <div class="trow prow"><h4 class="svc" data-en="Cover design" data-ua="Обкладинка">Cover design</h4><p class="fee" data-en="from $90" data-ua="від 3 500 грн">from $90</p></div>
     <div class="trow prow"><h4 class="svc" data-en="Print work — booklet, poster, letterhead" data-ua="Поліграфія — буклет, афіша, бланк">Print work — booklet, poster, letterhead</h4><p class="fee" data-en="from $35" data-ua="від 1 200 грн">from $35</p></div>
     <div class="trow prow"><h4 class="svc" data-en="Small edits and ongoing support" data-ua="Дрібні правки та супровід">Small edits and ongoing support</h4><p class="fee" data-en="$13–18 / hour" data-ua="500–700 грн / год">$13–18 / hour</p></div>
-    <div class="trow"><h3 class="grp" data-en="What moves the price" data-ua="Що впливає на ціну">What moves the price</h3></div>
+    <div class="trow"><h3 class="grp grp-accent" data-en="What moves the price" data-ua="Що впливає на ціну">What moves the price</h3></div>
     <div class="trow"><ul class="pts">
       <li data-en="Urgency. Weekend work or a same-day start adds 40%." data-ua="Терміновість. Робота у вихідні або старт у день звернення — плюс 40%.">Urgency. Weekend work or a same-day start adds 40%.</li>
       <li data-en="Volume of source material: two hours of footage and twenty hours are different jobs." data-ua="Обсяг вихідного матеріалу: 2 години зйомки і 20 годин — це різні задачі.">Volume of source material: two hours of footage and twenty hours are different jobs.</li>
