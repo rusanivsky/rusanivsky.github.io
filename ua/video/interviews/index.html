@@ -165,7 +165,7 @@
     fr.src=src; fr.title=f.getAttribute('aria-label')||'';
     fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
     fr.setAttribute('allowfullscreen','');
-    fr.loading='lazy';
+    fr.loading=pl==='yt'?'eager':'lazy';
     f.replaceWith(fr);
   });
   /* поява блоків — той самий рух, що й на головній. data-rev вішає сам
