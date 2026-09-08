@@ -215,8 +215,10 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
   .part{padding-block:0}
-  /* Keep the terms-page links on the same vertical rhythm as .secs. */
-  .rates-nav .part{padding-block:6px}
+  /* The terms menu gets an explicit 16px from the shared rule to its text.
+     The lower padding preserves the same total nav height as .secs. */
+  .rates-nav{padding-block:16px 14px}
+  .rates-nav .part{padding-block:0}
   .parts .contact-link{margin-left:8px}
   .part::after{bottom:-5px}
 }
