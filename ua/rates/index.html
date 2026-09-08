@@ -232,7 +232,15 @@
   /* Як у .specs на головній: тіло відходить за вертикальний підпис, а
      лінійка починається від його власного лівого краю, не повертається
      назад у поле сторінки. */
-  .tbody{display:block;margin-left:var(--col2)}
+  /* На телефоні вертикальні підписи секцій прибрані: заголовки лишаються
+     доступними для скрінрідера, а тіло секції займає всю ширину. На ширших
+     екранах вертикальна композиція зберігається. */
+  .tsec > h2{
+    position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+    overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+    rotate:0;transform:none
+  }
+  .tbody{display:block;margin-left:0}
   .trow::before{left:0}
   .trow{display:grid;grid-template-columns:auto 1fr;
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
@@ -241,6 +249,7 @@
   .tsec[aria-labelledby="s-price"] .trow::before,
   .tsec[aria-labelledby="s-flow"] .trow::before,
   .tsec[aria-labelledby="s-price"] .prow::before{left:0 !important}
+  .tsec[aria-labelledby="s-price"] .pts{grid-column:1/-1}
   .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
     left:calc(var(--col3) - .75rem) !important
   }
@@ -275,7 +284,7 @@
   <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Контакти</a>
 </nav>
 <main>
-<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
+<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
 
 <section class="wrap tsec" aria-labelledby="s-price">
   <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Ціни</h2>
