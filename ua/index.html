@@ -553,6 +553,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 .figwrap{grid-column:9/span 4; grid-row:1/span 2; align-self:start}
 .figwrap figure{width:100%}
 .figwrap .shot picture{width:100%; height:auto}
+/* На десктопі ім'я й портрет мають один невеликий оптичний вихід ліворуч.
+   Позиційний зсув не змінює ширини треків і не зачіпає мобільний стек. */
+@media (min-width:961px){
+  .name,.figwrap{position:relative; left:-8px}
+}
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
