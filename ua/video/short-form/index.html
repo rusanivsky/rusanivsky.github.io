@@ -202,7 +202,7 @@
   document.addEventListener('click',function(e){
     var f=e.target.closest('.fac[data-pl]'); if(!f) return;
     var pl=f.dataset.pl, id=f.dataset.id;
-    var src=pl==='yt'?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0':'https://player.vimeo.com/video/'+id+'?autoplay=1';
+    var src=pl==='yt'?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0':'https://player.vimeo.com/video/'+id+'?autoplay=1';
     var fr=document.createElement('iframe');
     fr.src=src; fr.title=f.getAttribute('aria-label')||'';
     fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
