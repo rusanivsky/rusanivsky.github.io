@@ -74,9 +74,9 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   display:flex;justify-content:flex-end;align-items:flex-start;
   text-align:right;padding-right:calc(100% - var(--col1));
   /* Section names are already present in the sticky menu above. Keep the
-     semantic headings for assistive technology, but leave the side column
-     visually empty so the page does not repeat the same labels. */
-  opacity:0;pointer-events:none;
+     anchor headings in the markup, but leave the side column completely
+     empty so the page does not repeat the same labels. */
+  display:none;
 }
 /* тіло розділу — та сама 12-колонкова сітка, що й уся сторінка; рядки
    підхоплюють її треки через subgrid, тож назви, ціни й описи в усіх
