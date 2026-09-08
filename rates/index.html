@@ -10,6 +10,15 @@
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
 .contact-head .intro{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
+/* Внутрішня навігація лишається одним горизонтальним рядом, як навігація
+   розділів у Photo; прокрутка замість переносу тримає її компактною на вузьких
+   екранах. Додаткової лінійки тут немає. */
+.rates-nav{display:flex;gap:clamp(12px,1.8vw,26px);overflow-x:auto;scrollbar-width:none;
+  margin-top:clamp(22px,4vh,48px);padding-bottom:2px}
+.rates-nav::-webkit-scrollbar{display:none}
+.rates-nav .part{padding-block:6px}
+@media (hover:hover){.rates-nav .part:hover{color:var(--accent)}}
+.tsec > h2{scroll-margin-top:clamp(56px,8vh,96px)}
 /* Contact повторює сітку .tbody над ним: перший трек тримає відступ
    лінійки й коробку номера, тому назви платформ на третій лінії рівні
    тексту секції Note, а не від'їжджають за шириною номера. */
@@ -245,6 +254,21 @@
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button></div></div></header><hr class="rule"></div>
 <main>
 <section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.</p></section>
+
+<nav class="wrap rates-nav" aria-label="On this page">
+  <a class="part" href="#s-price" data-en="Pricing" data-ua="Ціни">Pricing</a>
+  <a class="part" href="#s-flow" data-en="Process" data-ua="Процес">Process</a>
+  <a class="part" href="#s-time" data-en="Timelines" data-ua="Терміни">Timelines</a>
+  <a class="part" href="#s-rev" data-en="Revisions" data-ua="Правки">Revisions</a>
+  <a class="part" href="#s-need" data-en="From you" data-ua="Від вас">From you</a>
+  <a class="part" href="#s-pay" data-en="Payment" data-ua="Оплата">Payment</a>
+  <a class="part" href="#s-files" data-en="Delivery" data-ua="Файли">Delivery</a>
+  <a class="part" href="#s-rights" data-en="Rights" data-ua="Права">Rights</a>
+  <a class="part" href="#s-risk" data-en="Risks" data-ua="Ризики">Risks</a>
+  <a class="part" href="#s-no" data-en="Out of scope" data-ua="Не беруся">Out of scope</a>
+  <a class="part" href="#s-note" data-en="Note" data-ua="Примітка">Note</a>
+  <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Contact</a>
+</nav>
 
 <section class="wrap tsec" aria-labelledby="s-price">
   <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Pricing</h2>
