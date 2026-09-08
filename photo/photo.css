@@ -215,6 +215,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
   .part{padding-block:0}
+  .rates-nav .part{padding-block:0}
   .parts .contact-link{margin-left:8px}
   .part::after{bottom:-5px}
 }
@@ -293,6 +294,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 :root[data-theme="night"] .sec[aria-current],
 :root[data-theme="green"] .tgl button[aria-pressed="true"],
 :root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:600;font-variation-settings:"wght" 600}
+/* Активний пункт внутрішньої навігації зберігає той самий спокійний набір,
+   що й активний підпис у верхньому рядку: відрізняється лише кольором. */
+:root[data-theme="green"] .rates-nav .part[aria-current="location"],
+:root[data-theme="night"] .rates-nav .part[aria-current="location"]{
+  font-weight:600;font-variation-settings:normal
+}
 
 /* ── сітка знімків ───────────────────────────────────────── */
 /* колонкова кладка. У сітці висоту рядка задавав найвищий кадр, і під

@@ -21,9 +21,17 @@
    а в top sticky — ні. Тут лишаємо один і той самий край у двох станах. */
 body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 .rates-nav::-webkit-scrollbar{display:none}
-.rates-nav .part{padding-block:6px}
+.rates-nav .part{
+  /* Внутрішня навігація має бути тим самим службовим набором, що й
+     розділи у верхньому рядку; line-height лишається від спільного .part,
+     щоб десктопна й мобільна шапки поводилися однаково. */
+  font-family:var(--font);font-size:var(--fs-chrome);font-weight:600;
+  letter-spacing:var(--ls-tiny);text-transform:uppercase;padding-block:6px;
+}
 @media (hover:hover){.rates-nav .part:hover{color:var(--accent)}}
-.rates-nav .part[aria-current="location"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
+.rates-nav .part[aria-current="location"]{
+  color:var(--active);font-weight:600;font-variation-settings:normal
+}
 .tsec > h2{scroll-margin-top:var(--rates-anchor-offset,clamp(56px,8vh,96px))}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* Contact повторює сітку .tbody над ним: перший трек тримає відступ
