@@ -187,6 +187,7 @@
    рядками: кожен блок і так читається одним потоком. */
 .tsec[aria-labelledby="s-rev"] .trow,
 .tsec[aria-labelledby="s-time"] .trow{padding-block:clamp(8px,1.2vw,16px)}
+.tsec[aria-labelledby="s-time"] .steps .step{padding-block:var(--rule-gap)}
 
 /* Заголовок «Billed separately» починається на спільній із текстом
    правок вертикалі. */
@@ -287,12 +288,12 @@
   <h2 class="tiny" id="s-time" data-en="Timelines" data-ua="Терміни">Timelines</h2>
   <div class="tbody">
     <div class="trow"><p class="lead" data-en="I give the timeline after looking at the material — a lot depends on the current workload. Roughly:" data-ua="Терміни називаю після оцінки матеріалу — багато залежить від поточної завантаженості. Орієнтовно:">I give the timeline after looking at the material — a lot depends on the current workload. Roughly:</p></div>
-    <div class="trow"><ul class="pts">
-      <li data-en="Short social media video — from 2 business days." data-ua="Короткий ролик для соцмереж — від 2 робочих днів.">Short social media video — from 2 business days.</li>
-      <li data-en="Interview or talking-head video — from 3 business days." data-ua="Інтерв’ю або розмовне відео — від 3 робочих днів.">Interview or talking-head video — from 3 business days.</li>
-      <li data-en="Cover — from 4 business days." data-ua="Обкладинка — від 4 робочих днів.">Cover — from 4 business days.</li>
-      <li data-en="Book typesetting — from 2 weeks." data-ua="Верстка книжки — від 2 тижнів.">Book typesetting — from 2 weeks.</li>
-    </ul></div>
+    <ol class="steps">
+      <li class="trow step"><span class="no" aria-hidden="true">01</span><h3 data-en="Short social media video" data-ua="Короткий ролик для соцмереж">Short social media video</h3><p data-en="from 2 business days." data-ua="від 2 робочих днів.">from 2 business days.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">02</span><h3 data-en="Interview or talking-head video" data-ua="Інтерв’ю або розмовне відео">Interview or talking-head video</h3><p data-en="from 3 business days." data-ua="від 3 робочих днів.">from 3 business days.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">03</span><h3 data-en="Cover" data-ua="Обкладинка">Cover</h3><p data-en="from 4 business days." data-ua="від 4 робочих днів.">from 4 business days.</p></li>
+      <li class="trow step"><span class="no" aria-hidden="true">04</span><h3 data-en="Book typesetting" data-ua="Верстка книжки">Book typesetting</h3><p data-en="from 2 weeks." data-ua="від 2 тижнів.">from 2 weeks.</p></li>
+    </ol>
     <div class="trow"><p class="note" data-en="The clock starts the moment all the materials and the deposit are in. A delay on your side — material not sent, a long approval — moves the deadline by the same number of days." data-ua="Відлік починається з моменту, коли отримано всі матеріали й передоплату. Затримка з вашого боку (не надіслані матеріали, довге погодження) зсуває дедлайн на відповідну кількість днів.">The clock starts the moment all the materials and the deposit are in. A delay on your side — material not sent, a long approval — moves the deadline by the same number of days.</p></div>
   </div>
 </section>
