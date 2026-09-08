@@ -213,8 +213,10 @@
 /* «Billed separately» має ту саму лінійку під заголовком, що й групи цін;
    список після неї починається без додаткового верхнього просвіту. */
 .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(2){padding-bottom:clamp(8px,1.2vw,16px)}
-.tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3){padding-top:0}
-.tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{display:block}
+.tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3){padding-top:var(--rule-gap)}
+.tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
+  display:block;left:calc(var(--col3) - .75rem)
+}
 
 /* Контакти починаються одразу під підписом розділу, а не після
    додаткового верхнього поля .cats. */
@@ -236,6 +238,9 @@
   .tsec[aria-labelledby="s-price"] .trow::before,
   .tsec[aria-labelledby="s-flow"] .trow::before,
   .tsec[aria-labelledby="s-price"] .prow::before{left:0 !important}
+  .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
+    left:calc(var(--col3) - .75rem) !important
+  }
   .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:1/-1}
   .tsec[aria-labelledby="s-rev"] .pts,
   .tsec[aria-labelledby="s-time"] .pts{grid-column:1/-1}
