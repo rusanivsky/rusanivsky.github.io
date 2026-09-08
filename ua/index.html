@@ -30,6 +30,9 @@
 <link rel="icon" href="/favicon.ico?v=4" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -64,6 +67,7 @@
   --divider:color-mix(in srgb, #111d13 40%, transparent);
   --mute:color-mix(in srgb, #111d13 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
+  --display-font:"Cormorant Garamond",Georgia,serif;
   --pad:clamp(16px,3.2vw,48px);
   /* Трохи ширше за попередню міру: герой отримує повітря між іменем і
      портретом, а довжина текстових рядків лишається контрольованою. */
@@ -260,8 +264,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   grid-column:1/span 7; grid-row:1;
   /* трохи жирніше за 400: на такому кеглі тонкий накреслення читалося як
      недонабране, а 500 лишає ім'я легким і водночас дає йому вагу */
-  font-size:var(--fs-name); font-weight:700;
-  letter-spacing:-.032em; line-height:1; font-variation-settings:"wdth" 98;
+  font-family:var(--display-font);
+  font-size:var(--fs-name); font-weight:600;
+  letter-spacing:-.045em; line-height:.94;
 }
 .name span{display:block; white-space:nowrap}
 /* флекс-стовпчик, а не потік: .act іде на margin-top:auto й падає на
@@ -393,9 +398,10 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    відступав від своєї вертикалі на .9em — тобто на 54px при 60 кеглі */
 .spec h3{
   margin:0;
-  font-size:var(--fs-title); font-weight:700;
-  letter-spacing:-.02em; line-height:1.02;
-  font-variation-settings:"wdth" 100; color:var(--ink);
+  font-family:var(--display-font);
+  font-size:var(--fs-title); font-weight:600;
+  letter-spacing:-.035em; line-height:1.02;
+  color:var(--ink);
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
@@ -752,8 +758,8 @@ figure{margin:0; position:relative; z-index:1}
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:var(--fs-link); font-weight:400; text-transform:none;
-  letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
+  font-family:var(--display-font); font-size:var(--fs-link); font-weight:600; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02;
   position:relative;
   color:var(--mute);
   transition:color 260ms var(--ease);

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -32,6 +33,7 @@
      сили. Лишилось сильніше з двох — воно й читається краще */
   --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
+  --display-font:"Cormorant Garamond",Georgia,serif;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
@@ -130,7 +132,7 @@ html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--fs-text);line-height:1.55}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
+h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -316,8 +318,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .cat .num{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-tiny);color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-size:var(--fs-title);font-weight:700;
-  letter-spacing:-.035em;line-height:.98;font-variation-settings:"wdth" 100;
+  font-family:var(--display-font);font-size:var(--fs-title);font-weight:700;
+  letter-spacing:-.035em;line-height:.98;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
 /* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
@@ -483,8 +485,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-size:var(--fs-link); font-weight:400; text-transform:none;
-  letter-spacing:-.02em; line-height:1.02; font-variation-settings:"wdth" 96;
+  font-family:var(--display-font); font-size:var(--fs-link); font-weight:600; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02;
   position:relative;
   color:var(--mute);
   transition:color 260ms var(--ease);
