@@ -8,14 +8,14 @@
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#415d43"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=31">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
-.contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(48px,9vh,112px) 0}
+.contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(24px,5vh,64px) 0}
 .contact-head .intro{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
 /* Внутрішня навігація лишається одним горизонтальним рядом, як навігація
    розділів у Photo; прокрутка замість переносу тримає її компактною на вузьких
    екранах. Додаткової лінійки тут немає. */
 .rates-nav{display:flex;gap:clamp(12px,1.8vw,26px);overflow-x:auto;scrollbar-width:none;
   position:sticky;top:var(--rates-topbar-height,0px);z-index:20;background:var(--bg);
-  margin-top:clamp(22px,4vh,48px);padding-bottom:2px}
+  margin-top:0;padding-top:var(--rule-gap);padding-bottom:0}
 .rates-nav::-webkit-scrollbar{display:none}
 .rates-nav .part{padding-block:6px}
 @media (hover:hover){.rates-nav .part:hover{color:var(--accent)}}
