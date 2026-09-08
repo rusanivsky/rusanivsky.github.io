@@ -215,7 +215,8 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
     scrollbar-width:none;-ms-overflow-style:none}
   .parts::-webkit-scrollbar{display:none}
   .part{padding-block:0}
-  .rates-nav .part{padding-block:0}
+  /* Keep the terms-page links on the same vertical rhythm as .secs. */
+  .rates-nav .part{padding-block:6px}
   .parts .contact-link{margin-left:8px}
   .part::after{bottom:-5px}
 }
