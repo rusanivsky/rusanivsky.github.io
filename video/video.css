@@ -154,7 +154,7 @@ h1,h2{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1}
      сторінці розділу виходила нижчою за головну */
   padding-block:clamp(4px,.8vh,10px);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
-  padding-block:16px;display:inline-block;transition:color 220ms var(--ease)}
+  padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
@@ -546,7 +546,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap}
+.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається */
