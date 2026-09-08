@@ -14,11 +14,12 @@
    розділів у Photo; прокрутка замість переносу тримає її компактною на вузьких
    екранах. Додаткової лінійки тут немає. */
 .rates-nav{display:flex;gap:clamp(12px,1.8vw,26px);overflow-x:auto;scrollbar-width:none;
+  position:sticky;top:var(--rates-topbar-height,0px);z-index:20;background:var(--bg);
   margin-top:clamp(22px,4vh,48px);padding-bottom:2px}
 .rates-nav::-webkit-scrollbar{display:none}
 .rates-nav .part{padding-block:6px}
 @media (hover:hover){.rates-nav .part:hover{color:var(--accent)}}
-.tsec > h2{scroll-margin-top:clamp(56px,8vh,96px)}
+.tsec > h2{scroll-margin-top:var(--rates-anchor-offset,clamp(56px,8vh,96px))}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* Contact повторює сітку .tbody над ним: перший трек тримає відступ
    лінійки й коробку номера, тому назви платформ на третій лінії рівні
@@ -257,7 +258,7 @@
 <body><div class="topbar"><header class="wrap meta"><a class="back" href="/ua/" data-en="← Kyrylo Rusanivsky" data-ua="← Кирило Русанівський">← Кирило Русанівський</a><nav class="parts" aria-label="Sections"><a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a><a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a><a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a></nav><div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" aria-current="page" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
-    <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button></div></div></header>
+    <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button></div></div></header><hr class="rule"></div>
 <nav class="wrap rates-nav" aria-label="On this page">
   <a class="part" href="#s-price" data-en="Pricing" data-ua="Ціни">Ціни</a>
   <a class="part" href="#s-flow" data-en="Process" data-ua="Процес">Процес</a>
@@ -271,7 +272,7 @@
   <a class="part" href="#s-no" data-en="Out of scope" data-ua="Не беруся">Не беруся</a>
   <a class="part" href="#s-note" data-en="Note" data-ua="Примітка">Примітка</a>
   <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Контакти</a>
-</nav><hr class="rule"></div>
+</nav>
 <main>
 <section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
 
@@ -430,6 +431,7 @@
 <section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://m.me/rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Messenger</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">11</span><span class="lab">TikTok</span></a></section>
 </main>
 <footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div></footer>
+<script>(function(){var r=document.documentElement,b=document.querySelector('.topbar'),n=document.querySelector('.rates-nav');if(!b||!n)return;function set(){var bh=b.getBoundingClientRect().height,nh=n.getBoundingClientRect().height;r.style.setProperty('--rates-topbar-height',bh+'px');r.style.setProperty('--rates-anchor-offset',(bh+nh)+'px')}set();addEventListener('resize',set,{passive:true});if(window.ResizeObserver){var o=new ResizeObserver(set);o.observe(b);o.observe(n)}})();</script>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();
 /* поява блоків — той самий рух, що й на решті сайту. data-rev вішає сам
    скрипт, тож без JS нічого не ховається. Те, що вже в кадрі, стоїть на
