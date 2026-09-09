@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/design/design.css?v=23">
+<link rel="stylesheet" href="/design/design.css?v=27">
 <script>document.documentElement.classList.add('rev')</script>
 </head>
 <body>
@@ -185,6 +185,22 @@
     /* .at-once вимикає перехід — блок просто вже на місці */
     onload.forEach(function(el){ el.classList.add('at-once','is-in'); });
   })();
+})();
+</script>
+<script>
+/* На вузькому екрані активна категорія починається від лівого поля, а не
+   лишається обрізаною за правим краєм смуги. Та сама логіка вже працює
+   на вкладених сторінках фото й відео. */
+(function(){
+  var n=document.querySelector('.secs');
+  var a=n&&n.querySelector('[aria-current]');
+  if(!n||!a) return;
+  function reveal(){
+    var x=a.offsetLeft-parseFloat(getComputedStyle(n).paddingLeft||0)-16;
+    if(x>0&&n.scrollWidth>n.clientWidth) n.scrollLeft=x;
+  }
+  requestAnimationFrame(reveal);
+  addEventListener('pageshow',reveal);
 })();
 </script>
 <script src="/scripts/move-language-switcher.js"></script></body>

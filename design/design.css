@@ -406,9 +406,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .p{display:flex;flex-direction:column;gap:12px}
 .p .shots{display:flex;flex-direction:column;gap:10px}
 .p img{width:100%;height:auto;background:var(--surface);display:block}
-/* назва й опис картки — обидва на третьому щаблі, як у відео:
-   різняться накресленням і кольором, а не кеглем */
-.pt{font-size:var(--fs-text);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
+/* Назва картки повторює ієрархію відео: вона вдвічі більша за опис. */
+.pt{font-size:calc(var(--fs-text) * 2);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
 .pd{margin:0;font-size:var(--fs-text);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 
 /* ── підвал сайту ─────────────────────────────────────────── */
