@@ -93,7 +93,7 @@ function addContactsLink(html, route) {
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
-  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false">F</button><button type="button" data-font-toggle="playfair" aria-pressed="false">P</button></div>';
+  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false">U</button><button type="button" data-font-toggle="playfair" aria-pressed="false">P</button></div>';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
