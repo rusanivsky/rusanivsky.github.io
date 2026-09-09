@@ -493,7 +493,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   font-family:var(--display-font); font-size:calc(var(--fs-link) / var(--display-scale)); font-weight:600; text-transform:none;
   letter-spacing:-.02em; line-height:1.02;
   position:relative;
-  color:var(--mute);
+  color:color-mix(in srgb,var(--ink) 60%,transparent);
   transition:color 260ms var(--ease);
 }
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
