@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Prata&family=Unbounded:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Prata&family=Unbounded:wght@400;500;600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -34,6 +34,7 @@
   --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --display-font:"Prata",Georgia,serif;
+  --display-scale:1.25;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
@@ -101,7 +102,8 @@
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
-:root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif}
+:root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif;--display-scale:1.5}
+:root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -318,9 +320,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.75);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.75 / var(--display-scale));font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-family:var(--display-font);font-size:var(--fs-title);font-weight:700;
+  font-family:var(--display-font);font-size:calc(var(--fs-title) / var(--display-scale));font-weight:700;
   letter-spacing:-.035em;line-height:.98;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
@@ -371,8 +373,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
-  .cat .lab{font-size:clamp(36px,4.65vw,60px)}
-  .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
+  .cat .lab{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale))}
+  .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5 / var(--display-scale))}
 }
 
 /* два з трьох напрямків живуть на Behance — вони одразу показують стрілку
@@ -488,7 +490,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-family:var(--display-font); font-size:var(--fs-link); font-weight:600; text-transform:none;
+  font-family:var(--display-font); font-size:calc(var(--fs-link) / var(--display-scale)); font-weight:600; text-transform:none;
   letter-spacing:-.02em; line-height:1.02;
   position:relative;
   color:var(--mute);
