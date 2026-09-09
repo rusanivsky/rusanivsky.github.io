@@ -212,8 +212,8 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
     position:relative;width:max-content;height:19px;min-height:0;padding:0;margin:0;margin-right:clamp(12px,1.8vw,26px);color:var(--mute);line-height:1}
   .back::before{content:"←";font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;line-height:1;transform:translateY(-1px)}
   .back::after{content:"";position:absolute;inset:-12.5px -6px}
-  /* Terms стоїть праворуч від розділів у тому самому рядку. Мова
-     зникає з шапки до 640px, тож вузький рядок не переповнюється. */
+  /* Усі елементи лишаються в одному рядку, доки поміщаються. Якщо ні,
+     скрипт переносить навігацію й перемикачі в меню праворуч. */
   .switches{grid-column:3;grid-row:1;padding-bottom:8px;justify-content:flex-end;min-width:0}
   .parts{grid-column:2;grid-row:1;padding-bottom:8px;overflow-x:auto;
     scrollbar-width:none;-ms-overflow-style:none}
@@ -222,18 +222,80 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
   .parts .contact-link{margin-left:8px}
   .part::after{bottom:-5px}
 }
+/* На ширині планшета (між 640px і 760px) шапка все ще
+   стоїть одним рядком. Тримаймо видимий рядок 24px, а 44px тач-ціль
+   перемикачів винесімо від’ємними полями, щоб вона не роздувала висоту. */
+@media (min-width:641px) and (max-width:760px){
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
+  .meta .parts{padding-bottom:0}
+  .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
+  .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
+}
 @media (max-width:640px){
-  /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
-     в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
-  .meta .switches > .tgl{display:none}
-  .meta .switches > .font-toggle{display:flex}
-  .meta .switches > .mobile-contact-link{display:none}
-  .language-slot > .tgl{display:flex}
-  .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
-  .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
-  .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
-  .site-foot .language-slot .mobile-contact-link:hover{color:var(--accent)}
-  .language-slot > .tgl button:first-child{padding-left:0}
+  .meta .switches{height:var(--mobile-meta-row,24px)}
+}
+
+/* ── меню переповненої шапки ─────────────────────────────── */
+.header-menu-toggle,.header-menu-panel{display:none}
+.meta.header-menu-mode{position:relative;grid-template-columns:auto minmax(0,1fr) auto}
+.meta.header-menu-mode > .back{grid-column:1;grid-row:1}
+.meta.header-menu-mode > .header-menu-toggle{
+  grid-column:3;grid-row:1;justify-self:end;display:grid;place-items:center;
+  appearance:none;width:44px;height:44px;margin:-10px -8px -10px 0;padding:0;
+  border:0;background:transparent;color:var(--ink);cursor:pointer
+}
+.header-menu-toggle span,.header-menu-toggle span::before,.header-menu-toggle span::after{
+  display:block;width:22px;height:1px;background:currentColor;
+  transition:transform 240ms var(--ease),opacity 180ms var(--ease)
+}
+.header-menu-toggle span{position:relative}
+.header-menu-toggle span::before,.header-menu-toggle span::after{content:"";position:absolute;left:0}
+.header-menu-toggle span::before{top:-6px}
+.header-menu-toggle span::after{top:6px}
+.header-menu-open .header-menu-toggle span{background:transparent}
+.header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
+.header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+.meta.header-menu-mode > .header-menu-panel{
+  position:absolute;top:100%;right:var(--pad);z-index:40;
+  display:grid;width:min(360px,calc(100vw - 2 * var(--pad)));padding:10px 18px 14px;
+  background:var(--bg);border:var(--rule) solid var(--divider);
+  box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
+  visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);
+  transition:opacity 180ms var(--ease),transform 240ms var(--ease),visibility 0s linear 240ms
+}
+.meta.header-menu-mode.header-menu-open > .header-menu-panel{
+  visibility:visible;opacity:1;pointer-events:auto;transform:none;
+  transition-delay:0s
+}
+.meta.header-menu-mode .header-menu-panel .parts,
+.meta.header-menu-mode .header-menu-panel .switches{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;
+  overflow:visible
+}
+.meta.header-menu-mode .header-menu-panel .switches{
+  padding-top:8px;border-top:var(--rule) solid var(--divider)
+}
+.meta.header-menu-mode .header-menu-panel .part,
+.meta.header-menu-mode .header-menu-panel .contact-link{
+  display:flex;align-items:center;width:100%;min-height:44px;padding:12px 0;
+  text-align:left;white-space:normal
+}
+.meta.header-menu-mode .header-menu-panel .part::after{content:none}
+.meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
+.meta.header-menu-mode .header-menu-panel .switches > .tgl{
+  display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:44px
+}
+.meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
+  font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;color:var(--mute)
+}
+.meta.header-menu-mode .header-menu-panel .font-toggle::before{content:"Font"}
+.meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
+:root[lang="uk"] .meta.header-menu-mode .header-menu-panel .font-toggle::before{content:"Шрифт"}
+:root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
+.meta.header-menu-mode .header-menu-panel .tgl button{
+  width:auto;min-height:44px;margin:0;padding:12px 0 12px 16px
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */
@@ -330,7 +392,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .short-form-grid{grid-template-columns:none;grid-template-rows:auto;grid-auto-flow:column;grid-auto-columns:65%;justify-content:initial;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .short-form-grid::-webkit-scrollbar{display:none}
   .short-form-grid .v{scroll-snap-align:start}
-  .carousel-next{display:grid;place-items:center;position:absolute;right:calc(var(--pad) + clamp(12px,2vw,22px));top:calc(clamp(28px,5vh,64px) + 53vw);z-index:3;width:52px;height:52px;padding:0;border:1px solid color-mix(in srgb,var(--pencil) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--pencil);font:600 calc(var(--fs-text) + var(--fs-text))/1 var(--font);cursor:pointer;transform:translateY(-50%);transition:opacity 460ms var(--ease),color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease);will-change:opacity,transform}
+  .carousel-next{display:grid;place-items:center;position:absolute;right:calc(var(--pad) + clamp(12px,2vw,22px));top:calc(clamp(28px,5vh,64px) + 53vw);z-index:3;width:52px;height:52px;padding:0;border:1px solid color-mix(in srgb,var(--pencil) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--pencil);font:600 calc(var(--fs-text) + var(--fs-text))/1 var(--font);cursor:pointer;transform:translateY(-50%);transition:opacity 920ms var(--ease),color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease);will-change:opacity,transform}
   .carousel-next.is-end{opacity:0;pointer-events:none}
 }
 @media (hover:hover){.carousel-next:hover{color:var(--pencil);background:var(--surface);transform:translate(2px,-50%)}}
@@ -358,8 +420,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (min-width:760px){.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
-   що й основний текст. Кегль — щабель title зі спільної шкали. */
-.vt{font-family:var(--font);font-size:var(--fs-title);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
+   що й основний текст. Кегль — щабель text зі спільної шкали. */
+.vt{font-family:var(--font);font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
 .plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--ink)}
