@@ -373,6 +373,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
+  .pt{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale))}
   .cat .lab{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale))}
   .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5 / var(--display-scale))}
 }
@@ -410,8 +411,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .p{display:flex;flex-direction:column;gap:12px}
 .p .shots{display:flex;flex-direction:column;gap:10px}
 .p img{width:100%;height:auto;background:var(--surface);display:block}
-/* Назва картки повторює ієрархію відео: вона вдвічі більша за опис. */
-.pt{font-size:calc(var(--fs-text) * 2);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
+/* Назви проєктів використовують той самий кегль, що й назви розділів
+   на головній, щоб типографічна ієрархія була узгодженою. */
+.pt{font-size:calc(var(--fs-title) / var(--display-scale));font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
 .pd{margin:0;font-size:var(--fs-text);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 
 /* ── підвал сайту ─────────────────────────────────────────── */
