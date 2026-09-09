@@ -152,12 +152,13 @@ a.back{
 }
 a.back::before{
   content:"←"; display:inline-block; width:0; margin-right:0; opacity:0;
+  font-size:.34em; line-height:1; vertical-align:middle;
   transform:translateX(-.4em);
   transition:width 320ms var(--ease),margin-right 320ms var(--ease),opacity 220ms var(--ease),transform 320ms var(--ease);
 }
 @media (hover:hover){
   a.back:hover{color:var(--accent)}
-  a.back:hover::before{width:.82em; margin-right:.18em; opacity:1; transform:none}
+  a.back:hover::before{width:1.2em; margin-right:.18em; opacity:1; transform:none}
 }
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent); outline-offset:3px}
