@@ -78,14 +78,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
      empty so the page does not repeat the same labels. */
   display:none;
 }
-/* Видимий маркер секції має ту саму капітель, міру й гарнітуру, що й
-   «What moves the price» у прайсі. */
-  .tsec[aria-labelledby="s-flow"] > h2{
-  display:block;height:auto;margin:0 0 var(--rule-gap) var(--col3);
-  padding-right:0;text-align:left;position:static;
-  font-family:var(--font);font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
-  text-transform:uppercase;font-weight:600;line-height:1;color:var(--pencil)
-}
 /* тіло розділу — та сама 12-колонкова сітка, що й уся сторінка; рядки
    підхоплюють її треки через subgrid, тож назви, ціни й описи в усіх
    розділах стоять на спільних вертикалях */
@@ -134,10 +126,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.75);letter-spacing:-.02em;font-weight:600;color:var(--mute)}
 .step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
 .step p{grid-column:6/10;margin:0;text-wrap:pretty}
-/* Короткий вступ відкриває секцію перед нумерованими етапами. Нижній
-   просвіт до першої лінійки такий самий, як у підзаголовка «What moves the
-   price» до його списку. */
-.flow-intro{grid-column:3/9;margin:0 0 clamp(8px,1.2vw,16px);max-width:56ch;text-wrap:pretty}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
    треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
    не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
@@ -226,12 +214,12 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* Перший абзац секції починається разом з основним текстом — із третьої
    колонки; його лінійка при цьому лишається на другій. */
 .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:3/9}
-/* У процесі перша лінійка задає край секції, а наступні починаються з
-   вертикалі нумерації — номер лежить під лінійкою. */
-.tsec[aria-labelledby="s-flow"] .trow:not(:first-child)::before{
+/* Вступ відкривається лінійкою на краю секції. Лінійки всіх етапів,
+   включно з «Брифом», починаються з однієї вертикалі нумерації. */
+.tsec[aria-labelledby="s-flow"] .steps .step::before{
   left:calc(var(--col3) - .75rem)
 }
-/* Перед підсумковою приміткою в «Процесі» лінійка не потрібна. */
+/* Перед підсумковою приміткою в етапах лінійка не потрібна. */
 .tsec[aria-labelledby="s-flow"] .steps + .trow::before{display:none}
 
 /* У «Термінах» і «Правках» не потрібне велике повітря між внутрішніми
@@ -304,15 +292,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   }
   /* Обидва пронумеровані мобільні блоки відходять на один сітковий крок;
      вступний текст і примітки лишаються на своєму краю. */
-  .tsec[aria-labelledby="s-flow"] > h2{
-    display:block;height:auto;margin:0 0 var(--rule-gap) var(--col2);
-    padding-right:0;text-align:left;position:static;
-    font-family:var(--font);font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
-    text-transform:uppercase;font-weight:600;line-height:1;color:var(--pencil)
-  }
-  .tsec[aria-labelledby="s-flow"] .flow-intro{
-    grid-column:1/-1;max-width:none;margin:0 0 clamp(8px,1.2vw,16px)
-  }
   .tsec[aria-labelledby="s-flow"] .steps,
   .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
@@ -367,7 +346,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 <section class="wrap tsec" aria-labelledby="s-flow">
   <h2 class="tiny" id="s-flow" data-en="Work stages" data-ua="Етапи роботи">Етапи роботи</h2>
   <div class="tbody">
-    <p class="flow-intro" data-en="From the first message to the handover of the final files — six clear steps." data-ua="Від першого повідомлення до передачі фінальних файлів — шість зрозумілих кроків.">Від першого повідомлення до передачі фінальних файлів — шість зрозумілих кроків.</p>
+    <div class="trow"><p class="lead" data-en="From the first message to the handover of the final files — six clear steps." data-ua="Від першого повідомлення до передачі фінальних файлів — шість зрозумілих кроків.">Від першого повідомлення до передачі фінальних файлів — шість зрозумілих кроків.</p></div>
     <ol class="steps">
       <li class="trow step"><span class="no" aria-hidden="true">01</span><h3 data-en="Brief" data-ua="Бриф">Бриф</h3><p data-en="You describe the task, the deadline, and show me the material." data-ua="Ви описуєте задачу, терміни й показуєте матеріал.">Ви описуєте задачу, терміни й показуєте матеріал.</p></li>
       <li class="trow step"><span class="no" aria-hidden="true">02</span><h3 data-en="Estimate" data-ua="Оцінка">Оцінка</h3><p data-en="Within 1–2 business days I send you the price, the timeline and the scope of work." data-ua="Протягом 1–2 робочих днів надсилаю вартість, терміни та обсяг робіт.">Протягом 1–2 робочих днів надсилаю вартість, терміни та обсяг робіт.</p></li>
