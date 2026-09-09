@@ -4,17 +4,17 @@
   function read(){
     try{
       var saved=localStorage.getItem(key);
-      if(saved==='prata'||saved==='unbounded'||saved==='playfair') return saved;
+      if(saved==='unbounded'||saved==='playfair') return saved;
     }catch(e){}
-    return 'prata';
+    return 'playfair';
   }
   function setFont(value,save){
-    var font=value==='unbounded'||value==='playfair'?value:'prata';
+    var font=value==='unbounded'?'unbounded':'playfair';
     root.setAttribute('data-font',font);
     document.querySelectorAll('[data-font-toggle]').forEach(function(button){
       var target=button.getAttribute('data-font-toggle');
       button.setAttribute('aria-pressed',String(font===target));
-      button.setAttribute('aria-label',target==='unbounded'?'Unbounded font':target==='playfair'?'Playfair Display font':'Prata font');
+      button.setAttribute('aria-label',target==='unbounded'?'Unbounded font':'Playfair Display font');
     });
     if(save) try{ localStorage.setItem(key,font); }catch(e){}
   }
@@ -22,7 +22,7 @@
     document.querySelectorAll('[data-font-toggle]').forEach(function(button){
       button.addEventListener('click',function(){
         var target=button.getAttribute('data-font-toggle');
-        setFont(root.getAttribute('data-font')===target?'prata':target,true);
+        setFont(root.getAttribute('data-font')===target?'playfair':target,true);
       });
     });
     setFont(read(),false);

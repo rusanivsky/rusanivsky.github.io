@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Prata&family=Unbounded:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -33,7 +33,7 @@
      сили. Лишилось сильніше з двох — воно й читається краще */
   --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
-  --display-font:"Prata",Georgia,serif;
+  --display-font:"Playfair Display",Georgia,serif;
   --display-scale:1.25;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
