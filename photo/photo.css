@@ -192,6 +192,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
 .switches .contact-link{white-space:nowrap;text-align:right}
+.switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
 @media (max-width:560px){
@@ -277,15 +278,16 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 .header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
 .meta.header-menu-mode > .header-menu-panel{
   position:absolute;top:100%;right:var(--pad);z-index:40;
-  display:grid;width:min(360px,calc(100vw - 2 * var(--pad)));padding:10px 18px 14px;
+  display:grid;width:min(66.6667vw,calc(100vw - 2 * var(--pad)));padding:10px 18px 14px;
   background:var(--bg);border:var(--rule) solid var(--divider);
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
-  visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);
-  transition:opacity 180ms var(--ease),transform 240ms var(--ease),visibility 0s linear 240ms
+  visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
+  transform:translate3d(22px,-6px,0) scale(.95,.98);
+  transition:opacity 220ms var(--ease),transform 300ms var(--ease),visibility 0s linear 300ms
 }
 .meta.header-menu-mode.header-menu-open > .header-menu-panel{
-  visibility:visible;opacity:1;pointer-events:auto;transform:none;
-  transition-delay:0s
+  visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s
 }
 .meta.header-menu-mode .header-menu-panel .parts,
 .meta.header-menu-mode .header-menu-panel .switches{
@@ -335,30 +337,27 @@ body:has(.contact-head) .topbar{
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
-.rev [data-rev]{opacity:0; transform:translateY(22px)}
-.rev [data-rev].is-in{opacity:1; transform:none;
-  transition:opacity 520ms var(--ease), transform 560ms var(--ease);
+.rev [data-rev]{opacity:0; translate:0 16px}
+.rev [data-rev].is-in{opacity:1; translate:none;
+  transition:opacity 520ms var(--ease), translate 560ms var(--ease);
   transition-delay:var(--d,0ms)}
-/* те, що вже в кадрі на вході, не проявляється власним рухом: сторінку
-   і так вносить перехід між сторінками, а два підйоми поспіль — один на
-   14px за 380ms, другий на 22px за 560ms — і давали те смикання. Рух
-   лишається там, де він щось означає: у блоках, до яких догортали */
-.rev [data-rev].is-in.at-once{transition:none}
+/* Перший екран і блоки нижче використовують один рух; перехід між
+   сторінками не додає другого вертикального зсуву. */
 
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
 @keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
 @keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
 ::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
-::view-transition-new(root){ animation:vt-in 380ms var(--ease) 60ms both }
+::view-transition-new(root){ animation:none }
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }
 @keyframes pt-out{ from{opacity:1} to{opacity:0} }
-html.pt-js body{ animation:pt-in 320ms var(--ease) both }
+html.pt-js body{ animation:none }
 html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
-  .rev [data-rev]{opacity:1!important; transform:none!important}
+  .rev [data-rev]{opacity:1!important; translate:none!important}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
   html.pt-js body,html.pt-leave body{ animation:none }
 }
@@ -672,9 +671,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .foot-in .k{
     justify-content:flex-start; padding-right:0;
-    /* окрема властивість rotate, а не transform: підписи мають data-rev,
-       а правило появи .rev [data-rev].is-in ставить transform:none і має
-       вищу вагу — воно й з'їдало поворот. rotate до нього не належить.
+    /* rotate лишається окремою властивістю, незалежною від hover-руху.
        Центр обертання .5em .5em: за годинниковою довкола нього рядок
        лягає рівно в колонку завширшки з себе, від тієї самої верхньої
        межі, на якій стоїть лінійка */

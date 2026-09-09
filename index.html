@@ -207,6 +207,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
 .switches .contact-link{white-space:nowrap}
+.switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
 /* широко шапка стає на ту саму 12-колонкову сітку, що й сторінка:
    перемикачі починаються з 11-ї колонки, а не просто тиснуться до
    правого краю. space-between лишає мову на правій межі верстки, тож
@@ -246,9 +247,6 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   .meta .cols{display:none}
   .meta .switches > .tgl{display:flex}
   .meta .switches > .mobile-contact-link{display:inline-block}
-  /* U має 8px внутрішнього лівого поля кнопки; додаємо його до контакту,
-     щоб видимі проміжки «Умови—Контакти» і «Контакти—U» були однакові. */
-  .meta .switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
   .meta .switches{
     grid-column:1;grid-row:1;justify-content:flex-end;
     height:var(--mobile-meta-row);padding-bottom:0
@@ -523,9 +521,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   :root{--col1:20px}
   .work h2,.clients h2{
     justify-content:flex-start; padding-right:0;
-    /* окрема властивість rotate, а не transform: підписи мають data-rev,
-       а правило появи .rev [data-rev].is-in ставить transform:none і має
-       вищу вагу — воно й з'їдало поворот. rotate до нього не належить.
+    /* rotate лишається окремою властивістю, незалежною від hover-руху.
        Центр обертання .5em .5em: за годинниковою довкола нього рядок
        лягає рівно в колонку завширшки з себе, від тієї самої верхньої
        межі, на якій стоїть лінійка */
@@ -901,9 +897,7 @@ figure{margin:0; position:relative; z-index:1}
   }
   .foot-in .k{
     justify-content:flex-start; padding-right:0;
-    /* окрема властивість rotate, а не transform: підписи мають data-rev,
-       а правило появи .rev [data-rev].is-in ставить transform:none і має
-       вищу вагу — воно й з'їдало поворот. rotate до нього не належить.
+    /* rotate лишається окремою властивістю, незалежною від hover-руху.
        Центр обертання .5em .5em: за годинниковою довкола нього рядок
        лягає рівно в колонку завширшки з себе, від тієї самої верхньої
        межі, на якій стоїть лінійка */
@@ -917,30 +911,27 @@ figure{margin:0; position:relative; z-index:1}
 }
 /* ── reveal ───────────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
-.rev [data-rev]{opacity:0; transform:translateY(22px)}
-.rev [data-rev].is-in{opacity:1; transform:none; transition:opacity 520ms var(--ease), transform 560ms var(--ease)}
+.rev [data-rev]{opacity:0; translate:0 16px}
+.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 520ms var(--ease), translate 560ms var(--ease)}
 .rev [data-rev].is-in{transition-delay:var(--d,0ms)}
-/* те, що вже в кадрі на вході, не проявляється власним рухом: сторінку
-   і так вносить перехід між сторінками, а два підйоми поспіль — один на
-   14px за 380ms, другий на 22px за 560ms — і давали те смикання. Рух
-   лишається там, де він щось означає: у блоках, до яких догортали */
-.rev [data-rev].is-in.at-once{transition:none}
+/* Перший екран і блоки нижче використовують один рух; перехід між
+   сторінками не додає другого вертикального зсуву. */
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
-  .rev [data-rev]{opacity:1!important; transform:none!important}
+  .rev [data-rev]{opacity:1!important; translate:none!important}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
 @view-transition{ navigation:auto }
 @keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
 @keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
 ::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
-::view-transition-new(root){ animation:vt-in 380ms var(--ease) 60ms both }
+::view-transition-new(root){ animation:none }
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
-<script>document.documentElement.classList.add('rev')</script>
+<script src="/scripts/reveal.js?v=1"></script>
 <script src="/scripts/font-switcher.js"></script>
 <script src="/scripts/language-switcher.js"></script>
 </head>
@@ -962,7 +953,7 @@ figure{margin:0; position:relative; z-index:1}
 
 <main>
   <section class="wrap hero" id="hero" aria-labelledby="nm">
-    <h1 class="name" id="nm">
+    <h1 class="name" id="nm" data-rev>
       <span data-en="Kyrylo" data-ua="Кирило">Kyrylo</span>
       <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
     </h1>
@@ -1074,27 +1065,6 @@ figure{margin:0; position:relative; z-index:1}
 
 <script>
 (function(){
-  var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* reveals: що вже в кадрі — проявляється одразу після завантаження,
-     решта — коли до неї догортали */
-  function show(el){ el.classList.add('is-in'); }
-  var revs = [].slice.call(document.querySelectorAll('[data-rev]'));
-  if ('IntersectionObserver' in window && !rm){
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ show(e.target); io.unobserve(e.target); } });
-    }, {rootMargin:'0px 0px -8% 0px', threshold:0.12});
-    var onload = [];
-    revs.forEach(function(el){
-      if(el.getBoundingClientRect().top < innerHeight){ onload.push(el); } else { io.observe(el); }
-    });
-    /* .at-once вимикає перехід — блок просто вже на місці */
-    onload.forEach(function(el){ el.classList.add('at-once'); show(el); });
-  } else {
-    revs.forEach(show);
-  }
-  requestAnimationFrame(function(){ show(document.getElementById('hero')); });
-
   /* language toggle */
   var root = document.documentElement;
   function setLang(v, save){
