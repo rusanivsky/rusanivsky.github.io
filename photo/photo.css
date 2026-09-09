@@ -190,7 +190,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 @media (hover:hover){.tgl button:hover{color:var(--accent)}}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
-.switches{display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
 .switches .contact-link{white-space:nowrap;text-align:right}
 /* найвужче два перемикачі вже не стають в один ряд із назвою — вони
    йдуть власним рядком шапки, під розділами і по лівому краю верстки */
@@ -239,6 +239,9 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
   .meta .switches > .tgl{display:none}
   .meta .switches > .font-toggle{display:flex}
   .meta .switches > .mobile-contact-link{display:none}
+  /* U має 8px внутрішнього лівого поля кнопки; додаємо його до контакту,
+     щоб видимі проміжки «Умови—Контакти» і «Контакти—U» були однакові. */
+  .meta .switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
   /* Видимий рядок лишається 24px, але реальна тач-ціль кнопки — 44px. */
   .meta .switches > .tgl button{
     padding-block:16px;min-height:44px;margin-block:-10px
