@@ -8,7 +8,7 @@ const pages = [
   ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/reels/', 'video/reels/index.html', 'Reels — Кирило Русанівський', 'Монтаж Reels у Києві: вертикальні відео для Instagram, TikTok і YouTube Shorts.'],
-  ['/video/interviews/', 'video/interviews/index.html', 'Інтерв’ю і влоги — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю та влогів у Києві: розмовні відео, YouTube-контент і соціальні мережі.'],
+  ['/video/interviewandvlogs/', 'video/interviewandvlogs/index.html', 'Інтерв’ю і влоги — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю та влогів у Києві: розмовні відео, YouTube-контент і соціальні мережі.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
   ['/video/documentary/', 'video/documentary/index.html', 'Документалістика — Кирило Русанівський', 'Документальні фільми та відеомонтаж у Києві: історії людей, культурні проєкти, інтерв’ю та спостережне відео.'],
   ['/video/short-form/', 'video/short-form/index.html', 'Короткі відео — Кирило Русанівський', 'Монтаж коротких відео для соціальних мереж: вертикальні ролики для Instagram Reels, TikTok і YouTube Shorts.'],
@@ -30,7 +30,7 @@ const lightPortfolioRoutes = new Set([
 ]);
 const nightPortfolioRoutes = new Set([
   '/video/reels/',
-  '/video/interviews/',
+  '/video/interviewandvlogs/',
   '/video/music/',
   '/video/documentary/',
   '/video/short-form/',
@@ -146,7 +146,8 @@ for (const [route, source, title, description] of pages) {
 // GitHub Pages не вміє 301.
 const moved = [
   ['/terms/', '/rates/'],
-  ['/video/vlogs/', '/video/interviews/'],
+  ['/video/interviews/', '/video/interviewandvlogs/'],
+  ['/video/vlogs/', '/video/interviewandvlogs/'],
   ['/photo/public-events/', '/photo/reportage/'],
   ['/photo/art-events/', '/photo/culture-art/'],
   ['/photo/concerts-theatre/', '/photo/culture-art/'],
@@ -180,5 +181,5 @@ for (const [from, to] of moved) {
 }
 
 const sitemapUrls = pages.flatMap(([route]) => [route, uaRoute(route)]);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((route) => `  <url><loc>${absolute(route)}</loc><lastmod>2026-09-06</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((route) => `  <url><loc>${absolute(route)}</loc><lastmod>2026-09-09</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
