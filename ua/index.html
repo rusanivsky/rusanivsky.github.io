@@ -236,6 +236,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   .meta .switches > .tgl{display:flex}
   .meta .switches > .mobile-contact-link{display:inline-block}
   .meta .switches{grid-column:1;grid-row:1;justify-content:flex-end}
+  /* 44px тач-поле EN/UA зберігається, але не розтягує ряд шапки:
+     його зовнішні поля віднімають зайві 24px із розрахункової висоти. */
+  .meta .switches > .tgl button{margin-block:-12px}
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
   .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
   .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
@@ -852,6 +855,10 @@ figure{margin:0; position:relative; z-index:1}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
   .foot-bar .cols{padding-left:0}
+  /* Нижня лінійка і всі рядки під нею починаються там само, де верхня
+     лінійка підвалу: після наскрізного поля першої колонки. */
+  .foot-bar::before{left:calc(var(--pad) + var(--col2))}
+  .foot-bar > .cols,.mobile-meta-slot{margin-left:var(--col2)}
   .mobile-meta-slot{display:block;grid-column:1/-1;padding-top:clamp(10px,2.5vw,16px)}
   .mobile-meta-slot .cols{display:flex;gap:14px;padding-left:0}
 }

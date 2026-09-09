@@ -406,7 +406,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .cats{display:block; padding-left:calc(var(--pad) + var(--col2))}
   .cat::before,.cat::after{left:0}
   .cat{
-    display:grid;grid-template-columns:auto 1fr;
+    display:grid;grid-template-columns:minmax(3ch,auto) minmax(0,1fr);
     column-gap:clamp(14px,2.4vw,36px);
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
@@ -572,6 +572,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
+  /* Нижня лінійка і копірайт продовжують ту саму вісь, що й верхня
+     лінійка підвалу: після наскрізного поля першої колонки. */
+  .foot-bar::before{left:calc(var(--pad) + var(--col2))}
+  .foot-bar .cols{margin-left:var(--col2);padding-left:0}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
    20px. Блок стоїть наприкінці файлу, після базових правил підвала:
