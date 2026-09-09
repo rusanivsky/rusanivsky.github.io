@@ -387,7 +387,8 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
    номер стоїть в auto-колонці, тож перший рядок з'їжджав на 2px вліво.
    tnum у цій гарнітурі не допомагає, тому ширина задана явно */
 .spec .no{
-  font-size:var(--fs-label); letter-spacing:var(--ls-tiny); font-weight:600; color:var(--mute);
+  font-family:var(--display-font);
+  font-size:calc(var(--fs-label) * 1.5); letter-spacing:-.02em; font-weight:600; color:var(--mute);
   min-width:3ch;
 }
 /* той самий набір, що й назви в переліку соцмереж — без капітелі.
@@ -547,6 +548,11 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
     grid-column:2; grid-row:2; margin:0;
     justify-items:start; text-align:left;
   }
+  /* На телефоні display-гарнітура має чіткіше відділяти назви напрямків
+     від дрібніших категорій. Після четвертого напрямку лишаємо окремий
+     вертикальний просвіт перед блоком клієнтів. */
+  .spec h3{font-size:clamp(36px,4.65vw,60px)}
+  .name{font-size:calc(var(--fs-name) * 1.5)}
 }
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
@@ -839,7 +845,7 @@ figure{margin:0; position:relative; z-index:1}
      390x844: під переліком 46px, під марками 50, поля підвала 32+32,
      нижній рядок 22+28. Разом із хвостом від повороту це давало 617px
      від останнього рядка до кінця сторінки при 223px самого вмісту */
-  .work{padding-bottom:clamp(24px,6vw,32px)}
+  .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}

@@ -316,7 +316,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-tiny);color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.5);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
   font-family:var(--display-font);font-size:var(--fs-title);font-weight:700;
   letter-spacing:-.035em;line-height:.98;
@@ -369,6 +369,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
+  .cat .lab{font-size:clamp(36px,4.65vw,60px)}
+  .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
 }
 
 /* два з трьох напрямків живуть на Behance — вони одразу показують стрілку

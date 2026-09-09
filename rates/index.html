@@ -78,6 +78,14 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
      empty so the page does not repeat the same labels. */
   display:none;
 }
+/* Процес має власний видимий маркер на початку секції — та сама капітель,
+   охра й міра, що й «Design and typesetting» у прайсі. */
+.tsec[aria-labelledby="s-flow"] > h2{
+  display:block;height:auto;margin:0 0 var(--rule-gap) var(--col3);
+  padding-right:0;text-align:left;position:static;
+  font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;font-weight:600;line-height:1;color:var(--pencil)
+}
 /* тіло розділу — та сама 12-колонкова сітка, що й уся сторінка; рядки
    підхоплюють її треки через subgrid, тож назви, ціни й описи в усіх
    розділах стоять на спільних вертикалях */
@@ -123,7 +131,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
    від треку, і номер має відійти разом із ним */
 .steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
 .step .no{grid-column:1;position:absolute;left:calc(var(--col3) + .65rem);top:var(--rule-gap);min-width:3ch;
-  font-size:var(--fs-label);letter-spacing:var(--ls-tiny);font-weight:600;color:var(--mute)}
+  font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.5);letter-spacing:-.02em;font-weight:600;color:var(--mute)}
 .step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
 .step p{grid-column:6/10;margin:0;text-wrap:pretty}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
@@ -155,6 +163,14 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .step .no{position:static;grid-column:1;grid-row:1;width:3ch;margin-left:0}
   .step h3{grid-column:2;grid-row:1;min-width:0}
   .step p{grid-column:2;grid-row:2;min-width:0}
+}
+
+/* На десктопі лінійки Timelines мають починатися там само, де лінійки
+   між етапами Process; решта лінійок сторінки не змінюється. */
+@media (min-width:641px){
+  .tsec[aria-labelledby="s-time"] .steps .step::before{
+    left:calc(var(--col3) - .75rem)
+  }
 }
 
 /* У цінах внутрішні рядки починаються з третьої колонки — від лівого
@@ -282,6 +298,16 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .grp,.tsec[aria-labelledby="s-rev"] .grp{
     grid-column:1/-1;text-align:left;justify-self:start
   }
+  /* Обидва пронумеровані мобільні блоки відходять на один сітковий крок;
+     вступний текст і примітки лишаються на своєму краю. */
+  .tsec[aria-labelledby="s-flow"] > h2{
+    display:block;height:auto;margin:0 0 var(--rule-gap) var(--col2);
+    padding-right:0;text-align:left;position:static;
+    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
+    text-transform:uppercase;font-weight:600;line-height:1;color:var(--pencil)
+  }
+  .tsec[aria-labelledby="s-flow"] .steps,
+  .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
 </style>
 <link rel="stylesheet" href="/photo/photo.css?v=36">
