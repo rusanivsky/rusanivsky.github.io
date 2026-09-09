@@ -228,15 +228,33 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 @media (max-width:640px){
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
      в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
+  /* Той самий мобільний контракт, що й на головній: 24px видимого рядка
+     і 8px оптичного поля до лінійки. Поле належить .meta, а не окремим дітям. */
+  .meta{
+    --mobile-meta-row:24px;
+    padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)
+  }
+  .meta .parts{padding-bottom:0}
+  .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
   .meta .switches > .tgl{display:none}
   .meta .switches > .font-toggle{display:flex}
   .meta .switches > .mobile-contact-link{display:none}
+  /* Видимий рядок лишається 24px, але реальна тач-ціль кнопки — 44px. */
+  .meta .switches > .tgl button{
+    padding-block:16px;min-height:44px;margin-block:-10px
+  }
   .language-slot > .tgl{display:flex}
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
   .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
   .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
   .site-foot .language-slot .mobile-contact-link:hover{color:var(--accent)}
   .language-slot > .tgl button:first-child{padding-left:0}
+}
+@media (max-width:640px) and (pointer:fine){
+  /* З мишею кнопка 30px, а її зовнішня коробка лишається тим самим 24px рядком. */
+  .meta .switches > .tgl button{
+    padding-block:9px;min-height:30px;margin-block:-3px
+  }
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */

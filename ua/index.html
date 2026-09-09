@@ -235,19 +235,36 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   /* На головній усі елементи .switches лишаються в шапці й читаються
      зліва направо в тому самому порядку, що й на десктопі:
      «Умови співпраці», «Контакти», EN/UA. */
-  .meta{grid-template-columns:1fr}
+  /* Мобільна шапка має один спільний вертикальний контракт із розділами:
+     24px на видимий рядок і 8px оптичного поля до лінійки. Поле належить
+     самій .meta, тому висоту більше не визначає випадково найвища кнопка. */
+  .meta{
+    --mobile-meta-row:24px;
+    grid-template-columns:1fr;
+    padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)
+  }
   .meta .cols{display:none}
   .meta .switches > .tgl{display:flex}
   .meta .switches > .mobile-contact-link{display:inline-block}
-  .meta .switches{grid-column:1;grid-row:1;justify-content:flex-end;padding-bottom:8px}
-  /* 44px тач-поле EN/UA зберігається, але не розтягує ряд шапки:
-     його зовнішні поля віднімають зайві 24px із розрахункової висоти. */
-  .meta .switches > .tgl button{margin-block:-12px}
+  .meta .switches{
+    grid-column:1;grid-row:1;justify-content:flex-end;
+    height:var(--mobile-meta-row);padding-bottom:0
+  }
+  /* Видимий рядок лишається 24px, але реальна тач-ціль кнопок — 44px. */
+  .meta .switches > .tgl button{
+    padding-block:16px;min-height:44px;margin-block:-10px
+  }
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
   .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
   .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
   .site-foot .language-slot .mobile-contact-link:hover{color:var(--accent)}
   .language-slot > .tgl button:first-child{padding-left:0}
+}
+@media (max-width:640px) and (pointer:fine){
+  /* З мишею кнопка 30px, а її зовнішня коробка лишається тим самим 24px рядком. */
+  .meta .switches > .tgl button{
+    padding-block:9px;min-height:30px;margin-block:-3px
+  }
 }
 
 /* ── герой ─────────────────────────────────────────────────── */
