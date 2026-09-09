@@ -357,9 +357,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 @media (min-width:760px){.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1280px){.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* На мобільному назви проєктів зменшуються, щоб картки не перевантажували
-   вузький екран; на десктопі лишається базовий кегль. */
-.vt{font-size:calc(var(--fs-title) / var(--display-scale));font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
+/* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
+   що й основний текст. Кегль — щабель title зі спільної шкали. */
+.vt{font-family:var(--font);font-size:var(--fs-title);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
 .plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--ink)}
@@ -444,7 +444,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
-  .vt{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale) / 1.4)}
   .cat .lab{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale))}
   .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5 / var(--display-scale))}
 }
