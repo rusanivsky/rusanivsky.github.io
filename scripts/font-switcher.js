@@ -12,9 +12,11 @@
     var font=value==='unbounded'?'unbounded':'playfair';
     root.setAttribute('data-font',font);
     document.querySelectorAll('[data-font-toggle]').forEach(function(button){
-      var target=button.getAttribute('data-font-toggle');
-      button.setAttribute('aria-pressed',String(font===target));
-      button.setAttribute('aria-label',target==='unbounded'?'Unbounded font':'Playfair Display font');
+      var target=font==='unbounded'?'playfair':'unbounded';
+      button.setAttribute('data-font-toggle',target);
+      button.textContent=target==='unbounded'?'U':'P';
+      button.setAttribute('aria-pressed','false');
+      button.setAttribute('aria-label',target==='unbounded'?'Switch to Unbounded':'Switch to Playfair Display');
     });
     if(save) try{ localStorage.setItem(key,font); }catch(e){}
   }
@@ -22,7 +24,7 @@
     document.querySelectorAll('[data-font-toggle]').forEach(function(button){
       button.addEventListener('click',function(){
         var target=button.getAttribute('data-font-toggle');
-        setFont(root.getAttribute('data-font')===target?'playfair':target,true);
+        setFont(target,true);
       });
     });
     setFont(read(),false);
