@@ -93,16 +93,22 @@ function addContactsLink(html, route) {
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
+  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle aria-pressed="false">F</button></div>';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
   html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  html = html.replace(/\s*<div class="tgl font-toggle"[^>]*>\s*<button[^>]*data-font-toggle[^>]*>F<\/button>\s*<\/div>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
     /\s*<div class="tgl" id="lang"/,
-    `\n    ${termsLink}\n    ${contactsLink}\n    <div class="tgl" id="lang"`,
+    `\n    ${termsLink}\n    ${contactsLink}\n    ${fontToggle}\n    <div class="tgl" id="lang"`,
   );
-  return html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
+  html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
+  if (!html.includes('<script src="/scripts/font-switcher.js"></script>')) {
+    html = html.replace('</head>', '<script src="/scripts/font-switcher.js"></script>\n</head>');
+  }
+  return html;
 }
 
 function renameWorkTerms(html) {

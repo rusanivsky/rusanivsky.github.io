@@ -24,8 +24,9 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
-<link rel="stylesheet" href="/video/video.css?v=33">
+<link rel="stylesheet" href="/video/video.css?v=34">
 <script>document.documentElement.classList.add('rev')</script>
+<script src="/scripts/font-switcher.js"></script>
 </head>
 <body>
 <div class="topbar">
@@ -39,6 +40,7 @@
   <div class="switches">
     <a class="tiny contact-link" href="/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
     <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
+    <div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle aria-pressed="false">F</button></div>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ua" aria-pressed="false">UA</button>
     </div>

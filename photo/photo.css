@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Prata&family=Unbounded:wght@400;500;600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -33,7 +33,7 @@
      сили. Лишилось сильніше з двох — воно й читається краще */
   --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
-  --display-font:"Cormorant Garamond",Georgia,serif;
+  --display-font:"Prata",Georgia,serif;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
@@ -101,6 +101,7 @@
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
+:root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -226,6 +227,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
   /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
      в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
   .meta .switches > .tgl{display:none}
+  .meta .switches > .font-toggle{display:flex}
   .meta .switches > .mobile-contact-link{display:none}
   .language-slot > .tgl{display:flex}
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}

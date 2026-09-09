@@ -16,13 +16,14 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/photo/photo.css?v=36">
+<link rel="stylesheet" href="/photo/photo.css?v=37">
 <style>
 .contact-list{padding-top:clamp(48px,9vh,112px)}
 .contact-list .cat{padding-block:var(--rule-gap)}
 @media (max-width:640px){.contact-list{padding-top:clamp(48px,9vh,112px)}}
 </style>
 <script>document.documentElement.classList.add('rev')</script>
+<script src="/scripts/font-switcher.js"></script>
 </head>
 <body>
 <div class="topbar">
@@ -36,6 +37,7 @@
   <div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" aria-current="page" data-en="Contacts" data-ua="Контакти">Контакти</a>
+    <div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle aria-pressed="false">F</button></div>
     <div class="tgl" id="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ua" aria-pressed="true">UA</button>
     </div>
