@@ -14,7 +14,7 @@
     document.querySelectorAll('[data-font-toggle]').forEach(function(button){
       var target=button.getAttribute('data-font-toggle');
       button.setAttribute('aria-pressed',String(font===target));
-      button.setAttribute('aria-label',target==='unbounded'?'Unbounded font':'Playfair Display font');
+      button.setAttribute('aria-label',target==='unbounded'?'Unbounded font':target==='playfair'?'Playfair Display font':'Prata font');
     });
     if(save) try{ localStorage.setItem(key,font); }catch(e){}
   }
