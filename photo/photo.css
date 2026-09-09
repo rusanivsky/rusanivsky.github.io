@@ -572,10 +572,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
-  /* Нижня лінійка і копірайт продовжують ту саму вісь, що й верхня
-     лінійка підвалу: після наскрізного поля першої колонки. */
-  .foot-bar::before{left:calc(var(--pad) + var(--col2))}
-  .foot-bar .cols{margin-left:var(--col2);padding-left:0}
+  /* Нижній службовий рядок належить до рамки сторінки, тому починається
+     від звичайного поля верстки, а не від другої колонки контенту. */
+  .foot-bar::before{left:var(--pad)}
+  .foot-bar .cols{margin-left:0;padding-left:8px}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
    20px. Блок стоїть наприкінці файлу, після базових правил підвала:
