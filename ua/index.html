@@ -225,16 +225,17 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   /* The browser chrome is not a reliable source of visual top air on phones;
      keep the page header optically balanced inside the page itself. */
   .meta{padding-top:clamp(16px,3vw,24px)}
-  /* На головній у рядку немає навігації з її нижнім 8px-полем, тому
-     додаємо його до шапки, щоб лінійка стояла на тій самій висоті. */
-  .meta{padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
+  .meta{padding-bottom:clamp(4px,.8vh,10px)}
 }
 @media (max-width:640px){
-  /* JS переносить цей блок у .language-slot саме до 640px. Ховаємо його
-     в шапці вже на першому кадрі, щоб не було короткого спалаху зверху. */
-  .meta .switches > .tgl{display:none}
-  .meta .switches > .mobile-contact-link{display:none}
-  .language-slot > .tgl{display:flex}
+  /* На головній усі елементи .switches лишаються в шапці й читаються
+     зліва направо в тому самому порядку, що й на десктопі:
+     «Умови співпраці», «Контакти», EN/UA. */
+  .meta{grid-template-columns:1fr}
+  .meta .cols{display:none}
+  .meta .switches > .tgl{display:flex}
+  .meta .switches > .mobile-contact-link{display:inline-block}
+  .meta .switches{grid-column:1;grid-row:1;justify-content:flex-end}
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
   .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
   .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
@@ -416,6 +417,9 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
 }
 /* розділ, що живе на сторонньому сайті, показує звичну стрілку назовні */
 .spec .sect[target]::after{content:"↗"; transform:translate(-.3em,.3em)}
+/* Перші три напрямки ведуть усередину сайту, але окремого маркера їм не
+   потрібно: назва й так працює як самостійний пункт навігації. */
+.work .spec:not(.under) .sect::after{content:none}
 /* перелік іде на два свої рядки нижче, ніж стояв доти. align-self:start
    виводить його з базового вирівнювання рядка — інакше саме він задавав
    би базову лінію і тягнув номер із назвою вниз за собою */
@@ -450,10 +454,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
      назву розділу та зсуває її вправо */
   .spec:hover .sect{color:var(--pencil);transform:translateX(clamp(8px,1.4vw,22px))}
   .spec:hover::after{transform:scaleX(1)}
-  /* Стрілка перших трьох основних напрямків приходить разом із жовтим
-     станом усього рядка, а не лише коли курсор уже на самій назві.
-     Відокремлений нижній рядок .under зберігає власну поведінку. */
-  .work .spec:not(.under):hover .sect::after{opacity:1;transform:none;color:var(--pencil)}
+  /* Відокремлений нижній рядок .under зберігає власну стрілку назовні. */
   .work .spec.under .sect:hover::after{opacity:1; transform:none}
   .spec .it:hover{color:var(--accent)}
   .spec a.it[target]:hover::after{opacity:1; transform:none}
@@ -531,7 +532,7 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
   .spec::before,.spec::after{left:0}
   .spec{
     display:grid; grid-template-columns:minmax(3ch,auto) minmax(0,1fr);
-    column-gap:clamp(14px,2.4vw,36px); row-gap:8px;
+    column-gap:clamp(14px,2.4vw,36px); row-gap:12px;
   }
   .spec .no{grid-column:1; grid-row:1; margin-left:0; text-align:left}
   /* у вузькій сітці колонок-треків немає, тож і добирати міжколонник
@@ -815,6 +816,7 @@ figure{margin:0; position:relative; z-index:1}
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
+.mobile-meta-slot{display:none}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається.
@@ -849,6 +851,9 @@ figure{margin:0; position:relative; z-index:1}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{padding-block:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,24px)}
+  .foot-bar .cols{padding-left:0}
+  .mobile-meta-slot{display:block;grid-column:1/-1;padding-top:clamp(10px,2.5vw,16px)}
+  .mobile-meta-slot .cols{display:flex;gap:14px;padding-left:0}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
    стоять в одній колонці й мають повертатися разом */
@@ -1030,7 +1035,7 @@ figure{margin:0; position:relative; z-index:1}
     <div class="cols">
 <span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span>
     </div>
-
+    <div class="mobile-meta-slot" aria-label="Location and local time"></div>
   </div>
 </footer>
 
@@ -1197,5 +1202,6 @@ figure{margin:0; position:relative; z-index:1}
   }
 }
 </script>
-<script src="/scripts/move-language-switcher.js"></script></body>
+<script src="/scripts/move-home-meta.js"></script>
+</body>
 </html>
