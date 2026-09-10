@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/video/video.css?v=52">
+<link rel="stylesheet" href="/video/video.css?v=53">
 <script src="/scripts/reveal.js?v=2"></script>
 <script src="/scripts/font-switcher.js"></script>
 <script src="/scripts/language-switcher.js"></script>
@@ -130,5 +130,5 @@
   (function(){var track=document.querySelector('.short-form-grid'),next=document.querySelector('.carousel-next');if(!track||!next)return;function update(){var atEnd=track.scrollWidth<=track.clientWidth+1||track.scrollLeft+track.clientWidth>=track.scrollWidth-2;next.classList.toggle('is-end',atEnd);next.setAttribute('aria-hidden',String(atEnd));next.tabIndex=atEnd?-1:0;}next.addEventListener('click',function(){var card=track.querySelector('.v');if(!card)return;var gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:card.getBoundingClientRect().width+gap,behavior:'smooth'});});track.addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();})();
 })();
 </script>
-<script src="/scripts/move-language-switcher.js?v=2"></script></body>
+<script src="/scripts/move-language-switcher.js?v=3"></script></body>
 </html>

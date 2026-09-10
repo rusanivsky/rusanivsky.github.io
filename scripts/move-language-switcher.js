@@ -7,9 +7,7 @@
     var switches=header.querySelector('.switches');
     if(!back||!parts||!switches) return;
 
-    var partsSlot=document.createComment('header-parts');
     var switchesSlot=document.createComment('header-switches');
-    header.insertBefore(partsSlot,parts);
     header.insertBefore(switchesSlot,switches);
 
     var button=document.createElement('button');
@@ -63,7 +61,6 @@
       if(focusButton) button.focus();
     }
     function restore(){
-      partsSlot.parentNode.insertBefore(parts,partsSlot.nextSibling);
       switchesSlot.parentNode.insertBefore(switches,switchesSlot.nextSibling);
     }
     function setCompact(value){
@@ -71,7 +68,6 @@
       compact=value;
       closeMenu(false);
       if(compact){
-        panel.appendChild(parts);
         panel.appendChild(switches);
         header.classList.add('header-menu-mode');
         button.hidden=false;
