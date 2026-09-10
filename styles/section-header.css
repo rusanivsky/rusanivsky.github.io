@@ -2,6 +2,15 @@
    Рядок має фіксовану геометрію; 44px тач-зона кнопки переповнює його
    симетрично й не бере участі в розрахунку висоти CSS Grid у WebKit. */
 @media (max-width:760px){
+  /* Усі підписи верхньої навігації мають один рядок тексту й одну
+     базову лінію. Без цього .part успадковує line-height body, тоді як
+     кнопки перемикачів мають line-height:1 — на мобільному це видно як
+     «сходинку» між VIDEO/PHOTO та RATES/шрифтом. */
+  .topbar > .meta > .parts > .part,
+  .topbar > .meta > .switches > .contact-link,
+  .topbar > .meta > .switches > .tgl button{
+    line-height:1
+  }
   .topbar > .meta.header-menu-mode{
     --mobile-meta-row:24px;
     grid-template-rows:var(--mobile-meta-row);

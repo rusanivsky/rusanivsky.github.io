@@ -116,7 +116,7 @@ function addContactsLink(html, route) {
   return html;
 }
 
-const sectionHeaderStyle = '<link rel="stylesheet" href="/styles/section-header.css?v=1">';
+const sectionHeaderStyle = '<link rel="stylesheet" href="/styles/section-header.css?v=2">';
 
 function addSectionHeaderStyle(html, route) {
   if (route === '/') return html;
