@@ -283,7 +283,9 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 .header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
 .meta.header-menu-mode > .header-menu-panel{
   position:absolute;top:100%;right:var(--pad);z-index:40;
-  display:grid;width:min(66.6667vw,calc(100vw - 2 * var(--pad)));padding:10px 18px 14px;
+  /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
+     без зовнішніх полів, а не половина вікна. */
+  display:grid;width:min(calc(50vw - var(--pad)),672px);padding:10px 18px 14px;
   background:var(--bg);border:var(--rule) solid var(--divider);
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
@@ -298,9 +300,6 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
   position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
   justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;
   overflow:visible
-}
-.meta.header-menu-mode .header-menu-panel .switches{
-  padding-top:8px;border-top:var(--rule) solid var(--divider)
 }
 .meta.header-menu-mode .header-menu-panel .part,
 .meta.header-menu-mode .header-menu-panel .contact-link{
