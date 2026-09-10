@@ -93,9 +93,9 @@ function addContactsLink(html, route) {
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
-  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false" aria-label="Use Unbounded">U</button><button type="button" data-font-toggle="playfair" aria-pressed="false" aria-label="Use Playfair Display">P</button><button type="button" data-font-toggle="fixel" aria-pressed="false" aria-label="Use Fixel">F</button></div>';
+  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="brygada" aria-pressed="false" aria-label="Use Brygada 1918">B</button><button type="button" data-font-toggle="playfair" aria-pressed="false" aria-label="Use Playfair Display">P</button><button type="button" data-font-toggle="fixel" aria-pressed="false" aria-label="Use Fixel">F</button></div>';
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
-  const fontScript = '<script src="/scripts/font-switcher.js?v=2"></script>';
+  const fontScript = '<script src="/scripts/font-switcher.js?v=3"></script>';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.

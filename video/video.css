@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Brygada+1918:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -103,10 +103,11 @@
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
-:root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif;--display-scale:1.5}
+:root[data-font="brygada"]{--display-font:"Brygada 1918",Georgia,serif;--display-scale:1.3}
 :root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
 :root[data-font="fixel"]{--display-font:"Fixel",system-ui,-apple-system,sans-serif;--display-scale:1.35}
-:root[data-font="unbounded"],:root[data-font="fixel"]{--display-number-size:var(--fs-label)}
+:root[data-font="brygada"]{--display-number-size:calc(var(--fs-label) * 1.15)}
+:root[data-font="fixel"]{--display-number-size:var(--fs-label)}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого

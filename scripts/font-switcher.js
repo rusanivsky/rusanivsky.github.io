@@ -1,8 +1,8 @@
 (function(){
   var root=document.documentElement;
   var key='kr-font';
-  var fonts=['unbounded','playfair','fixel'];
-  var labels={unbounded:'Unbounded',playfair:'Playfair Display',fixel:'Fixel'};
+  var fonts=['brygada','playfair','fixel'];
+  var labels={brygada:'Brygada 1918',playfair:'Playfair Display',fixel:'Fixel'};
   function read(){
     try{
       var saved=localStorage.getItem(key);
