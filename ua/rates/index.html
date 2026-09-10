@@ -5,7 +5,7 @@
 <title>Умови співпраці — Кирило Русанівський</title><meta name="description" content="Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва."><meta name="author" content="Kyrylo Rusanivsky"><link rel="canonical" href="https://rusanivsky.com/ua/rates/">
 <link rel="alternate" hreflang="en" href="https://rusanivsky.com/rates/">
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/rates/">
-<link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#415d43"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=52">
+<link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#415d43"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=53">
 <link rel="stylesheet" href="/styles/section-header.css?v=2">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
@@ -52,6 +52,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* Контакти мають той самий просвіт, що й рядки напрямків на головній.
    Явне правило тримає rates синхронним навіть під час оновлення кешу CSS. */
 .contact-list .cat{padding-block:var(--rule-gap)}
+.contact-list .cat .lab{font-stretch:var(--text-stretch)}
 .contact-list .cat .num{
   /* Контакти мають нестандартний перший трек, який тримає їхні назви на
      вертикалі тіла умов. Номер використовує те саме поле до лінійки, що й
@@ -119,20 +120,20 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* підзаголовок групи говорить тією самою капітеллю, що й підпис розділу,
    але повним чорнилом: підпис стоїть у полі й має мовчати, підзаголовок
    стоїть у верстці — інакше два рівні читалися б як один */
-.grp{grid-column:4/-1;margin:0;font-size:var(--fs-label);letter-spacing:var(--ls-tiny);
+.grp{grid-column:4/-1;margin:0;font-size:var(--fs-label);font-stretch:var(--display-stretch);letter-spacing:var(--ls-tiny);
   text-transform:uppercase;font-weight:600;line-height:1}
 .grp.grp-accent{color:var(--pencil)}
 /* рядок ціни тієї самої будови, що .spec на головній: назва на лівих
    треках, число починається там, де там починається перелік */
-.prow .svc{grid-column:4/8;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
+.prow .svc{grid-column:4/8;margin:0;font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.01em;text-wrap:pretty}
 .prow .fee{grid-column:9/span 3;margin:0 0 0 calc(-1 * var(--colgap));font-weight:400;text-wrap:pretty}
 /* нумеровані кроки: номер стоїть не на другому треку, а рівно там, де
    починається лінійка — коли підпис ширший за колонку, --col2 відходить
    від треку, і номер має відійти разом із ним */
 .steps{display:grid;grid-template-columns:subgrid;grid-column:1/-1;list-style:none;margin:0;padding:0}
 .step .no{grid-column:1;position:absolute;left:calc(var(--col3) + .65rem);top:var(--rule-gap);min-width:3ch;
-  font-family:var(--display-font);font-size:var(--display-number-size);letter-spacing:-.02em;font-weight:600;color:var(--mute)}
-.step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-weight:700;letter-spacing:-.01em}
+  font-size:var(--number-size);letter-spacing:-.02em;font-weight:600;color:var(--mute)}
+.step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.01em}
 .step p{grid-column:6/10;margin:0;text-wrap:pretty}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
    треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
@@ -303,15 +304,13 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
 </style>
-<link rel="stylesheet" href="/photo/photo.css?v=52">
+<link rel="stylesheet" href="/photo/photo.css?v=53">
 <script src="/scripts/reveal.js?v=5"></script>
 <script src="/scripts/language-switcher.js"></script>
-<script src="/scripts/font-switcher.js?v=3"></script>
 </head>
 <body><div class="topbar"><header class="wrap meta"><a class="back" href="/ua/" data-en="← Home" data-ua="← На головну">← На головну</a><nav class="parts" aria-label="Sections"><a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a><a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a><a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a></nav><div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" aria-current="page" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
-    <div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="brygada" aria-pressed="false" aria-label="Use Brygada 1918">B</button><button type="button" data-font-toggle="playfair" aria-pressed="false" aria-label="Use Playfair Display">P</button><button type="button" data-font-toggle="fixel" aria-pressed="false" aria-label="Use Fixel">F</button></div>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div></div></header><hr class="rule"></div>
 <div class="rates-nav-shell"><nav class="wrap rates-nav" aria-label="On this page">
   <a class="part" href="#s-price" data-en="Pricing" data-ua="Ціни">Ціни</a>

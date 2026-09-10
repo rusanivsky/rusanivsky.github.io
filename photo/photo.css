@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Brygada+1918:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @font-face{
   font-family:"Fixel";
   src:url("/fixel-latin.woff2") format("woff2");
@@ -33,8 +32,8 @@
      сили. Лишилось сильніше з двох — воно й читається краще */
   --mute:color-mix(in srgb,#111d13 65%,transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
-  --display-font:"Playfair Display",Georgia,serif;
-  --display-scale:1.25;
+  --text-stretch:75%;
+  --display-stretch:100%;
   --pad:clamp(16px,3.2vw,48px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
@@ -55,7 +54,7 @@
      розгоном, тож на око вони не плутаються */
   --fs-chrome:12px;
   --fs-label:13px;
-  --display-number-size:calc(var(--fs-label) * 1.75 / var(--display-scale));
+  --number-size:var(--fs-label);
   --fs-text:clamp(16px,1.25vw,19px);
   --fs-link:clamp(19px,1.95vw,28px);
   /* менший, ніж був: на 700 назва набирає ваги, і 46 починали
@@ -103,11 +102,6 @@
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
-:root[data-font="brygada"]{--display-font:"Brygada 1918",Georgia,serif;--display-scale:1.3}
-:root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
-:root[data-font="fixel"]{--display-font:"Fixel",system-ui,-apple-system,sans-serif;--display-scale:1.35}
-:root[data-font="brygada"]{--display-number-size:calc(var(--fs-label) * 1.15)}
-:root[data-font="fixel"]{--display-number-size:var(--fs-label)}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -136,10 +130,10 @@
    спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
    вони були до гортання */
 html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--fs-text);line-height:1.55}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.03em;line-height:1}
+h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -150,7 +144,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 /* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
-.tiny{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
+.tiny{font-size:var(--fs-chrome);font-stretch:var(--text-stretch);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
 @media (hover:hover){.contact-link:hover{color:var(--accent)}}
@@ -315,14 +309,11 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 .meta.header-menu-mode .header-menu-panel .switches > .tgl{
   display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:44px
 }
-.meta.header-menu-mode .header-menu-panel .font-toggle{grid-template-columns:minmax(0,1fr) auto auto auto}
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
   font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
   text-transform:uppercase;color:var(--mute)
 }
-.meta.header-menu-mode .header-menu-panel .font-toggle::before{content:"Font"}
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
-:root[lang="uk"] .meta.header-menu-mode .header-menu-panel .font-toggle::before{content:"Шрифт"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
   width:auto;min-height:44px;margin:0;padding:12px 0 12px 16px
@@ -430,7 +421,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    до «Enquiries»: з другої колонки та в тому самому кеглі, що контакти
    підвала. */
 .photo-pixover{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-bottom:clamp(30px,6vh,72px)}
-.photo-pixover p{grid-column:1/-1;margin:0 0 0 var(--col2);font-family:var(--display-font);font-size:calc(var(--fs-link) / var(--display-scale));font-weight:600;letter-spacing:-.02em;line-height:1.02;max-width:34ch;color:var(--mute)}
+.photo-pixover p{grid-column:1/-1;margin:0 0 0 var(--col2);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-link);font-weight:600;letter-spacing:-.02em;line-height:1.02;max-width:34ch;color:var(--mute)}
 .photo-pixover a{color:inherit;transition:color 260ms var(--ease)}
 .photo-pixover .pixover-link::after{content:"↗";display:inline-block;margin-left:.22em;font-size:.55em;vertical-align:.78em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);transition:opacity 320ms var(--ease),transform 320ms var(--ease)}
 @media (hover:hover){.photo-pixover a:hover{color:var(--accent)}.photo-pixover .pixover-link:hover::after{opacity:1;transform:none}}
@@ -452,9 +443,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-family:var(--display-font);font-size:var(--display-number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-size:var(--number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
-  font-family:var(--display-font);font-size:calc(var(--fs-title) / var(--display-scale));font-weight:700;
+  font-family:var(--font);font-stretch:var(--display-stretch);font-size:var(--fs-title);font-weight:700;
   letter-spacing:-.035em;line-height:.98;
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
@@ -505,8 +496,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
-  .cat .lab{font-size:calc(clamp(36px,4.65vw,60px) / var(--display-scale))}
-  .photo-pixover p,.site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5 / var(--display-scale))}
+  .cat .lab{font-size:clamp(36px,4.65vw,60px)}
+  .photo-pixover p,.site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
 }
 
 /* ── підвал сайту ─────────────────────────────────────────── */
@@ -585,7 +576,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
-  font-family:var(--display-font); font-size:calc(var(--fs-link) / var(--display-scale)); font-weight:600; text-transform:none;
+  font-family:var(--font); font-stretch:var(--text-stretch); font-size:var(--fs-link); font-weight:600; text-transform:none;
   letter-spacing:-.02em; line-height:1.02;
   position:relative;
   color:color-mix(in srgb,var(--ink) 60%,transparent);
