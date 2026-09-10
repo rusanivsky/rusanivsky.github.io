@@ -348,7 +348,6 @@ body:has(.contact-head) .topbar{
 .rev [data-rev].is-in{opacity:1; translate:none;
   transition:opacity 440ms var(--ease), translate 480ms var(--ease);
   transition-delay:var(--d,0ms)}
-.rev [data-rev].is-in.at-once{transition:none}
 /* Перший екран і блоки нижче використовують один рух; перехід між
    сторінками не додає другого вертикального зсуву. */
 

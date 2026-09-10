@@ -100,14 +100,9 @@
     /* Two frames guarantee that the hidden state is painted before the reveal. */
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        /* The page transition already moves the document on entry. Keep the
-           first viewport in place so it does not get a second movement while
-           the new page is settling. */
-        firstView.forEach(function (element) {
-          element.classList.add('at-once');
-          element.style.setProperty('transition', 'none', 'important');
-          show(element);
-        });
+        /* The first viewport enters as one composition. Scrolling content
+           still uses a stagger, but a newly opened page must not cascade. */
+        firstView.forEach(show);
         later.forEach(function (element) { observer.observe(element); });
       });
     });
