@@ -80,6 +80,14 @@
   /* Трохи ширше за попередню міру: герой отримує повітря між іменем і
      портретом, а довжина текстових рядків лишається контрольованою. */
   --maxw:1440px;
+  /* Висота шапки мусить лягати на цілий піксель. Доти поля рахувались
+     від .8vh — на вікні 800px це 6,4px, і волосяна лінійка під шапкою
+     ставала на 42,8px, тобто між двома рядами пікселів. Кожна прокрутка
+     округлювала її по-своєму, і лінійка стрибала то вище, то нижче.
+     round() лишає ту саму міру, але вже цілим числом */
+  --meta-pad:clamp(4px,.8vh,10px);
+  --meta-pad-top:clamp(16px,3vw,24px);
+  --meta-pad-bottom:clamp(12px,3.75vw,18px);
   /* волосяна лінійка розділювачів і товща лінія ховера */
   --rule:1px; --pen:2px;
   /* ── шкала кеглів: шість щаблів на весь сайт ────────────────
@@ -243,7 +251,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .meta{
   display:grid; grid-template-columns:1fr auto; gap:var(--pad) 24px;
   /* у ряду тепер живе ім'я, тож ряд дихає, а не тулиться до лінійки */
-  padding-block:clamp(4px,.8vh,10px); align-items:center;
+  padding-block:var(--meta-pad); align-items:center;
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
 @media (min-width:761px){:root[lang="en"] .meta .cols > .tiny:first-child{padding-left:8px}}
@@ -303,14 +311,14 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (max-width:760px){
   /* The browser chrome is not a reliable source of visual top air on phones;
      keep the page header optically balanced inside the page itself. */
-  .meta{padding-top:clamp(16px,3vw,24px)}
-  .meta{padding-bottom:clamp(4px,.8vh,10px)}
+  .meta{padding-top:var(--meta-pad-top)}
+  .meta{padding-bottom:var(--meta-pad)}
 }
 /* Той самий контракт рядка, що й у розділів: у цьому вузькому діапазоні
    кнопки мають 44px тач-поле, але видимий рядок шапки — рівно 24px.
    Винесене від’ємними полями тач-поле не може вплинути на лінійку. */
 @media (min-width:641px) and (max-width:760px){
-  .meta{--mobile-meta-row:24px;padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
   .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
   .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
 }
@@ -324,7 +332,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .meta{
     --mobile-meta-row:24px;
     grid-template-columns:1fr;
-    padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)
+    padding-bottom:calc(var(--meta-pad) + 8px)
   }
   .meta .cols{display:none}
   .meta .switches > .tgl{display:flex}
@@ -425,6 +433,13 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   --col1:max(var(--label-w), calc((var(--gridw) - 11 * var(--colgap)) / 12));
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
+}
+@supports (width:round(1px,1px)){
+  :root{
+    --meta-pad:round(clamp(4px,.8vh,10px),1px);
+    --meta-pad-top:round(clamp(16px,3vw,24px),1px);
+    --meta-pad-bottom:round(clamp(12px,3.75vw,18px),1px);
+  }
 }
 /* ── напрямки: рядки того самого крою, що й перелік соцмереж ───── */
 .work{padding-block:0 clamp(32px,5.5vh,75px)}
@@ -1013,11 +1028,18 @@ figure{margin:0; position:relative; z-index:1}
   .rev [data-rev].is-in{transition-duration:360ms,400ms}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
+/* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
+   старий знімок, доки новий документ не намалюється, і міняє їх без
+   анімації. Рух на вході лишається один — поява блоків нижче.
+   Доти старий знімок ще й згасав 240ms уже поверх нового, і два рухи
+   один на одному читались як друга, зайва анімація завантаження.
+   mix-blend-mode тут не декорація: типовий набір браузера ставить обом
+   знімкам plus-lighter, розрахований на зустрічні згасання. Обидва
+   непрозорі — і кадр складається сам із собою, тобто спалахує */
 @view-transition{ navigation:auto }
-@keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
-@keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
-::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
-::view-transition-new(root){ animation:none }
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root){ animation:none; mix-blend-mode:normal }
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }

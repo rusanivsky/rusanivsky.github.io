@@ -14,8 +14,8 @@
   .topbar > .meta.header-menu-mode{
     --mobile-meta-row:24px;
     grid-template-rows:var(--mobile-meta-row);
-    padding-top:clamp(16px,3vw,24px);
-    padding-bottom:clamp(12px,3.75vw,18px);
+    padding-top:var(--meta-pad-top);
+    padding-bottom:var(--meta-pad-bottom);
     align-items:center
   }
   .topbar > .meta.header-menu-mode > .back{

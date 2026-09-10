@@ -32,6 +32,11 @@
   --grain:.085;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#f6f7f1;
+  /* тон випадного меню: доти воно бралося з --plate-top, а той описує
+     смугу під самим обводом браузера, не місце під шапкою. Кожен набір
+     кольорів має свій вимір; поки живе тільки зелений, решта лишається
+     на верху плити */
+  --menu-plate:var(--plate-top);
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
      дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
      самий --pencil, що малює лінію під ховером */
@@ -45,6 +50,14 @@
   --text-stretch:75%;
   --display-stretch:100%;
   --pad:clamp(16px,3.2vw,48px);
+  /* Висота шапки мусить лягати на цілий піксель. Доти поля рахувались
+     від .8vh — на вікні 800px це 6,4px, і волосяна лінійка під шапкою
+     ставала на 42,8px, тобто між двома рядами пікселів. Кожна прокрутка
+     округлювала її по-своєму, і лінійка стрибала то вище, то нижче.
+     round() лишає ту саму міру, але вже цілим числом */
+  --meta-pad:clamp(4px,.8vh,10px);
+  --meta-pad-top:clamp(16px,3vw,24px);
+  --meta-pad-bottom:clamp(12px,3.75vw,18px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
      розділювач має мовчати, підкреслення — відповідати */
   --rule:1px; --pen:2px;
@@ -86,6 +99,15 @@
      клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
      висота підпису. Тепер одне число на всі три */
   --rule-gap:clamp(22px,2.6vw,32px);
+  /* Ті самі міри, але цілим числом пікселів — з тієї ж причини, що й
+     поля шапки: на них стоять волосяні лінійки, і півпікселя під
+     лінійкою читається то тоншою, то товщою рискою */
+  --cats-pad-top:clamp(48px,9vh,112px);
+  --cats-pad-bottom:clamp(30px,6vh,72px);
+  --cats-pad-bottom-narrow:clamp(24px,6vw,32px);
+  --foot-pad:clamp(22px,3.85vh,52px);
+  --foot-pad-narrow:clamp(18px,5vw,24px);
+  --foot-bar-pad-narrow:clamp(18px,4.5vw,24px);
   /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
      не росте, скільки б не було екрана — поле з боків краще за довгі рядки */
   --maxw:1440px;
@@ -121,6 +143,20 @@
   --col2:calc(var(--col1) + var(--colgap));
   --col3:calc(2 * var(--col1) + 2 * var(--colgap));
 }
+@supports (width:round(1px,1px)){
+  :root{
+    --meta-pad:round(clamp(4px,.8vh,10px),1px);
+    --meta-pad-top:round(clamp(16px,3vw,24px),1px);
+    --meta-pad-bottom:round(clamp(12px,3.75vw,18px),1px);
+    --rule-gap:round(clamp(22px,2.6vw,32px),1px);
+    --cats-pad-top:round(clamp(48px,9vh,112px),1px);
+    --cats-pad-bottom:round(clamp(30px,6vh,72px),1px);
+    --cats-pad-bottom-narrow:round(clamp(24px,6vw,32px),1px);
+    --foot-pad:round(clamp(22px,3.85vh,52px),1px);
+    --foot-pad-narrow:round(clamp(18px,5vw,24px),1px);
+    --foot-bar-pad-narrow:round(clamp(18px,4.5vw,24px),1px);
+  }
+}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -136,6 +172,13 @@
   --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#42563f;
+  /* плашка меню: тон плити рівно там, де воно висить — під шапкою,
+     праворуч. Не --plate-top: той на 12 одиниць тепліший, і панель
+     читалась іншим матеріалом, а не вирізом у тій самій плиті.
+     Міряно по самій плиті, з усіма її шарами, а не порахувано з
+     градієнта: мотлі й тепле світло згори підіймають базу на два
+     десятки рівнів */
+  --menu-plate:#47564b;
   /* Кінці ті самі, що були з самого початку, але пройдені рівним кроком
      по OKLCH і дев'ятьма стопами: три стопи давали злам на середньому,
      і око читало злам смугою */
@@ -231,7 +274,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   /* та сама міра, що на головній: там рядок теж дихає, а не тулиться
      до лінійки. Доти тут стояло фіксовані 2px, і шапка на кожній
      сторінці розділу виходила нижчою за головну */
-  padding-block:clamp(4px,.8vh,10px);align-items:center}
+  padding-block:var(--meta-pad);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transition:color 220ms var(--ease)}
 @media (hover:hover){.back:hover{color:var(--accent)}}
@@ -278,7 +321,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @media (max-width:760px){
   /* The browser chrome is not a reliable source of visual top air on phones;
      give the header its own optical top margin. */
-  .meta{padding-top:clamp(16px,3vw,24px)}
+  .meta{padding-top:var(--meta-pad-top)}
   .meta{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(12px,1.8vw,26px)}
   /* Велика стрілка не збільшує рядок: 44px тач-поле живе в ::after,
      а видимий знак вирівняний по горизонтальній осі навігаційних букв.
@@ -301,7 +344,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    стоїть одним рядком. Тримаймо видимий рядок 24px, а 44px тач-ціль
    перемикачів винесімо від’ємними полями, щоб вона не роздувала висоту. */
 @media (min-width:641px) and (max-width:760px){
-  .meta{--mobile-meta-row:24px;padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
   .meta .parts{padding-bottom:0}
   .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
   .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
@@ -311,7 +354,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      і 8px оптичного поля до лінійки. Поле належить .meta, а не окремим дітям. */
   .meta{
     --mobile-meta-row:24px;
-    padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)
+    padding-bottom:calc(var(--meta-pad) + 8px)
   }
   .meta .parts{padding-bottom:0}
   .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
@@ -353,19 +396,19 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
 .header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
 .meta.header-menu-mode > .header-menu-panel{
-  position:absolute;top:100%;right:var(--pad);z-index:40;
+  /* зазор під шапкою: панель не приклеєна до лінійки, а лежить окремою
+     плашкою під нею */
+  position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
   /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
      без зовнішніх полів, а не половина вікна. */
   display:grid;width:min(calc(50vw - var(--pad)),672px);padding:10px 18px 14px;
-  /* та сама матова поверхня, що й шапка, тільки щільніша: панель
-     лежить поверх тексту сторінки, і крізь неї має просвічувати тон,
-     а не чужі рядки */
-  background:color-mix(in srgb,var(--plate-top) 80%,transparent);
-  -webkit-backdrop-filter:blur(28px) saturate(1.4);
-  backdrop-filter:blur(28px) saturate(1.4);
-  /* без обводки: матова поверхня сама себе окреслює, а волосяна лінія
-     по її краю читалась накресленим прямокутником */
-  border:0;
+  /* тон самої плити в тому місці, де панель висить, і без просвічування:
+     доти вона була склом на 80 %, крізь неї йшли чужі рядки, і тон плив
+     від того, що саме опинилось під нею */
+  background:var(--menu-plate);
+  /* без обводки: сама плашка себе окреслює, а волосяна лінія по її краю
+     читалась накресленим прямокутником */
+  border:0;border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
   transform:translate3d(22px,-6px,0) scale(.95,.98);
@@ -415,12 +458,12 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    не має де вирости */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 62%,transparent);
+  background:color-mix(in srgb,var(--plate-top) 46%,transparent);
   -webkit-backdrop-filter:blur(26px);
   backdrop-filter:blur(26px);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .topbar::before,.meta.header-menu-mode > .header-menu-panel{background:var(--plate-top)}
+  .topbar::before{background:var(--plate-top)}
 }
 /* Заслінка під шапкою проявляється лише тоді, коли під неї заходить
    вміст: на початку сторінки їй нема чого прикривати, а скло над
@@ -437,25 +480,9 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   }
 }
 .topbar .rule{margin-bottom:2px}
-/* Під однорядковою фіксованою шапкою лінійка й заслінка міняються
-   місцями: угорі сторінки межу тримає лінійка, під прокруткою — сама
-   заслінка, і жодної миті їх не буває двох. Обидві ведені тією ж
-   прокруткою, тож розходитись їм ні на чому.
-   Там, де шапка ділить два ряди (перелік підрозділів або смуга розділів
-   на /rates/) чи взагалі не фіксована, лінійка стоїть завжди */
-@keyframes veil-out{from{opacity:1}to{opacity:0}}
-@supports (animation-timeline:scroll()){
-  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
-    animation:veil-out linear both;
-    animation-timeline:scroll();
-    animation-range:0 140px;
-  }
-}
-/* Без scroll-таймлайнів заслінка стоїть на місці з першого пікселя —
-   тоді лінійці під нею нема чого робити */
-@supports not (animation-timeline:scroll()){
-  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
-}
+/* Лінійка під шапкою стоїть завжди — це її нижня межа, а не окрема
+   прикраса. Доти вона згасала з прокруткою, і межа переходила до самої
+   заслінки: на світлих місцях сторінки шапка лишалась без краю зовсім */
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
@@ -467,11 +494,18 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    сторінками не додає другого вертикального зсуву. */
 
 /* ── плавний перехід між сторінками ──────────────────────── */
+/* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
+   старий знімок, доки новий документ не намалюється, і міняє їх без
+   анімації. Рух на вході лишається один — поява блоків нижче.
+   Доти старий знімок ще й згасав 240ms уже поверх нового, і два рухи
+   один на одному читались як друга, зайва анімація завантаження.
+   mix-blend-mode тут не декорація: типовий набір браузера ставить обом
+   знімкам plus-lighter, розрахований на зустрічні згасання. Обидва
+   непрозорі — і кадр складається сам із собою, тобто спалахує */
 @view-transition{ navigation:auto }
-@keyframes vt-out{ from{opacity:1; transform:none} to{opacity:0; transform:translateY(-10px)} }
-@keyframes vt-in{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
-::view-transition-old(root){ animation:vt-out 240ms var(--ease) both }
-::view-transition-new(root){ animation:none }
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root){ animation:none; mix-blend-mode:normal }
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }
 @keyframes pt-out{ from{opacity:1} to{opacity:0} }
@@ -513,7 +547,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    головній: номер у другій колонці, назва з третьої */
 .cats{
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
-  padding-block:clamp(48px,9vh,112px) clamp(30px,6vh,72px);
+  padding-block:var(--cats-pad-top) var(--cats-pad-bottom);
 }
 .cat{
   display:grid;grid-template-columns:subgrid;grid-column:1/-1;
@@ -533,10 +567,14 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-size:var(--number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-size:var(--number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);
+  /* цілий рядок, щоб висота рядка переліку лишалась цілим числом:
+     на його верхній межі стоїть лінійка */
+  line-height:round(1.55em,1px);
+  transition:color 240ms var(--ease)}
 .cat .lab{
   font-family:var(--font);font-stretch:var(--display-stretch);font-size:var(--fs-title);font-weight:700;
-  letter-spacing:-.035em;line-height:.98;
+  letter-spacing:-.035em;line-height:.98;line-height:round(.98em,1px);
   transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
 /* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
@@ -639,10 +677,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .site-foot{
   color:var(--ink);
   --uline:2px;
-  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
-     доводиться малювати не від нього, а від самої плашки — і треба знати,
-     на якій висоті в ній стоїть перший рядок */
-  --foot-pad:clamp(22px,3.85vh,52px);
 }
 @media (min-width:700px){.site-foot{--uline:3px}}
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
@@ -781,10 +815,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
      на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
      вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
-  .cats{padding-block:clamp(48px,9vh,112px) clamp(24px,6vw,32px)}
+  .cats{padding-block:var(--cats-pad-top) var(--cats-pad-bottom-narrow)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
-  .site-foot{--foot-pad:clamp(18px,5vw,24px); margin-top:clamp(20px,5vw,32px)}
-  .foot-bar{padding-block:clamp(8px,1.8vw,18px) clamp(18px,4.5vw,24px)}
+  .site-foot{--foot-pad:var(--foot-pad-narrow); margin-top:clamp(20px,5vw,32px)}
+  .foot-bar{padding-block:clamp(8px,1.8vw,18px) var(--foot-bar-pad-narrow)}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
