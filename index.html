@@ -26,7 +26,7 @@
 <meta name="twitter:title" content="Kyrylo Rusanivsky — Graphic Designer / Video Editor / Photographer">
 <meta name="twitter:description" content="Kyrylo Rusanivsky is a Kyiv-based graphic designer, video editor and photographer. Book and cover design, editorial layout, video editing, event and portrait photography.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=3">
-<meta name="theme-color" content="#415d43">
+<meta name="theme-color" content="#3a4e3c">
 <link rel="icon" href="/favicon.ico?v=4" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
@@ -57,6 +57,14 @@
   --active:#415d43;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
+     градієнт читається освітленою поверхнею, а не переходом кольору */
+  --plate-base:linear-gradient(154deg,#f5f7f1 0%,#eef1ec 46%,#e2e7de 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(255,247,231,.80) 0%,rgba(255,247,231,0) 62%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(136,154,138,.34) 0%,rgba(136,154,138,0) 66%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(118,134,120,0) 52%,rgba(118,134,120,.15) 100%);
+  /* на світлому зерно видно вдвічі краще, ніж на темному */
+  --grain:.085;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
      дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
      самий --pencil, що малює лінію під ховером */
@@ -111,6 +119,15 @@
      висота підпису. Тепер одне число на всі три */
   --rule-gap:clamp(22px,2.6vw,32px);
   --ease:cubic-bezier(.16,1,.3,1);
+  /* ── тло ────────────────────────────────────────────────────
+     Зерно й градієнт малює не body, а фіксована плита під ним, тож
+     градієнт прив'язаний до вікна, а не розтягнутий на всю висоту
+     документа, і зерно лежить під текстом, а не поверх нього.
+     Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
+     екран, тож повтор не читається, і жодного файлу не тягнуть */
+  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
+  --mottle-size:1280px;
 }
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
@@ -120,10 +137,16 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* та сама охра, світліша й тепліша — на #415d43 вона тримає 4,1:1.
+  /* та сама охра, світліша й тепліша — на новому тлі вона тримає
+     7:1 у середині плити й 5:1 у найсвітлішому її куті.
      Не яскравіше: це підкреслення, а не заклик */
   --pencil:#e6bb7c; --active:#e6bb7c;
-  --bg:#415d43; --surface:#709775; --ink:#eaf1e7;
+  --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
+  --plate-base:linear-gradient(154deg,#3d5341 0%,#2b3e2d 48%,#1b2a21 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.13) 0%,rgba(226,196,146,0) 60%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(8,22,17,.46) 0%,rgba(8,22,17,0) 66%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(8,22,17,0) 50%,rgba(8,22,17,.22) 100%);
+  --grain:.28;
   --divider:color-mix(in srgb, #eaf1e7 34%, transparent);
   --mute:color-mix(in srgb, #eaf1e7  80%, transparent);
 }
@@ -132,13 +155,52 @@
      рости: 6,5:1 */
   color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
+  --plate-base:linear-gradient(154deg,#17251a 0%,#111d13 50%,#0a130d 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(217,160,94,.09) 0%,rgba(217,160,94,0) 58%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(0,0,0,.44) 0%,rgba(0,0,0,0) 64%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(0,0,0,0) 50%,rgba(0,0,0,.26) 100%);
+  --grain:.22;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
+/* ── плита тла ──────────────────────────────────────────────
+   --bg лишається на html: він фарбує канву й гумовий відскок згори,
+   і він же єдине, що побачить браузер, який не потягне решту.
+   Обидва шари фіксовані й нічого не ловлять, тож гортання їх не
+   перемальовує */
+html{background:var(--bg)}
+body::before,body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+}
+body::before{
+  background-color:var(--bg);
+  background-image:
+    var(--plate-mottle),var(--plate-vignette),
+    var(--plate-warm),var(--plate-deep),var(--plate-base);
+  background-repeat:repeat,no-repeat,no-repeat,no-repeat,no-repeat;
+  background-size:var(--mottle-size) var(--mottle-size),auto,auto,auto,auto;
+  /* великі плями йдуть soft-light: без них будь-який градієнт видає,
+     що він порахований, а не знятий */
+  background-blend-mode:soft-light,normal,normal,normal,normal;
+}
+/* Зерно окремим шаром, бо йому потрібне своє змішування: soft-light
+   чіпає світлість і не зсуває колір. Воно ж прибирає смуги — на
+   темному градієнті 8 біт на канал видно неозброєним оком */
+body::after{
+  background-image:var(--grain-img);
+  background-size:160px 160px;
+  opacity:var(--grain); mix-blend-mode:soft-light;
+}
+/* На щільних екранах те саме зерно згладжується майже до невидимого,
+   тому плитка там малюється меншою */
+@media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
+@media (prefers-contrast:more){body::after{opacity:0}}
+@media print{body::before,body::after{display:none}}
+
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
+  margin:0; background:transparent; color:var(--ink);
   font-family:var(--font); font-stretch:var(--text-stretch);
   font-size:var(--fs-text); line-height:1.55; font-weight:400;
   /* clip, а не hidden: hidden робить із body контейнер прокрутки, і саме

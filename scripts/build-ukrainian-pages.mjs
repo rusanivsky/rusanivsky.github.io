@@ -127,7 +127,9 @@ function renameWorkTerms(html) {
     .replace(/(Telegram|Behance|Threads|TikTok) @rusanivsky/g, '$1');
 }
 
-const themeColour = { light: '#eef1ec', green: '#415d43', night: '#111d13' };
+// Не --bg, а колір, який плита тла показує при самому верху вікна:
+// саме до нього примикає обвід браузера на телефоні
+const themeColour = { light: '#f4f6f0', green: '#3a4e3c', night: '#162419' };
 
 // Тему сторінки вирішує її розділ, а не гість: перемикача в шапці немає,
 // нічого не читається з localStorage і нічого не залежить від системної
