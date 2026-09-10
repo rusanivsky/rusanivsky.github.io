@@ -24,12 +24,14 @@
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
   /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
      градієнт читається освітленою поверхнею, а не переходом кольору */
-  --plate-base:linear-gradient(154deg,#f5f7f1 0%,#eef1ec 46%,#e2e7de 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(255,247,231,.80) 0%,rgba(255,247,231,0) 62%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(136,154,138,.34) 0%,rgba(136,154,138,0) 66%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(118,134,120,0) 52%,rgba(118,134,120,.15) 100%);
+  --plate-base:linear-gradient(154deg,#f4f6ee 0%,#f2f4ed 12%,#f0f3ec 25%,#eff1ec 38%,#edf0eb 50%,#ebefea 62%,#eaede9 75%,#e8ece8 88%,#e7eae6 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(255,247,231,.82) 0%,rgba(255,247,231,.7347) 13%,rgba(255,247,231,.5314) 26%,rgba(255,247,231,.2886) 38%,rgba(255,247,231,.0853) 51%,rgba(255,247,231,0) 64%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(132,152,138,.34) 0%,rgba(132,152,138,.3046) 14%,rgba(132,152,138,.2203) 28%,rgba(132,152,138,.1197) 42%,rgba(132,152,138,.0354) 56%,rgba(132,152,138,0) 70%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(116,134,122,0) 44%,rgba(116,134,122,.0156) 55%,rgba(116,134,122,.0528) 66%,rgba(116,134,122,.0972) 78%,rgba(116,134,122,.1344) 89%,rgba(116,134,122,.15) 100%);
   /* на світлому зерно видно вдвічі краще, ніж на темному */
   --grain:.085;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#f6f7f1;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
      дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
      самий --pencil, що малює лінію під ховером */
@@ -127,15 +129,22 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* та сама охра, світліша й тепліша — на новому тлі вона тримає
-     7:1 у середині плити й 5:1 у найсвітлішому її куті.
+  /* та сама охра, світліша й тепліша — на плиті вона тримає 5:1
+     скрізь, бо плита тепер усюди одного тону.
      Не яскравіше: це підкреслення, а не заклик */
   --pencil:#e6bb7c; --active:#e6bb7c;
-  --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
-  --plate-base:linear-gradient(154deg,#3d5341 0%,#2b3e2d 48%,#1b2a21 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.13) 0%,rgba(226,196,146,0) 60%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(8,22,17,.46) 0%,rgba(8,22,17,0) 66%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(8,22,17,0) 50%,rgba(8,22,17,.22) 100%);
+  --bg:#3f5440; --surface:#4b6249; --ink:#eaf1e7;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#4d6350;
+  /* Один зелений, а не світлий і темний: різниця світлості між кінцями
+     ramp — кілька одиниць. Глибина береться не з неї, а з дрейфу
+     відтінку: угорі зелений тепліший і жовтіший, унизу холодніший і
+     синіший. Дев'ять стопів прораховані рівним кроком по OKLCH: три
+     стопи дають злам на середньому, і око читає його смугою */
+  --plate-base:linear-gradient(154deg,#475b42 0%,#455941 12%,#425741 25%,#405540 38%,#3d533f 50%,#3b513e 62%,#394f3e 75%,#374d3d 88%,#354b3c 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.1) 0%,rgba(226,196,146,.0896) 13%,rgba(226,196,146,.0648) 26%,rgba(226,196,146,.0352) 38%,rgba(226,196,146,.0104) 51%,rgba(226,196,146,0) 64%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(10,30,27,.26) 0%,rgba(10,30,27,.233) 14%,rgba(10,30,27,.1685) 28%,rgba(10,30,27,.0915) 42%,rgba(10,30,27,.027) 56%,rgba(10,30,27,0) 70%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(10,30,27,0) 44%,rgba(10,30,27,.0125) 55%,rgba(10,30,27,.0422) 66%,rgba(10,30,27,.0778) 78%,rgba(10,30,27,.1075) 89%,rgba(10,30,27,.12) 100%);
   --grain:.28;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
@@ -145,11 +154,13 @@
      рости: 6,5:1 */
   color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-  --plate-base:linear-gradient(154deg,#17251a 0%,#111d13 50%,#0a130d 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(217,160,94,.09) 0%,rgba(217,160,94,0) 58%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(0,0,0,.44) 0%,rgba(0,0,0,0) 64%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(0,0,0,0) 50%,rgba(0,0,0,.26) 100%);
+  --plate-base:linear-gradient(154deg,#162214 0%,#152014 12%,#131f14 25%,#111e13 38%,#101c13 50%,#0e1b12 62%,#0d1a12 75%,#0c1811 88%,#0a1710 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(217,160,94,.1) 0%,rgba(217,160,94,.0896) 13%,rgba(217,160,94,.0648) 26%,rgba(217,160,94,.0352) 38%,rgba(217,160,94,.0104) 51%,rgba(217,160,94,0) 64%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(2,12,10,.46) 0%,rgba(2,12,10,.4122) 14%,rgba(2,12,10,.2981) 28%,rgba(2,12,10,.1619) 42%,rgba(2,12,10,.0478) 56%,rgba(2,12,10,0) 70%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(2,12,10,0) 44%,rgba(2,12,10,.027) 55%,rgba(2,12,10,.0915) 66%,rgba(2,12,10,.1685) 78%,rgba(2,12,10,.233) 89%,rgba(2,12,10,.26) 100%);
   --grain:.22;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#1b281d;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
 }
@@ -160,8 +171,13 @@
    Обидва шари фіксовані й нічого не ловлять, тож гортання їх не
    перемальовує */
 html{background:var(--bg)}
+/* inset від'ємний, а не 0: у вікна на телефоні немає сталої висоти —
+   смуги Safari то згортаються, то ні, а гумовий відскок згори й знизу
+   відкриває смугу поза вікном. Плита рівно по вікну лишає там голий
+   --bg, і тло виглядає обрізаним. Запас у чверть висоти вікна більший
+   за будь-яку з тих смуг */
 body::before,body::after{
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  content:""; position:fixed; inset:-25vh 0; z-index:-1; pointer-events:none;
 }
 body::before{
   background-color:var(--bg);
@@ -346,9 +362,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
      без зовнішніх полів, а не половина вікна. */
   display:grid;width:min(calc(50vw - var(--pad)),672px);padding:10px 18px 14px;
-  /* панель лежить поверх вмісту й має власну межу з тінню — вона
-     й так читається окремою поверхнею, тож лишається щільною */
-  background:var(--bg);border:var(--rule) solid var(--divider);
+  /* та сама матова поверхня, що й шапка, тільки щільніша: панель
+     лежить поверх тексту сторінки, і крізь неї має просвічувати тон,
+     а не чужі рядки */
+  background:color-mix(in srgb,var(--plate-top) 80%,transparent);
+  -webkit-backdrop-filter:blur(28px) saturate(1.4);
+  backdrop-filter:blur(28px) saturate(1.4);
+  border:var(--rule) solid var(--divider);
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
   transform:translate3d(22px,-6px,0) scale(.95,.98);
@@ -387,18 +407,30 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 /* під переліком категорій лінійки немає: вона з'являлась і зникала на
    кожному дотику до верху сторінки, і цей блимкіт читався як збій, а не
    як межа. Шапку від вмісту відділяє власне лінійка над переліком */
-.topbar{
-  position:sticky;top:0;z-index:30;
-  /* Плоский --bg над градієнтом читається латкою, тому шапка тепер
-     проціджує те, що під нею, а не замальовує його */
-  background:color-mix(in srgb,var(--bg) 52%,transparent);
-  -webkit-backdrop-filter:blur(20px) saturate(1.1);
-  backdrop-filter:blur(20px) saturate(1.1)
+.topbar{position:sticky;top:0;z-index:30}
+/* Матова поверхня живе на псевдоелементі, а не на самій шапці. Елемент
+   із backdrop-filter стає backdrop root для всього, що в ньому лежить,
+   і випадне меню всередині шапки перестало б бачити сторінку під
+   собою — його власне розмиття мовчки перетворилось би на ніщо.
+   Тон береться з верху плити, а не з --bg: --bg — це середина плити,
+   і на ньому шапка виходить помітно темнішою за тло просто під собою.
+   Фарби лише 62 % — решту смуги складає сама плита, тож похибка тону
+   не має де вирости */
+.topbar::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:color-mix(in srgb,var(--plate-top) 62%,transparent);
+  -webkit-backdrop-filter:blur(26px);
+  backdrop-filter:blur(26px);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .topbar{background:var(--bg)}
+  .topbar::before,.meta.header-menu-mode > .header-menu-panel{background:var(--plate-top)}
 }
 .topbar .rule{margin-bottom:2px}
+/* Лінійка має сенс лише там, де вона щось розділяє: два ряди фіксованої
+   шапки (перелік підрозділів під нею або смуга розділів на /rates/) чи
+   шапку й сторінку, коли шапка не фіксована. Під однорядковою фіксованою
+   шапкою вона підкреслює порожнє місце — тон шапки й так зведений із тлом */
+body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
 /* На сторінці умов роботи sticky лишається, але без межі й тіні. */
 body:has(.contact-head) .topbar{
   border-bottom:0;
