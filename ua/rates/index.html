@@ -5,7 +5,7 @@
 <title>Умови співпраці — Кирило Русанівський</title><meta name="description" content="Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва."><meta name="author" content="Kyrylo Rusanivsky"><link rel="canonical" href="https://rusanivsky.com/ua/rates/">
 <link rel="alternate" hreflang="en" href="https://rusanivsky.com/rates/">
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/rates/">
-<link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#4d6350"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=54">
+<link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"><meta name="theme-color" content="#42563f"><link rel="icon" href="/favicon.ico?v=4" sizes="32x32"><link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=55">
 <link rel="stylesheet" href="/styles/section-header.css?v=2">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
@@ -14,14 +14,25 @@
 /* Внутрішня навігація лишається одним горизонтальним рядом, як навігація
    розділів у Photo; прокрутка замість переносу тримає її компактною на вузьких
    екранах. Додаткової лінійки тут немає. */
-.rates-nav-shell{position:sticky;top:var(--rates-topbar-height,0px);z-index:20;
-  /* та сама скляна смуга, що й шапка над нею, і тон з того самого
-     верху плити */
+.rates-nav-shell{position:sticky;top:var(--rates-topbar-height,0px);z-index:20}
+/* та сама заслінка, що й у шапки над нею: окремим шаром, тим самим
+   тоном верху плити, і проявляється тією ж прокруткою */
+.rates-nav-shell::before{
+  content:"";position:absolute;inset:0;z-index:-1;
   background:color-mix(in srgb,var(--plate-top) 62%,transparent);
   -webkit-backdrop-filter:blur(26px);
-  backdrop-filter:blur(26px)}
+  backdrop-filter:blur(26px);
+}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .rates-nav-shell{background:var(--plate-top)}
+  .rates-nav-shell::before{background:var(--plate-top)}
+}
+@supports (animation-timeline:scroll()){
+  .rates-nav-shell::before{
+    opacity:0;
+    animation:veil-in linear both;
+    animation-timeline:scroll();
+    animation-range:0 140px;
+  }
 }
 .rates-nav{--rates-edge-fade:clamp(24px,7vw,44px);--rates-fade-left:1;--rates-fade-right:1;
   display:flex;gap:clamp(14px,2.4vw,40px);overflow-x:auto;scrollbar-width:none;
@@ -312,7 +323,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
 </style>
-<link rel="stylesheet" href="/photo/photo.css?v=54">
+<link rel="stylesheet" href="/photo/photo.css?v=55">
 <script src="/scripts/reveal.js?v=5"></script>
 <script src="/scripts/language-switcher.js"></script>
 </head>

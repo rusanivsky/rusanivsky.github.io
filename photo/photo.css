@@ -129,22 +129,20 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* та сама охра, світліша й тепліша — на плиті вона тримає 5:1
-     скрізь, бо плита тепер усюди одного тону.
+  /* та сама охра, світліша й тепліша — на плиті вона тримає від 5:1
+     у найсвітлішому її куті до 9:1 у найтемнішому.
      Не яскравіше: це підкреслення, а не заклик */
   --pencil:#e6bb7c; --active:#e6bb7c;
-  --bg:#3f5440; --surface:#4b6249; --ink:#eaf1e7;
+  --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
-  --plate-top:#4d6350;
-  /* Один зелений, а не світлий і темний: різниця світлості між кінцями
-     ramp — кілька одиниць. Глибина береться не з неї, а з дрейфу
-     відтінку: угорі зелений тепліший і жовтіший, унизу холодніший і
-     синіший. Дев'ять стопів прораховані рівним кроком по OKLCH: три
-     стопи дають злам на середньому, і око читає його смугою */
-  --plate-base:linear-gradient(154deg,#475b42 0%,#455941 12%,#425741 25%,#405540 38%,#3d533f 50%,#3b513e 62%,#394f3e 75%,#374d3d 88%,#354b3c 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.1) 0%,rgba(226,196,146,.0896) 13%,rgba(226,196,146,.0648) 26%,rgba(226,196,146,.0352) 38%,rgba(226,196,146,.0104) 51%,rgba(226,196,146,0) 64%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(10,30,27,.26) 0%,rgba(10,30,27,.233) 14%,rgba(10,30,27,.1685) 28%,rgba(10,30,27,.0915) 42%,rgba(10,30,27,.027) 56%,rgba(10,30,27,0) 70%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(10,30,27,0) 44%,rgba(10,30,27,.0125) 55%,rgba(10,30,27,.0422) 66%,rgba(10,30,27,.0778) 78%,rgba(10,30,27,.1075) 89%,rgba(10,30,27,.12) 100%);
+  --plate-top:#42563f;
+  /* Кінці ті самі, що були з самого початку, але пройдені рівним кроком
+     по OKLCH і дев'ятьма стопами: три стопи давали злам на середньому,
+     і око читало злам смугою */
+  --plate-base:linear-gradient(154deg,#3d5341 0%,#384e3d 12%,#344839 25%,#304335 38%,#2b3e31 50%,#27392d 62%,#233429 75%,#1f2f25 88%,#1b2a21 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.13) 0%,rgba(226,196,146,.1165) 13%,rgba(226,196,146,.0842) 26%,rgba(226,196,146,.0458) 38%,rgba(226,196,146,.0135) 51%,rgba(226,196,146,0) 64%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(8,22,17,.46) 0%,rgba(8,22,17,.4122) 14%,rgba(8,22,17,.2981) 28%,rgba(8,22,17,.1619) 42%,rgba(8,22,17,.0478) 56%,rgba(8,22,17,0) 70%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(8,22,17,0) 44%,rgba(8,22,17,.0229) 55%,rgba(8,22,17,.0774) 66%,rgba(8,22,17,.1426) 78%,rgba(8,22,17,.1971) 89%,rgba(8,22,17,.22) 100%);
   --grain:.28;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
@@ -368,7 +366,9 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   background:color-mix(in srgb,var(--plate-top) 80%,transparent);
   -webkit-backdrop-filter:blur(28px) saturate(1.4);
   backdrop-filter:blur(28px) saturate(1.4);
-  border:var(--rule) solid var(--divider);
+  /* без обводки: матова поверхня сама себе окреслює, а волосяна лінія
+     по її краю читалась накресленим прямокутником */
+  border:0;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
   transform:translate3d(22px,-6px,0) scale(.95,.98);
@@ -424,6 +424,20 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before,.meta.header-menu-mode > .header-menu-panel{background:var(--plate-top)}
+}
+/* Заслінка під шапкою проявляється лише тоді, коли під неї заходить
+   вміст: на початку сторінки їй нема чого прикривати, а скло над
+   порожнім місцем помітніше за чисту плиту. Веде її сама прокрутка —
+   без слухача, без кадру на такт. Там, де scroll-таймлайнів немає,
+   заслінка просто стоїть на місці */
+@keyframes veil-in{from{opacity:0}to{opacity:1}}
+@supports (animation-timeline:scroll()){
+  .topbar::before{
+    opacity:0;
+    animation:veil-in linear both;
+    animation-timeline:scroll();
+    animation-range:0 140px;
+  }
 }
 .topbar .rule{margin-bottom:2px}
 /* Лінійка має сенс лише там, де вона щось розділяє: два ряди фіксованої
