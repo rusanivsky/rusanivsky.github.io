@@ -104,6 +104,7 @@
 }
 :root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif;--display-scale:1.5}
 :root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
+:root[data-font="fixel"]{--display-font:"Fixel",system-ui,-apple-system,sans-serif;--display-scale:1}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого

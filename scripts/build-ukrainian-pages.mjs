@@ -93,8 +93,9 @@ function addContactsLink(html, route) {
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
-  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false">U</button></div>';
+  const fontToggle = '<div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false" aria-label="Use Unbounded">U</button><button type="button" data-font-toggle="playfair" aria-pressed="false" aria-label="Use Playfair Display">P</button><button type="button" data-font-toggle="fixel" aria-pressed="false" aria-label="Use Fixel">F</button></div>';
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
+  const fontScript = '<script src="/scripts/font-switcher.js?v=2"></script>';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
@@ -107,9 +108,8 @@ function addContactsLink(html, route) {
     `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${fontToggle}\n    ${langToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
-  if (!html.includes('<script src="/scripts/font-switcher.js"></script>')) {
-    html = html.replace('</head>', '<script src="/scripts/font-switcher.js"></script>\n</head>');
-  }
+  html = html.replace(/\s*<script src="\/scripts\/font-switcher\.js(?:\?[^\"]*)?"><\/script>/g, '');
+  html = html.replace('</head>', `${fontScript}\n</head>`);
   if (!html.includes('<script src="/scripts/language-switcher.js"></script>')) {
     html = html.replace('</head>', '<script src="/scripts/language-switcher.js"></script>\n</head>');
   }

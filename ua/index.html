@@ -116,6 +116,7 @@
 }
 :root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif;--display-scale:1.5}
 :root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
+:root[data-font="fixel"]{--display-font:"Fixel",system-ui,-apple-system,sans-serif;--display-scale:1}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -231,6 +232,14 @@ h1,h2,h3{margin:0; font-weight:700; letter-spacing:-.02em; line-height:1}
      keep the page header optically balanced inside the page itself. */
   .meta{padding-top:clamp(16px,3vw,24px)}
   .meta{padding-bottom:clamp(4px,.8vh,10px)}
+}
+/* Той самий контракт рядка, що й у розділів: у цьому вузькому діапазоні
+   кнопки мають 44px тач-поле, але видимий рядок шапки — рівно 24px.
+   Винесене від’ємними полями тач-поле не може вплинути на лінійку. */
+@media (min-width:641px) and (max-width:760px){
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(clamp(4px,.8vh,10px) + 8px)}
+  .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
+  .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
 }
 @media (max-width:640px){
   /* На головній усі елементи .switches лишаються в шапці й читаються
@@ -936,8 +945,8 @@ figure{margin:0; position:relative; z-index:1}
 }
 </style>
 <script src="/scripts/reveal.js?v=2"></script>
-<script src="/scripts/font-switcher.js"></script>
 <script src="/scripts/language-switcher.js"></script>
+<script src="/scripts/font-switcher.js?v=2"></script>
 </head>
 <body>
 
@@ -949,7 +958,7 @@ figure{margin:0; position:relative; z-index:1}
   <div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
-    <div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false">U</button></div>
+    <div class="tgl font-toggle" role="group" aria-label="Font"><button type="button" data-font-toggle="unbounded" aria-pressed="false" aria-label="Use Unbounded">U</button><button type="button" data-font-toggle="playfair" aria-pressed="false" aria-label="Use Playfair Display">P</button><button type="button" data-font-toggle="fixel" aria-pressed="false" aria-label="Use Fixel">F</button></div>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
 </header>
