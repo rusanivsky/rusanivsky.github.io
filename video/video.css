@@ -55,6 +55,7 @@
      розгоном, тож на око вони не плутаються */
   --fs-chrome:12px;
   --fs-label:13px;
+  --display-number-size:calc(var(--fs-label) * 1.75 / var(--display-scale));
   --fs-text:clamp(16px,1.25vw,19px);
   --fs-link:clamp(19px,1.95vw,28px);
   /* менший, ніж був: на 700 назва набирає ваги, і 46 починали
@@ -105,6 +106,7 @@
 :root[data-font="unbounded"]{--display-font:"Unbounded",Georgia,sans-serif;--display-scale:1.5}
 :root[data-font="playfair"]{--display-font:"Playfair Display",Georgia,serif;--display-scale:1.25}
 :root[data-font="fixel"]{--display-font:"Fixel",system-ui,-apple-system,sans-serif;--display-scale:1.35}
+:root[data-font="unbounded"],:root[data-font="fixel"]{--display-number-size:var(--fs-label)}
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
    зелений для головної, нічний для відео. Вибирає їх не гість і не його
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
@@ -309,6 +311,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 .meta.header-menu-mode .header-menu-panel .switches > .tgl{
   display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:44px
 }
+.meta.header-menu-mode .header-menu-panel .font-toggle{grid-template-columns:minmax(0,1fr) auto auto auto}
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
   font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
   text-transform:uppercase;color:var(--mute)
@@ -477,7 +480,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider);
 }
-.cat .num{font-family:var(--display-font);font-size:calc(var(--fs-label) * 1.75 / var(--display-scale));font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
+.cat .num{font-family:var(--display-font);font-size:var(--display-number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);transition:color 240ms var(--ease)}
 .cat .lab{
   font-family:var(--display-font);font-size:calc(var(--fs-title) / var(--display-scale));font-weight:700;
   letter-spacing:-.035em;line-height:.98;
