@@ -313,7 +313,7 @@ h1,h2{margin:0;font-family:var(--display-font);font-weight:700;letter-spacing:-.
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; translate:0 16px}
 .rev [data-rev].is-in{opacity:1; translate:none;
-  transition:opacity 520ms var(--ease), translate 560ms var(--ease);
+  transition:opacity 440ms var(--ease), translate 480ms var(--ease);
   transition-delay:var(--d,0ms)}
 /* Перший екран і блоки нижче використовують один рух; перехід між
    сторінками не додає другого вертикального зсуву. */
@@ -334,6 +334,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .rev [data-rev]{opacity:1!important; translate:none!important}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
   html.pt-js body,html.pt-leave body{ animation:none }
+}
+@media (max-width:640px){
+  .rev [data-rev]{translate:0 10px}
+  .rev [data-rev].is-in{transition-duration:360ms,400ms}
 }
 
 /* ── перемикач категорій у шапці ─────────────────────────── */
