@@ -100,7 +100,14 @@
     /* Two frames guarantee that the hidden state is painted before the reveal. */
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        revealInOrder(firstView);
+        /* The page transition already moves the document on entry. Keep the
+           first viewport in place so it does not get a second movement while
+           the new page is settling. */
+        firstView.forEach(function (element) {
+          element.classList.add('at-once');
+          element.style.setProperty('transition', 'none', 'important');
+          show(element);
+        });
         later.forEach(function (element) { observer.observe(element); });
       });
     });
