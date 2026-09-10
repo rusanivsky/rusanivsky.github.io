@@ -440,11 +440,25 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   }
 }
 .topbar .rule{margin-bottom:2px}
-/* Лінійка має сенс лише там, де вона щось розділяє: два ряди фіксованої
-   шапки (перелік підрозділів під нею або смуга розділів на /rates/) чи
-   шапку й сторінку, коли шапка не фіксована. Під однорядковою фіксованою
-   шапкою вона підкреслює порожнє місце — тон шапки й так зведений із тлом */
-body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
+/* Під однорядковою фіксованою шапкою лінійка й заслінка міняються
+   місцями: угорі сторінки межу тримає лінійка, під прокруткою — сама
+   заслінка, і жодної миті їх не буває двох. Обидві ведені тією ж
+   прокруткою, тож розходитись їм ні на чому.
+   Там, де шапка ділить два ряди (перелік підрозділів або смуга розділів
+   на /rates/) чи взагалі не фіксована, лінійка стоїть завжди */
+@keyframes veil-out{from{opacity:1}to{opacity:0}}
+@supports (animation-timeline:scroll()){
+  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
+    animation:veil-out linear both;
+    animation-timeline:scroll();
+    animation-range:0 140px;
+  }
+}
+/* Без scroll-таймлайнів заслінка стоїть на місці з першого пікселя —
+   тоді лінійці під нею нема чого робити */
+@supports not (animation-timeline:scroll()){
+  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
+}
 /* На сторінці умов роботи sticky лишається, але без межі й тіні. */
 body:has(.contact-head) .topbar{
   border-bottom:0;
