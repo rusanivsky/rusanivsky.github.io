@@ -116,6 +116,16 @@ function addContactsLink(html, route) {
   return html;
 }
 
+const sectionHeaderStyle = '<link rel="stylesheet" href="/styles/section-header.css?v=1">';
+
+function addSectionHeaderStyle(html, route) {
+  if (route === '/') return html;
+  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/section-header\.css(?:\?[^\"]*)?">/g, '');
+  const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
+  if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
+  return html.replace(sectionStyle, `$&\n${sectionHeaderStyle}`);
+}
+
 function renameWorkTerms(html) {
   return html.replace(/(<h[1-6][^>]*id="s-contact"[^>]*?)data-en="Contacts" data-ua="Контакти"/g, '$1data-en="Work terms" data-ua="Умови роботи"')
     .replace(/(<h[1-6][^>]*id="s-contact"[^>]*>)Contacts(<\/h[1-6]>)/g, '$1Work terms$2')
@@ -142,6 +152,7 @@ for (const [route, source, title, description] of pages) {
   english = updateHead(english, route, englishTitle, englishDescription, false);
   english = renameWorkTerms(english);
   english = addContactsLink(english, route);
+  english = addSectionHeaderStyle(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
