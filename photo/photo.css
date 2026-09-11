@@ -171,7 +171,17 @@
    система, а сама сторінка — data-theme стоїть у <html> ще до першого
    байта стилів. Доти набір залежав ще й від prefers-color-scheme, і той,
    хто колись натиснув «світлу», носив її за собою по всьому сайту */
-:root[data-theme="light"]{color-scheme:light}
+/* Фотогалереї на світлій темі несуть власний контраст — плямисті
+   градієнти плити й потемніння на скролі під ними лише сперечаються
+   зі знімками. Плита лишається плоскою, текстура (зерно) і паралакс
+   (зсув) — на місці */
+:root[data-theme="light"]{
+  color-scheme:light;
+  --plate-base:linear-gradient(var(--bg),var(--bg));
+  --plate-warm:none;
+  --plate-deep:none;
+  --plate-vignette:none;
+}
 :root[data-theme="green"]{
   color-scheme:dark;
   /* та сама охра, світліша й тепліша — на плиті вона тримає від 5:1
@@ -269,6 +279,16 @@ body::after{
     animation:plate-scroll linear both;
     animation-timeline:scroll();
   }
+  /* світла тема: той самий паралакс, без потемніння — плоскій плиті
+     без градієнтів немає що затемнювати */
+  :root[data-theme="light"] body::before,
+  :root[data-theme="light"] body::after{
+    animation-name:plate-scroll-flat;
+  }
+}
+@keyframes plate-scroll-flat{
+  from{translate:0 0}
+  to{translate:0 -64px}
 }
 
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
@@ -485,20 +505,20 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    собою — його власне розмиття мовчки перетворилось би на ніщо.
    Тон береться з верху плити, а не з --bg: --bg — це середина плити,
    і на ньому шапка виходить помітно темнішою за тло просто під собою.
-   Фарби лише 15 % — решту смуги складає розмитий backdrop. Доти було
-   40%: рівна заливка поверх розмитого зерна читалась іншим матеріалом,
-   ніж різке зерно навколо — тепер плашку тримає переважно сам blur,
-   і межа між нею й плитою м'якша */
+   Фарби 90% — майже суцільна плашка. Доти було 15%: на тихому фоні це
+   читалось як скло, але на насиченій фотогалереї кольори знизу
+   проступали крізь blur кольоровою плямою — шапка переставала бути
+   читаною поверхнею. Blur лишається лише пом'якшити край плашки */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 15%,transparent);
+  background:color-mix(in srgb,var(--plate-top) 90%,transparent);
   /* обводка живе тут, а не окремо на .topbar: так вона з'являється
      разом із заслінкою, а не висить від самого верху сторінки. Доти
      стояла завжди й одразу впритул до лінійки (.rule нижче) — на
      першому екрані виходило дві межі одна під одною */
   border-bottom:1px solid var(--hairline);
-  -webkit-backdrop-filter:blur(16px);
-  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(20px);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}

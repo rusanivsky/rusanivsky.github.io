@@ -482,20 +482,20 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    собою — його власне розмиття мовчки перетворилось би на ніщо.
    Тон береться з верху плити, а не з --bg: --bg — це середина плити,
    і на ньому шапка виходить помітно темнішою за тло просто під собою.
-   Фарби лише 15 % — решту смуги складає розмитий backdrop. Доти було
-   40%: рівна заливка поверх розмитого зерна читалась іншим матеріалом,
-   ніж різке зерно навколо — тепер плашку тримає переважно сам blur,
-   і межа між нею й плитою м'якша */
+   Фарби 90% — майже суцільна плашка. Доти було 15%: на тихому фоні це
+   читалось як скло, але на насиченій фотогалереї кольори знизу
+   проступали крізь blur кольоровою плямою — шапка переставала бути
+   читаною поверхнею. Blur лишається лише пом'якшити край плашки */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 15%,transparent);
+  background:color-mix(in srgb,var(--plate-top) 90%,transparent);
   /* обводка живе тут, а не окремо на .topbar: так вона з'являється
      разом із заслінкою, а не висить від самого верху сторінки. Доти
      стояла завжди й одразу впритул до лінійки (.rule нижче) — на
      першому екрані виходило дві межі одна під одною */
   border-bottom:1px solid var(--hairline);
-  -webkit-backdrop-filter:blur(16px);
-  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(20px);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}
