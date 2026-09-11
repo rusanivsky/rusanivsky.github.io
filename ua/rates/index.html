@@ -154,6 +154,15 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   line-height:round(1.55em,1px)}
 .step h3{grid-column:4/6;margin:0;font-size:var(--fs-text);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.01em}
 .step p{grid-column:6/10;margin:0;text-wrap:pretty}
+/* На десктопі номер лишається у своїй третій колонці, але бере участь у
+   базовому вирівнюванні рядка. Раніше absolute + top піднімали його над
+   базовою лінією заголовка. */
+@media (min-width:961px){
+  .step .no{
+    position:static;left:auto;top:auto;grid-column:3;grid-row:auto;
+    margin-left:.65rem;align-self:baseline
+  }
+}
 /* перелік умов іде на всю ширину вмісту у дві колонки: у чотирьох правих
    треках рядок сходив би до п'яти слів, а тут пункти — це самі умови, а
    не підписи збоку. Просвіт полем знизу, а не зверху: у колонковій
