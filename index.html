@@ -232,10 +232,10 @@ body::after{
    її низу — і на короткій, і на довгій */
 @keyframes plate-scroll{
   from{translate:0 0; filter:brightness(1)}
-  to{translate:0 -64px; filter:brightness(.6)}
+  to{translate:0 -64px; filter:brightness(.74)}
 }
 @supports (animation-timeline:scroll()){
-  body::before{
+  body::before,body::after{
     animation:plate-scroll linear both;
     animation-timeline:scroll();
   }
