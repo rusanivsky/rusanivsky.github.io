@@ -629,15 +629,6 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
-/* та сама стрілка назовні, що й на .sect і .pixover-link: рядок веде
-   на сторонній сайт, тож на ховері поруч із назвою з'являється ↗ */
-.cat[target] .lab::after{
-  content:"↗";display:inline-block;margin-left:.22em;font-size:.55em;vertical-align:.78em;
-  color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
-  transition:opacity 320ms var(--ease),transform 320ms var(--ease);
-}
-@media (hover:hover){.cat[target]:hover .lab::after{opacity:1;transform:none}}
-.cat[target]:active .lab::after{opacity:1;transform:none}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
    чверть рядка — там підпис лягає вертикально, а колонка сходить до
    20px: те саме, що доти вмикалось аж на телефоні */

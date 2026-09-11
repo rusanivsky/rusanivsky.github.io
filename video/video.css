@@ -700,11 +700,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
-/* та сама стрілка назовні, що й на .sect і .pixover-link: рядок веде
-   на сторонній сайт, тож на ховері поруч із назвою з'являється ↗ */
+/* та сама стрілка назовні, що й на .sect: рядок веде на сторонній
+   сайт, тож на ховері поруч із назвою з'являється ↗. Розмір і відступ —
+   ті самі .36em/.16em, що вже стоять на такій самій стрілці в design.css */
 .cat[target] .lab::after{
-  content:"↗";display:inline-block;margin-left:.22em;font-size:.55em;vertical-align:.78em;
-  color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
+  content:"↗";display:inline-block;margin-left:.16em;font-size:.36em;
+  vertical-align:.95em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
   transition:opacity 320ms var(--ease),transform 320ms var(--ease);
 }
 @media (hover:hover){.cat[target]:hover .lab::after{opacity:1;transform:none}}
