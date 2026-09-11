@@ -32,6 +32,8 @@
   --grain:.085;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#f6f7f1;
+  /* світла плита не темнішає під час скролу */
+  --sticky-plate-end:var(--plate-top);
   /* тон випадного меню: доти воно бралося з --plate-top, а той описує
      смугу під самим обводом браузера, не місце під шапкою. Кожен набір
      кольорів має свій вимір; поки живе тільки зелений, решта лишається
@@ -181,6 +183,8 @@
   --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#42563f;
+  /* виміряний тон плити одразу під sticky-шапкою на низу сторінки */
+  --sticky-plate-end:#304234;
   /* плашка меню: тон плити рівно там, де воно висить — під шапкою,
      праворуч. Не --plate-top: той на 12 одиниць тепліший, і панель
      читалась іншим матеріалом, а не вирізом у тій самій плиті.
@@ -212,6 +216,7 @@
   --grain:.22;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#1b281d;
+  --sticky-plate-end:#101d14;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
@@ -480,8 +485,8 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    із backdrop-filter стає backdrop root для всього, що в ньому лежить,
    і випадне меню всередині шапки перестало б бачити сторінку під
    собою — його власне розмиття мовчки перетворилось би на ніщо.
-   Тон береться з верху плити, а не з --bg: --bg — це середина плити,
-   і на ньому шапка виходить помітно темнішою за тло просто під собою.
+   Угорі тон береться з верху плити, а за скролом йде до
+   --sticky-plate-end — виміряного тону тла одразу під шапкою.
    Фарби 90% — майже суцільна плашка. Доти було 15%: на тихому фоні це
    читалось як скло, але на насиченій фотогалереї кольори знизу
    проступали крізь blur кольоровою плямою — шапка переставала бути
@@ -507,12 +512,19 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    без слухача, без кадру на такт. Там, де scroll-таймлайнів немає,
    заслінка просто стоїть на місці */
 @keyframes veil-in{from{opacity:0}to{opacity:1}}
+/* Фіксована плашка проходить той самий 0–100% шлях, що й плита:
+   на довгих сторінках вона більше не лишається світлою смугою над
+   вже затемненим тлом. */
+@keyframes sticky-plate-scroll{
+  from{background-color:color-mix(in srgb,var(--plate-top) 90%,transparent)}
+  to{background-color:color-mix(in srgb,var(--sticky-plate-end) 90%,transparent)}
+}
 @supports (animation-timeline:scroll()){
   .topbar::before{
     opacity:0;
-    animation:veil-in linear both;
-    animation-timeline:scroll();
-    animation-range:0 84px;
+    animation:veil-in linear both,sticky-plate-scroll linear both;
+    animation-timeline:scroll(),scroll();
+    animation-range:0 84px,0 100%;
   }
 }
 .topbar .rule{margin-bottom:2px}
