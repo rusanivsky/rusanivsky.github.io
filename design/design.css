@@ -351,7 +351,6 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   padding-block:var(--meta-pad);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
-.back::before{content:none}
 @media (hover:hover){.back:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
@@ -431,8 +430,9 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   /* Велика стрілка не збільшує рядок: 44px тач-поле живе в ::after,
      а видимий знак вирівняний по горизонтальній осі навігаційних букв.
      Подвійний відступ після неї складається з gap сітки та margin-right. */
-  .back{grid-column:1;grid-row:1;font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
+  .back{grid-column:1;grid-row:1;font-size:0;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
     position:relative;width:max-content;height:19px;min-height:0;padding:0 0 0 8px;margin:0;margin-right:clamp(12px,1.8vw,26px);color:var(--mute);line-height:1}
+  .back::before{content:"←";font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;line-height:1;transform:translateY(-1px)}
   .back::after{content:"";position:absolute;inset:-12.5px -6px}
   /* Усі елементи лишаються в одному рядку, доки поміщаються. Якщо ні,
      скрипт переносить навігацію й перемикачі в меню праворуч. */
