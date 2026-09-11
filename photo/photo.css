@@ -475,14 +475,14 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
   background:color-mix(in srgb,var(--plate-top) 40%,transparent);
+  /* обводка живе тут, а не окремо на .topbar: так вона з'являється
+     разом із заслінкою, а не висить від самого верху сторінки. Доти
+     стояла завжди й одразу впритул до лінійки (.rule нижче) — на
+     першому екрані виходило дві межі одна під одною */
+  border-bottom:1px solid var(--hairline);
   -webkit-backdrop-filter:blur(26px);
   backdrop-filter:blur(26px);
 }
-/* ледь помітна обводка попід шапкою — та сама межа, що на скруглених
-   картках iOS: вона стоїть на самому .topbar, а не на його склі, тому
-   не гасне й не з'являється з прокруткою так, як заслінка нижче —
-   opacity-анімація веде саме ::before, а обводка лишається поза нею */
-.topbar{border-bottom:1px solid var(--hairline)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}
   .header-menu-panel{background:var(--menu-plate)}
@@ -521,10 +521,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @supports not (animation-timeline:scroll()){
   body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
 }
-/* На сторінці умов роботи sticky лишається, але без межі й тіні. */
+/* На сторінці умов роботи sticky лишається, але без межі й тіні.
+   Обводка тепер на ::before, тож і гасити її треба там само. */
 body:has(.contact-head) .topbar{
-  border-bottom:0;
   box-shadow:none;
+}
+body:has(.contact-head) .topbar::before{
+  border-bottom:0;
 }
 
 /* ── поява блоків ─────────────────────────────────────────── */
