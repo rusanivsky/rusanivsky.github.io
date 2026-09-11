@@ -287,8 +287,8 @@ body.no-plate-darkening::after{filter:none}
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
    спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
    вони були до гортання */
-html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
-body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55;overflow-x:hidden;overflow-x:clip}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.03em;line-height:1}
