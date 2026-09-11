@@ -152,7 +152,20 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 15;
+const sectionHeaderStyleVersion = 16;
+
+const sectionStyleVersions = {
+  '/photo/photo.css': 103,
+  '/video/video.css': 104,
+  '/design/design.css': 94,
+};
+
+function updateSectionStyleVersions(html) {
+  for (const [stylesheet, version] of Object.entries(sectionStyleVersions)) {
+    html = html.replace(new RegExp(`${stylesheet.replaceAll('/', '\\/')}\\?v=\\d+`, 'g'), `${stylesheet}?v=${version}`);
+  }
+  return html;
+}
 
 function addSectionHeaderStyle(html, route) {
   if (route === '/') return html;
@@ -178,6 +191,14 @@ function renameWorkTerms(html) {
   return html.replace(/(<h[1-6][^>]*id="s-contact"[^>]*?)data-en="Contacts" data-ua="Контакти"/g, '$1data-en="Work terms" data-ua="Умови роботи"')
     .replace(/(<h[1-6][^>]*id="s-contact"[^>]*>)Contacts(<\/h[1-6]>)/g, '$1Work terms$2')
     .replace(/(Telegram|Behance|Threads|TikTok) @rusanivsky/g, '$1');
+}
+
+function normalizeBackLinks(html) {
+  return html
+    .replace(/data-en="← Home"/g, 'data-en="Home"')
+    .replace(/data-ua="← На головну"/g, 'data-ua="На головну"')
+    .replace(/>← Home<\/a>/g, '>Home</a>')
+    .replace(/>← На головну<\/a>/g, '>На головну</a>');
 }
 
 // Не --bg, а колір, який плита тла показує при самому верху вікна:
@@ -215,9 +236,11 @@ for (const [route, source, title, description] of pages) {
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
   english = renameWorkTerms(english);
+  english = normalizeBackLinks(english);
   english = addContactsLink(english, route);
   english = addFooterMeta(english, route);
   english = addKyivClockScript(english, route);
+  english = updateSectionStyleVersions(english);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
   english = applyThemePolicy(english, route);
