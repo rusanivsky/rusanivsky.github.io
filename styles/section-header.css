@@ -50,7 +50,7 @@ body.no-plate-darkening::after{
 /* Короткі сторінки розділів не повинні залишати футер посередині великого
    екрана. Auto-відступ заповнює лише вільний простір; якщо контент вищий за
    viewport, сторінка продовжує скролитися як раніше. */
-@media (min-width:1920px) and (min-height:1000px){
+@media (min-width:1920px) and (min-height:800px){
   body.no-plate-darkening{
     min-height:100vh;display:flex;flex-direction:column
   }
