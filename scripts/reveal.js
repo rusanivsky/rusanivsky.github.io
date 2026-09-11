@@ -4,6 +4,18 @@
   var root = document.documentElement;
   root.classList.add('rev');
 
+  /* Прихід через кросовер кадру вже несе власний рух. Якщо поверх нього
+     перший екран ще й виїжджає знизу, завантаження читається подвійним
+     стрибком — саме через це кросовер між сторінками колись і прибрали.
+     Тепер рух лишається один: те, що вже видно, приходить разом із
+     кадром, а нижчі блоки з'являються на скролі, як і раніше.
+     Подія летить після DOMContentLoaded і до першого кадру, тож прапорець
+     завжди встигає до requestAnimationFrame нижче. */
+  var viaTransition = false;
+  window.addEventListener('pagereveal', function (event) {
+    if (event.viewTransition) viaTransition = true;
+  });
+
   function ready() {
     var reduceMotion = window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -97,14 +109,19 @@
       }
     });
 
-    /* Two frames guarantee that the hidden state is painted before the reveal. */
+    function enter() {
+      /* The first viewport enters as one composition. Scrolling content
+         still uses a stagger, but a newly opened page must not cascade. */
+      firstView.forEach(show);
+      later.forEach(function (element) { observer.observe(element); });
+    }
+
+    /* Two frames guarantee that the hidden state is painted before the reveal.
+       Після кросовера це якраз зайве: один кадр — і прихований стан не
+       встигає намалюватись, тобто перехід не запускається взагалі. */
     requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        /* The first viewport enters as one composition. Scrolling content
-           still uses a stagger, but a newly opened page must not cascade. */
-        firstView.forEach(show);
-        later.forEach(function (element) { observer.observe(element); });
-      });
+      if (viaTransition) { enter(); return; }
+      requestAnimationFrame(enter);
     });
   }
 

@@ -665,6 +665,30 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    знімкам plus-lighter, розрахований на зустрічні згасання. Обидва
    непрозорі — і кадр складається сам із собою, тобто спалахує */
 @view-transition{ navigation:auto }
+/* Знімок переходу забирає в backdrop-filter його підложку: блюру немає
+   що розмивати, і ті 10% прозорості, які він доти ховав, проступають —
+   плашка на долю секунди стає прозорою. На час переходу вона суцільна,
+   рівно як у запасному наборі для браузерів без backdrop-filter.
+   background-color тут важливий: його веде scroll-анімація плашки, а
+   анімацію перебиває лише important. Два однакові блоки, а не один
+   список: :active-view-transition знають не всі рушії, а невідомий
+   селектор у списку вимкнув би й другий */
+html.theme-shift .topbar::before{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background-color:var(--plate-top)!important
+}
+html.theme-shift .header-menu-panel{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background-color:var(--menu-plate)
+}
+:root:active-view-transition .topbar::before{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background-color:var(--plate-top)!important
+}
+:root:active-view-transition .header-menu-panel{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background-color:var(--menu-plate)
+}
 ::view-transition-group(root),
 ::view-transition-old(root),
 ::view-transition-new(root){ mix-blend-mode:normal }
