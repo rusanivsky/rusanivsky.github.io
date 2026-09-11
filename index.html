@@ -135,8 +135,14 @@
      документа, і зерно лежить під текстом, а не поверх нього.
      Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
      екран, тож повтор не читається, і жодного файлу не тягнуть */
-  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
+  /* color-interpolation-filters='sRGB' на обох фільтрах: за замовчуванням SVG-фільтри
+     рахуються в linearRGB (так каже спека), і на turbulence + feComponentTransfer
+     рушії розходяться, хто саме й де конвертує. У WebKit це давало на mottle не просто
+     інший тон, а видимий бендинг — прибрати шар цілком лікувало, форсувати sRGB лікує
+     так само й лишає плямистість на місці. Chromium цей атрибут ігнорує мовчки: тону
+     не міняє (перевірено пліч-опліч) */
+  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
   --mottle-size:1280px;
 }
 /* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
@@ -190,10 +196,11 @@ html{background:var(--bg)}
 /* inset від'ємний, а не 0: у вікна на телефоні немає сталої висоти —
    смуги Safari то згортаються, то ні, а гумовий відскок згори й знизу
    відкриває смугу поза вікном. Плита рівно по вікну лишає там голий
-   --bg, і тло виглядає обрізаним. Запас у чверть висоти вікна більший
-   за будь-яку з тих смуг */
+   --bg, і тло виглядає обрізаним рівним кольором без зерна й градієнта.
+   Чверті висоти вікна на реальному iOS Safari не вистачало — смуга
+   таки пробивалась, тож запас піднято до 60vh */
 body::before,body::after{
-  content:""; position:fixed; inset:-25vh 0; z-index:-1; pointer-events:none;
+  content:""; position:fixed; inset:-60vh 0; z-index:-1; pointer-events:none;
 }
 body::before{
   background-color:var(--bg);
@@ -528,11 +535,16 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
-/* стрілка вниз-праворуч: веде всередину сайту. Місце під неї тримає
-   падінг заголовка, тож на ховері рядок не смикається */
+/* стрілка вниз-праворуч: веде всередину сайту. left:100% рахувався від
+   коробки .sect, а не від кінця слова — коли заголовок переносився на
+   два рядки, коробка розтягувалась на всю доступну ширину (так працює
+   auto-width переносного inline-block), і стрілка опинялась далеко
+   праворуч від «photography», у порожньому місці. inline-block у
+   звичайному потоці, як на .cat[target], прибивається до останньої
+   літери, а не до краю коробки, хай там яка вона завширшки */
 .spec .sect::after{
-  content:"↘"; position:absolute; left:100%; bottom:.55em;
-  margin-left:.24em; font-size:.34em; line-height:1; color:var(--ink);
+  content:"↘"; display:inline-block; margin-left:.16em;
+  font-size:.36em; vertical-align:.95em; line-height:1; color:var(--ink);
   opacity:0; transform:translate(-.3em,-.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
@@ -792,18 +804,6 @@ figure{margin:0; position:relative; z-index:1}
 .lg.defenders{--src:url(/img/clients/defenders-ukma.png); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
 .lg.kooperativ{--src:url(/img/clients/kooperativ.svg); height:calc(var(--lg) * .91); width:calc(var(--lg) * 4.93)}
 .lg.yd{--src:url(/img/clients/yd.svg); height:calc(var(--lg) * 1.2642); width:calc(var(--lg) * 1.9012)}
-/* у Kooperativ плашка фірмово червона — на наведенні вона нею і стає.
-   Друга маска має ту саму рамку, що й повна марка, тож при mask-size:contain
-   лягає точно на своє місце. Напис лишається чорнилом сторінки: у темній
-   темі оригінальний чорний просто зник би у фоні */
-.lg.kooperativ::after{
-  content:""; position:absolute; inset:0; background:#fa2b00;
-  -webkit-mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
-  mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
-  opacity:0; transition:opacity 280ms var(--ease);
-}
-@media (hover:hover){.logos a:hover .lg.kooperativ::after{opacity:1}}
-.logos a:active .lg.kooperativ::after{opacity:1}
 .lg.tsyronian{--src:url(/img/clients/tsyronian.svg); height:calc(var(--lg) * .98); width:calc(var(--lg) * 3.38)}
 .lg.shylero{--src:url(/img/clients/shylero.png); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
 /* на телефоні марки лишаються рядом, а не сіткою два на два: --lg тут не

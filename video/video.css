@@ -121,8 +121,14 @@
      документа, і зерно лежить під текстом, а не поверх нього.
      Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
      екран, тож повтор не читається, і жодного файлу не тягнуть */
-  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
+  /* color-interpolation-filters='sRGB' на обох фільтрах: за замовчуванням SVG-фільтри
+     рахуються в linearRGB (так каже спека), і на turbulence + feComponentTransfer
+     рушії розходяться, хто саме й де конвертує. У WebKit це давало на mottle не просто
+     інший тон, а видимий бендинг — прибрати шар цілком лікувало, форсувати sRGB лікує
+     так само й лишає плямистість на місці. Chromium цей атрибут ігнорує мовчки: тону
+     не міняє (перевірено пліч-опліч) */
+  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
   --mottle-size:1280px;
   /* та сама 12-колонкова сітка, що й на головній: міжколонник, зсув у другу
      колонку (перша лишається наскрізним полем, у якому не стоїть нічого,
@@ -220,10 +226,11 @@ html{background:var(--bg)}
 /* inset від'ємний, а не 0: у вікна на телефоні немає сталої висоти —
    смуги Safari то згортаються, то ні, а гумовий відскок згори й знизу
    відкриває смугу поза вікном. Плита рівно по вікну лишає там голий
-   --bg, і тло виглядає обрізаним. Запас у чверть висоти вікна більший
-   за будь-яку з тих смуг */
+   --bg, і тло виглядає обрізаним рівним кольором без зерна й градієнта.
+   Чверті висоти вікна на реальному iOS Safari не вистачало — смуга
+   таки пробивалась, тож запас піднято до 60vh */
 body::before,body::after{
-  content:""; position:fixed; inset:-25vh 0; z-index:-1; pointer-events:none;
+  content:""; position:fixed; inset:-60vh 0; z-index:-1; pointer-events:none;
 }
 body::before{
   background-color:var(--bg);
@@ -412,8 +419,8 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
      в прокрутці, а меню має лишатися читаним, поки відкрите */
   background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
-  -webkit-backdrop-filter:blur(28px) saturate(1.4);
-  backdrop-filter:blur(28px) saturate(1.4);
+  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);
+  backdrop-filter:blur(17.5px) saturate(1.4);
   /* без обводки: волосяна лінія по краю читалась накресленим прямокутником */
   border:0;border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
@@ -461,19 +468,21 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    собою — його власне розмиття мовчки перетворилось би на ніщо.
    Тон береться з верху плити, а не з --bg: --bg — це середина плити,
    і на ньому шапка виходить помітно темнішою за тло просто під собою.
-   Фарби лише 40 % — решту смуги складає сама плита, тож похибка тону
-   не має де вирости */
+   Фарби лише 15 % — решту смуги складає розмитий backdrop. Доти було
+   40%: рівна заливка поверх розмитого зерна читалась іншим матеріалом,
+   ніж різке зерно навколо — тепер плашку тримає переважно сам blur,
+   і межа між нею й плитою м'якша */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 40%,transparent);
-  -webkit-backdrop-filter:blur(26px);
-  backdrop-filter:blur(26px);
+  background:color-mix(in srgb,var(--plate-top) 15%,transparent);
+  /* обводка живе тут, а не окремо на .topbar: так вона з'являється
+     разом із заслінкою, а не висить від самого верху сторінки. Доти
+     стояла завжди й одразу впритул до лінійки (.rule нижче) — на
+     першому екрані виходило дві межі одна під одною */
+  border-bottom:1px solid var(--hairline);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
 }
-/* ледь помітна обводка попід шапкою — та сама межа, що на скруглених
-   картках iOS: вона стоїть на самому .topbar, а не на його склі, тому
-   не гасне й не з'являється з прокруткою так, як заслінка нижче —
-   opacity-анімація веде саме ::before, а обводка лишається поза нею */
-.topbar{border-bottom:1px solid var(--hairline)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}
   .header-menu-panel{background:var(--menu-plate)}
@@ -489,7 +498,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
     opacity:0;
     animation:veil-in linear both;
     animation-timeline:scroll();
-    animation-range:0 140px;
+    animation-range:0 84px;
   }
 }
 .topbar .rule{margin-bottom:2px}
@@ -504,7 +513,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
     animation:veil-out linear both;
     animation-timeline:scroll();
-    animation-range:0 140px;
+    animation-range:0 84px;
   }
 }
 /* Без scroll-таймлайнів заслінка стоїть на місці з першого пікселя —
@@ -606,7 +615,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .short-form-grid{grid-template-columns:none;grid-template-rows:auto;grid-auto-flow:column;grid-auto-columns:65%;justify-content:initial;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .short-form-grid::-webkit-scrollbar{display:none}
   .short-form-grid .v{scroll-snap-align:start}
-  .carousel-next{display:grid;place-items:center;position:absolute;right:calc(var(--pad) + clamp(12px,2vw,22px));top:calc(clamp(28px,5vh,64px) + 53vw);z-index:3;width:52px;height:52px;padding:0;border:1px solid color-mix(in srgb,var(--pencil) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(5px);color:var(--pencil);font:600 calc(var(--fs-text) + var(--fs-text))/1 var(--font);cursor:pointer;transform:translateY(-50%);transition:opacity 920ms var(--ease),color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease);will-change:opacity,transform}
+  .carousel-next{display:grid;place-items:center;position:absolute;right:calc(var(--pad) + clamp(12px,2vw,22px));top:calc(clamp(28px,5vh,64px) + 53vw);z-index:3;width:52px;height:52px;padding:0;border:1px solid color-mix(in srgb,var(--pencil) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(3px);color:var(--pencil);font:600 calc(var(--fs-text) + var(--fs-text))/1 var(--font);cursor:pointer;transform:translateY(-50%);transition:opacity 920ms var(--ease),color 220ms var(--ease),background 220ms var(--ease),transform 220ms var(--ease);will-change:opacity,transform}
   .carousel-next.is-end{opacity:0;pointer-events:none}
 }
 @media (hover:hover){.carousel-next:hover{color:var(--pencil);background:var(--surface);transform:translate(2px,-50%)}}
@@ -620,8 +629,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
     .carousel-next{
       background:color-mix(in srgb,var(--surface) 46%,transparent);
       border-color:color-mix(in srgb,var(--ink) 28%,transparent);
-      -webkit-backdrop-filter:blur(18px) saturate(155%) brightness(1.08);
-      backdrop-filter:blur(18px) saturate(155%) brightness(1.08);
+      -webkit-backdrop-filter:blur(11px) saturate(155%) brightness(1.08);
+      backdrop-filter:blur(11px) saturate(155%) brightness(1.08);
       box-shadow:inset 0 1px 0 color-mix(in srgb,var(--ink) 18%,transparent),0 8px 20px color-mix(in srgb,#000 18%,transparent);
     }
   }
@@ -692,6 +701,16 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active .lab{transform:translateX(10px);color:var(--pencil)}
 .cat:active .num{color:var(--accent)}
 .cat:active::after{transform:scaleX(1)}
+/* та сама стрілка назовні, що й на .sect: рядок веде на сторонній
+   сайт, тож на ховері поруч із назвою з'являється ↗. Розмір і відступ —
+   ті самі .36em/.16em, що вже стоять на такій самій стрілці в design.css */
+.cat[target] .lab::after{
+  content:"↗";display:inline-block;margin-left:.16em;font-size:.36em;
+  vertical-align:.95em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease),transform 320ms var(--ease);
+}
+@media (hover:hover){.cat[target]:hover .lab::after{opacity:1;transform:none}}
+.cat[target]:active .lab::after{opacity:1;transform:none}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
    чверть рядка — там підпис лягає вертикально, а колонка сходить до
    20px: те саме, що доти вмикалось аж на телефоні */
