@@ -184,7 +184,8 @@
       </div>
     </div>
   </div>
-  <div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div>
+  <div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div>
+    <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div></div>
 </footer>
 <script>
 (function(){
@@ -207,5 +208,6 @@
   document.querySelectorAll('.local-fac').forEach(function(wrap){var video=wrap.querySelector('video'),play=wrap.querySelector('.local-play');video.setAttribute('controlslist','nodownload');play.addEventListener('click',function(){if(video.paused)video.play();else video.pause();});video.addEventListener('contextmenu',function(e){e.preventDefault();});video.addEventListener('play',function(){video.controls=true;wrap.classList.add('is-playing');});video.addEventListener('pause',function(){wrap.classList.remove('is-playing');});video.addEventListener('ended',function(){wrap.classList.remove('is-playing');});});
 })();
 </script>
-<script src="/scripts/move-language-switcher.js?v=4"></script></body>
+<script src="/scripts/move-language-switcher.js?v=4"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
+</body>
 </html>

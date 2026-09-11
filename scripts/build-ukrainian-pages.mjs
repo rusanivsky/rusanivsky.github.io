@@ -132,6 +132,26 @@ function addContactsLink(html, route) {
   return html;
 }
 
+const footerMeta = '<div class="foot-meta" aria-label="Location and local time">'
+  + '<span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span>'
+  + '<span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span>'
+  + '<span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> '
+  + '<span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span>'
+  + '</div>';
+
+function addFooterMeta(html, route) {
+  // The home page already moves its header metadata into this footer slot.
+  if (route === '/' || html.includes('class="foot-meta"')) return html;
+  const footer = /(<div class="wrap foot-bar">\s*<div class="cols">[\s\S]*?<\/div>)(\s*<\/div>)/;
+  if (!footer.test(html)) throw new Error(`No footer bar found for ${route}`);
+  return html.replace(footer, `$1\n    ${footerMeta}$2`);
+}
+
+function addKyivClockScript(html, route) {
+  if (route === '/' || html.includes('/scripts/kyiv-clock.js')) return html;
+  return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
+}
+
 const sectionHeaderStyleVersion = 15;
 
 function addSectionHeaderStyle(html, route) {
@@ -196,6 +216,8 @@ for (const [route, source, title, description] of pages) {
   english = updateHead(english, route, englishTitle, englishDescription, false);
   english = renameWorkTerms(english);
   english = addContactsLink(english, route);
+  english = addFooterMeta(english, route);
+  english = addKyivClockScript(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
   english = applyThemePolicy(english, route);

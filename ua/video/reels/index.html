@@ -121,7 +121,8 @@
       </div>
     </div>
   </div>
-  <div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div>
+  <div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div>
+    <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div></div>
 </footer>
 <script>
 (function(){
@@ -134,5 +135,6 @@
   (function(){var track=document.querySelector('.short-form-grid'),next=document.querySelector('.carousel-next');if(!track||!next)return;function update(){var atEnd=track.scrollWidth<=track.clientWidth+1||track.scrollLeft+track.clientWidth>=track.scrollWidth-2;next.classList.toggle('is-end',atEnd);next.setAttribute('aria-hidden',String(atEnd));next.tabIndex=atEnd?-1:0;}next.addEventListener('click',function(){var card=track.querySelector('.v');if(!card)return;var gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:card.getBoundingClientRect().width+gap,behavior:'smooth'});});track.addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();})();
 })();
 </script>
-<script src="/scripts/move-language-switcher.js?v=4"></script></body>
+<script src="/scripts/move-language-switcher.js?v=4"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
+</body>
 </html>
