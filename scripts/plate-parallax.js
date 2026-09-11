@@ -6,7 +6,7 @@
   if(/(?:Chrome|Chromium|Edg|OPR)\//.test(navigator.userAgent)){
     root.classList.add('is-chromium');
     if(window.matchMedia('(min-width:900px) and (hover:hover) and (pointer:fine)').matches){
-      root.style.setProperty('--plate-factor','.96');
+      root.style.setProperty('--plate-factor','1.04');
     }
   }
 

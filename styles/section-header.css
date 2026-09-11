@@ -56,3 +56,10 @@ body.no-plate-darkening::after{
   }
   body.no-plate-darkening .site-foot{margin-top:auto}
 }
+/* Конкретні короткі landing-сторінки Фото й Дизайн заповнюють вільну
+   висоту на будь-якому екрані. Якщо контент стає вищим за viewport,
+   min-height перестає впливати і футер іде після нього зі скролом. */
+body.footer-at-bottom{
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column
+}
+body.footer-at-bottom .site-foot{margin-top:auto}
