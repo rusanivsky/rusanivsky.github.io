@@ -302,10 +302,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 .tiny{font-size:var(--fs-chrome);font-stretch:var(--text-stretch);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
+.contact-link{transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
-@media (hover:hover){.contact-link:hover{color:var(--accent)}}
-.contact-link[aria-current="page"]{color:var(--active)}
+@media (hover:hover){.contact-link:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
+.contact-link[aria-current="page"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
 
 /* ── шапка: назад, розділи, мова ──────────────────────────── */
 .meta{display:grid;grid-template-columns:auto 1fr auto;gap:0 clamp(14px,2vw,28px);
@@ -314,17 +315,17 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      сторінці розділу виходила нижчою за головну */
   padding-block:var(--meta-pad);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
-  padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transition:color 220ms var(--ease)}
+  padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
 :root[data-theme="light"] .back{font-weight:700;font-variation-settings:"wght" 700}
-@media (hover:hover){.back:hover{color:var(--accent)}}
+@media (hover:hover){.back:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
 .parts{display:flex;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
 .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;
-  transition:color 220ms var(--ease)}
+  transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
 .part::after{content:none}
-@media (hover:hover){.part:hover{color:var(--accent)}}
+@media (hover:hover){.part:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
 .part[aria-current]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
 /* 44px (16px поля навколо рядка) — вимога до тач-цілі; з мишею вона
    зайва і лише піднімає шапку. Кнопки мови вже це знали, назад і
@@ -338,11 +339,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .tgl{display:flex;align-items:center}
 .tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
   font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
-  padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease)}
+  padding:16px 8px;min-height:44px;line-height:1;transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
 /* та сама компакція, що й у сусідів по рядку */
 @media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
+@media (hover:hover){.tgl button:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
 .tgl button[aria-pressed="true"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
-@media (hover:hover){.tgl button:hover{color:var(--accent)}}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
@@ -622,9 +623,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (min-width:641px){.secs{gap:clamp(12px,1.8vw,26px)}}
 .sec{flex:0 0 auto;white-space:nowrap}
 .sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute);
-  padding-block:6px;position:relative;transition:color 240ms var(--ease)}
+  padding-block:6px;position:relative;transition:color 240ms var(--ease),font-weight 240ms var(--ease),font-variation-settings 240ms var(--ease)}
 .sec::after{content:none}
-@media (hover:hover){.sec:hover{color:var(--accent)}}
+@media (hover:hover){.sec:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
 .sec.on,.sec[aria-current]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
 :root[data-theme="green"] .part[aria-current],
 :root[data-theme="green"] .sec.on,
@@ -633,12 +634,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 :root[data-theme="night"] .sec.on,
 :root[data-theme="night"] .sec[aria-current],
 :root[data-theme="green"] .tgl button[aria-pressed="true"],
-:root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:600;font-variation-settings:"wght" 600}
+:root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:900;font-variation-settings:"wght" 900}
 /* Активний пункт внутрішньої навігації зберігає той самий спокійний набір,
    що й активний підпис у верхньому рядку: відрізняється лише кольором. */
 :root[data-theme="green"] .rates-nav .part[aria-current="location"],
 :root[data-theme="night"] .rates-nav .part[aria-current="location"]{
-  font-weight:600;font-variation-settings:normal
+  font-weight:900;font-variation-settings:"wght" 900
 }
 
 /* ── сітка знімків ───────────────────────────────────────── */
