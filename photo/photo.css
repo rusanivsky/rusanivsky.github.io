@@ -42,6 +42,9 @@
      самий --pencil, що малює лінію під ховером */
   --accent:var(--pencil);
   --divider:color-mix(in srgb,#111d13 40%,transparent);
+  /* та сама вертикаль, що й --divider, але вчетверо тихіша: ледь
+     помітна обводка попід фіксованою шапкою, а не розділювач рядків */
+  --hairline:color-mix(in srgb,#111d13 16%,transparent);
   /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
      розділи 52%, тобто той самий сірий був на різних сторінках різної
      сили. Лишилось сильніше з двох — воно й читається краще */
@@ -188,6 +191,7 @@
   --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(8,22,17,0) 44%,rgba(8,22,17,.0229) 55%,rgba(8,22,17,.0774) 66%,rgba(8,22,17,.1426) 78%,rgba(8,22,17,.1971) 89%,rgba(8,22,17,.22) 100%);
   --grain:.28;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
 }
 :root[data-theme="night"]{
@@ -203,6 +207,7 @@
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#1b281d;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
   --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -405,12 +410,14 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
      без зовнішніх полів, а не половина вікна. */
   display:grid;width:min(calc(50vw - var(--pad)),672px);padding:10px 18px 14px;
-  /* тон самої плити в тому місці, де панель висить, і без просвічування:
-     доти вона була склом на 80 %, крізь неї йшли чужі рядки, і тон плив
-     від того, що саме опинилось під нею */
-  background:var(--menu-plate);
-  /* без обводки: сама плашка себе окреслює, а волосяна лінія по її краю
-     читалась накресленим прямокутником */
+  /* тон самої плити в тому місці, де панель висить — не --plate-top,
+     той на 12 одиниць тепліший. Скло, а не суцільна заливка: прозоріше
+     за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
+     в прокрутці, а меню має лишатися читаним, поки відкрите */
+  background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
+  -webkit-backdrop-filter:blur(28px) saturate(1.4);
+  backdrop-filter:blur(28px) saturate(1.4);
+  /* без обводки: волосяна лінія по краю читалась накресленим прямокутником */
   border:0;border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
@@ -457,16 +464,22 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    собою — його власне розмиття мовчки перетворилось би на ніщо.
    Тон береться з верху плити, а не з --bg: --bg — це середина плити,
    і на ньому шапка виходить помітно темнішою за тло просто під собою.
-   Фарби лише 62 % — решту смуги складає сама плита, тож похибка тону
+   Фарби лише 40 % — решту смуги складає сама плита, тож похибка тону
    не має де вирости */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 46%,transparent);
+  background:color-mix(in srgb,var(--plate-top) 40%,transparent);
   -webkit-backdrop-filter:blur(26px);
   backdrop-filter:blur(26px);
 }
+/* ледь помітна обводка попід шапкою — та сама межа, що на скруглених
+   картках iOS: вона стоїть на самому .topbar, а не на його склі, тому
+   не гасне й не з'являється з прокруткою так, як заслінка нижче —
+   opacity-анімація веде саме ::before, а обводка лишається поза нею */
+.topbar{border-bottom:1px solid var(--hairline)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}
+  .header-menu-panel{background:var(--menu-plate)}
 }
 /* Заслінка під шапкою проявляється лише тоді, коли під неї заходить
    вміст: на початку сторінки їй нема чого прикривати, а скло над
@@ -483,9 +496,25 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   }
 }
 .topbar .rule{margin-bottom:2px}
-/* Лінійка під шапкою стоїть завжди — це її нижня межа, а не окрема
-   прикраса. Доти вона згасала з прокруткою, і межа переходила до самої
-   заслінки: на світлих місцях сторінки шапка лишалась без краю зовсім */
+/* Під однорядковою фіксованою шапкою лінійка й заслінка міняються
+   місцями: угорі сторінки межу тримає лінійка, під прокруткою — сама
+   заслінка, і жодної миті їх не буває двох. Обидві ведені тією ж
+   прокруткою, тож розходитись їм ні на чому.
+   Там, де шапка ділить два ряди (перелік підрозділів або смуга розділів
+   на /rates/) чи взагалі не фіксована, лінійка стоїть завжди */
+@keyframes veil-out{from{opacity:1}to{opacity:0}}
+@supports (animation-timeline:scroll()){
+  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
+    animation:veil-out linear both;
+    animation-timeline:scroll();
+    animation-range:0 140px;
+  }
+}
+/* Без scroll-таймлайнів заслінка стоїть на місці з першого пікселя —
+   тоді лінійці під нею нема чого робити */
+@supports not (animation-timeline:scroll()){
+  body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
+}
 /* На сторінці умов роботи sticky лишається, але без межі й тіні. */
 body:has(.contact-head) .topbar{
   border-bottom:0;
