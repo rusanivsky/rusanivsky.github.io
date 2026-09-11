@@ -270,8 +270,8 @@ body::after{
 /* Chromium зберігає той самий soft-light, але візуально стишує SVG-шум.
    Підсилюємо тільки зерно й тільки у звичайному режимі контрасту; Safari
    та режими підвищеного контрасту не змінюються. */
-@media (prefers-contrast:no-preference){
-  :root.is-chromium body::after{opacity:min(1,calc(var(--grain) * 1.55))}
+@media (min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-contrast:no-preference){
+  :root.is-chromium body::after{opacity:min(1,calc(var(--grain) * 1.8))}
 }
 /* На щільних екранах те саме зерно згладжується майже до невидимого,
    тому плитка там малюється меншою */

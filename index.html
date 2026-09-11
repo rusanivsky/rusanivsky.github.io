@@ -226,6 +226,9 @@ body::after{
   background-size:160px 160px;
   opacity:var(--grain); mix-blend-mode:soft-light;
 }
+@media (min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-contrast:no-preference){
+  :root.is-chromium body::after{opacity:min(1,calc(var(--grain) * 1.8))}
+}
 /* На щільних екранах те саме зерно згладжується майже до невидимого,
    тому плитка там малюється меншою */
 @media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
@@ -1232,7 +1235,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 </style>
 <script src="/scripts/reveal.js?v=5"></script>
-<script src="/scripts/plate-parallax.js?v=4"></script>
+<script src="/scripts/plate-parallax.js?v=5"></script>
 <script src="/scripts/language-switcher.js"></script>
 </head>
 <body>
