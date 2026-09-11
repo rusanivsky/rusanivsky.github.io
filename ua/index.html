@@ -231,8 +231,8 @@ body::after{
    до 0–100% прокрутки саме цієї сторінки, тож завершується рівно на
    її низу — і на короткій, і на довгій */
 @keyframes plate-scroll{
-  from{translate:0 0; filter:brightness(1)}
-  to{translate:0 -64px; filter:brightness(.74)}
+  from{translate:0 0; filter:brightness(1.05)}
+  to{translate:0 -64px; filter:brightness(.85)}
 }
 @supports (animation-timeline:scroll()){
   body::before,body::after{
@@ -725,6 +725,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 figure{margin:0; position:relative; z-index:1}
 .shot{
   position:relative; display:flex; background:var(--surface);
+  /* тінь лише знизу: великий розмив і від'ємний spread тримають її
+     тихою й компактною, а не плямою під усім кадром */
+  box-shadow:0 20px 34px -18px color-mix(in srgb,#000 32%,transparent);
 }
 .shot picture{
   display:block; position:relative; flex:1 1 auto; aspect-ratio:4/5;
