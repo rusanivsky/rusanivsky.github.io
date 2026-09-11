@@ -1167,15 +1167,15 @@ figure{margin:0; position:relative; z-index:1}
   .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
-  .foot-bar{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:14px;padding-block:clamp(8px,1.8vw,18px) clamp(18px,4.5vw,24px)}
+  .foot-bar{grid-template-columns:1fr;padding-block:clamp(8px,1.8vw,18px) clamp(18px,4.5vw,24px)}
   .foot-bar > .cols{padding-left:8px}
   .mobile-meta-slot .cols{padding-left:0;padding-right:8px}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
   .foot-bar > .cols,.mobile-meta-slot{margin-left:0}
-  .mobile-meta-slot{display:block;grid-column:auto;padding-top:0;min-width:0}
-  .mobile-meta-slot .cols{display:flex;justify-content:flex-end;gap:4px 10px;padding-left:8px;padding-right:0;min-width:0;text-align:right}
+  .mobile-meta-slot{display:block;grid-column:1/-1;padding-top:clamp(10px,2.5vw,16px);min-width:0}
+  .mobile-meta-slot .cols{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding-left:8px;padding-right:0;min-width:0;text-align:left}
   .mobile-meta-slot .cols .tiny{white-space:normal;min-width:0}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
