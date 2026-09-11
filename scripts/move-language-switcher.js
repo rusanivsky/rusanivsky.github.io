@@ -29,6 +29,10 @@
     var open=false;
     var neededWidth=0;
     var frame=0;
+    function focusWithoutScroll(element){
+      try{element.focus({preventScroll:true});}
+      catch(error){element.focus();}
+    }
 
     function number(value){return parseFloat(value)||0;}
     function outerWidth(element,useScrollWidth){
@@ -100,7 +104,7 @@
       updateLabel();
       if(open){
         var first=panel.querySelector('a,button');
-        if(first) requestAnimationFrame(function(){first.focus();});
+        if(first) requestAnimationFrame(function(){focusWithoutScroll(first);});
       }
     });
     panel.addEventListener('click',function(event){

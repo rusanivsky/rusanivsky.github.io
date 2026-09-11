@@ -11,6 +11,10 @@
     var partsSlot=document.createComment('home-navigation');
     header.insertBefore(partsSlot,parts);
     var open=false;
+    function focusWithoutScroll(element){
+      try{element.focus({preventScroll:true});}
+      catch(error){element.focus();}
+    }
 
     function updateLabel(){
       var ukrainian=document.documentElement.lang==='uk';
@@ -45,7 +49,7 @@
       updateLabel();
       if(open){
         var first=panel.querySelector('a');
-        if(first) requestAnimationFrame(function(){first.focus();});
+        if(first) requestAnimationFrame(function(){focusWithoutScroll(first);});
       }
     });
     document.addEventListener('click',function(event){
