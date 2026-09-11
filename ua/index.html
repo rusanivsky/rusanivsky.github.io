@@ -368,7 +368,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .meta .switches > .mobile-contact-link{display:inline-block}
   .meta .switches{
     grid-column:1;grid-row:1;justify-content:flex-end;
-    height:var(--mobile-meta-row);padding-bottom:0
+    height:var(--mobile-meta-row);padding:0 8px 0 0
   }
   /* Видимий рядок лишається 24px, але реальна тач-ціль кнопок — 44px. */
   .meta .switches > .tgl button{
@@ -484,11 +484,11 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     align-items:center
   }
   .home-meta.header-menu-mode > .parts{
-    align-self:center;align-items:center;height:var(--mobile-meta-row);padding-bottom:0
+    align-self:center;align-items:center;height:var(--mobile-meta-row);padding:0 0 0 8px
   }
   .home-meta.header-menu-mode > .parts > .part{line-height:1}
   .home-meta.header-menu-mode > .header-menu-toggle{
-    align-self:center;width:24px;height:24px;margin:0
+    align-self:center;width:24px;height:24px;margin:0 8px 0 0
   }
   .home-meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
     transform:translate3d(0,-6px,0) scale(.95,.98)
@@ -836,9 +836,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   /* У четвертого пункту назва може стати дворядковою: номер лишається
      напроти першого рядка, а не сідає на базову лінію останнього. */
   .spec.under{align-items:start}
-  /* У стартового вирівнювання кегль номера менший за заголовок, тому його
-     видима базова лінія виходить трохи вище. Повертаємо її до першого рядка. */
-  .spec.under .no{margin-top:.45em}
+  /* Номер має починатися на тій самій верхній лінійці, що й перший рядок
+     дворядкового заголовка. Додаткове поле тут зсувало 04 вниз. */
+  .spec.under .no{margin-top:0}
   .spec .no{grid-column:1; grid-row:1; margin-left:0; text-align:left}
   /* у вузькій сітці колонок-треків немає, тож і добирати міжколонник
      від'ємним полем нема від чого */
@@ -855,17 +855,16 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     justify-items:start; text-align:left;
   }
   .spec.design-spec ul{row-gap:0}
-  /* На телефоні назви напрямків мають бути помітними, але не конкурувати
-     з ім'ям угорі. Після четвертого напрямку лишаємо окремий
-     вертикальний просвіт перед блоком клієнтів. */
-  .spec h3{font-size:clamp(29px,7.7vw,40px)}
+  /* На телефоні назви напрямків трохи компактніші, але лишаються
+     головним акцентом списку; вага 700 тримає їх виразними. */
+  .spec h3{font-size:clamp(23.2px,6.16vw,32px);font-weight:700}
 }
 /* На дуже вузьких телефонах ім’я й великі назви зменшуються разом:
    пропорція між ними лишається тією самою, але довгі українські слова
    отримують ще трохи повітря для переносу. */
 @media (max-width:360px){
   .name{font-size:clamp(40px,10.5vw,52px)}
-  .spec h3{font-size:clamp(25px,6.8vw,32px)}
+  .spec h3{font-size:clamp(20px,5.44vw,25.6px)}
 }
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
@@ -1161,14 +1160,14 @@ figure{margin:0; position:relative; z-index:1}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{padding-block:clamp(8px,1.8vw,18px) clamp(18px,4.5vw,24px)}
-  .foot-bar > .cols{padding-left:0}
-  .mobile-meta-slot .cols{padding-left:0}
+  .foot-bar > .cols{padding-left:8px}
+  .mobile-meta-slot .cols{padding-left:0;padding-right:8px}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
   .foot-bar > .cols,.mobile-meta-slot{margin-left:0}
   .mobile-meta-slot{display:block;grid-column:1/-1;padding-top:clamp(10px,2.5vw,16px)}
-  .mobile-meta-slot .cols{display:flex;gap:14px;padding-left:0}
+  .mobile-meta-slot .cols{display:flex;gap:14px;padding-left:0;padding-right:8px}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
    стоять в одній колонці й мають повертатися разом */

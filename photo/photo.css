@@ -381,7 +381,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      а видимий знак вирівняний по горизонтальній осі навігаційних букв.
      Подвійний відступ після неї складається з gap сітки та margin-right. */
   .back{grid-column:1;grid-row:1;font-size:0;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
-    position:relative;width:max-content;height:19px;min-height:0;padding:0;margin:0;margin-right:clamp(12px,1.8vw,26px);color:var(--mute);line-height:1}
+    position:relative;width:max-content;height:19px;min-height:0;padding:0 0 0 8px;margin:0;margin-right:clamp(12px,1.8vw,26px);color:var(--mute);line-height:1}
   .back::before{content:"←";font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;line-height:1;transform:translateY(-1px)}
   .back::after{content:"";position:absolute;inset:-12.5px -6px}
   /* Усі елементи лишаються в одному рядку, доки поміщаються. Якщо ні,
@@ -402,7 +402,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @media (min-width:641px) and (max-width:760px){
   .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
   .meta .parts{padding-bottom:0}
-  .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
+  .meta .switches{height:var(--mobile-meta-row);padding:0 8px 0 0}
   .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
 }
 @media (max-width:640px){
@@ -584,6 +584,28 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar{
 }
 body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
   border-bottom:0;
+}
+
+/* На мобільному фон і шапка розділів лишаються чистими: скрол-анімації
+   не повинні повертати затемнення поверх плити без фільтра. Контакти
+   мають ту саму поведінку лише на вузькому екрані. */
+@media (max-width:640px){
+  body.no-plate-darkening::before,
+  body.no-plate-darkening::after,
+  body.contacts-page::before,
+  body.contacts-page::after{
+    animation:none!important;
+    filter:none!important;
+    transform:none!important;
+  }
+  body.no-plate-darkening .topbar::before,
+  body.contacts-page .topbar::before{
+    animation:none!important;
+    opacity:1!important;
+    background:transparent!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
 }
 
 /* ── поява блоків ─────────────────────────────────────────── */
@@ -777,9 +799,9 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
-  /* На телефоні назва категорії має лишатися виразною, але не займати
-     весь екран — головний акцент тут на самому контенті. */
-  .cat .lab{font-size:clamp(28px,7.2vw,38px);width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-wrap:pretty}
+  /* На телефоні назва категорії має лишатися виразною, але бути на 20%
+     компактнішою, щоб не займати весь екран. */
+  .cat .lab{font-size:clamp(22.4px,5.76vw,30.4px);width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-wrap:pretty}
   .photo-pixover p,.site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
 }
 
@@ -939,7 +961,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar .cols{margin-left:0;padding-left:0}
+  .foot-bar .cols{margin-left:0;padding-left:8px}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
    20px. Блок стоїть наприкінці файлу, після базових правил підвала:
