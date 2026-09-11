@@ -394,9 +394,16 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    перебивало б display:grid, який панель бургера ставить рядкам
    перемикачів, і рядок теми випадав би з її двох колонок */
 :root:not([data-theme-mode]) #theme{display:none}
-#theme button{display:inline-flex;align-items:center;justify-content:center;padding-inline:8px}
+/* Ліворуч падінга немає: сусідню кнопку мови від тексту відділяє gap
+   рядка плюс її власні 8px, і якби іконка додала ще свої, зазор перед
+   нею вийшов би на ці 8px ширшим за всі інші в шапці */
+#theme button{display:inline-flex;align-items:center;justify-content:center;padding-left:0;padding-right:8px}
 #theme .ti{display:none}
-#theme svg{display:block}
+/* Знак виступає за рядок симетрично, а коробка його лишається рівно
+   заввишки з рядок тексту сусідньої кнопки (line-height:1, тобто 1em).
+   Інакше 16px іконка піднімає весь рядок шапки, і на підсторінках вона
+   разом із лінійкою стоїть на 4px нижче, ніж на решті сайту */
+#theme svg{display:block;margin-block:calc((1em - 16px) / 2)}
 :root[data-theme-mode="auto"] #theme .ti[data-mode="auto"],
 :root[data-theme-mode="light"] #theme .ti[data-mode="light"],
 :root[data-theme-mode="night"] #theme .ti[data-mode="night"]{display:block}
@@ -551,6 +558,9 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
 .meta.header-menu-mode .header-menu-panel #theme::before{content:"Theme"}
+/* у панелі кнопка знову симетрична: там вона центрується в коробці
+   однакової ширини з мовою, і зсунутий падінг збив би їх з осі */
+.meta.header-menu-mode .header-menu-panel #theme button{padding-inline:0}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #theme::before{content:"Тема"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
