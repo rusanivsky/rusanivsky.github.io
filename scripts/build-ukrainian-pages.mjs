@@ -36,6 +36,11 @@ const nightPortfolioRoutes = new Set([
   '/video/short-form/',
 ]);
 
+// Підсторінки-галереї — єдині, де тему обирає гість. Зелені сторінки
+// лишаються зеленими: перший перемикач тем зламався саме на тому, що
+// вибір гостя їхав за ним по всьому сайту
+const switchableRoutes = new Set([...lightPortfolioRoutes, ...nightPortfolioRoutes]);
+
 const absolute = (route) => `https://rusanivsky.com${route}`;
 const uaRoute = (route) => route === '/' ? '/ua/' : `/ua${route}`;
 
@@ -94,15 +99,20 @@ function addContactsLink(html, route) {
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
+  // Кнопка їде схованою: іконку їй малює theme.js, і без JS вона не
+  // перемикала б нічого. У бургері цей рядок стає четвертим після мови
+  const themeToggle = switchableRoutes.has(route)
+    ? '\n    <div class="tgl" id="theme" role="group" aria-label="Theme"><button type="button" hidden aria-label="Theme: auto"></button></div>'
+    : '';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
   html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
-  html = html.replace(/\s*<div class="tgl" id="lang"[^>]*>[\s\S]*?<\/div>/g, '');
+  html = html.replace(/\s*<div class="tgl" id="(?:lang|theme)"[^>]*>[\s\S]*?<\/div>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
     /<div class="switches">/,
-    `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}`,
+    `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
   if (!html.includes('<script src="/scripts/language-switcher.js"></script>')) {
@@ -121,6 +131,18 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
+const themeScriptVersion = 1;
+
+// Скрипт іде перед стилями розділу без defer: data-theme має стати на
+// місце до першого малювання, інакше видно спалах чужої теми
+function addThemeScript(html, route) {
+  html = html.replace(/\s*<script src="\/scripts\/theme\.js(?:\?[^"]*)?"><\/script>/g, '');
+  if (!switchableRoutes.has(route)) return html;
+  const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
+  if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
+  return html.replace(sectionStyle, `<script src="/scripts/theme.js?v=${themeScriptVersion}"></script>\n$&`);
+}
+
 function renameWorkTerms(html) {
   return html.replace(/(<h[1-6][^>]*id="s-contact"[^>]*?)data-en="Contacts" data-ua="Контакти"/g, '$1data-en="Work terms" data-ua="Умови роботи"')
     .replace(/(<h[1-6][^>]*id="s-contact"[^>]*>)Contacts(<\/h[1-6]>)/g, '$1Work terms$2')
@@ -136,8 +158,22 @@ const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#171717' };
 // схеми. Атрибут стоїть у <html>, тобто ще до першого байта стилів.
 function applyThemePolicy(html, route) {
   const theme = lightPortfolioRoutes.has(route) ? 'light' : nightPortfolioRoutes.has(route) ? 'night' : 'green';
+  // data-theme у розмітці лишається запасним варіантом для гостя без JS:
+  // сторінка тоді виглядає так, як виглядала до появи перемикача
   html = html.replace(/<html lang="en"(?: data-theme="(?:light|green|night)")?>/, `<html lang="en" data-theme="${theme}">`);
-  html = html.replace(/<meta name="theme-color" content="#[0-9a-f]{6}">/, `<meta name="theme-color" content="${themeColour[theme]}">`);
+  // Два теги з медіа-умовами обслуговують авто-режим без жодного скрипта;
+  // явний вибір theme.js потім перепише обидва на один колір
+  const meta = switchableRoutes.has(route)
+    ? `<meta name="theme-color" media="(prefers-color-scheme: light)" content="${themeColour.light}">\n`
+      + `<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${themeColour.night}">`
+    : `<meta name="theme-color" content="${themeColour[theme]}">`;
+  let first = true;
+  html = html.replace(/<meta name="theme-color"[^>]*>/g, () => {
+    if (!first) return '';
+    first = false;
+    return meta;
+  });
+  html = html.replace(/\n\n+(?=<link rel="icon")/g, '\n');
   return html;
 }
 
@@ -150,6 +186,7 @@ for (const [route, source, title, description] of pages) {
   english = renameWorkTerms(english);
   english = addContactsLink(english, route);
   english = addSectionHeaderStyle(english, route);
+  english = addThemeScript(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 

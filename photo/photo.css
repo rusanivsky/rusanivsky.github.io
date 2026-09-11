@@ -185,16 +185,12 @@
    (зсув) — на місці */
 :root[data-theme="light"]{
   color-scheme:light;
-  /* Підрозділи фото тримають один рівний тон від обводу браузера до
-     футера: плита, скляна шапка й канва — той самий колір, і скрол
-     ніде його не підфарбовує. Тон — той сіруватий, який сторінка й
-     показувала внизу під затемненням, тільки взятий трохи світлішим і
-     тепер розкладений рівно по всій висоті */
+  /* Один рівний тон від обводу браузера до футера: плита, скляна шапка
+     й канва — той самий колір, і скрол ніде його не підфарбовує */
   --bg:#e8ebe6;
   --plate-top:var(--bg);
-  /* підкладка під кадром, поки він вантажиться: доти вона лишалась
-     зеленішою за тло й на рівному тоні читалась кольоровим прямокутником,
-     а не порожнім місцем у сітці */
+  /* підкладка під кадром, поки він вантажиться: доти лишалась зеленішою
+     за тло й на рівному тоні читалась кольоровим прямокутником */
   --surface:#e4e7e2;
   --plate-base:linear-gradient(var(--bg),var(--bg));
 }
@@ -229,15 +225,21 @@
   /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
      рости: 6,5:1 */
   color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
-  --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-  --plate-base:linear-gradient(154deg,#272d1a 0%,#252b1a 8.3%,#202718 16.7%,#192316 25%,#142014 33.3%,#111e13 41.7%,#101c13 50%,#0e1b12 58.3%,#0d1a11 66.7%,#0b1811 75%,#0a150f 83.3%,#08130e 91.7%,#06120d 100%);
+  /* Нейтральна нічна плита без зеленого відтінку. Стопи — ті самі, що
+     й у решти тем, тільки переведені в сірий за однакової світлості:
+     після переходу на один 13-стоповий градієнт сюди помилково
+     потрапили оливкові стопи зеленої ночі, і плита розходилася з
+     нейтральними --bg і --plate-top, які лишались від «Neutralize
+     video backgrounds» */
+  --bg:#171717; --surface:#252525; --ink:#f0f0f0;
+  --plate-base:linear-gradient(154deg,#2a2a2a 0%,#282828 8.3%,#242424 16.7%,#202020 25%,#1d1d1d 33.3%,#1a1a1a 41.7%,#191919 50%,#181818 58.3%,#171717 66.7%,#151515 75%,#121212 83.3%,#101010 91.7%,#0f0f0f 100%);
   --grain:.14;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
-  --plate-top:#1b281d;
-  --sticky-plate-end:#101d14;
-  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-  --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
-  --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
+  --plate-top:#232323;
+  --sticky-plate-end:#171717;
+  --divider:color-mix(in srgb,#f0f0f0 34%,transparent);
+  --hairline:color-mix(in srgb,#f0f0f0 14%,transparent);
+  --mute:color-mix(in srgb,#f0f0f0 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 /* ── плита тла ──────────────────────────────────────────────
@@ -376,6 +378,17 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
 @media (hover:hover){.tgl button:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
 .tgl button[aria-pressed="true"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
+/* Перемикач тем: та сама кнопка, що й мова, тільки замість двох літер —
+   іконка режиму, у якому сторінка зараз. Три стани йдуть по колу:
+   авто → світла → нічна. Іконку малює theme.js, тож у розмітці кнопка
+   схована — без JS вона нічого не перемикала б */
+#theme button{display:inline-flex;align-items:center;justify-content:center;padding-inline:8px}
+/* авторське display перебиває [hidden] з набору браузера, тож ховаємо руками */
+#theme button[hidden]{display:none}
+#theme svg{display:block}
+/* ховер тягне літери по горизонталі; іконку це тільки плющить */
+@media (hover:hover){#theme button:hover{transform:none;-webkit-text-stroke:0}}
+
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
@@ -519,7 +532,9 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   text-transform:uppercase;color:var(--mute)
 }
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
+.meta.header-menu-mode .header-menu-panel #theme::before{content:"Theme"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
+:root[lang="uk"] .meta.header-menu-mode .header-menu-panel #theme::before{content:"Тема"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
   width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
 }
@@ -623,18 +638,23 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
    сторінками не додає другого вертикального зсуву. */
 
 /* ── плавний перехід між сторінками ──────────────────────── */
-/* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
-   старий знімок, доки новий документ не намалюється, і міняє їх без
-   анімації. Рух на вході лишається один — поява блоків нижче.
-   Доти старий знімок ще й згасав 240ms уже поверх нового, і два рухи
-   один на одному читались як друга, зайва анімація завантаження.
+/* Перехід між сторінками — плавний кросовер: браузер тримає старий
+   знімок, доки новий документ не намалюється, і згасає його поверх
+   нового. Тло від цього не стрибає з тону в тон, а перетікає — та сама
+   доріжка обслуговує й перемикання теми.
    mix-blend-mode тут не декорація: типовий набір браузера ставить обом
    знімкам plus-lighter, розрахований на зустрічні згасання. Обидва
    непрозорі — і кадр складається сам із собою, тобто спалахує */
 @view-transition{ navigation:auto }
 ::view-transition-group(root),
 ::view-transition-old(root),
-::view-transition-new(root){ animation:none; mix-blend-mode:normal }
+::view-transition-new(root){ mix-blend-mode:normal }
+/* Новий кадр стоїть непорушно, старий згасає поверх нього: один рух, а
+   не два зустрічні. Саме цим кросовер відрізняється від стандартного
+   набору браузера, через який колись і прибрали анімацію — там обидва
+   знімки рухались, та ще й у plus-lighter, і кадр спалахував */
+::view-transition-new(root){ animation:none }
+::view-transition-old(root){ animation:pt-out 260ms var(--ease) both }
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }
 @keyframes pt-out{ from{opacity:1} to{opacity:0} }
