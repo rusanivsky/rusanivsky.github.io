@@ -261,8 +261,8 @@ body::after{
    до 0–100% прокрутки саме цієї сторінки, тож завершується рівно на
    її низу — і на короткій, і на довгій */
 @keyframes plate-scroll{
-  from{translate:0 0; filter:brightness(1.05)}
-  to{translate:0 -64px; filter:brightness(.85)}
+  from{translate:0 0; filter:brightness(1.15)}
+  to{translate:0 -64px; filter:brightness(.95)}
 }
 @supports (animation-timeline:scroll()){
   body::before,body::after{
