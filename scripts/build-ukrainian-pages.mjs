@@ -155,9 +155,9 @@ function addKyivClockScript(html, route) {
 const sectionHeaderStyleVersion = 16;
 
 const sectionStyleVersions = {
-  '/photo/photo.css': 104,
-  '/video/video.css': 105,
-  '/design/design.css': 95,
+  '/photo/photo.css': 105,
+  '/video/video.css': 106,
+  '/design/design.css': 96,
 };
 
 function updateSectionStyleVersions(html) {
@@ -195,10 +195,12 @@ function renameWorkTerms(html) {
 
 function normalizeBackLinks(html) {
   return html
-    .replace(/data-en="← Home"/g, 'data-en="Home"')
-    .replace(/data-ua="← На головну"/g, 'data-ua="На головну"')
-    .replace(/>← Home<\/a>/g, '>Home</a>')
-    .replace(/>← На головну<\/a>/g, '>На головну</a>');
+    .replace(/data-en="(?:← )?Home"/g, 'data-en="←"')
+    .replace(/data-ua="(?:← )?На головну"/g, 'data-ua="←"')
+    .replace(/>← Home<\/a>/g, '>←</a>')
+    .replace(/>Home<\/a>/g, '>←</a>')
+    .replace(/>← На головну<\/a>/g, '>←</a>')
+    .replace(/>На головну<\/a>/g, '>←</a>');
 }
 
 // Не --bg, а колір, який плита тла показує при самому верху вікна:
