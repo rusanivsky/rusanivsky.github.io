@@ -586,9 +586,8 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
   border-bottom:0;
 }
 
-/* На мобільному фон і шапка розділів лишаються чистими: скрол-анімації
-   не повинні повертати затемнення поверх плити без фільтра. Контакти
-   мають ту саму поведінку лише на вузькому екрані. */
+/* На мобільному фон розділів і Контактів не затемнюється під час скролу,
+   але шапка зберігає власну плашку, яка з'являється лише під скролом. */
 @media (max-width:640px){
   body.no-plate-darkening::before,
   body.no-plate-darkening::after,
@@ -597,14 +596,6 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
     animation:none!important;
     filter:brightness(1.15)!important;
     transform:none!important;
-  }
-  body.no-plate-darkening .topbar::before,
-  body.contacts-page .topbar::before{
-    animation:none!important;
-    opacity:1!important;
-    background:transparent!important;
-    -webkit-backdrop-filter:none!important;
-    backdrop-filter:none!important;
   }
 }
 
