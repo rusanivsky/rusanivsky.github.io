@@ -1,11 +1,12 @@
 (function(){
   function setup(){
-    var header=document.querySelector('.topbar > .meta');
+    var header=document.querySelector('.topbar > .meta, header.home-meta');
     if(!header) return;
     var back=header.querySelector('.back');
     var parts=header.querySelector('.parts');
     var switches=header.querySelector('.switches');
-    if(!back||!parts||!switches) return;
+    if(!parts||!switches) return;
+    var alwaysCompact=header.matches('header.home-meta');
 
     var switchesSlot=document.createComment('header-switches');
     header.insertBefore(switchesSlot,switches);
@@ -47,7 +48,10 @@
     function requiredWidth(){
       var style=getComputedStyle(header);
       var gap=number(style.columnGap);
-      return outerWidth(back,false)+outerWidth(parts,true)+outerWidth(switches,true)+gap*2;
+      var items=[back,parts,switches].filter(Boolean);
+      return items.reduce(function(total,item){
+        return total+outerWidth(item,item===parts);
+      },0)+gap*Math.max(0,items.length-1);
     }
     function updateLabel(){
       var ukrainian=document.documentElement.lang==='uk';
@@ -83,7 +87,9 @@
     }
     function update(){
       frame=0;
-      if(!compact){
+      if(alwaysCompact){
+        if(!compact) setCompact(true);
+      }else if(!compact){
         neededWidth=requiredWidth();
         if(neededWidth>availableWidth()+1) setCompact(true);
       }else if(availableWidth()>=neededWidth+24){

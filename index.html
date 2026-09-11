@@ -67,6 +67,7 @@
   --grain:.085;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#f6f7f1;
+  --menu-plate:var(--plate-top);
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
      дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
      самий --pencil, що малює лінію під ховером */
@@ -161,6 +162,8 @@
   --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#42563f;
+  /* Той самий виміряний тон, що й у бургер-меню Photo, Video та Design. */
+  --menu-plate:#47564b;
   /* Кінці ті самі, що були з самого початку, але пройдені рівним кроком
      по OKLCH і дев'ятьма стопами: три стопи давали злам на середньому,
      і око читало злам смугою */
@@ -402,44 +405,40 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 
 /* ── навігація головної ───────────────────────────────────── */
 /* На широкому екрані розділи стоять між службовою інформацією та
-   перемикачами — так само, як у шапці сторінок портфоліо. На телефоні
-   вони прибираються з рядка й відкриваються з бургер-кнопки. */
+   перемикачами. На телефоні розділи лишаються видимими, а в плашку
+   переноситься службова група — той самий overflow-контракт, що й у
+   сторінок Photo, Video та Design. */
 .home-meta{position:relative;grid-template-columns:minmax(0,1fr) auto auto;column-gap:clamp(18px,3vw,48px)}
+.home-meta > .cols{display:none}
 .home-meta .parts{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
 .home-meta .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;transition:color 220ms var(--ease)}
 @media (pointer:fine){.home-meta .part{padding-block:9px}}
 @media (hover:hover){.home-meta .part:hover{color:var(--accent)}}
-.home-menu-toggle,.home-menu-panel{display:none}
-@media (max-width:600px){
-  .home-meta{grid-template-columns:auto minmax(0,1fr);column-gap:12px}
-  .home-meta .parts{display:none}
-  .home-meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
-  .home-menu-toggle{grid-column:1;grid-row:1;display:grid;place-items:center;align-self:center;
-    appearance:none;width:24px;height:24px;margin:0;padding:0;border:0;background:transparent;color:var(--ink);cursor:pointer}
-  .home-menu-toggle span,.home-menu-toggle span::before,.home-menu-toggle span::after{
-    display:block;width:22px;height:1px;background:currentColor;transition:transform 240ms var(--ease),opacity 180ms var(--ease)}
-  .home-menu-toggle span{position:relative}
-  .home-menu-toggle span::before,.home-menu-toggle span::after{content:"";position:absolute;left:0}
-  .home-menu-toggle span::before{top:-6px}
-  .home-menu-toggle span::after{top:6px}
-  .home-menu-open .home-menu-toggle span{background:transparent}
-  .home-menu-open .home-menu-toggle span::before{top:0;transform:rotate(45deg)}
-  .home-menu-open .home-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+.header-menu-toggle,.header-menu-panel{display:none}
+.home-meta.header-menu-mode{position:relative;grid-template-columns:minmax(0,1fr) auto}
+.home-meta.header-menu-mode > .parts{grid-column:1;grid-row:1;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.home-meta.header-menu-mode > .parts::-webkit-scrollbar{display:none}
+.home-meta.header-menu-mode > .header-menu-toggle{
+  grid-column:2;grid-row:1;justify-self:end;display:grid;place-items:center;
+  appearance:none;width:44px;height:44px;margin:-10px -8px -10px 0;padding:0;
+  border:0;background:transparent;color:var(--ink);cursor:pointer
 }
-/* На проміжній ширині планшета навігація ще вміщується в шапку — бургер
-   потрібен лише для телефонного формату. */
-@media (min-width:601px) and (max-width:640px){
-  .home-menu-toggle{display:none}
-  .home-meta{grid-template-columns:minmax(0,1fr) auto}
-  .home-meta .cols{display:none}
-  .home-meta .parts{display:flex;grid-column:1;grid-row:1}
-  .home-meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
+.header-menu-toggle span,.header-menu-toggle span::before,.header-menu-toggle span::after{
+  display:block;width:22px;height:1px;background:currentColor;
+  transition:transform 240ms var(--ease),opacity 180ms var(--ease)
 }
-.home-menu-panel{
+.header-menu-toggle span{position:relative}
+.header-menu-toggle span::before,.header-menu-toggle span::after{content:"";position:absolute;left:0}
+.header-menu-toggle span::before{top:-6px}
+.header-menu-toggle span::after{top:6px}
+.header-menu-open .header-menu-toggle span{background:transparent}
+.header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
+.header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+.home-meta.header-menu-mode > .header-menu-panel{
   position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
-  width:min(calc(25vw - var(--pad)),336px);min-width:132px;padding:5px 9px 7px;
-  background:color-mix(in srgb,var(--plate-top) 62%,transparent);
+  display:grid;width:max-content;min-width:220px;max-width:calc(100vw - 2 * var(--pad));padding:10px 18px 14px;
+  background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
   -webkit-backdrop-filter:blur(17.5px) saturate(1.4);backdrop-filter:blur(17.5px) saturate(1.4);
   border:1px solid var(--hairline);border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
@@ -447,10 +446,30 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   transform:translate3d(22px,-6px,0) scale(.95,.98);
   transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
 }
-.home-menu-panel .parts{display:grid;grid-template-columns:1fr;gap:0;min-width:0}
-.home-menu-panel .part{display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;text-align:left;white-space:normal}
-.home-menu-open > .home-menu-panel{display:block;visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
-  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s}
+.home-meta.header-menu-mode.header-menu-open > .header-menu-panel{
+  visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s
+}
+.home-meta.header-menu-mode .header-menu-panel .switches{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;overflow:visible
+}
+.home-meta.header-menu-mode .header-menu-panel .contact-link{
+  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;text-align:left;white-space:normal
+}
+.home-meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
+.home-meta.header-menu-mode .header-menu-panel .switches > .tgl{
+  display:grid;grid-template-columns:auto auto;gap:clamp(12px,1.8vw,26px);align-items:center;width:100%;min-height:40px
+}
+.home-meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
+  font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;color:var(--mute)
+}
+.home-meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
+:root[lang="uk"] .home-meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
+.home-meta.header-menu-mode .header-menu-panel .tgl button{
+  width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
+}
 /* ── герой ─────────────────────────────────────────────────── */
 /* усе, що клієнт має побачити не гортаючи, живе в одному гріді:
    ім'я, одне речення по суті, три ремесла дрібним кеглем, кнопка й
@@ -816,6 +835,13 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
      вертикальний просвіт перед блоком клієнтів. */
   .spec h3{font-size:clamp(29px,7.7vw,40px)}
 }
+/* На дуже вузьких телефонах ім’я й великі назви зменшуються разом:
+   пропорція між ними лишається тією самою, але довгі українські слова
+   отримують ще трохи повітря для переносу. */
+@media (max-width:360px){
+  .name{font-size:clamp(40px,10.5vw,52px)}
+  .spec h3{font-size:clamp(25px,6.8vw,32px)}
+}
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
    9-ї лінії на 10-ту. З чотирьох колонок вибирати не було з чого — при
@@ -1074,7 +1100,8 @@ figure{margin:0; position:relative; z-index:1}
 .mobile-meta-slot{display:none}
 /* В англійській версії службовий рядок із містом і часом не займає
    місце у верхній шапці — він живе внизу сторінки разом із футером. */
-:root[lang="en"] .mobile-meta-slot{display:block}
+:root[lang="en"] .mobile-meta-slot,
+:root[lang="uk"] .mobile-meta-slot{display:block}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається.
@@ -1197,8 +1224,6 @@ figure{margin:0; position:relative; z-index:1}
     <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
-  <button class="home-menu-toggle" type="button" aria-expanded="false" aria-controls="home-menu-panel" aria-label="Open menu"><span aria-hidden="true"></span></button>
-  <div class="home-menu-panel" id="home-menu-panel" aria-hidden="true"></div>
 </header>
 <hr class="rule">
 
@@ -1456,7 +1481,7 @@ figure{margin:0; position:relative; z-index:1}
   }
 }
 </script>
-<script src="/scripts/home-navigation.js?v=2"></script>
+<script src="/scripts/move-language-switcher.js?v=4"></script>
 <script src="/scripts/move-home-meta.js?v=2"></script>
 </body>
 </html>

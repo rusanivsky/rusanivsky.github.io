@@ -4,10 +4,11 @@
     var cols=header&&header.querySelector('.cols');
     var slot=document.querySelector('.mobile-meta-slot');
     if(!header||!cols||!slot) return;
-      var mobile=matchMedia('(max-width:640px)');
+    var mobile=matchMedia('(max-width:640px)');
     var root=document.documentElement;
+    var alwaysFooter=header.classList.contains('home-meta');
     function update(){
-      if(mobile.matches||root.lang==='en'){
+      if(alwaysFooter||mobile.matches||root.lang==='en'){
         slot.appendChild(cols);
       }else{
         header.insertBefore(cols,header.querySelector('.switches'));
