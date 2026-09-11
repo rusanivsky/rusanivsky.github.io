@@ -21,7 +21,16 @@
 <style>
 .contact-list{padding-top:clamp(48px,9vh,112px)}
 .contact-list .cat{padding-block:var(--rule-gap)}
-@media (max-width:640px){.contact-list{padding-top:clamp(48px,9vh,112px)}}
+@media (max-width:640px){
+  /* На мобільному контакти мають ту саму шапку в потоці й ту саму
+     поведінку плити під час скролу, що Photo, Video та Design. Десктопна
+     sticky-шапка лишається без змін. */
+  body.contacts-page .topbar{position:static;z-index:auto}
+  body.contacts-page .topbar::before{display:none}
+  body.contacts-page::before,
+  body.contacts-page::after{filter:brightness(1.15)!important}
+  .contact-list{padding-top:clamp(48px,9vh,112px)}
+}
 </style>
 <script src="/scripts/reveal.js?v=5"></script>
 <script src="/scripts/plate-parallax.js?v=2"></script>
