@@ -6,7 +6,8 @@
     var parts=header.querySelector('.parts');
     var switches=header.querySelector('.switches');
     if(!parts||!switches) return;
-    var alwaysCompact=header.matches('header.home-meta');
+    var isHome=header.matches('header.home-meta');
+    var homeMobile=isHome?matchMedia('(max-width:760px)'):null;
 
     var switchesSlot=document.createComment('header-switches');
     header.insertBefore(switchesSlot,switches);
@@ -87,8 +88,9 @@
     }
     function update(){
       frame=0;
-      if(alwaysCompact){
-        if(!compact) setCompact(true);
+      if(isHome){
+        if(homeMobile.matches&&!compact) setCompact(true);
+        else if(!homeMobile.matches&&compact) setCompact(false);
       }else if(!compact){
         neededWidth=requiredWidth();
         if(neededWidth>availableWidth()+1) setCompact(true);
@@ -139,6 +141,7 @@
     }else{
       addEventListener('resize',schedule,{passive:true});
     }
+    if(homeMobile) homeMobile.addEventListener('change',schedule);
     if(document.fonts&&document.fonts.ready) document.fonts.ready.then(schedule);
     updateLabel();
     schedule();
