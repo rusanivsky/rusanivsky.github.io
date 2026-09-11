@@ -534,11 +534,13 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
-/* стрілка вниз-праворуч: веде всередину сайту. Місце під неї тримає
-   падінг заголовка, тож на ховері рядок не смикається */
+/* стрілка вниз-праворуч: веде всередину сайту. Той самий прийом, що й
+   на .cat[target] у списку контактів — inline-block і vertical-align,
+   а не absolute/bottom: доти стрілка висіла нижче рівня тексту, тепер
+   стоїть на тій самій висоті, що й інші стрілки на сайті */
 .spec .sect::after{
-  content:"↘"; position:absolute; left:100%; bottom:.55em;
-  margin-left:.24em; font-size:.34em; line-height:1; color:var(--ink);
+  content:"↘"; display:inline-block; margin-left:.16em;
+  font-size:.36em; vertical-align:.95em; line-height:1; color:var(--ink);
   opacity:0; transform:translate(-.3em,-.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
