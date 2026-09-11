@@ -472,8 +472,16 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   }
 }
 @media (max-width:640px){
+  /* Ліве поле лишається: воно тут той самий оптичний зазор, що й
+     margin-left у Contacts, і без нього мова липла до сусіда на 8px
+     ближче за всіх. Праве — нуль: у цій ширині перемикач стоїть урівень
+     із краєм верстки, а не відступає від нього */
   .meta .switches > .tgl#lang button{
-    padding:0;min-height:24px;margin-block:0;line-height:24px
+    padding:0 0 0 var(--switch-control-pad);min-height:24px;margin-block:0;line-height:24px
+  }
+  /* іконка теми тримає той самий ритм: зліва поле, справа край */
+  .meta .switches > .tgl#theme button{
+    padding-left:var(--switch-control-pad);padding-right:0
   }
 }
 
