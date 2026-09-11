@@ -279,7 +279,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   letter-spacing:var(--ls-tiny); text-transform:uppercase;
   font-weight:600; color:var(--mute);
 }
-.contact-link{transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
+.contact-link{display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .meta .local-time{display:inline}
@@ -289,22 +289,22 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .tiny b{font-weight:700; color:var(--ink); letter-spacing:var(--ls-tiny)}
 /* та сама реакція, що й у розділів поряд: наведення й активна
    сторінка засвічуються тим самим кольором тексту */
-@media (hover:hover){.contact-link:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
-.contact-link[aria-current="page"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
+@media (hover:hover){.contact-link:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
+.contact-link[aria-current="page"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
 .tgl{display:flex; gap:0; align-items:center}
 .tgl button{
   appearance:none; background:transparent; border:0; cursor:pointer; color:var(--mute);
   font:inherit; font-size:var(--fs-chrome); font-weight:600; letter-spacing:var(--ls-tiny); text-transform:uppercase;
-  padding:16px 8px; min-height:44px; line-height:1; transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease);
+  padding:16px 8px; min-height:44px; line-height:1; transform-origin:center; transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease);
 }
 /* 44px — це вимога до тач-цілі; з мишею вона зайва і лише піднімає шапку */
 @media (pointer:fine){.tgl button{padding:9px 8px; min-height:30px}}
 /* тільки перша група в ряду тулиться до краю — далі проміжок тримає .switches */
 .switches > .tgl:first-child button:first-child{padding-left:0}
-@media (hover:hover){.tgl button:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
-.tgl button[aria-pressed="true"]{color:var(--active);font-weight:900;font-variation-settings:"wght" 900}
+@media (hover:hover){.tgl button:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
+.tgl button[aria-pressed="true"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
 :root[data-theme="green"] .tgl button[aria-pressed="true"],
-:root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:900;font-variation-settings:"wght" 900}
+:root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:700;font-variation-settings:"wght" 700}
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
 .switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
@@ -406,9 +406,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .home-meta{position:relative;grid-template-columns:minmax(0,1fr) auto auto;column-gap:clamp(18px,3vw,48px)}
 .home-meta .parts{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
 .home-meta .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
-  color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;transition:color 220ms var(--ease),font-weight 220ms var(--ease),font-variation-settings 220ms var(--ease)}
+  color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
 @media (pointer:fine){.home-meta .part{padding-block:9px}}
-@media (hover:hover){.home-meta .part:hover{color:var(--ink);font-weight:900;font-variation-settings:"wght" 900}}
+@media (hover:hover){.home-meta .part:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
 .header-menu-toggle,.header-menu-panel{display:none}
 .home-meta.header-menu-mode{position:relative;grid-template-columns:minmax(0,1fr) auto}
 .home-meta.header-menu-mode > .parts{grid-column:1;grid-row:1;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
