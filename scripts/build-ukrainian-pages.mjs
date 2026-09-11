@@ -111,14 +111,14 @@ function addContactsLink(html, route) {
   return html;
 }
 
-const sectionHeaderStyle = '<link rel="stylesheet" href="/styles/section-header.css?v=6">';
+const sectionHeaderStyleVersion = 8;
 
 function addSectionHeaderStyle(html, route) {
   if (route === '/') return html;
   html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/section-header\.css(?:\?[^\"]*)?">/g, '');
   const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
   if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
-  return html.replace(sectionStyle, `$&\n${sectionHeaderStyle}`);
+  return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
 function renameWorkTerms(html) {

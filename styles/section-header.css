@@ -1,3 +1,15 @@
+/* На головних сторінках розділів шапка є частиною потоку, а не скляною
+   плашкою поверх вмісту. Тло зберігає початкову яскравість і не змінюється
+   під час прокрутки на жодній ширині. */
+body.no-plate-darkening .topbar{position:static;z-index:auto}
+body.no-plate-darkening .topbar::before{display:none}
+body.no-plate-darkening::before,
+body.no-plate-darkening::after{
+  animation:none!important;
+  filter:brightness(1.15)!important;
+  transform:none!important;
+}
+
 /* Єдиний контракт компактної шапки для Photo, Video і Design.
    Рядок має фіксовану геометрію; 44px тач-зона кнопки переповнює його
    симетрично й не бере участі в розрахунку висоти CSS Grid у WebKit. */
@@ -28,7 +40,7 @@
     line-height:1
   }
   .topbar > .meta.header-menu-mode > .header-menu-toggle{
-    align-self:center;width:24px;height:24px;margin:0
+    align-self:center;width:44px;height:44px;margin:-10px -8px -10px 0
   }
   /* Та сама початкова позиція, що й у головному меню: панель плавно
      виїжджає справа наліво одночасно з fade in. */
