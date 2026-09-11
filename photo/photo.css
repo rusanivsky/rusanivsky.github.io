@@ -121,8 +121,14 @@
      документа, і зерно лежить під текстом, а не поверх нього.
      Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
      екран, тож повтор не читається, і жодного файлу не тягнуть */
-  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
+  /* color-interpolation-filters='sRGB' на обох фільтрах: за замовчуванням SVG-фільтри
+     рахуються в linearRGB (так каже спека), і на turbulence + feComponentTransfer
+     рушії розходяться, хто саме й де конвертує. У WebKit це давало на mottle не просто
+     інший тон, а видимий бендинг — прибрати шар цілком лікувало, форсувати sRGB лікує
+     так само й лишає плямистість на місці. Chromium цей атрибут ігнорує мовчки: тону
+     не міняє (перевірено пліч-опліч) */
+  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
   --mottle-size:1280px;
   /* та сама 12-колонкова сітка, що й на головній: міжколонник, зсув у другу
      колонку (перша лишається наскрізним полем, у якому не стоїть нічого,
