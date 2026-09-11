@@ -586,15 +586,18 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
   border-bottom:0;
 }
 
-/* На мобільному фон розділів і Контактів не затемнюється під час скролу,
-   але шапка зберігає власну плашку, яка з'являється лише під скролом. */
+/* На мобільному фон розділів не затемнюється під час скролу, а Контакти
+   лишаються нерухомими; для шапки плашку вимикає спільний файл. */
 @media (max-width:640px){
   body.no-plate-darkening::before,
   body.no-plate-darkening::after,
   body.contacts-page::before,
   body.contacts-page::after{
-    animation:none!important;
     filter:brightness(1.15)!important;
+  }
+  body.contacts-page::before,
+  body.contacts-page::after{
+    animation:none!important;
     transform:none!important;
   }
 }

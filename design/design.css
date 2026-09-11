@@ -576,13 +576,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 
 /* На мобільному фон landing-сторінки розділу не затемнюється під час
-   скролу, але шапка зберігає власну плашку, яка з'являється під скролом. */
+   скролу; плашку шапки вимикає спільний файл. */
 @media (max-width:640px){
   body.no-plate-darkening::before,
   body.no-plate-darkening::after{
-    animation:none!important;
     filter:brightness(1.15)!important;
-    transform:none!important;
   }
 }
 
