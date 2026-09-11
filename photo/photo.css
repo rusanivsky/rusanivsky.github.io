@@ -185,6 +185,17 @@
    (зсув) — на місці */
 :root[data-theme="light"]{
   color-scheme:light;
+  /* Підрозділи фото тримають один рівний тон від обводу браузера до
+     футера: плита, скляна шапка й канва — той самий колір, і скрол
+     ніде його не підфарбовує. Тон — той сіруватий, який сторінка й
+     показувала внизу під затемненням, тільки взятий трохи світлішим і
+     тепер розкладений рівно по всій висоті */
+  --bg:#e8ebe6;
+  --plate-top:var(--bg);
+  /* підкладка під кадром, поки він вантажиться: доти вона лишалась
+     зеленішою за тло й на рівному тоні читалась кольоровим прямокутником,
+     а не порожнім місцем у сітці */
+  --surface:#e4e7e2;
   --plate-base:linear-gradient(var(--bg),var(--bg));
 }
 :root[data-theme="green"]{
@@ -280,6 +291,13 @@ body::before,body::after{
   from{transform:translate3d(0,0,0);filter:brightness(1.15)}
   to{transform:translate3d(0,-64px,0);filter:brightness(.95)}
 }
+/* Та сама доріжка без яскравості: анімація перекриває звичайні
+   оголошення, тож одного filter:none нижче світлій темі не вистачало —
+   плита все одно темнішала від 1.15 до .95 за скролом */
+@keyframes plate-scroll-flat{
+  from{transform:translate3d(0,0,0);filter:none}
+  to{transform:translate3d(0,-64px,0);filter:none}
+}
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:scroll()){
     body::before,body::after{
@@ -287,6 +305,8 @@ body::before,body::after{
       animation-timeline:scroll();
       animation-range:0 900px;
     }
+    :root[data-theme="light"] body::before,
+    :root[data-theme="light"] body::after{animation-name:plate-scroll-flat}
   }
 }
 /* Світла тема зберігає плоский тон: паралакс рухає її, але не підфарбовує. */
