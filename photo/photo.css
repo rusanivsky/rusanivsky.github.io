@@ -1038,7 +1038,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
-.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:8px; color:var(--mute)}
+.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(14px,3vw,48px); padding-left:8px; color:var(--mute)}
 .foot-meta .tiny{white-space:nowrap}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
