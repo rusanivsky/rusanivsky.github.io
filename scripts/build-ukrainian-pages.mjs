@@ -142,7 +142,7 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
-const themeScriptVersion = 3;
+const themeScriptVersion = 4;
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми
@@ -162,7 +162,7 @@ function renameWorkTerms(html) {
 
 // Не --bg, а колір, який плита тла показує при самому верху вікна:
 // саме до нього примикає обвід браузера на телефоні
-const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#242424' };
+const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#1b1b1b' };
 
 // Тему сторінки вирішує її розділ, а не гість: перемикача в шапці немає,
 // нічого не читається з localStorage і нічого не залежить від системної

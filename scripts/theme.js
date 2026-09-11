@@ -11,7 +11,7 @@
   var KEY='kr-theme';
   /* тон, до якого примикає обвід браузера на телефоні: верх плити
      кожної з двох палітр */
-  var COLOUR={light:'#e8ebe6',night:'#242424'};
+  var COLOUR={light:'#e8ebe6',night:'#1b1b1b'};
   var ORDER=['auto','light','night'];
   var dark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
   /* Іконки лежать у розмітці всі три, а показує потрібну CSS за
