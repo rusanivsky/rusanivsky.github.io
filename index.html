@@ -470,6 +470,27 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .home-meta.header-menu-mode .header-menu-panel .tgl button{
   width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
 }
+/* Єдиний контракт компактної шапки з Photo, Video та Design:
+   видимий рядок завжди 24px, а touch-зона бургеру не роздуває його. */
+@media (max-width:760px){
+  .home-meta.header-menu-mode{
+    --mobile-meta-row:24px;
+    grid-template-rows:var(--mobile-meta-row);
+    padding-top:var(--meta-pad-top);
+    padding-bottom:var(--meta-pad-bottom);
+    align-items:center
+  }
+  .home-meta.header-menu-mode > .parts{
+    align-self:center;align-items:center;height:var(--mobile-meta-row);padding-bottom:0
+  }
+  .home-meta.header-menu-mode > .parts > .part{line-height:1}
+  .home-meta.header-menu-mode > .header-menu-toggle{
+    align-self:center;width:24px;height:24px;margin:0
+  }
+  .home-meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
+    transform:translate3d(22px,-6px,0) scale(.95,.98)
+  }
+}
 /* ── герой ─────────────────────────────────────────────────── */
 /* усе, що клієнт має побачити не гортаючи, живе в одному гріді:
    ім'я, одне речення по суті, три ремесла дрібним кеглем, кнопка й
