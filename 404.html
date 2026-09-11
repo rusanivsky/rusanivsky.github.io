@@ -203,13 +203,13 @@ body::after{
 @media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
 @media (prefers-contrast:more){body::after{opacity:0}}
 @media print{body::before,body::after{display:none}}
-/* Плита реагує на прокрутку: трохи зсувається і темніє до низу
+/* Плита реагує на прокрутку: зсувається й помітно темніє до низу
    сторінки, тож глибина читається рухом, а не лише зерном. Прив'язана
    до 0–100% прокрутки саме цієї сторінки, тож завершується рівно на
    її низу — і на короткій, і на довгій */
 @keyframes plate-scroll{
   from{translate:0 0; filter:brightness(1)}
-  to{translate:0 -28px; filter:brightness(.85)}
+  to{translate:0 -64px; filter:brightness(.6)}
 }
 @supports (animation-timeline:scroll()){
   body::before{
