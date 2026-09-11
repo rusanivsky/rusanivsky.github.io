@@ -33,15 +33,16 @@
      градієнт прив'язаний до вікна, а не розтягнутий на всю висоту
      документа, і зерно лежить під текстом, а не поверх нього.
      Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
-     екран, тож повтор не читається, і жодного файлу не тягнуть */
-  /* color-interpolation-filters='sRGB' на обох фільтрах: за замовчуванням SVG-фільтри
-     рахуються в linearRGB (так каже спека), і на turbulence + feComponentTransfer
-     рушії розходяться, хто саме й де конвертує. У WebKit це давало на mottle не просто
-     інший тон, а видимий бендинг — прибрати шар цілком лікувало, форсувати sRGB лікує
-     так само й лишає плямистість на місці. Chromium цей атрибут ігнорує мовчки: тону
-     не міняє (перевірено пліч-опліч) */
-  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  --plate-mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0038' numOctaves='2' stitchTiles='stitch' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncG type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncB type='linear' slope='.11' intercept='.445'/%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23m)'/%3E%3C/svg%3E");
+     екран, тож повтор не читається. Обидві лежать у /img і важать
+     разом менше за одну фотографію */
+  /* Зерно й плями — растрові плитки, а не SVG-фільтри. feTurbulence кожен
+     рушій розтеризує по-своєму: на тих самих стилях Safari і Chromium давали
+     різний тон і різну зернистість. Растр знімає питання — обидва беруть ті
+     самі пікселі. Плитки робить scripts/make-plate-textures.mjs; плями там
+     ще й дизеряться, бо їхній розмах — пара рівнів з 255, і без дизеру вони
+     самі стають контурними лініями (ті «сходинки», що видно було в Safari) */
+  --grain-img:url("/img/grain.png");
+  --plate-mottle:url("/img/mottle.png");
   --mottle-size:1280px;
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --text-stretch:75%;
@@ -55,12 +56,17 @@
   --bg:#eef1ec; --ink:#111d13;
   /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
      градієнт читається освітленою поверхнею, а не переходом кольору */
-  --plate-base:linear-gradient(154deg,#f4f6ee 0%,#f2f4ed 12%,#f0f3ec 25%,#eff1ec 38%,#edf0eb 50%,#ebefea 62%,#eaede9 75%,#e8ece8 88%,#e7eae6 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(255,247,231,.82) 0%,rgba(255,247,231,.7347) 13%,rgba(255,247,231,.5314) 26%,rgba(255,247,231,.2886) 38%,rgba(255,247,231,.0853) 51%,rgba(255,247,231,0) 64%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(132,152,138,.34) 0%,rgba(132,152,138,.3046) 14%,rgba(132,152,138,.2203) 28%,rgba(132,152,138,.1197) 42%,rgba(132,152,138,.0354) 56%,rgba(132,152,138,0) 70%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(116,134,122,0) 44%,rgba(116,134,122,.0156) 55%,rgba(116,134,122,.0528) 66%,rgba(116,134,122,.0972) 78%,rgba(116,134,122,.1344) 89%,rgba(116,134,122,.15) 100%);
+  /* Світло, тінь і віньєтка тепер живуть у стопах самого градієнта, а не
+     окремими радіальними шарами згори. Це не спрощення заради спрощення:
+     WebKit дизерить градієнт, тільки поки малює його сам по собі. Щойно
+     зверху лягає другий градієнт — байдуже, з альфою чи з multiply —
+     дизер зникає, і плита розлягається концентричними «сходинками» (у
+     Chromium такого немає: Skia дизерить композит). Один шар — єдина
+     конструкція, чиста в обох рушіях; стопи підібрані так, щоб плита
+     лишалась тією самою на око (rms 1.1 з 255 проти чотиришарової) */
+  --plate-base:linear-gradient(154deg,#fbf6e8 0%,#fbf6e9 8.3%,#f8f5ea 16.7%,#f4f4eb 25%,#f1f2ec 33.3%,#eff1ec 41.7%,#edf0eb 50%,#eaeee9 58.3%,#e6eae5 66.7%,#dee3de 75%,#d4dbd5 83.3%,#cad3cc 91.7%,#c4cdc6 100%);
   /* на світлому зерно видно вдвічі краще, ніж на темному */
-  --grain:.085;
+  --grain:.05;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#f6f7f1;
   /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
@@ -140,11 +146,8 @@
   /* Кінці ті самі, що були з самого початку, але пройдені рівним кроком
      по OKLCH і дев'ятьма стопами: три стопи давали злам на середньому,
      і око читало злам смугою */
-  --plate-base:linear-gradient(154deg,#3d5341 0%,#384e3d 12%,#344839 25%,#304335 38%,#2b3e31 50%,#27392d 62%,#233429 75%,#1f2f25 88%,#1b2a21 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(226,196,146,.13) 0%,rgba(226,196,146,.1165) 13%,rgba(226,196,146,.0842) 26%,rgba(226,196,146,.0458) 38%,rgba(226,196,146,.0135) 51%,rgba(226,196,146,0) 64%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(8,22,17,.46) 0%,rgba(8,22,17,.4122) 14%,rgba(8,22,17,.2981) 28%,rgba(8,22,17,.1619) 42%,rgba(8,22,17,.0478) 56%,rgba(8,22,17,0) 70%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(8,22,17,0) 44%,rgba(8,22,17,.0229) 55%,rgba(8,22,17,.0774) 66%,rgba(8,22,17,.1426) 78%,rgba(8,22,17,.1971) 89%,rgba(8,22,17,.22) 100%);
-  --grain:.28;
+  --plate-base:linear-gradient(154deg,#4f5f49 0%,#4b5b47 8.3%,#445542 16.7%,#3b4d3d 25%,#344738 33.3%,#2f4234 41.7%,#2b3e31 50%,#283a2e 58.3%,#24352a 66.7%,#1f2f25 75%,#1a2a21 83.3%,#15241d 91.7%,#13211a 100%);
+  --grain:.18;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
   --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
 }
@@ -153,11 +156,8 @@
      рости: 6,5:1 */
   color-scheme:dark; --pencil:#d9a05e;
   --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-  --plate-base:linear-gradient(154deg,#162214 0%,#152014 12%,#131f14 25%,#111e13 38%,#101c13 50%,#0e1b12 62%,#0d1a12 75%,#0c1811 88%,#0a1710 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(217,160,94,.1) 0%,rgba(217,160,94,.0896) 13%,rgba(217,160,94,.0648) 26%,rgba(217,160,94,.0352) 38%,rgba(217,160,94,.0104) 51%,rgba(217,160,94,0) 64%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(2,12,10,.46) 0%,rgba(2,12,10,.4122) 14%,rgba(2,12,10,.2981) 28%,rgba(2,12,10,.1619) 42%,rgba(2,12,10,.0478) 56%,rgba(2,12,10,0) 70%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(2,12,10,0) 44%,rgba(2,12,10,.027) 55%,rgba(2,12,10,.0915) 66%,rgba(2,12,10,.1685) 78%,rgba(2,12,10,.233) 89%,rgba(2,12,10,.26) 100%);
-  --grain:.22;
+  --plate-base:linear-gradient(154deg,#272d1a 0%,#252b1a 8.3%,#202718 16.7%,#192316 25%,#142014 33.3%,#111e13 41.7%,#101c13 50%,#0e1b12 58.3%,#0d1a11 66.7%,#0b1811 75%,#0a150f 83.3%,#08130e 91.7%,#06120d 100%);
+  --grain:.14;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#1b281d;
   --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
@@ -181,26 +181,27 @@ body::before,body::after{
 }
 body::before{
   background-color:var(--bg);
-  background-image:
-    var(--plate-mottle),var(--plate-vignette),
-    var(--plate-warm),var(--plate-deep),var(--plate-base);
-  background-repeat:repeat,no-repeat,no-repeat,no-repeat,no-repeat;
-  background-size:var(--mottle-size) var(--mottle-size),auto,auto,auto,auto;
-  /* великі плями йдуть soft-light: без них будь-який градієнт видає,
-     що він порахований, а не знятий */
-  background-blend-mode:soft-light,normal,normal,normal,normal;
+  background-image:var(--plate-mottle),var(--plate-base);
+  background-repeat:repeat,no-repeat;
+  background-size:var(--mottle-size) var(--mottle-size),auto;
+  /* великі плями йдуть overlay: без них будь-який градієнт видає,
+     що він порахований, а не знятий. Саме overlay, а не soft-light: із
+     усіх режимів змішування soft-light — єдиний, який WebKit і Chromium
+     рахують по-різному (перевірено пліч-опліч на всіх шістнадцяти) */
+  background-blend-mode:overlay,normal;
 }
-/* Зерно окремим шаром, бо йому потрібне своє змішування: soft-light
+/* Зерно окремим шаром, бо йому потрібне своє змішування: overlay
    чіпає світлість і не зсуває колір. Воно ж прибирає смуги — на
    темному градієнті 8 біт на канал видно неозброєним оком */
 body::after{
   background-image:var(--grain-img);
   background-size:160px 160px;
-  opacity:var(--grain); mix-blend-mode:soft-light;
+  opacity:var(--grain); mix-blend-mode:overlay;
 }
-/* На щільних екранах те саме зерно згладжується майже до невидимого,
-   тому плитка там малюється меншою */
-@media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
+/* Плитка лягає піксель у піксель щільності екрана: інакше кожен рушій
+   розтягує її своїм згладжуванням і зерно знову розходиться */
+@media (min-resolution:1.5dppx){body::after{background-size:80px 80px}}
+@media (min-resolution:2.5dppx){body::after{background-size:53.334px 53.334px}}
 @media (prefers-contrast:more){body::after{opacity:0}}
 @media print{body::before,body::after{display:none}}
 /* Плита реагує на прокрутку. Сучасні браузери ведуть її scroll-timeline
