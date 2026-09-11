@@ -470,11 +470,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    собою — його власне розмиття мовчки перетворилось би на ніщо.
    Тон береться з верху плити, а не з --bg: --bg — це середина плити,
    і на ньому шапка виходить помітно темнішою за тло просто під собою.
-   Фарби лише 40 % — решту смуги складає сама плита, тож похибка тону
-   не має де вирости */
+   Фарби лише 15 % — решту смуги складає розмитий backdrop. Доти було
+   40%: рівна заливка поверх розмитого зерна читалась іншим матеріалом,
+   ніж різке зерно навколо — тепер плашку тримає переважно сам blur,
+   і межа між нею й плитою м'якша */
 .topbar::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:color-mix(in srgb,var(--plate-top) 40%,transparent);
+  background:color-mix(in srgb,var(--plate-top) 15%,transparent);
   /* обводка живе тут, а не окремо на .topbar: так вона з'являється
      разом із заслінкою, а не висить від самого верху сторінки. Доти
      стояла завжди й одразу впритул до лінійки (.rule нижче) — на
@@ -498,7 +500,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
     opacity:0;
     animation:veil-in linear both;
     animation-timeline:scroll();
-    animation-range:0 140px;
+    animation-range:0 84px;
   }
 }
 .topbar .rule{margin-bottom:2px}
@@ -513,7 +515,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
     animation:veil-out linear both;
     animation-timeline:scroll();
-    animation-range:0 140px;
+    animation-range:0 84px;
   }
 }
 /* Без scroll-таймлайнів заслінка стоїть на місці з першого пікселя —
