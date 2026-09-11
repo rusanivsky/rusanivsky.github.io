@@ -271,30 +271,17 @@ body::after{
 @media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
 @media (prefers-contrast:more){body::after{opacity:0}}
 @media print{body::before,body::after{display:none}}
-/* Плита реагує на прокрутку: зсувається й помітно темніє до низу
-   сторінки, тож глибина читається рухом, а не лише зерном. Прив'язана
-   до 0–100% прокрутки саме цієї сторінки, тож завершується рівно на
-   її низу — і на короткій, і на довгій */
-@keyframes plate-scroll{
-  from{translate:0 0; filter:brightness(1.15)}
-  to{translate:0 -64px; filter:brightness(.95)}
+/* Плита реагує на прокрутку. Властивості оновлює один rAF-цикл у
+   plate-parallax.js: це не залежить від scroll-timeline, який на мобільних
+   міг запізнюватись або перераховуватися стрибком після зміни висоти сторінки. */
+body::before,body::after{
+  transform:translate3d(0,var(--plate-shift,0px),0);
+  filter:brightness(var(--plate-brightness,1.15));
+  will-change:transform,filter;
 }
-@supports (animation-timeline:scroll()){
-  body::before,body::after{
-    animation:plate-scroll linear both;
-    animation-timeline:scroll();
-  }
-  /* світла тема: той самий паралакс, без потемніння — плоскій плиті
-     без градієнтів немає що затемнювати */
-  :root[data-theme="light"] body::before,
-  :root[data-theme="light"] body::after{
-    animation-name:plate-scroll-flat;
-  }
-}
-@keyframes plate-scroll-flat{
-  from{translate:0 0}
-  to{translate:0 -64px}
-}
+/* Світла тема зберігає плоский тон: паралакс рухає її, але не підфарбовує. */
+:root[data-theme="light"] body::before,
+:root[data-theme="light"] body::after{filter:none}
 
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
    спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
@@ -469,7 +456,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   border:1px solid var(--hairline);border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
-  transform:translate3d(22px,-6px,0) scale(.95,.98);
+  transform:translate3d(0,-6px,0) scale(.95,.98);
   transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
 }
 .meta.header-menu-mode.header-menu-open > .header-menu-panel{
@@ -612,7 +599,14 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 
 /* ── перемикач категорій у шапці ─────────────────────────── */
-.secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.secs{--secs-edge-fade:clamp(24px,7vw,44px);--secs-fade-left:1;--secs-fade-right:1;
+  display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-mask-image:linear-gradient(to right,
+    rgb(0 0 0 / var(--secs-fade-left)) 0,#000 var(--secs-edge-fade),
+    #000 calc(100% - var(--secs-edge-fade)),rgb(0 0 0 / var(--secs-fade-right)) 100%);
+  mask-image:linear-gradient(to right,
+    rgb(0 0 0 / var(--secs-fade-left)) 0,#000 var(--secs-edge-fade),
+    #000 calc(100% - var(--secs-edge-fade)),rgb(0 0 0 / var(--secs-fade-right)) 100%)}
 .secs::-webkit-scrollbar{display:none}
 @media (min-width:641px){.secs{gap:clamp(12px,1.8vw,26px)}}
 .sec{flex:0 0 auto;white-space:nowrap}

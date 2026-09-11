@@ -203,19 +203,12 @@ body::after{
 @media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
 @media (prefers-contrast:more){body::after{opacity:0}}
 @media print{body::before,body::after{display:none}}
-/* Плита реагує на прокрутку: зсувається й помітно темніє до низу
-   сторінки, тож глибина читається рухом, а не лише зерном. Прив'язана
-   до 0–100% прокрутки саме цієї сторінки, тож завершується рівно на
-   її низу — і на короткій, і на довгій */
-@keyframes plate-scroll{
-  from{translate:0 0; filter:brightness(1.15)}
-  to{translate:0 -64px; filter:brightness(.95)}
-}
-@supports (animation-timeline:scroll()){
-  body::before,body::after{
-    animation:plate-scroll linear both;
-    animation-timeline:scroll();
-  }
+/* Плита реагує на прокрутку. Властивості оновлює один rAF-цикл у
+   plate-parallax.js, без мобільного стрибка від scroll-timeline. */
+body::before,body::after{
+  transform:translate3d(0,var(--plate-shift,0px),0);
+  filter:brightness(var(--plate-brightness,1.15));
+  will-change:transform,filter;
 }
 
 body{
@@ -473,6 +466,7 @@ a.back::before{
 }
 </style>
 
+<script src="/scripts/plate-parallax.js?v=1"></script>
 </head>
 <body>
 <span class="tiny">Kyrylo Rusanivsky</span>

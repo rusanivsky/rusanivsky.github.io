@@ -33,6 +33,6 @@
   /* Та сама початкова позиція, що й у головному меню: панель плавно
      виїжджає справа наліво одночасно з fade in. */
   .topbar > .meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
-    transform:translate3d(22px,-6px,0) scale(.95,.98)
+    transform:translate3d(0,-6px,0) scale(.95,.98)
   }
 }
