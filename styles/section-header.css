@@ -23,7 +23,7 @@ body.no-plate-darkening::after{
   }
   .topbar > .meta.header-menu-mode{
     --mobile-meta-row:24px;
-    grid-template-columns:auto minmax(0,1fr) auto;
+    grid-template-columns:minmax(0,1fr) auto;
     grid-template-rows:var(--mobile-meta-row);
     padding-top:var(--meta-pad-top);
     padding-bottom:var(--meta-pad-bottom);
@@ -33,13 +33,13 @@ body.no-plate-darkening::after{
     align-self:center;height:19px
   }
   .topbar > .meta.header-menu-mode > .parts{
-    grid-column:2;align-self:center;align-items:center;height:var(--mobile-meta-row);padding-bottom:0
+    grid-column:1;align-self:center;align-items:center;height:var(--mobile-meta-row);padding-bottom:0
   }
   .topbar > .meta.header-menu-mode > .parts > .part{
     line-height:1
   }
   .topbar > .meta.header-menu-mode > .header-menu-toggle{
-    grid-column:3;align-self:center;width:24px;height:24px;margin:0 8px 0 0
+    grid-column:2;align-self:center;width:24px;height:24px;margin:0 8px 0 0
   }
   /* Та сама початкова позиція, що й у головному меню: панель плавно
      виїжджає справа наліво одночасно з fade in. */
