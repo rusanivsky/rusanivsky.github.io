@@ -196,10 +196,11 @@ html{background:var(--bg)}
 /* inset від'ємний, а не 0: у вікна на телефоні немає сталої висоти —
    смуги Safari то згортаються, то ні, а гумовий відскок згори й знизу
    відкриває смугу поза вікном. Плита рівно по вікну лишає там голий
-   --bg, і тло виглядає обрізаним. Запас у чверть висоти вікна більший
-   за будь-яку з тих смуг */
+   --bg, і тло виглядає обрізаним рівним кольором без зерна й градієнта.
+   Чверті висоти вікна на реальному iOS Safari не вистачало — смуга
+   таки пробивалась, тож запас піднято до 60vh */
 body::before,body::after{
-  content:""; position:fixed; inset:-25vh 0; z-index:-1; pointer-events:none;
+  content:""; position:fixed; inset:-60vh 0; z-index:-1; pointer-events:none;
 }
 body::before{
   background-color:var(--bg);
@@ -534,15 +535,16 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
-/* стрілка вниз-праворуч: веде всередину сайту. inline-block, як на
-   .cat[target], зламав перенесення: без пробілу між словом і стрілкою
-   браузер не має де розірвати рядок, і на вузькому екрані «photography↗»
-   вилазить за край одним нерозривним шматком. absolute повертає безпечне
-   перенесення, а вищий bottom піднімає стрілку на той самий рівень, що
-   й в inline-block варіанті */
+/* стрілка вниз-праворуч: веде всередину сайту. left:100% рахувався від
+   коробки .sect, а не від кінця слова — коли заголовок переносився на
+   два рядки, коробка розтягувалась на всю доступну ширину (так працює
+   auto-width переносного inline-block), і стрілка опинялась далеко
+   праворуч від «photography», у порожньому місці. inline-block у
+   звичайному потоці, як на .cat[target], прибивається до останньої
+   літери, а не до краю коробки, хай там яка вона завширшки */
 .spec .sect::after{
-  content:"↘"; position:absolute; left:100%; bottom:.78em;
-  margin-left:.16em; font-size:.36em; line-height:1; color:var(--ink);
+  content:"↘"; display:inline-block; margin-left:.16em;
+  font-size:.36em; vertical-align:.95em; line-height:1; color:var(--ink);
   opacity:0; transform:translate(-.3em,-.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
