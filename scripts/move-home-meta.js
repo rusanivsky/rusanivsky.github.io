@@ -7,7 +7,7 @@
     var mobile=matchMedia('(max-width:640px)');
     var root=document.documentElement;
     function update(){
-      if(mobile.matches||root.lang==='en'){
+      if(mobile.matches||root.lang==='en'||root.lang==='uk'){
         slot.appendChild(cols);
       }else{
         header.insertBefore(cols,header.querySelector('.switches'));
