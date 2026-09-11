@@ -129,16 +129,7 @@ function renameWorkTerms(html) {
 
 // Не --bg, а колір, який плита тла показує при самому верху вікна:
 // саме до нього примикає обвід браузера на телефоні
-const themeColour = { light: '#f6f7f1', green: '#42563f', night: '#171717' };
-// Підрозділи фото — виняток зі світлої теми: у них плита, скляна шапка
-// й обвід браузера тримають один рівний тон на всю сторінку
-const photoLightColour = '#e8ebe6';
-const photoLightRoutes = new Set([
-  '/photo/reportage/',
-  '/photo/culture-art/',
-  '/photo/backstage/',
-  '/photo/portraits/',
-]);
+const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#171717' };
 
 // Тему сторінки вирішує її розділ, а не гість: перемикача в шапці немає,
 // нічого не читається з localStorage і нічого не залежить від системної
@@ -146,8 +137,7 @@ const photoLightRoutes = new Set([
 function applyThemePolicy(html, route) {
   const theme = lightPortfolioRoutes.has(route) ? 'light' : nightPortfolioRoutes.has(route) ? 'night' : 'green';
   html = html.replace(/<html lang="en"(?: data-theme="(?:light|green|night)")?>/, `<html lang="en" data-theme="${theme}">`);
-  const colour = photoLightRoutes.has(route) ? photoLightColour : themeColour[theme];
-  html = html.replace(/<meta name="theme-color" content="#[0-9a-f]{6}">/, `<meta name="theme-color" content="${colour}">`);
+  html = html.replace(/<meta name="theme-color" content="#[0-9a-f]{6}">/, `<meta name="theme-color" content="${themeColour[theme]}">`);
   return html;
 }
 
