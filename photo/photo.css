@@ -796,7 +796,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* На телефоні назва категорії має лишатися виразною, але бути на 20%
      компактнішою, щоб не займати весь екран. */
   .cat .lab{font-size:clamp(22.4px,5.76vw,30.4px);width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-wrap:pretty}
-  .photo-pixover p,.site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
+  .photo-pixover p{font-size:var(--fs-title)}
+  .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
 }
 
 /* ── підвал сайту ─────────────────────────────────────────── */
