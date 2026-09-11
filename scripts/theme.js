@@ -11,21 +11,12 @@
   var KEY='kr-theme';
   /* тон, до якого примикає обвід браузера на телефоні: верх плити
      кожної з двох палітр */
-  var COLOUR={light:'#e8ebe6',night:'#171717'};
+  var COLOUR={light:'#e8ebe6',night:'#242424'};
   var ORDER=['auto','light','night'];
   var dark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
-  /* іконка показує режим, у якому сторінка зараз, а не той, куди веде
-     клік: станів три, і з самої цілі неможливо вгадати, де ти */
-  var ICON={
-    auto:'<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'+
-      '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'+
-      '<path d="M8 2.3a5.7 5.7 0 0 1 0 11.4z" fill="currentColor"/></svg>',
-    light:'<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">'+
-      '<circle cx="8" cy="8" r="3.1"/>'+
-      '<path d="M8 1v1.7M8 13.3V15M15 8h-1.7M2.7 8H1M12.95 3.05l-1.2 1.2M4.25 11.75l-1.2 1.2M12.95 12.95l-1.2-1.2M4.25 4.25l-1.2-1.2"/></svg>',
-    night:'<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'+
-      '<path d="M13.5 9.9A6 6 0 0 1 6.1 2.5 6 6 0 1 0 13.5 9.9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>'
-  };
+  /* Іконки лежать у розмітці всі три, а показує потрібну CSS за
+     data-theme-mode. Інакше кнопка мусила б чекати на DOMContentLoaded,
+     щоб отримати свій SVG, — і шапка стрибала б на кожному завантаженні */
   var NAME={
     en:{auto:'auto',light:'light',night:'night'},
     uk:{auto:'авто',light:'світла',night:'нічна'}
@@ -44,6 +35,8 @@
   function paint(mode){
     var theme=resolve(mode);
     root.setAttribute('data-theme',theme);
+    /* цей же атрибут проявляє кнопку: без JS її немає зовсім */
+    root.setAttribute('data-theme-mode',mode);
     /* обидва теги theme-color несуть тепер той самий колір: медіа-умови
        на них лишаються тільки для гостя без JS */
     var metas=document.querySelectorAll('meta[name="theme-color"]');
@@ -65,20 +58,21 @@
 
     function render(){
       var ukrainian=root.lang==='uk';
-      button.innerHTML=ICON[mode];
       button.setAttribute('aria-label',(ukrainian?'Тема: ':'Theme: ')+NAME[ukrainian?'uk':'en'][mode]);
-      group.setAttribute('data-mode',mode);
     }
     function apply(){
-      /* Той самий плавний кросовер, що й між сторінками: старий кадр
-         згасає поверх нового. Без нього плита міняє колір ривком */
+      /* Той самий кросовер, що й між сторінками, тільки довший: клас
+         theme-shift піднімає тривалість, поки триває перефарбування.
+         Без View Transitions тон міняється миттєво — анімувати градієнт
+         плити через transition браузер не вміє */
       var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(!still&&document.startViewTransition) document.startViewTransition(function(){paint(mode);});
-      else paint(mode);
+      if(still||!document.startViewTransition){ paint(mode); return; }
+      root.classList.add('theme-shift');
+      var shift=document.startViewTransition(function(){paint(mode);});
+      shift.finished.then(clear,clear);
+      function clear(){ root.classList.remove('theme-shift'); }
     }
 
-    /* без JS кнопка нічого не робить, тож у розмітці вона схована */
-    button.hidden=false;
     render();
     button.addEventListener('click',function(){
       mode=ORDER[(ORDER.indexOf(mode)+1)%ORDER.length];

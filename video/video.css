@@ -229,12 +229,15 @@
      потрапили оливкові стопи зеленої ночі, і плита розходилася з
      нейтральними --bg і --plate-top, які лишались від «Neutralize
      video backgrounds» */
-  --bg:#171717; --surface:#252525; --ink:#f0f0f0;
-  --plate-base:linear-gradient(154deg,#2a2a2a 0%,#282828 8.3%,#242424 16.7%,#202020 25%,#1d1d1d 33.3%,#1a1a1a 41.7%,#191919 50%,#181818 58.3%,#171717 66.7%,#151515 75%,#121212 83.3%,#101010 91.7%,#0f0f0f 100%);
+  --bg:#1e1e1e; --surface:#262626; --ink:#f0f0f0;
+  /* Розмах плити вдвічі вужчий за решту тем: 39→24 замість 42→15. Нічна
+     тут не освітлена поверхня, а рівне тло розмови — глибокий кут і
+     світлий кут сперечалися б із кадрами, які на ній лежать */
+  --plate-base:linear-gradient(154deg,#272727 0%,#262626 8.3%,#242424 16.7%,#222222 25%,#202020 33.3%,#1f1f1f 41.7%,#1e1e1e 50%,#1d1d1d 58.3%,#1c1c1c 66.7%,#1b1b1b 75%,#1a1a1a 83.3%,#191919 91.7%,#181818 100%);
   --grain:.14;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
-  --plate-top:#232323;
-  --sticky-plate-end:#171717;
+  --plate-top:#242424;
+  --sticky-plate-end:#1e1e1e;
   --divider:color-mix(in srgb,#f0f0f0 34%,transparent);
   --hairline:color-mix(in srgb,#f0f0f0 14%,transparent);
   --mute:color-mix(in srgb,#f0f0f0 55%,transparent);
@@ -379,10 +382,21 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    іконка режиму, у якому сторінка зараз. Три стани йдуть по колу:
    авто → світла → нічна. Іконку малює theme.js, тож у розмітці кнопка
    схована — без JS вона нічого не перемикала б */
+/* Контрол проявляється тільки тоді, коли theme.js виставив
+   data-theme-mode, — а він робить це в <head>, до першого малювання.
+   Тож ані спалаху чужої іконки, ані стрибка шапки: усі три лежать у
+   розмітці, а CSS показує ту, що відповідає режиму. Без JS контрола
+   немає зовсім, і перемикати ним було б нічого */
+/* Ховаємо лише відсутність режиму, а не наявність: правило з id
+   перебивало б display:grid, який панель бургера ставить рядкам
+   перемикачів, і рядок теми випадав би з її двох колонок */
+:root:not([data-theme-mode]) #theme{display:none}
 #theme button{display:inline-flex;align-items:center;justify-content:center;padding-inline:8px}
-/* авторське display перебиває [hidden] з набору браузера, тож ховаємо руками */
-#theme button[hidden]{display:none}
+#theme .ti{display:none}
 #theme svg{display:block}
+:root[data-theme-mode="auto"] #theme .ti[data-mode="auto"],
+:root[data-theme-mode="light"] #theme .ti[data-mode="light"],
+:root[data-theme-mode="night"] #theme .ti[data-mode="night"]{display:block}
 /* ховер тягне літери по горизонталі; іконку це тільки плющить */
 @media (hover:hover){#theme button:hover{transform:none;-webkit-text-stroke:0}}
 
@@ -519,8 +533,12 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .meta.header-menu-mode .header-menu-panel .part::after{content:none}
 .meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
+/* 1fr, а не auto: на двох auto-колонках вільне місце ділиться порівну
+   між ними, і друга колонка виходить різної ширини в кожному рядку —
+   кнопки тоді стоять кожна на своїй осі. Підпис бере все зайве, кнопка
+   лишається завширшки зі свою коробку, однакову в обох рядках */
 .meta.header-menu-mode .header-menu-panel .switches > .tgl{
-  display:grid;grid-template-columns:auto auto;gap:clamp(12px,1.8vw,26px);align-items:center;width:100%;min-height:40px
+  display:grid;grid-template-columns:1fr auto;gap:clamp(12px,1.8vw,26px);align-items:center;width:100%;min-height:40px
 }
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
   font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
@@ -531,7 +549,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #theme::before{content:"Тема"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
-  width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
+  width:auto;min-height:40px;margin:0;padding:10px 0;
+  /* Обидва перемикачі стоять на одній осі: коробка однієї ширини, вміст
+     по центру. Інакше дві літери UA й 16px іконка правляться кожна по
+     своєму краю, і їхні осі розходяться майже на два десятки пікселів */
+  min-width:48px;display:flex;align-items:center;justify-content:center
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */
@@ -641,7 +663,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    набору браузера, через який колись і прибрали анімацію — там обидва
    знімки рухались, та ще й у plus-lighter, і кадр спалахував */
 ::view-transition-new(root){ animation:none }
-::view-transition-old(root){ animation:pt-out 260ms var(--ease) both }
+/* --ease — різкий ease-out, розрахований на рух; для розчинення кольору
+   він обриває хвіст, і перехід читається поспішним. Тут потрібна рівна
+   крива без ривка на жодному кінці */
+::view-transition-old(root){ animation:pt-out 300ms cubic-bezier(.4,0,.2,1) both }
+/* Зміна теми — не перехід між двома сторінками, а перефарбування однієї
+   й тієї самої: тут є куди дати часу, і тон перетікає, а не блимає */
+html.theme-shift::view-transition-old(root){ animation-duration:520ms }
 /* запасний перехід для браузерів без @view-transition */
 @keyframes pt-in{ from{opacity:0} to{opacity:1} }
 @keyframes pt-out{ from{opacity:1} to{opacity:0} }

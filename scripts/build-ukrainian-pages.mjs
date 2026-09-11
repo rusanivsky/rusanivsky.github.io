@@ -99,10 +99,21 @@ function addContactsLink(html, route) {
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
-  // Кнопка їде схованою: іконку їй малює theme.js, і без JS вона не
-  // перемикала б нічого. У бургері цей рядок стає четвертим після мови
+  // Усі три іконки лежать у розмітці, потрібну показує CSS за
+  // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
+  // чекає на DOMContentLoaded і шапка не стрибає на кожному завантаженні.
+  // У бургері цей рядок стає четвертим після мови
+  const themeIcons =
+    '<span class="ti" data-mode="auto"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
+      + '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+      + '<path d="M8 2.3a5.7 5.7 0 0 1 0 11.4z" fill="currentColor"/></svg></span>'
+    + '<span class="ti" data-mode="light"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">'
+      + '<circle cx="8" cy="8" r="3.1"/>'
+      + '<path d="M8 1v1.7M8 13.3V15M15 8h-1.7M2.7 8H1M12.95 3.05l-1.2 1.2M4.25 11.75l-1.2 1.2M12.95 12.95l-1.2-1.2M4.25 4.25l-1.2-1.2"/></svg></span>'
+    + '<span class="ti" data-mode="night"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
+      + '<path d="M13.5 9.9A6 6 0 0 1 6.1 2.5 6 6 0 1 0 13.5 9.9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>';
   const themeToggle = switchableRoutes.has(route)
-    ? '\n    <div class="tgl" id="theme" role="group" aria-label="Theme"><button type="button" hidden aria-label="Theme: auto"></button></div>'
+    ? `\n    <div class="tgl" id="theme" role="group" aria-label="Theme"><button type="button" aria-label="Theme: auto">${themeIcons}</button></div>`
     : '';
   // On the home page the link sits next to the language switcher. Keep the
   // same desktop header on every page, including pages whose older source had
@@ -131,7 +142,7 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
-const themeScriptVersion = 1;
+const themeScriptVersion = 3;
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми
@@ -151,7 +162,7 @@ function renameWorkTerms(html) {
 
 // Не --bg, а колір, який плита тла показує при самому верху вікна:
 // саме до нього примикає обвід браузера на телефоні
-const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#171717' };
+const themeColour = { light: '#e8ebe6', green: '#42563f', night: '#242424' };
 
 // Тему сторінки вирішує її розділ, а не гість: перемикача в шапці немає,
 // нічого не читається з localStorage і нічого не залежить від системної
