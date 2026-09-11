@@ -598,7 +598,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (min-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
 .v{display:flex;flex-direction:column;gap:10px}
-.fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--surface);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit}
+.fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--surface);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit;
+  box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
 .fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
 .fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--ink);box-shadow:0 0 0 clamp(7px,.8vw,10px) color-mix(in srgb,var(--bg) 78%,transparent);position:relative;transition:transform 300ms var(--ease)}
@@ -617,7 +618,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .local-fac.landscape video{aspect-ratio:16/9}
 .local-fac video{transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 @media (hover:hover){.local-fac:not(.is-playing):hover video{transform:scale(1.04);opacity:.82}.local-fac:not(.is-playing):hover .pl i{transform:scale(1.1)}}
-.local-fac{position:relative;overflow:hidden;background:#000}
+.local-fac{position:relative;overflow:hidden;background:#000;
+  box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
 .local-play{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:1;background:transparent}
 .local-fac.is-playing .local-play{opacity:0;pointer-events:none}
 .local-play .pl i{transition:transform 300ms var(--ease)}

@@ -712,7 +712,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   padding-block:clamp(28px,5vh,64px) clamp(40px,7vh,90px)}
 .p{display:flex;flex-direction:column;gap:12px}
 .p .shots{display:flex;flex-direction:column;gap:10px}
-.p img{width:100%;height:auto;background:var(--surface);display:block}
+.p img{width:100%;height:auto;background:var(--surface);display:block;
+  box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
    що й основний текст. Кегль — щабель text зі спільної шкали. */
 .pt{font-family:var(--font);font-size:var(--fs-text);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
