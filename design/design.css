@@ -282,6 +282,8 @@ body::before,body::after{
 /* Світла тема зберігає плоский тон: паралакс рухає її, але не підфарбовує. */
 :root[data-theme="light"] body::before,
 :root[data-theme="light"] body::after{filter:none}
+body.no-plate-darkening::before,
+body.no-plate-darkening::after{filter:none}
 
 /* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
    спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
