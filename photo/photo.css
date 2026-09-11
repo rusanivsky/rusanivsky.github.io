@@ -620,6 +620,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* ── перемикач категорій у шапці ─────────────────────────── */
 .secs{display:flex;gap:clamp(14px,2.4vw,40px);padding-block:8px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .secs::-webkit-scrollbar{display:none}
+@media (min-width:641px){.secs{gap:clamp(12px,1.8vw,26px)}}
 .sec{flex:0 0 auto;white-space:nowrap}
 .sec{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute);
   padding-block:6px;position:relative;transition:color 240ms var(--ease)}
@@ -758,12 +759,14 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .cats{display:block; padding-left:calc(var(--pad) + var(--col2))}
   .cat::before,.cat::after{left:0}
   .cat{
-    display:grid;grid-template-columns:minmax(3ch,auto) minmax(0,1fr);
+    display:grid;grid-template-columns:minmax(3ch,auto) minmax(0,1fr);min-width:0;
     column-gap:clamp(14px,2.4vw,36px);
   }
   .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
   .cat .lab{grid-column:2}
-  .cat .lab{font-size:clamp(36px,4.65vw,60px)}
+  /* На телефоні назва категорії має лишатися виразною, але не займати
+     весь екран — головний акцент тут на самому контенті. */
+  .cat .lab{font-size:clamp(28px,7.2vw,38px);width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-wrap:pretty}
   .photo-pixover p,.site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}
 }
 

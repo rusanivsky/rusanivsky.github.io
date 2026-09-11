@@ -554,6 +554,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
    першого коротшого слова. */
 .spec.under .sect{text-align:left}
 .spec.under .sect > span{display:block}
+@media (min-width:641px){
+  .spec.under .sect{text-align:right}
+}
 /* стрілка вниз-праворуч: веде всередину сайту. left:100% рахувався від
    коробки .sect, а не від кінця слова — коли заголовок переносився на
    два рядки, коробка розтягувалась на всю доступну ширину (так працює
@@ -569,6 +572,32 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 }
 /* розділ, що живе на сторонньому сайті, показує звичну стрілку назовні */
 .spec .sect[target]::after{content:"↗"; transform:translate(-.3em,.3em)}
+/* У Street photography назва навмисно розбита на два рядки. На телефоні
+   стрілка належить другому слову, а на широкому екрані — першому: в обох
+   випадках вона лишається одразу після останньої літери свого рядка. */
+.spec.under .sect::after{content:none}
+.spec.under .sect > span:last-child{position:relative;width:max-content;max-width:100%}
+.spec.under .sect > span:last-child::after{
+  content:"↗"; position:absolute; left:100%; top:0; margin-left:.16em;
+  font-size:.36em; line-height:1; color:var(--ink);
+  opacity:0; transform:translate(-.3em,.3em);
+  transition:opacity 300ms var(--ease), transform 300ms var(--ease);
+}
+@media (min-width:641px){
+  .spec.under .sect{width:100%}
+  .spec.under .sect > span:first-child,
+  .spec.under .sect > span:last-child{
+    width:100%;max-width:none;text-align:right
+  }
+  .spec.under .sect > span:first-child{position:relative}
+  .spec.under .sect > span:first-child::after{
+    content:"↗"; position:absolute; left:100%; top:0; margin-left:.16em;
+    font-size:.36em; line-height:1; color:var(--ink);
+    opacity:0; transform:translate(-.3em,.3em);
+    transition:opacity 300ms var(--ease), transform 300ms var(--ease);
+  }
+  .spec.under .sect > span:last-child::after{content:none}
+}
 /* Перші три напрямки ведуть усередину сайту, але окремого маркера їм не
    потрібно: назва й так працює як самостійний пункт навігації. */
 .work .spec:not(.under) .sect::after{content:none}
@@ -607,7 +636,8 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .spec:hover .sect{color:var(--pencil);transform:translateX(clamp(8px,1.4vw,22px))}
   .spec:hover::after{transform:scaleX(1)}
   /* Відокремлений нижній рядок .under зберігає власну стрілку назовні. */
-  .work .spec.under .sect:hover::after{opacity:1; transform:none}
+  .work .spec.under .sect:hover > span:last-child::after{opacity:1; transform:none}
+  .work .spec.under .sect:hover > span:first-child::after{opacity:1; transform:none}
   .spec .it:hover{color:var(--accent)}
   .spec a.it[target]:hover::after{opacity:1; transform:none}
 }
@@ -677,6 +707,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (max-width:640px){
   /* дванадцяти колонок тут уже немає, але перша лишається для номера,
      а назва й категорії живуть у спільній другій колонці */
+  /* На мобільному ім'я — головний якір першого екрана: трохи більше й
+     важче за назви напрямків, щоб ієрархія читалася одразу. */
+  .name{font-size:clamp(48px,11vw,72px);font-weight:700}
   .specs{display:block; margin-left:var(--col2)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .spec::before,.spec::after{left:0}
@@ -706,10 +739,10 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     grid-column:2; grid-row:2; margin:0;
     justify-items:start; text-align:left;
   }
-  /* На телефоні display-гарнітура має чіткіше відділяти назви напрямків
-     від дрібніших категорій. Після четвертого напрямку лишаємо окремий
+  /* На телефоні назви напрямків мають бути помітними, але не конкурувати
+     з ім'ям угорі. Після четвертого напрямку лишаємо окремий
      вертикальний просвіт перед блоком клієнтів. */
-  .spec h3{font-size:clamp(36px,4.65vw,60px)}
+  .spec h3{font-size:clamp(29px,7.7vw,40px)}
 }
 /* портрет на трьох правих колонках: правою межею він і далі стоїть на
    краю верстки, як логотипи клієнтів і рядок підвалу, а ліва з'їхала з
@@ -778,7 +811,10 @@ figure{margin:0; position:relative; z-index:1}
      і два повних просвіти поспіль розривали б сторінку надвоє */
   padding-block:clamp(12px,1.8vh,26px) clamp(34px,6vh,84px);
   /* зріст, від якого рахуються всі чотири марки */
-  --lg:clamp(13px,1.7vw,25px);
+  /* На середніх ширинах 1,7vw майже весь час впирається в 13px — марки
+     стають візуально слабшими саме на планшеті. Піднімаємо нижню межу й
+     лишаємо той самий максимум: на широкому десктопі розмір не зростає. */
+  --lg:clamp(18px,2.1vw,25px);
 }
 /* марки стоять поряд, одна за одною, і всім рядом притиснуті до правого
    краю верстки — так само, як перелік категорій у рядках вище і перелік
@@ -929,7 +965,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 .site-foot .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
-  vertical-align:.9em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
+  vertical-align:.95em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
