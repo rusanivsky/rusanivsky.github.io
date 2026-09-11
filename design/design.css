@@ -420,6 +420,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
     padding-block:9px;min-height:30px;margin-block:-3px
   }
 }
+@media (max-width:640px){
+  .meta .switches > .tgl#lang button{
+    padding-block:0;min-height:24px;margin-block:0;line-height:24px
+  }
+}
 
 /* ── меню переповненої шапки ─────────────────────────────── */
 .header-menu-toggle,.header-menu-panel{display:none}
@@ -465,7 +470,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
   transform:translate3d(22px,-6px,0) scale(.95,.98);
-  transition:opacity 220ms var(--ease),transform 300ms var(--ease),visibility 0s linear 300ms
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
 }
 .meta.header-menu-mode.header-menu-open > .header-menu-panel{
   visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
@@ -478,13 +483,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .meta.header-menu-mode .header-menu-panel .part,
 .meta.header-menu-mode .header-menu-panel .contact-link{
-  display:flex;align-items:center;width:100%;min-height:44px;padding:12px 0;
+  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;
   text-align:left;white-space:normal
 }
 .meta.header-menu-mode .header-menu-panel .part::after{content:none}
 .meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
 .meta.header-menu-mode .header-menu-panel .switches > .tgl{
-  display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:44px
+  display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:40px
 }
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
   font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
@@ -493,7 +498,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
-  width:auto;min-height:44px;margin:0;padding:12px 0 12px 16px
+  width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */

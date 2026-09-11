@@ -28,11 +28,11 @@
     line-height:1
   }
   .topbar > .meta.header-menu-mode > .header-menu-toggle{
-    align-self:center;margin:0 -8px 0 0
+    align-self:center;width:24px;height:24px;margin:0
   }
-  /* Закрита панель не виїжджає вправо за viewport: горизонтальний рух
-     створював приховане переповнення й міг зсувати sticky-шар у Safari. */
+  /* Та сама початкова позиція, що й у головному меню: панель плавно
+     виїжджає справа наліво одночасно з fade in. */
   .topbar > .meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
-    transform:translate3d(0,-6px,0) scale(.95,.98)
+    transform:translate3d(22px,-6px,0) scale(.95,.98)
   }
 }

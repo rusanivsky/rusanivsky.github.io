@@ -423,6 +423,11 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
     padding-block:9px;min-height:30px;margin-block:-3px
   }
 }
+@media (max-width:640px){
+  .meta .switches > .tgl#lang button{
+    padding-block:0;min-height:24px;margin-block:0;line-height:24px
+  }
+}
 
 /* ── меню переповненої шапки ─────────────────────────────── */
 .header-menu-toggle,.header-menu-panel{display:none}
@@ -468,7 +473,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
   visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
   transform:translate3d(22px,-6px,0) scale(.95,.98);
-  transition:opacity 220ms var(--ease),transform 300ms var(--ease),visibility 0s linear 300ms
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
 }
 .meta.header-menu-mode.header-menu-open > .header-menu-panel{
   visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
@@ -481,13 +486,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .meta.header-menu-mode .header-menu-panel .part,
 .meta.header-menu-mode .header-menu-panel .contact-link{
-  display:flex;align-items:center;width:100%;min-height:44px;padding:12px 0;
+  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;
   text-align:left;white-space:normal
 }
 .meta.header-menu-mode .header-menu-panel .part::after{content:none}
 .meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
 .meta.header-menu-mode .header-menu-panel .switches > .tgl{
-  display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:44px
+  display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;min-height:40px
 }
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
   font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
@@ -496,7 +501,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 .meta.header-menu-mode .header-menu-panel .tgl button{
-  width:auto;min-height:44px;margin:0;padding:12px 0 12px 16px
+  width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
 }
 
 /* ── липка шапка ─────────────────────────────────────────── */
@@ -570,12 +575,12 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @supports not (animation-timeline:scroll()){
   body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{display:none}
 }
-/* На сторінці умов роботи sticky лишається, але без межі й тіні.
-   Обводка тепер на ::before, тож і гасити її треба там само. */
-body:has(.contact-head) .topbar{
+/* На сторінці контактів sticky лишається без межі й тіні. Rates — виняток:
+   його фіксована плашка має зберігати обводку разом із появою плашки. */
+body:has(.contact-head):not(:has(.rates-nav)) .topbar{
   box-shadow:none;
 }
-body:has(.contact-head) .topbar::before{
+body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
   border-bottom:0;
 }
 
@@ -651,8 +656,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (min-width:640px){.shots{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1100px){.shots{grid-template-columns:repeat(3,1fr)}}
 .shots img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
-  background:var(--surface);display:block;
-  box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
+  background:var(--surface);display:block}
 .shots > *{align-self:start}
 /* Вертикальний кадр займає дві клітинки заввишки. Доти він розтягував увесь
    рядок, і під сусідніми горизонтальними зяяла діра на пів екрана. */

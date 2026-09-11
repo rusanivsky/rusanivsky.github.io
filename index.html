@@ -72,6 +72,7 @@
      самий --pencil, що малює лінію під ховером */
   --accent:var(--pencil);
   --divider:color-mix(in srgb, #111d13 40%, transparent);
+  --hairline:color-mix(in srgb,var(--ink) 16%,transparent);
   --mute:color-mix(in srgb, #111d13 65%, transparent);
   --font:"Fixel",system-ui,-apple-system,sans-serif;
   --text-stretch:75%;
@@ -275,7 +276,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   padding-block:var(--meta-pad); align-items:center;
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
-@media (min-width:761px){:root[lang="en"] .meta .cols > .tiny:first-child{padding-left:8px}}
+@media (min-width:761px){.meta .cols > .tiny:first-child{padding-left:8px}}
 .tiny{
   font-size:var(--fs-chrome); font-stretch:var(--text-stretch);
   letter-spacing:var(--ls-tiny); text-transform:uppercase;
@@ -378,7 +379,78 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     padding-block:9px;min-height:30px;margin-block:-3px
   }
 }
+/* EN/UA не має власного вертикального просвіту: напис стоїть точно в
+   24px-рядку шапки, на тій самій вертикалі, що й лінійка. */
+@media (max-width:640px){
+  .meta .switches > .tgl#lang button{
+    padding-block:0;min-height:24px;margin-block:0;line-height:24px
+  }
+}
 
+/* Десктопна шапка має дихати від лінійки так само, як копірайт у футері:
+   навігація відступає зліва на 8px, правий блок — справа на 8px. В
+   англійській версії .cols уже внизу, тому шапка переходить із трьох
+   колонок у дві, але сама навігація лишається у верхньому рядку. */
+@media (min-width:641px){
+  .home-meta .parts{padding-left:8px}
+  .home-meta .switches{justify-self:end}
+  .mobile-meta-slot .cols{padding-right:8px}
+  :root[lang="en"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
+  :root[lang="en"] .home-meta .parts{grid-column:1;grid-row:1}
+  :root[lang="en"] .home-meta .switches{grid-column:2;grid-row:1}
+}
+
+/* ── навігація головної ───────────────────────────────────── */
+/* На широкому екрані розділи стоять між службовою інформацією та
+   перемикачами — так само, як у шапці сторінок портфоліо. На телефоні
+   вони прибираються з рядка й відкриваються з бургер-кнопки. */
+.home-meta{position:relative;grid-template-columns:minmax(0,1fr) auto auto;column-gap:clamp(18px,3vw,48px)}
+.home-meta .parts{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
+.home-meta .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
+  color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;transition:color 220ms var(--ease)}
+@media (pointer:fine){.home-meta .part{padding-block:9px}}
+@media (hover:hover){.home-meta .part:hover{color:var(--accent)}}
+.home-menu-toggle,.home-menu-panel{display:none}
+@media (max-width:600px){
+  .home-meta{grid-template-columns:auto minmax(0,1fr);column-gap:12px}
+  .home-meta .parts{display:none}
+  .home-meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
+  .home-menu-toggle{grid-column:1;grid-row:1;display:grid;place-items:center;align-self:center;
+    appearance:none;width:24px;height:24px;margin:0;padding:0;border:0;background:transparent;color:var(--ink);cursor:pointer}
+  .home-menu-toggle span,.home-menu-toggle span::before,.home-menu-toggle span::after{
+    display:block;width:22px;height:1px;background:currentColor;transition:transform 240ms var(--ease),opacity 180ms var(--ease)}
+  .home-menu-toggle span{position:relative}
+  .home-menu-toggle span::before,.home-menu-toggle span::after{content:"";position:absolute;left:0}
+  .home-menu-toggle span::before{top:-6px}
+  .home-menu-toggle span::after{top:6px}
+  .home-menu-open .home-menu-toggle span{background:transparent}
+  .home-menu-open .home-menu-toggle span::before{top:0;transform:rotate(45deg)}
+  .home-menu-open .home-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+}
+/* На проміжній ширині планшета навігація ще вміщується в шапку — бургер
+   потрібен лише для телефонного формату. */
+@media (min-width:601px) and (max-width:640px){
+  .home-menu-toggle{display:none}
+  .home-meta{grid-template-columns:minmax(0,1fr) auto}
+  .home-meta .cols{display:none}
+  .home-meta .parts{display:flex;grid-column:1;grid-row:1}
+  .home-meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
+}
+.home-menu-panel{
+  position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
+  width:min(calc(25vw - var(--pad)),336px);min-width:132px;padding:5px 9px 7px;
+  background:color-mix(in srgb,var(--plate-top) 62%,transparent);
+  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);backdrop-filter:blur(17.5px) saturate(1.4);
+  border:1px solid var(--hairline);border-radius:12px;
+  box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
+  visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
+  transform:translate3d(22px,-6px,0) scale(.95,.98);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
+}
+.home-menu-panel .parts{display:grid;grid-template-columns:1fr;gap:0;min-width:0}
+.home-menu-panel .part{display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;text-align:left;white-space:normal}
+.home-menu-open > .home-menu-panel{display:block;visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s}
 /* ── герой ─────────────────────────────────────────────────── */
 /* усе, що клієнт має побачити не гортаючи, живе в одному гріді:
    ім'я, одне речення по суті, три ремесла дрібним кеглем, кнопка й
@@ -578,7 +650,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .spec.under .sect::after{content:none}
 .spec.under .sect > span:last-child{position:relative;width:max-content;max-width:100%}
 .spec.under .sect > span:last-child::after{
-  content:"↗"; position:absolute; left:100%; top:0; margin-left:.16em;
+  content:"↗"; position:absolute; left:100%; top:.35em; margin-left:.16em;
   font-size:.36em; line-height:1; color:var(--ink);
   opacity:0; transform:translate(-.3em,.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
@@ -591,7 +663,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   }
   .spec.under .sect > span:first-child{position:relative}
   .spec.under .sect > span:first-child::after{
-    content:"↗"; position:absolute; left:100%; top:0; margin-left:.16em;
+    content:"↗"; position:absolute; left:100%; top:.35em; margin-left:.16em;
     font-size:.36em; line-height:1; color:var(--ink);
     opacity:0; transform:translate(-.3em,.3em);
     transition:opacity 300ms var(--ease), transform 300ms var(--ease);
@@ -1000,6 +1072,9 @@ figure{margin:0; position:relative; z-index:1}
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
 .mobile-meta-slot{display:none}
+/* В англійській версії службовий рядок із містом і часом не займає
+   місце у верхній шапці — він живе внизу сторінки разом із футером. */
+:root[lang="en"] .mobile-meta-slot{display:block}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається.
@@ -1107,16 +1182,23 @@ figure{margin:0; position:relative; z-index:1}
 </head>
 <body>
 
-<header class="wrap meta">
+<header class="wrap meta home-meta">
   <div class="cols">
     <span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span>
     <span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span id="clock">—:—</span> <span id="tz">EET</span></span>
   </div>
+  <nav class="parts" aria-label="Sections">
+    <a class="part" href="/video/" data-en="Video" data-ua="Відео">Video</a>
+    <a class="part" href="/photo/" data-en="Photo" data-ua="Фото">Photo</a>
+    <a class="part" href="/design/" data-en="Design" data-ua="Дизайн">Design</a>
+  </nav>
   <div class="switches">
     <a class="tiny contact-link" href="/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
     <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
+  <button class="home-menu-toggle" type="button" aria-expanded="false" aria-controls="home-menu-panel" aria-label="Open menu"><span aria-hidden="true"></span></button>
+  <div class="home-menu-panel" id="home-menu-panel" aria-hidden="true"></div>
 </header>
 <hr class="rule">
 
@@ -1374,6 +1456,7 @@ figure{margin:0; position:relative; z-index:1}
   }
 }
 </script>
-<script src="/scripts/move-home-meta.js"></script>
+<script src="/scripts/home-navigation.js?v=1"></script>
+<script src="/scripts/move-home-meta.js?v=2"></script>
 </body>
 </html>
