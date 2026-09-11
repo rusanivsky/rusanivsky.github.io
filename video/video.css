@@ -211,18 +211,20 @@
   /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
      рости: 6,5:1 */
   color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
-  --bg:#111d13; --surface:#1e211c; --ink:#eaf1e7;
-  --plate-base:linear-gradient(154deg,#162214 0%,#152014 12%,#131f14 25%,#111e13 38%,#101c13 50%,#0e1b12 62%,#0d1a12 75%,#0c1811 88%,#0a1710 100%);
-  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(217,160,94,.1) 0%,rgba(217,160,94,.0896) 13%,rgba(217,160,94,.0648) 26%,rgba(217,160,94,.0352) 38%,rgba(217,160,94,.0104) 51%,rgba(217,160,94,0) 64%);
-  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(2,12,10,.46) 0%,rgba(2,12,10,.4122) 14%,rgba(2,12,10,.2981) 28%,rgba(2,12,10,.1619) 42%,rgba(2,12,10,.0478) 56%,rgba(2,12,10,0) 70%);
-  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(2,12,10,0) 44%,rgba(2,12,10,.027) 55%,rgba(2,12,10,.0915) 66%,rgba(2,12,10,.1685) 78%,rgba(2,12,10,.233) 89%,rgba(2,12,10,.26) 100%);
+  /* Відеокатегорії мають нейтральну нічну плиту, як темна тема ChatGPT,
+     без зеленого відтінку. */
+  --bg:#171717; --surface:#252525; --ink:#f0f0f0;
+  --plate-base:linear-gradient(154deg,#202020 0%,#1f1f1f 12%,#1d1d1d 25%,#1b1b1b 38%,#1a1a1a 50%,#191919 62%,#181818 75%,#171717 88%,#161616 100%);
+  --plate-warm:radial-gradient(120% 88% at 10% -6%,rgba(255,255,255,.06) 0%,rgba(255,255,255,.0538) 13%,rgba(255,255,255,.039) 26%,rgba(255,255,255,.021) 38%,rgba(255,255,255,.006) 51%,rgba(255,255,255,0) 64%);
+  --plate-deep:radial-gradient(116% 100% at 102% 106%,rgba(0,0,0,.42) 0%,rgba(0,0,0,.377) 14%,rgba(0,0,0,.273) 28%,rgba(0,0,0,.147) 42%,rgba(0,0,0,.043) 56%,rgba(0,0,0,0) 70%);
+  --plate-vignette:radial-gradient(135% 108% at 50% 40%,rgba(0,0,0,0) 44%,rgba(0,0,0,.025) 55%,rgba(0,0,0,.07) 66%,rgba(0,0,0,.13) 78%,rgba(0,0,0,.21) 89%,rgba(0,0,0,.25) 100%);
   --grain:.22;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
-  --plate-top:#1b281d;
-  --sticky-plate-end:#101d14;
-  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
-  --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
-  --mute:color-mix(in srgb,#eaf1e7 55%,transparent);
+  --plate-top:#212121;
+  --sticky-plate-end:#171717;
+  --divider:color-mix(in srgb,#f0f0f0 34%,transparent);
+  --hairline:color-mix(in srgb,#f0f0f0 14%,transparent);
+  --mute:color-mix(in srgb,#f0f0f0 55%,transparent);
 }
 *,*::before,*::after{box-sizing:border-box}
 /* ── плита тла ──────────────────────────────────────────────
