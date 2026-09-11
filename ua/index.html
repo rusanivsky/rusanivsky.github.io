@@ -534,13 +534,15 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
-/* стрілка вниз-праворуч: веде всередину сайту. Той самий прийом, що й
-   на .cat[target] у списку контактів — inline-block і vertical-align,
-   а не absolute/bottom: доти стрілка висіла нижче рівня тексту, тепер
-   стоїть на тій самій висоті, що й інші стрілки на сайті */
+/* стрілка вниз-праворуч: веде всередину сайту. inline-block, як на
+   .cat[target], зламав перенесення: без пробілу між словом і стрілкою
+   браузер не має де розірвати рядок, і на вузькому екрані «photography↗»
+   вилазить за край одним нерозривним шматком. absolute повертає безпечне
+   перенесення, а вищий bottom піднімає стрілку на той самий рівень, що
+   й в inline-block варіанті */
 .spec .sect::after{
-  content:"↘"; display:inline-block; margin-left:.16em;
-  font-size:.36em; vertical-align:.95em; line-height:1; color:var(--ink);
+  content:"↘"; position:absolute; left:100%; bottom:.78em;
+  margin-left:.16em; font-size:.36em; line-height:1; color:var(--ink);
   opacity:0; transform:translate(-.3em,-.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
@@ -800,18 +802,6 @@ figure{margin:0; position:relative; z-index:1}
 .lg.defenders{--src:url(/img/clients/defenders-ukma.png); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
 .lg.kooperativ{--src:url(/img/clients/kooperativ.svg); height:calc(var(--lg) * .91); width:calc(var(--lg) * 4.93)}
 .lg.yd{--src:url(/img/clients/yd.svg); height:calc(var(--lg) * 1.2642); width:calc(var(--lg) * 1.9012)}
-/* у Kooperativ плашка фірмово червона — на наведенні вона нею і стає.
-   Друга маска має ту саму рамку, що й повна марка, тож при mask-size:contain
-   лягає точно на своє місце. Напис лишається чорнилом сторінки: у темній
-   темі оригінальний чорний просто зник би у фоні */
-.lg.kooperativ::after{
-  content:""; position:absolute; inset:0; background:#fa2b00;
-  -webkit-mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
-  mask:url(/img/clients/kooperativ-mark.svg) center/contain no-repeat;
-  opacity:0; transition:opacity 280ms var(--ease);
-}
-@media (hover:hover){.logos a:hover .lg.kooperativ::after{opacity:1}}
-.logos a:active .lg.kooperativ::after{opacity:1}
 .lg.tsyronian{--src:url(/img/clients/tsyronian.svg); height:calc(var(--lg) * .98); width:calc(var(--lg) * 3.38)}
 .lg.shylero{--src:url(/img/clients/shylero.png); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
 /* на телефоні марки лишаються рядом, а не сіткою два на два: --lg тут не
