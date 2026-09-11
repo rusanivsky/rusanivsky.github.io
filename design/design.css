@@ -581,7 +581,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   body.no-plate-darkening::before,
   body.no-plate-darkening::after{
     animation:none!important;
-    filter:none!important;
+    filter:brightness(1.15)!important;
     transform:none!important;
   }
   body.no-plate-darkening .topbar::before{
