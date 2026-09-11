@@ -402,9 +402,12 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .home-meta .parts{padding-left:8px}
   .home-meta .switches{justify-self:end}
   .mobile-meta-slot .cols{padding-right:8px}
-  :root[lang="en"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
-  :root[lang="en"] .home-meta .parts{grid-column:1;grid-row:1}
-  :root[lang="en"] .home-meta .switches{grid-column:2;grid-row:1}
+  :root[lang="en"] .home-meta,
+  :root[lang="uk"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
+  :root[lang="en"] .home-meta .parts,
+  :root[lang="uk"] .home-meta .parts{grid-column:1;grid-row:1}
+  :root[lang="en"] .home-meta .switches,
+  :root[lang="uk"] .home-meta .switches{grid-column:2;grid-row:1}
 }
 
 /* ── навігація головної ───────────────────────────────────── */
