@@ -549,6 +549,11 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
+/* Вулична фотографія завжди має два рядки. Окремі текстові вузли зберігають
+   мовний білд і дають обом рядкам одну ліву вертикаль — без висячого відступу
+   першого коротшого слова. */
+.spec.under .sect{text-align:left}
+.spec.under .sect > span{display:block}
 /* стрілка вниз-праворуч: веде всередину сайту. left:100% рахувався від
    коробки .sect, а не від кінця слова — коли заголовок переносився на
    два рядки, коробка розтягувалась на всю доступну ширину (так працює
@@ -1147,7 +1152,7 @@ figure{margin:0; position:relative; z-index:1}
         </li>
         <li class="spec under" data-rev style="--d:290ms">
           <span class="no" aria-hidden="true">04</span>
-          <h3><a class="sect" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener" data-en="Street photography" data-ua="Вулична фотографія">Вулична фотографія</a></h3>
+          <h3><a class="sect" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener"><span data-en="Street" data-ua="Вулична">Вулична</span> <span data-en="photography" data-ua="фотографія">фотографія</span></a></h3>
           <ul>
             <li data-en="Photo series on Instagram" data-ua="Серія світлин в Instagram">Серія світлин в Instagram</li>
           </ul>
