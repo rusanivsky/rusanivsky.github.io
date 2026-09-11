@@ -847,14 +847,21 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .cat:active::after{transform:scaleX(1)}
 /* та сама стрілка назовні, що й на .sect: рядок веде на сторонній
    сайт, тож на ховері поруч із назвою з'являється ↗. Розмір і відступ —
-   ті самі .36em/.16em, що вже стоять на такій самій стрілці в design.css */
-.cat[target] .lab::after{
+   ті самі .36em/.16em, що вже стоять на такій самій стрілці в design.css.
+   Email іде без target, але так само виводить із сторінки — у підвалі
+   стрілка в нього вже є, тож у списку контактів вона теж належить йому */
+.cat[target] .lab::after,
+.cat[href^="mailto:"] .lab::after{
   content:"↗";display:inline-block;margin-left:.16em;font-size:.36em;
   vertical-align:.95em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
   transition:opacity 320ms var(--ease),transform 320ms var(--ease);
 }
-@media (hover:hover){.cat[target]:hover .lab::after{opacity:1;transform:none}}
-.cat[target]:active .lab::after{opacity:1;transform:none}
+@media (hover:hover){
+  .cat[target]:hover .lab::after,
+  .cat[href^="mailto:"]:hover .lab::after{opacity:1;transform:none}
+}
+.cat[target]:active .lab::after,
+.cat[href^="mailto:"]:active .lab::after{opacity:1;transform:none}
 /* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
    чверть рядка — там підпис лягає вертикально, а колонка сходить до
    20px: те саме, що доти вмикалось аж на телефоні */
