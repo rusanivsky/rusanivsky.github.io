@@ -418,8 +418,8 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
      в прокрутці, а меню має лишатися читаним, поки відкрите */
   background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
-  -webkit-backdrop-filter:blur(28px) saturate(1.4);
-  backdrop-filter:blur(28px) saturate(1.4);
+  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);
+  backdrop-filter:blur(17.5px) saturate(1.4);
   /* без обводки: волосяна лінія по краю читалась накресленим прямокутником */
   border:0;border-radius:12px;
   box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
@@ -477,8 +477,8 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      стояла завжди й одразу впритул до лінійки (.rule нижче) — на
      першому екрані виходило дві межі одна під одною */
   border-bottom:1px solid var(--hairline);
-  -webkit-backdrop-filter:blur(26px);
-  backdrop-filter:blur(26px);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .topbar::before{background:var(--plate-top)}
