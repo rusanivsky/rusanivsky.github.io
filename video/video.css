@@ -477,11 +477,15 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      margin-left у Contacts, і без нього мова липла до сусіда на 8px
      ближче за всіх. Праве — нуль: у цій ширині перемикач стоїть урівень
      із краєм верстки, а не відступає від нього */
-  .meta .switches > .tgl#lang button{
+  /* :not(.header-menu-mode) тут не прикраса: у бургері .switches лежить
+     усередині тієї самої .meta, тож без нього правило рядка діставало й
+     панель — мова отримувала ліве поле, іконка ні, і їхні написи
+     розходились на його половину */
+  .meta:not(.header-menu-mode) .switches > .tgl#lang button{
     padding:0 0 0 var(--switch-control-pad);min-height:24px;margin-block:0;line-height:24px
   }
   /* іконка теми тримає той самий ритм: зліва поле, справа край */
-  .meta .switches > .tgl#theme button{
+  .meta:not(.header-menu-mode) .switches > .tgl#theme button{
     padding-left:var(--switch-control-pad);padding-right:0
   }
 }
@@ -679,27 +683,22 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 @view-transition{ navigation:auto }
 /* Знімок переходу забирає в backdrop-filter його підложку: блюру немає
    що розмивати, і ті 10% прозорості, які він доти ховав, проступають —
-   плашка на долю секунди стає прозорою. На час переходу вона суцільна,
-   рівно як у запасному наборі для браузерів без backdrop-filter.
-   background-color тут важливий: його веде scroll-анімація плашки, а
-   анімацію перебиває лише important. Два однакові блоки, а не один
-   список: :active-view-transition знають не всі рушії, а невідомий
-   селектор у списку вимкнув би й другий */
+   заслінка шапки на долю секунди стає прозорою. На час переходу вона
+   суцільна, рівно як у запасному наборі для браузерів без
+   backdrop-filter. background-color тут важливий: його веде
+   scroll-анімація заслінки, а анімацію перебиває лише important.
+   Два однакові блоки, а не один список: :active-view-transition знають
+   не всі рушії, а невідомий селектор у списку вимкнув би й другий.
+   Панелі меню тут немає навмисно: суцільна заливка помітно міняла її
+   там, де вона лежить поверх кадрів. Замість цього theme.js не заводить
+   переходу взагалі, поки бургер відкритий */
 html.theme-shift .topbar::before{
   -webkit-backdrop-filter:none;backdrop-filter:none;
   background-color:var(--plate-top)!important
 }
-html.theme-shift .header-menu-panel{
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-  background-color:var(--menu-plate)
-}
 :root:active-view-transition .topbar::before{
   -webkit-backdrop-filter:none;backdrop-filter:none;
   background-color:var(--plate-top)!important
-}
-:root:active-view-transition .header-menu-panel{
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-  background-color:var(--menu-plate)
 }
 ::view-transition-group(root),
 ::view-transition-old(root),

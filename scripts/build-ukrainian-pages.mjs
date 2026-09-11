@@ -142,7 +142,7 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
-const themeScriptVersion = 4;
+const themeScriptVersion = 5;
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми

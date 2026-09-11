@@ -66,7 +66,11 @@
          Без View Transitions тон міняється миттєво — анімувати градієнт
          плити через transition браузер не вміє */
       var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(still||!document.startViewTransition){ paint(mode); return; }
+      /* Поки бургер відкритий, кросовера немає: знімок переходу забирає
+         в панелі підложку під backdrop-filter, і замість скла на пів
+         секунди лягає суцільна плашка. Тут тон міняється миттєво */
+      var menuOpen=!!document.querySelector('.meta.header-menu-open');
+      if(still||menuOpen||!document.startViewTransition){ paint(mode); return; }
       root.classList.add('theme-shift');
       var shift=document.startViewTransition(function(){paint(mode);});
       shift.finished.then(clear,clear);
