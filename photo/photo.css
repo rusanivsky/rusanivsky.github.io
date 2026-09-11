@@ -271,13 +271,25 @@ body::after{
 @media (min-resolution:1.5dppx){body::after{background-size:104px 104px}}
 @media (prefers-contrast:more){body::after{opacity:0}}
 @media print{body::before,body::after{display:none}}
-/* Плита реагує на прокрутку. Властивості оновлює один rAF-цикл у
-   plate-parallax.js: це не залежить від scroll-timeline, який на мобільних
-   міг запізнюватись або перераховуватися стрибком після зміни висоти сторінки. */
+/* Плита реагує на прокрутку. Сучасні браузери ведуть її scroll-timeline
+   на композиторі, а plate-parallax.js лишається fallback для старих. */
 body::before,body::after{
   transform:translate3d(0,var(--plate-shift,0px),0);
   filter:brightness(var(--plate-brightness,1.15));
   will-change:transform,filter;
+}
+@keyframes plate-scroll{
+  from{transform:translate3d(0,0,0);filter:brightness(1.15)}
+  to{transform:translate3d(0,-64px,0);filter:brightness(.95)}
+}
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:scroll()){
+    body::before,body::after{
+      animation:plate-scroll linear both;
+      animation-timeline:scroll();
+      animation-range:0 900px;
+    }
+  }
 }
 /* Світла тема зберігає плоский тон: паралакс рухає її, але не підфарбовує. */
 :root[data-theme="light"] body::before,
