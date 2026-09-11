@@ -351,6 +351,8 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   padding-block:var(--meta-pad);align-items:center}
 .back{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   padding-block:16px;padding-left:8px;color:var(--mute);display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
+.back-arrow{display:inline-block;line-height:1}
+.back-label{display:inline-block}
 @media (hover:hover){.back:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}}
 /* розділи стоять одразу праворуч від кнопки назад і читаються тим самим
    дрібним набором — це навігація, а не заголовок */
@@ -432,6 +434,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
      Подвійний відступ після неї складається з gap сітки та margin-right. */
   .meta .back{grid-column:1;grid-row:1;font-size:calc(var(--fs-text) + var(--fs-text));letter-spacing:0;display:inline-flex;align-items:center;justify-content:center;
     position:relative;width:max-content;height:19px;min-height:0;padding:0 0 0 8px;margin:0;margin-right:clamp(12px,1.8vw,26px);color:var(--mute);line-height:1}
+  .back-label{display:none}
   .back::after{content:"";position:absolute;inset:-12.5px -6px}
   /* Усі елементи лишаються в одному рядку, доки поміщаються. Якщо ні,
      скрипт переносить навігацію й перемикачі в меню праворуч. */
@@ -1045,7 +1048,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .cats{padding-block:var(--cats-pad-top) var(--cats-pad-bottom-narrow)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow); margin-top:clamp(20px,5vw,32px)}
-  .foot-bar{padding-block:clamp(8px,1.8vw,18px) var(--foot-bar-pad-narrow)}
+  .foot-bar{padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
