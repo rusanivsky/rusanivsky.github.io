@@ -687,16 +687,14 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
    суцільна, рівно як у запасному наборі для браузерів без
    backdrop-filter. background-color тут важливий: його веде
    scroll-анімація заслінки, а анімацію перебиває лише important.
-   Два однакові блоки, а не один список: :active-view-transition знають
-   не всі рушії, а невідомий селектор у списку вимкнув би й другий.
+   Тільки theme-shift, і жодного :active-view-transition: той спрацьовує
+   на будь-якому переході, зокрема навігаційному, — а він тепер миттєвий,
+   боронити там нічого. Зате заслінка на кожному переході на кілька
+   кадрів ставала суцільною й світлішою за плиту під нею.
    Панелі меню тут немає навмисно: суцільна заливка помітно міняла її
    там, де вона лежить поверх кадрів. Замість цього theme.js не заводить
    переходу взагалі, поки бургер відкритий */
 html.theme-shift .topbar::before{
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-  background-color:var(--plate-top)!important
-}
-:root:active-view-transition .topbar::before{
   -webkit-backdrop-filter:none;backdrop-filter:none;
   background-color:var(--plate-top)!important
 }
