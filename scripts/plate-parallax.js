@@ -1,12 +1,15 @@
 (function(){
-  /* Chromium композитить SVG feTurbulence у soft-light помітно слабше за
-     Safari. Позначаємо його до першого малювання, щоб CSS міг підсилити
-     лише шар зерна, не змінюючи саму плиту чи інші браузери. */
+  var root=document.documentElement;
+  /* Chromium композитить SVG feTurbulence у soft-light інакше за Safari.
+     Позначаємо його до першого малювання, щоб CSS міг окремо підлаштувати
+     зерно й тон плити, не змінюючи Safari та мобільні браузери. */
   if(/(?:Chrome|Chromium|Edg|OPR)\//.test(navigator.userAgent)){
-    document.documentElement.classList.add('is-chromium');
+    root.classList.add('is-chromium');
+    if(window.matchMedia('(min-width:900px) and (hover:hover) and (pointer:fine)').matches){
+      root.style.setProperty('--plate-factor','.90');
+    }
   }
 
-  var root=document.documentElement;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   var cssTimeline=window.CSS&&CSS.supports&&CSS.supports('animation-timeline:scroll()');
   var distance=900;

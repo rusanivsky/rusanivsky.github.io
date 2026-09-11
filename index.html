@@ -57,6 +57,7 @@
   --active:#415d43;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  --plate-factor:1;
   /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
      градієнт читається освітленою поверхнею, а не переходом кольору */
   --plate-base:linear-gradient(154deg,#f4f6ee 0%,#f2f4ed 12%,#f0f3ec 25%,#eff1ec 38%,#edf0eb 50%,#ebefea 62%,#eaede9 75%,#e8ece8 88%,#e7eae6 100%);
@@ -234,12 +235,12 @@ body::after{
    на композиторі, а plate-parallax.js лишається fallback для старих. */
 body::before,body::after{
   transform:translate3d(0,var(--plate-shift,0px),0);
-  filter:brightness(var(--plate-brightness,1.15));
+  filter:brightness(calc(var(--plate-brightness,1.15) * var(--plate-factor,1)));
   will-change:transform,filter;
 }
 @keyframes plate-scroll{
-  from{transform:translate3d(0,0,0);filter:brightness(1.15)}
-  to{transform:translate3d(0,-64px,0);filter:brightness(.95)}
+  from{transform:translate3d(0,0,0);filter:brightness(calc(1.15 * var(--plate-factor,1)))}
+  to{transform:translate3d(0,-64px,0);filter:brightness(calc(.95 * var(--plate-factor,1)))}
 }
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:scroll()){
@@ -1231,7 +1232,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 </style>
 <script src="/scripts/reveal.js?v=5"></script>
-<script src="/scripts/plate-parallax.js?v=3"></script>
+<script src="/scripts/plate-parallax.js?v=4"></script>
 <script src="/scripts/language-switcher.js"></script>
 </head>
 <body>

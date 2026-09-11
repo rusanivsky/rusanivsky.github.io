@@ -22,6 +22,9 @@
   --active:#415d43;
   color-scheme:light;
   --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  --plate-factor:1;
+  /* нейтральний фон чорних полів і стану завантаження відеопрев’ю */
+  --video-preview-bg:#171717;
   /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
      градієнт читається освітленою поверхнею, а не переходом кольору */
   --plate-base:linear-gradient(154deg,#f4f6ee 0%,#f2f4ed 12%,#f0f3ec 25%,#eff1ec 38%,#edf0eb 50%,#ebefea 62%,#eaede9 75%,#e8ece8 88%,#e7eae6 100%);
@@ -265,12 +268,12 @@ body::after{
    на композиторі, а plate-parallax.js лишається fallback для старих. */
 body::before,body::after{
   transform:translate3d(0,var(--plate-shift,0px),0);
-  filter:brightness(var(--plate-brightness,1.15));
+  filter:brightness(calc(var(--plate-brightness,1.15) * var(--plate-factor,1)));
   will-change:transform,filter;
 }
 @keyframes plate-scroll{
-  from{transform:translate3d(0,0,0);filter:brightness(1.15)}
-  to{transform:translate3d(0,-64px,0);filter:brightness(.95)}
+  from{transform:translate3d(0,0,0);filter:brightness(calc(1.15 * var(--plate-factor,1)))}
+  to{transform:translate3d(0,-64px,0);filter:brightness(calc(.95 * var(--plate-factor,1)))}
 }
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:scroll()){
@@ -641,7 +644,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 @media (min-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
 .v{display:flex;flex-direction:column;gap:10px}
-.fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--surface);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit;
+.fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--video-preview-bg);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit;
   box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
 .fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
@@ -656,12 +659,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
    Збільшуємо тільки це зображення до меж кадру; інші прев’ю не змінюються. */
 .v-crop .fac img{transform:scale(1.185)}
 @media (hover:hover){.v-crop .fac:hover img{transform:scale(1.23)}}
-.v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}
-.v video{width:100%;height:auto;aspect-ratio:9/16;display:block;background:#000;object-fit:contain}
+.v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:var(--video-preview-bg)}
+.v video{width:100%;height:auto;aspect-ratio:9/16;display:block;background:var(--video-preview-bg);object-fit:contain}
 .local-fac.landscape video{aspect-ratio:16/9}
 .local-fac video{transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 @media (hover:hover){.local-fac:not(.is-playing):hover video{transform:scale(1.04);opacity:.82}.local-fac:not(.is-playing):hover .pl i{transform:scale(1.1)}}
-.local-fac{position:relative;overflow:hidden;background:#000;
+.local-fac{position:relative;overflow:hidden;background:var(--video-preview-bg);
   box-shadow:0 20px 34px -18px color-mix(in srgb,#000 18%,transparent)}
 .local-play{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:1;background:transparent}
 .local-fac.is-playing .local-play{opacity:0;pointer-events:none}
