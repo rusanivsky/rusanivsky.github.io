@@ -391,6 +391,18 @@ a.back::before{
   height:var(--rule); background:var(--divider);
 }
 .foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
+/* .footer-left — та сама коробка, що й на решті сторінок. Без flex
+   посилання лишається рядковим, і його коробка виходить 13px замість
+   19px: менша ціль дотику й інша базова лінія. */
+.foot-bar > .footer-left{display:flex; align-items:baseline; padding-right:8px; min-width:0}
+/* Та сама приглушена приватність, що й на решті сторінок: без цього
+   правила посилання бере колір від .site-foot a{color:inherit} і світить
+   повним чорнилом, тоді як скрізь воно стоїть на --mute.
+   Дубль із styles/base.css — 404 єдина сторінка, що досі тримає власний
+   інлайн-CSS і base.css не вантажить. */
+.foot-bar .footer-privacy{color:var(--mute); text-decoration:none; white-space:nowrap; transition:color 240ms var(--ease)}
+.foot-bar .footer-privacy:hover,
+.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається */
@@ -514,6 +526,12 @@ a.back::before{
   <div class="wrap foot-bar">
     <div class="cols">
 <span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span>
+    </div>
+    <!-- Приватність іде другою: .foot-bar тут grid 1fr auto, і другий трек —
+         це правий край. На решті сторінок те саме дає grid-column у base.css;
+         ця сторінка досі на власному інлайн-CSS, тож порядок задає розмітка. -->
+    <div class="footer-left">
+      <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>
     </div>
 
   </div>
