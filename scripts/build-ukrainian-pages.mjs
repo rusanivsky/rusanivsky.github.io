@@ -197,6 +197,14 @@ function addFooterMeta(html, route) {
   return html.replace(footer, `$1\n    ${footerMeta}$2`);
 }
 
+function addPrivacyFooterLink(html) {
+  html = html.replace(/\s*<a class="tiny footer-privacy" href="\/privacy\/" data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  const link = '<a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>';
+  const footer = /(<div class="wrap foot-bar">\s*<div class="cols">)/;
+  if (!footer.test(html)) throw new Error('No footer bar found for privacy link');
+  return html.replace(footer, `$1\n      ${link}`);
+}
+
 function addKyivClockScript(html, route) {
   if (route === '/' || html.includes('/scripts/kyiv-clock.js')) return html;
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
@@ -289,6 +297,7 @@ for (const [route, source, title, description] of pages) {
   english = normalizeBackLinks(english);
   english = addContactsLink(english, route);
   english = addFooterMeta(english, route);
+  english = addPrivacyFooterLink(english);
   english = addKyivClockScript(english, route);
   english = updateSectionStyleVersions(english);
   english = addSectionHeaderStyle(english, route);
