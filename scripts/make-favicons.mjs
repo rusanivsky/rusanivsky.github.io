@@ -1,10 +1,17 @@
-/* Збирає favicon.svg, favicon.ico і apple-touch-icon.png.
+/* Збирає favicon.svg, favicon-light.svg, favicon.ico, favicon-light.ico
+ * і apple-touch-icon.png.
  *
  *   node scripts/make-favicons.mjs
  *
  * Іконка стоїть на тій самій плиті, що й сайт: градієнт --plate-base
  * зеленої теми під тим самим кутом 154°, згори зерно. Доти це був
  * плаский #415d43 — колір, якого на сайті немає ніде, окрім ховера.
+ *
+ * Друга пара файлів — світлий варіант, той самий --plate-base базового
+ * (світлого) :root. Обидві пари підключені в <head> з
+ * media="(prefers-color-scheme: …)" — точнісінько так, як Apple/WebKit
+ * документують адаптивний favicon для Safari. apple-touch-icon лишається
+ * один: домашній екран iOS не читає prefers-color-scheme для нього.
  *
  * Зерно — растрова плитка в самому SVG, а не feTurbulence. Причина та
  * сама, що описана в make-plate-textures.mjs: той самий фільтр кожен
@@ -63,7 +70,9 @@ function png(width, height, rgba) {
   ]);
 }
 
-/* ── Плитка зерна. mulberry32, щоб файл виходив той самий щоразу ── */
+/* ── Плитка зерна. mulberry32, щоб файл виходив той самий щоразу.
+   Один зерновий шум на обидва варіанти — різниться лише opacity
+   накладання, як --grain різниться між темами на самому сайті. ── */
 let seed = 0x9e3779b9;
 const rnd = () => {
   seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
@@ -87,34 +96,38 @@ for (let i = 0; i < TILE * TILE; i++) {
 }
 const grainB64 = png(TILE, TILE, grain).toString('base64');
 
-/* ── SVG ──────────────────────────────────────────────────────────
-   Стопи — ті самі, що в --plate-base зеленої теми (photo/photo.css).
-   CSS-кут 154° = вертикальний градієнт, повернутий на 154−180 = −26°. */
-const stops = [
-  ['#4f5f49', 0], ['#4b5b47', 8.3], ['#445542', 16.7], ['#3b4d3d', 25],
-  ['#344738', 33.3], ['#2f4234', 41.7], ['#2b3e31', 50], ['#283a2e', 58.3],
-  ['#24352a', 66.7], ['#1f2f25', 75], ['#1a2a21', 83.3], ['#15241d', 91.7], ['#13211a', 100],
+/* Монограма лишається та сама, що була: KR, вирізана з тексту. Колір
+   літери приходить з кожного варіанту окремо (той самий --ink, яким
+   на сайті набрано ім'я на цій темі), тож у джерелі fill не фіксуємо. */
+const monogramSource = readFileSync(path.join(root, 'scripts', 'favicon-monogram.svg'), 'utf8').trim();
+const monogramFor = fill => monogramSource.replace(/fill="#[0-9a-f]+"/i, `fill="${fill}"`);
+
+/* ── Два варіанти плити ───────────────────────────────────────────
+   Стопи — ті самі, що в --plate-base кожної теми (photo/photo.css).
+   CSS-кут 154° = вертикальний градієнт, повернутий на 154−180 = −26°.
+   grainOpacity для світлого зменшено в тій самій пропорції, що й
+   --grain на сайті між світлою (.05) і зеленою (.18) темами: 0.22 у
+   зеленого — база, світлому дістається 0.22 × .05/.18. */
+const variants = [
+  {
+    suffix: '', label: 'dark (green)',
+    ink: '#eaf1e7', grainOpacity: 0.22,
+    stops: [
+      ['#4f5f49', 0], ['#4b5b47', 8.3], ['#445542', 16.7], ['#3b4d3d', 25],
+      ['#344738', 33.3], ['#2f4234', 41.7], ['#2b3e31', 50], ['#283a2e', 58.3],
+      ['#24352a', 66.7], ['#1f2f25', 75], ['#1a2a21', 83.3], ['#15241d', 91.7], ['#13211a', 100],
+    ],
+  },
+  {
+    suffix: '-light', label: 'light',
+    ink: '#111d13', grainOpacity: 0.061,
+    stops: [
+      ['#fbf6e8', 0], ['#fbf6e9', 8.3], ['#f8f5ea', 16.7], ['#f4f4eb', 25],
+      ['#f1f2ec', 33.3], ['#eff1ec', 41.7], ['#edf0eb', 50], ['#eaeee9', 58.3],
+      ['#e6eae5', 66.7], ['#dee3de', 75], ['#d4dbd5', 83.3], ['#cad3cc', 91.7], ['#c4cdc6', 100],
+    ],
+  },
 ];
-
-/* Монограма лишається та сама, що була: KR, вирізана з тексту. */
-const monogram = readFileSync(path.join(root, 'scripts', 'favicon-monogram.svg'), 'utf8').trim();
-
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<defs>
-<linearGradient id="plate" x1="0" y1="0" x2="0" y2="1" gradientTransform="rotate(-26 .5 .5)">
-${stops.map(([c, at]) => `<stop offset="${at}%" stop-color="${c}"/>`).join('\n')}
-</linearGradient>
-<pattern id="grain" width="32" height="32" patternUnits="userSpaceOnUse">
-<image width="32" height="32" href="data:image/png;base64,${grainB64}"/>
-</pattern>
-</defs>
-<rect width="64" height="64" fill="url(#plate)"/>
-<rect width="64" height="64" fill="url(#grain)" opacity=".22" style="mix-blend-mode:overlay"/>
-${monogram}
-</svg>
-`;
-writeFileSync(path.join(root, 'favicon.svg'), svg);
-console.log(`favicon.svg: ${(Buffer.byteLength(svg) / 1024).toFixed(1)} КБ`);
 
 /* Найдальший піксель PNG: розпаковуємо IDAT і знімаємо фільтри рядків.
    Кількість байтів на піксель беремо з IHDR, а не припускаємо: Chromium
@@ -162,67 +175,103 @@ function cornerPixel(buf) {
   return { r: out[i], g: out[i + 1], b: out[i + 2], a: channels === 4 ? out[i + 3] : 255 };
 }
 
-/* ── Растри з того самого SVG ─────────────────────────────────── */
-const sizes = [16, 32, 48, 180];
-const shots = new Map();
 const tmp = path.join(os.tmpdir(), `favicon-${process.pid}`);
 const extraFlags = (process.env.CHROME_FLAGS ?? '').split(/\s+/).filter(Boolean);
 
-for (const size of sizes) {
-  const page = `${tmp}-${size}.html`;
-  const shot = `${tmp}-${size}.png`;
-  /* Розмір атрибутами, а не стилем: SVG без width/height — замінюваний
-     елемент, і поки CSS не застосувався, він малюється у типових 300×150.
-     Знімок тоді виходить обрізаним, і мовчки. */
-  const sized = svg.replace(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">`,
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${size}" height="${size}">`);
-  writeFileSync(page, `<!doctype html><meta charset="utf-8">`
-    + `<style>html,body{margin:0;padding:0;background:transparent;line-height:0}</style>`
-    + sized);
-  await run(CHROME, [
-    '--headless=new', ...extraFlags, '--disable-gpu', '--hide-scrollbars',
-    '--default-background-color=00000000', '--force-device-scale-factor=1',
-    `--window-size=${size},${size}`, '--virtual-time-budget=4000',
-    `--screenshot=${shot}`, `file://${page}`,
-  ]);
-  const shotData = readFileSync(shot);
-  /* Розміру кадру мало: він завжди виходить той, що замовили, а от
-     вміст у ньому може стояти обрізаним — саме так і сталося, коли SVG
-     малювався у типових 300×150 замість заданих. Дивимось у найдальший
-     від початку піксель: плита має покривати весь кадр, тож він мусить
-     бути непрозорим. Порожній кут означає, що іконка не заповнила кадр. */
-  const corner = cornerPixel(shotData);
-  const empty = corner.a < 250 || (corner.r > 240 && corner.g > 240 && corner.b > 240);
-  if (empty) {
-    throw new Error(`Знімок ${size}px порожній у правому нижньому куті `
-      + `(rgba ${corner.r},${corner.g},${corner.b},${corner.a}) — там має бути темний низ `
-      + `плити. Іконка не заповнила кадр: цей Chrome малює SVG не того розміру.`);
+/* ── Растри з того самого SVG ─────────────────────────────────── */
+async function renderSizes(svg, sizes) {
+  const shots = new Map();
+  for (const size of sizes) {
+    const page = `${tmp}-${size}.html`;
+    const shot = `${tmp}-${size}.png`;
+    /* Розмір атрибутами, а не стилем: SVG без width/height — замінюваний
+       елемент, і поки CSS не застосувався, він малюється у типових 300×150.
+       Знімок тоді виходить обрізаним, і мовчки. */
+    const sized = svg.replace(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">`,
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${size}" height="${size}">`);
+    writeFileSync(page, `<!doctype html><meta charset="utf-8">`
+      + `<style>html,body{margin:0;padding:0;background:transparent;line-height:0}</style>`
+      + sized);
+    await run(CHROME, [
+      '--headless=new', ...extraFlags, '--disable-gpu', '--hide-scrollbars',
+      '--default-background-color=00000000', '--force-device-scale-factor=1',
+      `--window-size=${size},${size}`, '--virtual-time-budget=4000',
+      `--screenshot=${shot}`, `file://${page}`,
+    ]);
+    const shotData = readFileSync(shot);
+    /* Розміру кадру мало: він завжди виходить той, що замовили, а от
+       вміст у ньому може стояти обрізаним — саме так і сталося, коли SVG
+       малювався у типових 300×150 замість заданих. Дивимось у найдальший
+       від початку піксель: плита має покривати весь кадр, тож він мусить
+       бути непрозорим. Порожній кут означає, що іконка не заповнила кадр. */
+    const corner = cornerPixel(shotData);
+    const empty = corner.a < 250 || (corner.r > 240 && corner.g > 240 && corner.b > 240);
+    if (empty) {
+      throw new Error(`Знімок ${size}px порожній у правому нижньому куті `
+        + `(rgba ${corner.r},${corner.g},${corner.b},${corner.a}) — там має бути темний низ `
+        + `плити. Іконка не заповнила кадр: цей Chrome малює SVG не того розміру.`);
+    }
+    shots.set(size, shotData);
+    unlinkSync(page); unlinkSync(shot);
   }
-  shots.set(size, shotData);
-  unlinkSync(page); unlinkSync(shot);
+  return shots;
 }
-
-writeFileSync(path.join(root, 'apple-touch-icon.png'), shots.get(180));
-console.log(`apple-touch-icon.png: 180×180, ${(shots.get(180).length / 1024).toFixed(1)} КБ`);
 
 /* ICO з PNG усередині: так уміють усі браузери й Windows від Vista.
    Розмір 256 у довіднику записується нулем — саме тому поле однобайтне. */
-const icoSizes = [16, 32, 48];
-const header = Buffer.alloc(6);
-header.writeUInt16LE(0, 0); header.writeUInt16LE(1, 2); header.writeUInt16LE(icoSizes.length, 4);
-let offset = 6 + icoSizes.length * 16;
-const dir = [], payloads = [];
-for (const size of icoSizes) {
-  const data = shots.get(size);
-  const entry = Buffer.alloc(16);
-  entry[0] = size % 256; entry[1] = size % 256;
-  entry[2] = 0; entry[3] = 0;
-  entry.writeUInt16LE(1, 4); entry.writeUInt16LE(32, 6);
-  entry.writeUInt32LE(data.length, 8); entry.writeUInt32LE(offset, 12);
-  dir.push(entry); payloads.push(data);
-  offset += data.length;
+function buildIco(shots, icoSizes) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0); header.writeUInt16LE(1, 2); header.writeUInt16LE(icoSizes.length, 4);
+  let offset = 6 + icoSizes.length * 16;
+  const dir = [], payloads = [];
+  for (const size of icoSizes) {
+    const data = shots.get(size);
+    const entry = Buffer.alloc(16);
+    entry[0] = size % 256; entry[1] = size % 256;
+    entry[2] = 0; entry[3] = 0;
+    entry.writeUInt16LE(1, 4); entry.writeUInt16LE(32, 6);
+    entry.writeUInt32LE(data.length, 8); entry.writeUInt32LE(offset, 12);
+    dir.push(entry); payloads.push(data);
+    offset += data.length;
+  }
+  return Buffer.concat([header, ...dir, ...payloads]);
 }
-const ico = Buffer.concat([header, ...dir, ...payloads]);
-writeFileSync(path.join(root, 'favicon.ico'), ico);
-console.log(`favicon.ico: ${icoSizes.join(', ')} px, ${(ico.length / 1024).toFixed(1)} КБ`);
+
+for (const variant of variants) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<linearGradient id="plate" x1="0" y1="0" x2="0" y2="1" gradientTransform="rotate(-26 .5 .5)">
+${variant.stops.map(([c, at]) => `<stop offset="${at}%" stop-color="${c}"/>`).join('\n')}
+</linearGradient>
+<pattern id="grain" width="32" height="32" patternUnits="userSpaceOnUse">
+<image width="32" height="32" href="data:image/png;base64,${grainB64}"/>
+</pattern>
+</defs>
+<rect width="64" height="64" fill="url(#plate)"/>
+<rect width="64" height="64" fill="url(#grain)" opacity="${variant.grainOpacity}" style="mix-blend-mode:overlay"/>
+${monogramFor(variant.ink)}
+</svg>
+`;
+  const svgPath = path.join(root, `favicon${variant.suffix}.svg`);
+  writeFileSync(svgPath, svg);
+  console.log(`favicon${variant.suffix}.svg (${variant.label}): ${(Buffer.byteLength(svg) / 1024).toFixed(1)} КБ`);
+
+  /* apple-touch-icon лишається тільки для темного варіанту: домашній
+     екран iOS не перемикає його за системною темою. */
+  const needsTouchIcon = variant.suffix === '';
+  const sizes = needsTouchIcon ? [16, 32, 48, 180] : [16, 32, 48];
+  const shots = await renderSizes(svg, sizes);
+
+  if (needsTouchIcon) {
+    writeFileSync(path.join(root, 'apple-touch-icon.png'), shots.get(180));
+    console.log(`apple-touch-icon.png: 180×180, ${(shots.get(180).length / 1024).toFixed(1)} КБ`);
+  }
+
+  const icoSizes = [16, 32, 48];
+  const ico = buildIco(shots, icoSizes);
+  const icoPath = path.join(root, `favicon${variant.suffix}.ico`);
+  writeFileSync(icoPath, ico);
+  console.log(`favicon${variant.suffix}.ico (${variant.label}): ${icoSizes.join(', ')} px, ${(ico.length / 1024).toFixed(1)} КБ`);
+}
+
 console.log('\nНе забудьте підняти ?v= у посиланнях на іконки.');
