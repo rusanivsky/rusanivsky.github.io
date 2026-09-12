@@ -1049,7 +1049,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
   .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
   .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
-  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start}
+  /* Приватність стоїть першим рядком, місто з годинником — другим. У
+     розмітці порядок обернений (його складає білд), тож міняє їх місцями
+     сам стовпчик: .footer-left тут flex-column, і order працює. */
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
+  .foot-bar > .footer-left > .foot-meta{order:2}
   .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }

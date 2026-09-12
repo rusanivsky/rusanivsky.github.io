@@ -519,10 +519,11 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 /* ── заклик замовити послугу ──────────────────────────────── */
 /* На телефоні розділи їдуть у бургер, а на їхньому місці в рядку шапки
    лишається єдина дія сторінки. Охра тут за тим самим правилом, що й
-   усюди на сайті: вона означає «сюди можна натиснути». Лінійка під
-   написом стоїть завжди, а не тільки на ховері — це кнопка, а не рядок
-   переліку. Широко заклику немає: там у рядку стоять і розділи, і умови,
-   і контакти, і зайвий заклик лише сперечався б із ними.
+   усюди на сайті: вона означає «сюди можна натиснути». Лінійки під
+   написом немає — сам колір уже виділяє його з рядка, а риска робила з
+   заклику перекреслений напис на 24px-рядку. Широко заклику немає: там у
+   рядку стоять і розділи, і умови, і контакти, і зайвий заклик лише
+   сперечався б із ними.
    Поле й рівне від'ємне зовнішнє поле — той самий прийом, яким винесено
    44px ціль перемикачів: коробка росте, видимий рядок лишається 24px.
    Висота при цьому мусить бути 24+20, а не 24: box-sizing тут border-box,
@@ -539,10 +540,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     font-weight:700;font-variation-settings:"wght" 700;line-height:1;
     color:var(--pencil);white-space:nowrap;transform-origin:left center;
     transition:transform 220ms var(--ease)
-  }
-  .home-meta.header-menu-mode > .order-cta::after{
-    content:"";position:absolute;left:0;right:0;bottom:10px;
-    height:var(--pen);background:var(--pencil)
   }
   @media (hover:hover){
     .home-meta.header-menu-mode > .order-cta:hover{transform:scaleX(1.025)}
@@ -1225,7 +1222,11 @@ figure{margin:0; position:relative; z-index:1}
   .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
   .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
   .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
-  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start}
+  /* Приватність стоїть першим рядком, місто з годинником — другим. У
+     розмітці порядок обернений (його складає білд), тож міняє їх місцями
+     сам стовпчик: .footer-left тут flex-column, і order працює. */
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
+  .foot-bar > .footer-left > .foot-meta{order:2}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
