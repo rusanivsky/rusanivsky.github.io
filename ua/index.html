@@ -405,7 +405,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (min-width:641px){
   .home-meta .parts{padding-left:8px}
   .home-meta .switches{justify-self:end}
-  .mobile-meta-slot .cols{padding-left:8px;padding-right:8px}
   :root[lang="en"] .home-meta,
   :root[lang="uk"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
   :root[lang="en"] .home-meta .parts,
@@ -1151,13 +1150,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 .foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:8px;min-width:0}
 .foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:8px;padding-right:0}
-.foot-bar > .footer-left > .mobile-meta-slot{display:block}
-.foot-bar > .footer-left > .mobile-meta-slot > .cols{display:flex;gap:clamp(12px,1.8vw,26px);flex-wrap:wrap;padding-left:0}
-.mobile-meta-slot{display:none}
-/* В англійській версії службовий рядок із містом і часом не займає
-   місце у верхній шапці — він живе внизу сторінки разом із футером. */
-:root[lang="en"] .mobile-meta-slot,
-:root[lang="uk"] .mobile-meta-slot{display:block}
+.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:8px;padding-right:8px;color:var(--mute)}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається.
@@ -1202,15 +1195,12 @@ figure{margin:0; position:relative; z-index:1}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
   .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
   .foot-bar > .cols{padding:0}
-  .mobile-meta-slot .cols{padding:0}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar > .cols,.mobile-meta-slot{margin-left:0}
-  .mobile-meta-slot{display:block;width:100%;padding-top:clamp(10px,2.5vw,16px);min-width:0}
-  .mobile-meta-slot .cols{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:baseline;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
-  .mobile-meta-slot .cols .tiny{white-space:nowrap;min-width:0}
-  .foot-meta{gap:var(--footer-row-gap);padding:0}
+  .foot-bar > .cols{margin-left:0}
+  .site-foot .foot-meta{width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
+  .site-foot .foot-meta .tiny{white-space:nowrap;min-width:0}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
    стоять в одній колонці й мають повертатися разом */
@@ -1280,10 +1270,6 @@ figure{margin:0; position:relative; z-index:1}
 <body>
 
 <header class="wrap meta home-meta">
-  <div class="cols">
-    <span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span>
-    <span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span id="clock">—:—</span> <span id="tz">EET</span></span>
-  </div>
   <nav class="parts" aria-label="Sections">
     <a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a>
     <a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a>
@@ -1402,7 +1388,8 @@ figure{margin:0; position:relative; z-index:1}
     </div>
   </div>
   <div class="wrap foot-bar">
-    <div class="footer-left"><div class="mobile-meta-slot" aria-label="Location and local time"></div>
+    <div class="footer-left">
+      <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span id="clock" class="kyiv-clock">—:—</span> <span id="tz" class="kyiv-tz">EET</span></span></div>
       <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
     </div>
     <div class="cols">
@@ -1485,7 +1472,7 @@ figure{margin:0; position:relative; z-index:1}
     return null;
   })();
   function tick(){
-    var c = document.getElementById('clock'), z = document.getElementById('tz');
+    var c = document.querySelector('.kyiv-clock'), z = document.querySelector('.kyiv-tz');
     if(!c) return;
     try{
       var now = new Date();
@@ -1580,6 +1567,5 @@ figure{margin:0; position:relative; z-index:1}
 }
 </script>
 <script src="/scripts/move-language-switcher.js?v=4"></script>
-<script src="/scripts/move-home-meta.js?v=3"></script>
 </body>
 </html>
