@@ -23,6 +23,14 @@
    стоїть на решті зелених сторінок (styles/section-header.css), тобто
    базовою лінією на горизонталі імені головної. Статті лишається тільки
    поле під нею. */
+/* main лишався звичайним блоком, тож grid-column нижче ні на що не
+   спирався і мовчки нічого не робив: стаття стояла впритул до поля
+   сторінки замість третьої колонки, як текст на /rates/.
+   Перший трек — та сама розпірка, що в .tbody/.contact-head (photo.css
+   і rates): без неї repeat(12,1fr) ділить смугу на рівні частки, і
+   третя колонка виходить вужчою за --col3, яким рахує решта сайту. */
+main{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap)}
+main::before{content:"";grid-column:1;grid-row:1;height:0;margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label)}
 .privacy-copy{grid-column:3/9;max-width:66ch;padding-block:0 clamp(72px,14vh,180px)}
 .privacy-copy .page-title{margin-bottom:clamp(28px,5vh,56px)}
 .privacy-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
