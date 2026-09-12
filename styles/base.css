@@ -371,6 +371,119 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .contact-link[aria-current="page"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
 
+/* Останні три правила, що лежали у двох файлах одразу. Кожне дрібне, і
+   саме тому вони й розійшлись би першими. */
+@media (max-width:760px){
+  /* Обвід браузера на телефоні — ненадійне джерело повітря згори;
+     шапка тримає власне оптичне поле всередині сторінки. */
+  .meta{padding-top:var(--meta-pad-top)}
+}
+@media (max-width:960px){
+  :root{--col1:20px}
+}
+/* Ціль дотику посилань підвала: видимий рядок лишається той самий. */
+.site-foot .lines > a{padding-block:3px;margin-block:-3px}
+
+/* ── спільна частина шапки ─────────────────────────────────
+   Кнопки перемикачів, ряд .switches і випадне меню переповненої шапки
+   головна й сторінки розділів мають однакові — до байта. Доти ці 27
+   правил лежали двічі: у styles/section.css і в styles/home.css, під
+   селекторами .meta й .home-meta.
+
+   Те, чим шапка головної СПРАВДІ відрізняється — сітка ряду (у неї
+   немає кнопки «назад»), колонки меню й підписи — лишилось у home.css
+   і перекриває звідси, бо стоїть пізніше. Що саме відрізняється,
+   дивіться там: воно свідомо зібране в одному місці. */
+
+.tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
+  font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
+  padding:16px 8px;min-height:44px;line-height:1;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
+
+@media (pointer:fine){
+.tgl button{padding:9px 8px; min-height:30px}
+}
+
+@media (hover:hover){
+.tgl button:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
+}
+.tgl button[aria-pressed="true"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
+
+/* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
+   колонках, як була, коли поряд стояв ще й перемикач тем */
+.switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
+
+@media (min-width:641px) and (max-width:760px){
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
+  .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
+}
+
+@media (max-width:640px){
+  /* Видимий рядок лишається 24px, але реальна тач-ціль кнопки — 44px. */
+  .meta .switches > .tgl button{
+    padding-block:16px;min-height:44px;margin-block:-10px
+  }
+}
+
+@media (max-width:640px) and (pointer:fine){
+  /* З мишею кнопка 30px, а її зовнішня коробка лишається тим самим 24px рядком. */
+  .meta .switches > .tgl button{
+    padding-block:9px;min-height:30px;margin-block:-3px
+  }
+}
+
+/* ── меню переповненої шапки ─────────────────────────────── */
+.header-menu-toggle,.header-menu-panel{display:none}
+.meta.header-menu-mode > .parts::-webkit-scrollbar{display:none}
+.header-menu-toggle span,.header-menu-toggle span::before,.header-menu-toggle span::after{
+  display:block;width:22px;height:1px;background:currentColor;
+  transition:transform 240ms var(--ease),opacity 180ms var(--ease)
+}
+.header-menu-toggle span{position:relative}
+.header-menu-toggle span::before,.header-menu-toggle span::after{content:"";position:absolute;left:0}
+.header-menu-toggle span::before{top:-6px}
+.header-menu-toggle span::after{top:6px}
+.header-menu-open .header-menu-toggle span{background:transparent}
+.header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
+.header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+.meta.header-menu-mode > .header-menu-panel{
+  /* зазор під шапкою: панель не приклеєна до лінійки, а лежить окремою
+     плашкою під нею */
+  position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
+  /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
+     без зовнішніх полів, а не половина вікна. */
+  display:grid;width:max-content;min-width:220px;max-width:calc(100vw - 2 * var(--pad));padding:10px 18px 14px;
+  /* тон самої плити в тому місці, де панель висить — не --plate-top,
+     той на 12 одиниць тепліший. Скло, а не суцільна заливка: прозоріше
+     за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
+     в прокрутці, а меню має лишатися читаним, поки відкрите */
+  background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
+  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);
+  backdrop-filter:blur(17.5px) saturate(1.4);
+  /* Та сама тонка обводка, що й у фіксованої шапки. */
+  border:1px solid var(--hairline);border-radius:12px;
+  box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
+  visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
+  transform:translate3d(0,-6px,0) scale(.95,.98);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
+}
+.meta.header-menu-mode.header-menu-open > .header-menu-panel{
+  visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s
+}
+.meta.header-menu-mode .header-menu-panel .switches{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;
+  overflow:visible
+}
+.meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
+.meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
+  font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;color:var(--mute)
+}
+.meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
+:root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
+
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; translate:0 16px}
