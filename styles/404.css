@@ -82,7 +82,6 @@ a.back::before{
   .site-foot .lines > a:hover::before{transform:scaleX(1)}
   .site-foot .lines > a:hover::after{opacity:1; transform:none}
 }
-.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
 
 @media (max-width:560px){
 .foot-bar{grid-template-columns:1fr}

@@ -78,6 +78,13 @@
      ставала на 42,8px, тобто між двома рядами пікселів. Кожна прокрутка
      округлювала її по-своєму, і лінійка стрибала то вище, то нижче.
      round() лишає ту саму міру, але вже цілим числом */
+  /* Оптичний зсув службового набору від рамки сторінки. Лінійка й плита
+     йдуть від самого поля --pad, а дрібний набір поверх них — на цю міру
+     правіше: інакше він зорово злипається з краєм і з лінійкою під собою.
+     Одна міра на всі три місця, де це потрібно: рядок шапки, перемикачі
+     й нижня службова плашка підвала. Доти скрізь стояв літерал 8px, і на
+     телефоні в підвалі його просто знімали. */
+  --chrome-pad:8px;
   --meta-pad:clamp(4px,.8vh,10px);
   --meta-pad-top:clamp(16px,3vw,24px);
   --meta-pad-bottom:clamp(12px,3.75vw,18px);
@@ -410,7 +417,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
-.switches{--switch-control-pad:8px;display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
 .switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
 
 @media (min-width:641px) and (max-width:760px){
@@ -676,11 +683,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:8px;min-width:0}
-.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:8px;padding-right:0}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:var(--chrome-pad);min-width:0}
+.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:var(--chrome-pad);padding-right:0}
 .foot-bar > .footer-left > .mobile-meta-slot{display:block}
 .foot-bar > .footer-left > .mobile-meta-slot > .cols{padding-left:0}
-.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:8px; padding-right:8px; color:var(--mute)}
+.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:var(--chrome-pad); padding-right:var(--chrome-pad); color:var(--mute)}
 .foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
 .foot-meta .tiny{white-space:nowrap}
 .foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
@@ -705,8 +712,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
   .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
-  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
-  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0 0 0 var(--chrome-pad);width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0 0 0 var(--chrome-pad);width:100%}
   /* Приватність стоїть першим рядком, місто з годинником — другим. У
      розмітці порядок обернений (його складає білд), тож міняє їх місцями
      сам стовпчик: .footer-left тут flex-column, і order працює. */
@@ -722,10 +729,13 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow)}
   .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
-  /* Нижній службовий рядок належить до рамки сторінки, тому починається
-     від звичайного поля верстки, а не від другої колонки контенту. */
+  /* Лінійка нижнього рядка належить до рамки сторінки, тому йде від
+     звичайного поля верстки, а не від другої колонки контенту. А текст
+     під нею несе ті самі 8px оптичного зсуву, що й рядок шапки та цей
+     самий рядок на десктопі: доти вузько їх знімали, і текст ставав
+     урівень із лінійкою замість того, щоб від неї відступити. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar .cols{margin-left:0;padding:0}
+  .foot-bar .cols{margin-left:0;padding:0 0 0 var(--chrome-pad)}
   .foot-meta{gap:var(--footer-row-gap);padding:0}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до

@@ -46,7 +46,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 }
 .meta .cols{display:flex; gap:clamp(16px,4vw,64px); flex-wrap:wrap; align-items:center}
 @media (min-width:761px){
-.meta .cols > .tiny:first-child{padding-left:8px}
+.meta .cols > .tiny:first-child{padding-left:var(--chrome-pad)}
 }
 .home-meta .contact-link{font-size:var(--fs-label)}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
@@ -103,7 +103,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .meta .switches > .mobile-contact-link{display:inline-block}
   .meta .switches{
     grid-column:1;grid-row:1;justify-content:flex-end;
-    height:var(--mobile-meta-row);padding:0 8px 0 0
+    height:var(--mobile-meta-row);padding:0 var(--chrome-pad) 0 0
   }
   .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
   .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
@@ -124,7 +124,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
    англійській версії .cols уже внизу, тому шапка переходить із трьох
    колонок у дві, але сама навігація лишається у верхньому рядку. */
 @media (min-width:641px){
-  .home-meta .parts{padding-left:8px}
+  .home-meta .parts{padding-left:var(--chrome-pad)}
   .home-meta .switches{justify-self:end}
   :root[lang="en"] .home-meta,
   :root[lang="uk"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
@@ -176,7 +176,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     align-items:center
   }
   .home-meta.header-menu-mode > .parts{
-    align-self:center;align-items:center;height:var(--mobile-meta-row);padding:0 0 0 8px
+    align-self:center;align-items:center;height:var(--mobile-meta-row);padding:0 0 0 var(--chrome-pad)
   }
   .home-meta.header-menu-mode > .parts > .part{line-height:1}
   .home-meta.header-menu-mode > .header-menu-toggle{
@@ -220,7 +220,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .home-meta.header-menu-mode > .order-cta{
     grid-column:1;grid-row:1;align-self:center;justify-self:start;
     display:inline-flex;align-items:center;position:relative;
-    height:calc(var(--mobile-meta-row) + 20px);margin-left:8px;
+    height:calc(var(--mobile-meta-row) + 20px);margin-left:var(--chrome-pad);
     padding-block:10px;margin-block:-10px;
     font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
     font-weight:700;font-variation-settings:"wght" 700;line-height:1;
@@ -755,7 +755,7 @@ figure{margin:0; position:relative; z-index:1}
   vertical-align:.95em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
-.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:8px;padding-right:8px;color:var(--mute)}
+.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:var(--chrome-pad);padding-right:var(--chrome-pad);color:var(--mute)}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){
