@@ -1181,10 +1181,10 @@ figure{margin:0; position:relative; z-index:1}
 }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
-  .foot-bar{grid-template-columns:1fr}
-  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:stretch;gap:0;order:2;padding:0;width:100%}
-  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:stretch;order:1;padding-left:8px;padding-right:0;width:100%}
-  .foot-bar .footer-privacy{display:block;margin-top:clamp(10px,2.5vw,16px);margin-left:8px;align-self:flex-start}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
@@ -1200,16 +1200,17 @@ figure{margin:0; position:relative; z-index:1}
   .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
-  .foot-bar{grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
-  .foot-bar > .cols{padding-left:8px}
-  .mobile-meta-slot .cols{padding-left:0;padding-right:8px}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
+  .foot-bar > .cols{padding:0}
+  .mobile-meta-slot .cols{padding:0}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
   .foot-bar > .cols,.mobile-meta-slot{margin-left:0}
   .mobile-meta-slot{display:block;width:100%;padding-top:clamp(10px,2.5vw,16px);min-width:0}
-  .mobile-meta-slot .cols{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:8px;padding-right:0;min-width:0;text-align:left;white-space:nowrap}
+  .mobile-meta-slot .cols{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:baseline;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .mobile-meta-slot .cols .tiny{white-space:nowrap;min-width:0}
+  .foot-meta{gap:var(--footer-row-gap);padding:0}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
    стоять в одній колонці й мають повертатися разом */
@@ -1291,7 +1292,6 @@ figure{margin:0; position:relative; z-index:1}
   <div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
-    <a class="tiny privacy-link" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
 </header>

@@ -1067,11 +1067,11 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
-  .foot-bar{grid-template-columns:1fr}
-  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:stretch;gap:0;order:2;padding:0 0 0 0;width:100%}
-  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:stretch;order:1;padding-left:8px;padding-right:0;width:100%}
-  .foot-bar .footer-privacy{display:block;margin-top:clamp(10px,2.5vw,16px);margin-left:8px;align-self:flex-start}
-  .foot-meta{grid-column:auto; width:100%; flex-direction:row; flex-wrap:nowrap; align-items:baseline; justify-content:flex-start; gap:clamp(12px,1.8vw,26px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:nowrap}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start}
+  .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
@@ -1084,11 +1084,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .cats{padding-block:var(--cats-pad-top) var(--cats-pad-bottom-narrow)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow); margin-top:clamp(20px,5vw,32px)}
-  .foot-bar{padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar .cols{margin-left:0;padding-left:8px}
+  .foot-bar .cols{margin-left:0;padding:0}
+  .foot-meta{gap:var(--footer-row-gap);padding:0}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
    20px. Блок стоїть наприкінці файлу, після базових правил підвала:

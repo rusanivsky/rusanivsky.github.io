@@ -16,14 +16,15 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/photo/photo.css?v=114">
+<link rel="stylesheet" href="/photo/photo.css?v=115">
 <link rel="stylesheet" href="/styles/section-header.css?v=19">
 <style>
 .privacy-copy{grid-column:3/9;max-width:66ch;padding-block:clamp(48px,10vh,128px) clamp(72px,14vh,180px)}
-.privacy-copy h1{font-size:var(--fs-display);font-weight:700;letter-spacing:var(--ls-display);line-height:1.05;margin-bottom:clamp(28px,5vh,56px)}
+.privacy-copy h1{font-family:var(--font);font-stretch:var(--display-stretch);font-size:var(--fs-title);font-weight:700;letter-spacing:-.035em;line-height:1.02;margin-bottom:clamp(28px,5vh,56px)}
 .privacy-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
 .privacy-copy p{font-size:var(--fs-text);line-height:1.55;margin:0 0 16px;max-width:62ch}
-.privacy-copy a{color:var(--pencil)}
+.privacy-copy a{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700;transition:color 240ms var(--ease)}
+.privacy-copy a:hover,.privacy-copy a:focus-visible{color:var(--accent)}
 @media(max-width:640px){.privacy-copy{grid-column:1/-1;padding-block:40px 80px}}
 </style>
 <script src="/scripts/google-analytics.js"></script>
@@ -41,7 +42,6 @@
   <div class="switches">
     <a class="tiny contact-link" href="/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
     <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
-    <a class="tiny privacy-link" href="/privacy/" aria-current="page" data-en="Privacy" data-ua="Приватність">Privacy</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
 </header>

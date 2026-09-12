@@ -145,13 +145,11 @@ function addContactsLink(html, route) {
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
   const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
-  const privacyCurrent = route === '/privacy/' ? ' aria-current="page"' : '';
-  const privacyLink = `<a class="tiny privacy-link" href="/privacy/"${privacyCurrent} data-en="Privacy" data-ua="Приватність">Privacy</a>`;
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
   // Усі три іконки лежать у розмітці, потрібну показує CSS за
   // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
   // чекає на DOMContentLoaded і шапка не стрибає на кожному завантаженні.
-  // У бургері цей рядок стає четвертим після мови
+  // Privacy живе тільки у футері; у бургері лишаються умови, контакти й мова.
   const themeIcons =
     '<span class="ti" data-mode="auto"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
       + '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'
@@ -173,7 +171,7 @@ function addContactsLink(html, route) {
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
     /<div class="switches">/,
-    `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${privacyLink}\n    ${langToggle}${themeToggle}`,
+    `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
   if (!html.includes('<script src="/scripts/language-switcher.js"></script>')) {
@@ -218,9 +216,9 @@ function addKyivClockScript(html, route) {
 const sectionHeaderStyleVersion = 19;
 
 const sectionStyleVersions = {
-  '/photo/photo.css': 114,
-  '/video/video.css': 115,
-  '/design/design.css': 106,
+  '/photo/photo.css': 115,
+  '/video/video.css': 116,
+  '/design/design.css': 107,
 };
 
 function updateSectionStyleVersions(html) {
