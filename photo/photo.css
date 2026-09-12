@@ -1071,7 +1071,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:stretch;gap:0;order:2;padding:0 0 0 0;width:100%}
   .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:stretch;order:1;padding-left:8px;padding-right:0;width:100%}
   .foot-bar .footer-privacy{display:block;margin-top:clamp(10px,2.5vw,16px);margin-left:8px;align-self:flex-start}
-  .foot-meta{grid-column:auto; width:100%; flex-direction:column; flex-wrap:nowrap; align-items:flex-start; justify-content:flex-start; gap:clamp(6px,1.8vw,10px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:normal}
+  .foot-meta{grid-column:auto; width:100%; flex-direction:row; flex-wrap:nowrap; align-items:baseline; justify-content:flex-start; gap:clamp(12px,1.8vw,26px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
