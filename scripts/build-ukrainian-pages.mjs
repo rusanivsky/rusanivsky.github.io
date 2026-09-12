@@ -2,7 +2,8 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
-const googleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
+const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
+const googleTag = '<script src="/scripts/google-analytics.js"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -108,7 +109,8 @@ function updateHead(html, route, title, description, ukrainian) {
 }
 
 function addGoogleTag(html) {
-  if (html.includes('googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6')) return html;
+  html = html.split(legacyGoogleTag).join('');
+  if (html.includes('src="/scripts/google-analytics.js"')) return html;
   return html.replace('</head>', `${googleTag}\n</head>`);
 }
 
