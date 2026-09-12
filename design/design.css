@@ -1009,7 +1009,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   /* без відступу в другу колонку: цей рядок — не ще один пункт переліку
      контактів над ним, а рамка сторінки, як і службовий рядок угорі
      («Київ, UA», час) — обидва стоять від справжнього поля сторінки */
-  display:grid; grid-template-columns:auto 1fr; gap:8px 24px;
+  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
 }
 /* остання лінійка сторінки йде на всю ширину верстки, від поля до поля:
    рядки вище вона не повторює — вона їх закриває. Не border-top: той
@@ -1018,8 +1018,8 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar > .footer-left{grid-column:1;grid-row:1;display:flex;align-items:baseline;gap:clamp(14px,3vw,48px);padding-left:8px;min-width:0}
-.foot-bar > .cols{grid-column:2;grid-row:1;justify-self:end;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:0;padding-right:8px}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(14px,3vw,48px);padding-left:0;padding-right:8px;min-width:0}
+.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:8px;padding-right:0}
 .foot-bar > .footer-left > .mobile-meta-slot{display:block}
 .foot-bar > .footer-left > .mobile-meta-slot > .cols{padding-left:0}
 .foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(14px,3vw,48px); padding-left:8px; padding-right:8px; color:var(--mute)}
@@ -1047,10 +1047,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
   .foot-bar{grid-template-columns:1fr}
-  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:0;order:2;padding-left:0}
-  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:stretch;order:1;padding-left:8px;padding-right:0}
-  .foot-bar .footer-privacy{margin-top:clamp(10px,2.5vw,16px);margin-left:8px}
-  .foot-meta{grid-column:1/-1; flex-direction:row; flex-wrap:nowrap; align-items:baseline; justify-content:flex-start; gap:clamp(12px,1.8vw,26px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:nowrap}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:stretch;gap:0;order:2;padding:0 0 0 0;width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:stretch;order:1;padding-left:8px;padding-right:0;width:100%}
+  .foot-bar .footer-privacy{display:block;margin-top:clamp(10px,2.5vw,16px);margin-left:8px;align-self:flex-start}
+  .foot-meta{grid-column:auto; width:100%; flex-direction:column; flex-wrap:nowrap; align-items:flex-start; justify-content:flex-start; gap:clamp(6px,1.8vw,10px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:normal}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
