@@ -76,7 +76,6 @@ body.footer-at-bottom .site-foot{margin-top:auto}
 @media (max-width:760px){
   .topbar .parts > .part{padding-block:6px;margin-block:-6px}
 }
-.site-foot .lines > a{padding-block:3px;margin-block:-3px}
 
 /* Просвіт під шапкою на зелених сторінках розділів. Доти тут стояло
    clamp(48px,9vh,112px) — на телефоні це 76px поля плюс 22px усередині

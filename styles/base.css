@@ -1,0 +1,765 @@
+/* Спільний шар сайту. Усе, що однакове на кожній сторінці: шрифт,
+   токени, три набори кольорів, плита тла, шапка, випадне меню, липка
+   шапка, поява блоків, перехід між сторінками, перелік категорій і
+   підвал.
+
+   Вантажиться ПЕРШИМ, до файлу розділу. Правила розділів лежать у
+   photo/photo.css, video/video.css, design/design.css і тільки
+   доповнюють цей файл — нічого з нього вони не повторюють.
+
+   Правило: якщо однакове правило потрібне двом розділам — воно йде
+   сюди, а не копіюється. Дубль тут живе рівно до наступного аудиту.
+*/
+
+@font-face{
+  font-family:"Fixel";
+  src:url("/fixel-latin.woff2") format("woff2");
+  font-weight:100 900; font-stretch:75% 100%;
+  font-style:normal; font-display:swap;
+  unicode-range:U+0000-00FF,U+0100-017F,U+2010-2027,U+2190-2199,U+20AC;
+}
+@font-face{
+  font-family:"Fixel";
+  src:url("/fixel-cyrillic.woff2") format("woff2");
+  font-weight:100 900; font-stretch:75% 100%;
+  font-style:normal; font-display:swap;
+  unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+:root{
+  /* охра — єдиний теплий колір на сайті: лінія-підкреслення на ховері,
+     кільце фокуса й виділення тексту (--accent нижче) тепер справді
+     кольорові, а не просто інший відтінок зеленого. На світлому тлі —
+     темна, майже бронзова: 6,5:1 */
+  --pencil:#415d43;
+  --highlight:#f0cd96;
+  --active:#415d43;
+  color-scheme:light;
+  --bg:#eef1ec; --surface:#dce6da; --ink:#111d13;
+  /* Світло тепле й згори зліва, тінь холодна й знизу справа: так
+     градієнт читається освітленою поверхнею, а не переходом кольору */
+  /* Світло, тінь і віньєтка тепер живуть у стопах самого градієнта, а не
+     окремими радіальними шарами згори. Це не спрощення заради спрощення:
+     WebKit дизерить градієнт, тільки поки малює його сам по собі. Щойно
+     зверху лягає другий градієнт — байдуже, з альфою чи з multiply —
+     дизер зникає, і плита розлягається концентричними «сходинками» (у
+     Chromium такого немає: Skia дизерить композит). Один шар — єдина
+     конструкція, чиста в обох рушіях; стопи підібрані так, щоб плита
+     лишалась тією самою на око (rms 1.1 з 255 проти чотиришарової) */
+  --plate-base:linear-gradient(154deg,#fbf6e8 0%,#fbf6e9 8.3%,#f8f5ea 16.7%,#f4f4eb 25%,#f1f2ec 33.3%,#eff1ec 41.7%,#edf0eb 50%,#eaeee9 58.3%,#e6eae5 66.7%,#dee3de 75%,#d4dbd5 83.3%,#cad3cc 91.7%,#c4cdc6 100%);
+  /* на світлому зерно видно вдвічі краще, ніж на темному */
+  --grain:.05;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#f6f7f1;
+  /* світла плита не темнішає під час скролу */
+  --sticky-plate-end:var(--plate-top);
+  /* тон випадного меню: доти воно бралося з --plate-top, а той описує
+     смугу під самим обводом браузера, не місце під шапкою. Кожен набір
+     кольорів має свій вимір; поки живе тільки зелений, решта лишається
+     на верху плити */
+  --menu-plate:var(--plate-top);
+  /* акцент для ховерів, кільця фокуса й виділення тексту: доти просто
+     дублював --ink, тобто взагалі не був кольором. Тепер це охра — той
+     самий --pencil, що малює лінію під ховером */
+  --accent:var(--pencil);
+  --divider:color-mix(in srgb,#111d13 40%,transparent);
+  /* та сама вертикаль, що й --divider, але вчетверо тихіша: ледь
+     помітна обводка попід фіксованою шапкою, а не розділювач рядків */
+  --hairline:color-mix(in srgb,#111d13 16%,transparent);
+  /* --mute однаковий на всіх сторінках: доти головна тримала 65%, а
+     розділи 52%, тобто той самий сірий був на різних сторінках різної
+     сили. Лишилось сильніше з двох — воно й читається краще */
+  --mute:color-mix(in srgb,#111d13 65%,transparent);
+  --font:"Fixel",system-ui,-apple-system,sans-serif;
+  --text-stretch:75%;
+  --display-stretch:100%;
+  --pad:clamp(16px,3.2vw,48px);
+  /* Висота шапки мусить лягати на цілий піксель. Доти поля рахувались
+     від .8vh — на вікні 800px це 6,4px, і волосяна лінійка під шапкою
+     ставала на 42,8px, тобто між двома рядами пікселів. Кожна прокрутка
+     округлювала її по-своєму, і лінійка стрибала то вище, то нижче.
+     round() лишає ту саму міру, але вже цілим числом */
+  /* Оптичний зсув службового набору від рамки сторінки. Лінійка й плита
+     йдуть від самого поля --pad, а дрібний набір поверх них — на цю міру
+     правіше: інакше він зорово злипається з краєм і з лінійкою під собою.
+     Одна міра на всі три місця, де це потрібно: рядок шапки, перемикачі
+     й нижня службова плашка підвала. Доти скрізь стояв літерал 8px, і на
+     телефоні в підвалі його просто знімали. */
+  --chrome-pad:8px;
+  --meta-pad:clamp(4px,.8vh,10px);
+  --meta-pad-top:clamp(16px,3vw,24px);
+  --meta-pad-bottom:clamp(12px,3.75vw,18px);
+  /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
+     розділювач має мовчати, підкреслення — відповідати */
+  --rule:1px; --pen:2px;
+  /* ── шкала кеглів: шість щаблів на весь сайт ────────────────
+     1  chrome  12                    службовий рядок: місто, годинник,
+                                      перемикачі, навігація, копірайт,
+                                      мітка платформи
+     2  label   13                    підписи розділів, номери рядків,
+                                      підписи під картками
+     3  text    16–19                 увесь суцільний текст: база, лід,
+                                      категорії, назви й описи карток
+     4  link    19–28                 контактні посилання в підвалі
+     5  title   24–40                 назви розділів і категорій
+     6  name    42–104                ім'я
+     Між 1 і 2 всього піксель — це навмисно: службовий рядок має бути
+     тихішим за підписи, а не іншим за характером. Решта щаблів іде з
+     розгоном, тож на око вони не плутаються */
+  --fs-chrome:12px;
+  --fs-label:13px;
+  --number-size:var(--fs-label);
+  --fs-text:clamp(16px,1.25vw,19px);
+  --fs-link:clamp(19px,1.95vw,28px);
+  /* менший, ніж був: на 700 назва набирає ваги, і 46 починали
+     сперечатися з іменем угорі */
+  --fs-title:clamp(24px,3.1vw,40px);
+  --fs-name:clamp(42px,6.9vw,104px);
+  /* розрядка капітелі: на 13px .1em розсипає слово і робить підпис ширшим
+     за колонку, у якій він має стояти */
+  --ls-tiny:.06em;
+  /* ── ваги: три, і кожна зі своєю роботою ────────────────────
+     400  суцільний текст: база, лід, категорії, описи, контакти
+     600  капітель: службовий рядок, підписи, номери, навігація
+     700  вітрина: ім'я, назви розділів, назви карток
+     Доти їх було шість — 300, 400, 500, 600, 700, 800 — і ролі одного
+     рівня стояли на різних: назва картки у відео на 700, у дизайні на
+     800; підпис розділу на 600, а номер поряд із ним на 800 */
+  /* просвіт між лінійкою і тим, що під нею починається. Був у трьох
+     місцях трьома різними числами: рядок переліку відбивав 14px, марки
+     клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
+     висота підпису. Тепер одне число на всі три */
+  --rule-gap:clamp(22px,2.6vw,32px);
+  /* Ті самі міри, але цілим числом пікселів — з тієї ж причини, що й
+     поля шапки: на них стоять волосяні лінійки, і півпікселя під
+     лінійкою читається то тоншою, то товщою рискою */
+  --cats-pad-top:clamp(48px,9vh,112px);
+  --cats-pad-bottom:clamp(30px,6vh,72px);
+  --cats-pad-bottom-narrow:clamp(24px,6vw,32px);
+  --foot-pad:clamp(22px,3.85vh,52px);
+  --foot-pad-narrow:clamp(18px,5vw,24px);
+  --foot-bar-pad-narrow:clamp(18px,4.5vw,24px);
+  /* ширина коробки взята з kmbs.ua: там контейнер стоїть на 1440px і далі
+     не росте, скільки б не було екрана — поле з боків краще за довгі рядки */
+  --maxw:1440px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* ── тло ────────────────────────────────────────────────────
+     Зерно й градієнт малює не body, а фіксована плита під ним, тож
+     градієнт прив'язаний до вікна, а не розтягнутий на всю висоту
+     документа, і зерно лежить під текстом, а не поверх нього.
+     Плитка зерна 160px, великих плям — 1280px: обидві дрібніші за
+     екран, тож повтор не читається. Обидві лежать у /img і важать
+     разом менше за одну фотографію */
+  /* Зерно й плями — растрові плитки, а не SVG-фільтри. feTurbulence кожен
+     рушій розтеризує по-своєму: на тих самих стилях Safari і Chromium давали
+     різний тон і різну зернистість. Растр знімає питання — обидва беруть ті
+     самі пікселі. Плитки робить scripts/make-plate-textures.mjs; плями там
+     ще й дизеряться, бо їхній розмах — пара рівнів з 255, і без дизеру вони
+     самі стають контурними лініями (ті «сходинки», що видно було в Safari) */
+  --grain-img:url("/img/grain.png");
+  --plate-mottle:url("/img/mottle.png");
+  --mottle-size:1280px;
+  /* та сама 12-колонкова сітка, що й на головній: міжколонник, зсув у другу
+     колонку (перша лишається наскрізним полем, у якому не стоїть нічого,
+     крім підписів) і спільний кегль назв категорій */
+  --colgap:clamp(20px,2.6vw,40px);
+  /* ширина сітки через vw, а не 100%: --col1 і --col2 мають означати одну
+     й ту саму відстань у будь-якій коробці */
+  --gridw:calc(min(100vw, var(--maxw)) - 2 * var(--pad));
+  /* найдовший підпис — «ЧИМ ЗАЙМАЮСЬ»; на 13px він просить стільки, і
+     колонка не буває вужчою за нього. Доти міру рахували з відніманням
+     поля сторінки, і підпис вилазив за ліву межу верстки: «ЗАМОВЛЕННЯ»
+     на 21px, а «ЧИМ ЗАЙМАЮСЬ» ще й переносилось на другий рядок */
+  --label-w:120px;
+  /* перша колонка — наскрізне поле сторінки: у ньому стоять підписи,
+     вирівняні по її правому краю, а лінійки з номерами під ними
+     починаються з другої. Ширина — не менша за сам підпис: колонка сітки
+     на 1440 дає 78px, і рештою напис висів у полі сторінки, за межами
+     верстки. Вузько поле на 120px коштує чверть рядка — від 960 підпис
+     лягає вертикально, і колонка сходить до 20px */
+  --col1:max(var(--label-w), calc((var(--gridw) - 11 * var(--colgap)) / 12));
+  --col2:calc(var(--col1) + var(--colgap));
+  --col3:calc(2 * var(--col1) + 2 * var(--colgap));
+}
+@supports (width:round(1px,1px)){
+  :root{
+    --meta-pad:round(clamp(4px,.8vh,10px),1px);
+    --meta-pad-top:round(clamp(16px,3vw,24px),1px);
+    --meta-pad-bottom:round(clamp(12px,3.75vw,18px),1px);
+    --rule-gap:round(clamp(22px,2.6vw,32px),1px);
+    --cats-pad-top:round(clamp(48px,9vh,112px),1px);
+    --cats-pad-bottom:round(clamp(30px,6vh,72px),1px);
+    --cats-pad-bottom-narrow:round(clamp(24px,6vw,32px),1px);
+    --foot-pad:round(clamp(22px,3.85vh,52px),1px);
+    --foot-pad-narrow:round(clamp(18px,5vw,24px),1px);
+    --foot-bar-pad-narrow:round(clamp(18px,4.5vw,24px),1px);
+  }
+}
+/* три набори кольорів, по одному на розділ: світлий для фото й дизайну,
+   зелений для головної, нічний для відео. Вибирає їх не гість і не його
+   система, а сама сторінка — data-theme стоїть у <html> ще до першого
+   байта стилів. Доти набір залежав ще й від prefers-color-scheme, і той,
+   хто колись натиснув «світлу», носив її за собою по всьому сайту */
+:root[data-theme="light"]{
+  color-scheme:light;
+  /* Один рівний тон від обводу браузера до футера: плита, скляна шапка
+     й канва — той самий колір, і скрол ніде його не підфарбовує */
+  --bg:#e8ebe6;
+  --plate-top:var(--bg);
+  /* підкладка під кадром, поки він вантажиться: доти лишалась зеленішою
+     за тло й на рівному тоні читалась кольоровим прямокутником */
+  --surface:#e4e7e2;
+  --plate-base:linear-gradient(var(--bg),var(--bg));
+}
+:root[data-theme="green"]{
+  color-scheme:dark;
+  /* та сама охра, світліша й тепліша. Доти тут стояло #e6bb7c, і в
+     найсвітлішому куті плити воно давало 3,84:1 — нижче за поріг, хоч
+     коментар обіцяв 5:1. Піднято на пів тону: тепер 4,53:1 угорі,
+     7,56:1 посередині, 11:1 унизу, тобто поріг тримається на всій плиті.
+     Не яскравіше: це підкреслення, а не заклик */
+  --pencil:#f0cd96; --active:#f0cd96;
+  --bg:#2b3e2d; --surface:#3a5340; --ink:#eaf1e7;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#42563f;
+  /* виміряний тон плити одразу під sticky-шапкою на низу сторінки */
+  --sticky-plate-end:#304234;
+  /* плашка меню: тон плити рівно там, де воно висить — під шапкою,
+     праворуч. Не --plate-top: той на 12 одиниць тепліший, і панель
+     читалась іншим матеріалом, а не вирізом у тій самій плиті.
+     Міряно по самій плиті, з усіма її шарами, а не порахувано з
+     градієнта: мотлі й тепле світло згори підіймають базу на два
+     десятки рівнів */
+  --menu-plate:#47564b;
+  /* Кінці ті самі, що були з самого початку, але пройдені рівним кроком
+     по OKLCH і дев'ятьма стопами: три стопи давали злам на середньому,
+     і око читало злам смугою */
+  --plate-base:linear-gradient(154deg,#4f5f49 0%,#4b5b47 8.3%,#445542 16.7%,#3b4d3d 25%,#344738 33.3%,#2f4234 41.7%,#2b3e31 50%,#283a2e 58.3%,#24352a 66.7%,#1f2f25 75%,#1a2a21 83.3%,#15241d 91.7%,#13211a 100%);
+  --grain:.18;
+  --divider:color-mix(in srgb,#eaf1e7 34%,transparent);
+  --hairline:color-mix(in srgb,#eaf1e7 14%,transparent);
+  --mute:color-mix(in srgb,#eaf1e7  80%,transparent);
+}
+:root[data-theme="night"]{
+  /* та сама охра, глибша й насиченіша — на майже чорному тлі є куди
+     рости: 6,5:1 */
+  color-scheme:dark; --pencil:#d9a05e; --active:#d9a05e;
+  /* Нейтральна нічна плита без зеленого відтінку. Стопи — ті самі, що
+     й у решти тем, тільки переведені в сірий за однакової світлості:
+     після переходу на один 13-стоповий градієнт сюди помилково
+     потрапили оливкові стопи зеленої ночі, і плита розходилася з
+     нейтральними --bg і --plate-top, які лишались від «Neutralize
+     video backgrounds» */
+  --bg:#161616; --surface:#1e1e1e; --ink:#f0f0f0;
+  /* Розмах плити вдвічі вужчий за решту тем: 29→16 замість 42→15. Нічна
+     тут не освітлена поверхня, а рівне тло — глибокий кут і світлий кут
+     сперечалися б із кадрами, які на ній лежать */
+  --plate-base:linear-gradient(154deg,#1d1d1d 0%,#1c1c1c 8.3%,#1b1b1b 16.7%,#1a1a1a 25%,#181818 33.3%,#171717 41.7%,#161616 50%,#151515 58.3%,#141414 66.7%,#131313 75%,#121212 83.3%,#111111 91.7%,#101010 100%);
+  --grain:.14;
+  /* верх плити: до нього примикає скляна шапка й обвід браузера */
+  --plate-top:#1b1b1b;
+  --sticky-plate-end:#161616;
+  --divider:color-mix(in srgb,#f0f0f0 34%,transparent);
+  --hairline:color-mix(in srgb,#f0f0f0 14%,transparent);
+  --mute:color-mix(in srgb,#f0f0f0 55%,transparent);
+}
+*,*::before,*::after{box-sizing:border-box}
+/* ── плита тла ──────────────────────────────────────────────
+   --bg лишається на html: він фарбує канву й гумовий відскок згори,
+   і він же єдине, що побачить браузер, який не потягне решту.
+   Обидва шари фіксовані й нічого не ловлять, тож гортання їх не
+   перемальовує */
+html{background:var(--bg)}
+/* inset від'ємний, а не 0: у вікна на телефоні немає сталої висоти —
+   смуги Safari то згортаються, то ні, а гумовий відскок згори й знизу
+   відкриває смугу поза вікном. Плита рівно по вікну лишає там голий
+   --bg, і тло виглядає обрізаним рівним кольором без зерна й градієнта.
+   Чверті висоти вікна на реальному iOS Safari не вистачало — смуга
+   таки пробивалась, тож запас піднято до 60vh */
+body::before,body::after{
+  content:""; position:fixed; inset:-60vh 0; z-index:-1; pointer-events:none;
+}
+body::before{
+  background-color:var(--bg);
+  background-image:var(--plate-mottle),var(--plate-base);
+  background-repeat:repeat,no-repeat;
+  background-size:var(--mottle-size) var(--mottle-size),auto;
+  /* великі плями йдуть overlay: без них будь-який градієнт видає,
+     що він порахований, а не знятий. Саме overlay, а не soft-light: із
+     усіх режимів змішування soft-light — єдиний, який WebKit і Chromium
+     рахують по-різному (перевірено пліч-опліч на всіх шістнадцяти) */
+  background-blend-mode:overlay,normal;
+}
+/* Зерно окремим шаром, бо йому потрібне своє змішування: overlay
+   чіпає світлість і не зсуває колір. Воно ж прибирає смуги — на
+   темному градієнті 8 біт на канал видно неозброєним оком */
+body::after{
+  background-image:var(--grain-img);
+  background-size:160px 160px;
+  opacity:var(--grain); mix-blend-mode:overlay;
+}
+/* Плитка лягає піксель у піксель щільності екрана: інакше кожен рушій
+   розтягує її своїм згладжуванням і зерно знову розходиться */
+@media (min-resolution:1.5dppx){
+body::after{background-size:80px 80px}
+}
+@media (min-resolution:2.5dppx){
+body::after{background-size:53.334px 53.334px}
+}
+@media (prefers-contrast:more){
+body::after{opacity:0}
+}
+@media print{
+body::before,body::after{display:none}
+}
+/* Плита реагує на прокрутку. Сучасні браузери ведуть її scroll-timeline
+   на композиторі, а plate-parallax.js лишається fallback для старих. */
+body::before,body::after{
+  transform:translate3d(0,var(--plate-shift,0px),0);
+  filter:brightness(var(--plate-brightness,1.15));
+  will-change:transform,filter;
+}
+@keyframes plate-scroll{
+  from{transform:translate3d(0,0,0);filter:brightness(1.15)}
+  to{transform:translate3d(0,-64px,0);filter:brightness(.95)}
+}
+/* Та сама доріжка без яскравості: анімація перекриває звичайні
+   оголошення, тож одного filter:none нижче світлій темі не вистачало —
+   плита все одно темнішала від 1.15 до .95 за скролом */
+@keyframes plate-scroll-flat{
+  from{transform:translate3d(0,0,0);filter:none}
+  to{transform:translate3d(0,-64px,0);filter:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:scroll()){
+    body::before,body::after{
+      animation:plate-scroll linear both;
+      animation-timeline:scroll();
+      animation-range:0 900px;
+    }
+    :root[data-theme="light"] body::before,
+    :root[data-theme="light"] body::after{animation-name:plate-scroll-flat}
+}
+}
+/* Світла тема зберігає плоский тон: паралакс рухає її, але не підфарбовує. */
+:root[data-theme="light"] body::before,
+:root[data-theme="light"] body::after{filter:none}
+/* Фотогалереї на світлій темі несуть власний контраст — плямисті
+   градієнти плити й потемніння на скролі під ними лише сперечаються
+   зі знімками. Плита лишається плоскою, текстура (зерно) і паралакс
+   (зсув) — на місці */
+body.no-plate-darkening::before,
+body.no-plate-darkening::after{filter:none}
+
+/* clip, а не hidden: hidden заводить контейнер прокрутки, і саме на ньому
+   спотикалась інвалідація шарів — сліди від смуг ховера лишались там, де
+   вони були до гортання */
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55;overflow-x:hidden;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.03em;line-height:1}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
+   (шапка й підвал на 404) */
+.wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
+/* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
+.rule{height:var(--rule); background:var(--divider); border:0;
+  width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
+.tiny{font-size:var(--fs-chrome);font-stretch:var(--text-stretch);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
+.contact-link{display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
+.meta .contact-link{font-size:var(--fs-label)}
+/* та сама реакція, що й у розділів поряд: наведення й активна
+   сторінка засвічуються тим самим кольором тексту */
+@media (hover:hover){
+.contact-link:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
+}
+.contact-link[aria-current="page"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
+
+/* Останні три правила, що лежали у двох файлах одразу. Кожне дрібне, і
+   саме тому вони й розійшлись би першими. */
+@media (max-width:760px){
+  /* Обвід браузера на телефоні — ненадійне джерело повітря згори;
+     шапка тримає власне оптичне поле всередині сторінки. */
+  .meta{padding-top:var(--meta-pad-top)}
+}
+@media (max-width:960px){
+  :root{--col1:20px}
+}
+/* Ціль дотику посилань підвала: видимий рядок лишається той самий. */
+.site-foot .lines > a{padding-block:3px;margin-block:-3px}
+
+/* ── спільна частина шапки ─────────────────────────────────
+   Кнопки перемикачів, ряд .switches і випадне меню переповненої шапки
+   головна й сторінки розділів мають однакові — до байта. Доти ці 27
+   правил лежали двічі: у styles/section.css і в styles/home.css, під
+   селекторами .meta й .home-meta.
+
+   Те, чим шапка головної СПРАВДІ відрізняється — сітка ряду (у неї
+   немає кнопки «назад»), колонки меню й підписи — лишилось у home.css
+   і перекриває звідси, бо стоїть пізніше. Що саме відрізняється,
+   дивіться там: воно свідомо зібране в одному місці. */
+
+.tgl button{appearance:none;background:transparent;border:0;cursor:pointer;color:var(--mute);
+  font:inherit;font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);text-transform:uppercase;
+  padding:16px 8px;min-height:44px;line-height:1;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
+
+@media (pointer:fine){
+.tgl button{padding:9px 8px; min-height:30px}
+}
+
+@media (hover:hover){
+.tgl button:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
+}
+.tgl button[aria-pressed="true"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
+
+/* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
+   колонках, як була, коли поряд стояв ще й перемикач тем */
+.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
+
+@media (min-width:641px) and (max-width:760px){
+  .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
+  .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
+}
+
+@media (max-width:640px){
+  /* Видимий рядок лишається 24px, але реальна тач-ціль кнопки — 44px. */
+  .meta .switches > .tgl button{
+    padding-block:16px;min-height:44px;margin-block:-10px
+  }
+}
+
+@media (max-width:640px) and (pointer:fine){
+  /* З мишею кнопка 30px, а її зовнішня коробка лишається тим самим 24px рядком. */
+  .meta .switches > .tgl button{
+    padding-block:9px;min-height:30px;margin-block:-3px
+  }
+}
+
+/* ── меню переповненої шапки ─────────────────────────────── */
+.header-menu-toggle,.header-menu-panel{display:none}
+.meta.header-menu-mode > .parts::-webkit-scrollbar{display:none}
+.header-menu-toggle span,.header-menu-toggle span::before,.header-menu-toggle span::after{
+  display:block;width:22px;height:1px;background:currentColor;
+  transition:transform 240ms var(--ease),opacity 180ms var(--ease)
+}
+.header-menu-toggle span{position:relative}
+.header-menu-toggle span::before,.header-menu-toggle span::after{content:"";position:absolute;left:0}
+.header-menu-toggle span::before{top:-6px}
+.header-menu-toggle span::after{top:6px}
+.header-menu-open .header-menu-toggle span{background:transparent}
+.header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
+.header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
+.meta.header-menu-mode > .header-menu-panel{
+  /* зазор під шапкою: панель не приклеєна до лінійки, а лежить окремою
+     плашкою під нею */
+  position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
+  /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
+     без зовнішніх полів, а не половина вікна. */
+  display:grid;width:max-content;min-width:220px;max-width:calc(100vw - 2 * var(--pad));padding:10px 18px 14px;
+  /* тон самої плити в тому місці, де панель висить — не --plate-top,
+     той на 12 одиниць тепліший. Скло, а не суцільна заливка: прозоріше
+     за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
+     в прокрутці, а меню має лишатися читаним, поки відкрите */
+  background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
+  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);
+  backdrop-filter:blur(17.5px) saturate(1.4);
+  /* Та сама тонка обводка, що й у фіксованої шапки. */
+  border:1px solid var(--hairline);border-radius:12px;
+  box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
+  visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
+  transform:translate3d(0,-6px,0) scale(.95,.98);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
+}
+.meta.header-menu-mode.header-menu-open > .header-menu-panel{
+  visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
+  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s
+}
+.meta.header-menu-mode .header-menu-panel .switches{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;
+  overflow:visible
+}
+.meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
+.meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
+  font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
+  text-transform:uppercase;color:var(--mute)
+}
+.meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
+:root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
+
+/* ── поява блоків ─────────────────────────────────────────── */
+/* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
+.rev [data-rev]{opacity:0; translate:0 16px}
+.rev [data-rev].is-in{opacity:1; translate:none;
+  transition:opacity 260ms var(--ease), translate 300ms var(--ease);
+  transition-delay:var(--d,0ms)}
+/* Перший екран і блоки нижче використовують один рух; перехід між
+   сторінками не додає другого вертикального зсуву. */
+
+/* ── плавний перехід між сторінками ──────────────────────── */
+/* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
+   старий знімок, доки новий документ не намалюється, і міняє їх без
+   анімації. Рух на вході лишається один — поява блоків нижче.
+   Кросовер тут уже пробували двічі: типовим набором браузера й рівною
+   кривою поверх нерухомого нового кадру. Обидва рази він лягав на виїзд
+   першого екрана, і завантаження читалось подвійним стрибком.
+   Перефарбування теми — інша річ: там другого руху немає, тож свій
+   кросовер воно тримає нижче, під власним класом.
+   mix-blend-mode тут не декорація: типовий набір браузера ставить обом
+   знімкам plus-lighter, розрахований на зустрічні згасання. Обидва
+   непрозорі — і кадр складається сам із собою, тобто спалахує */
+@view-transition{ navigation:auto }
+/* Знімок переходу забирає в backdrop-filter його підложку: блюру немає
+   що розмивати, і ті 10% прозорості, які він доти ховав, проступають —
+   заслінка шапки на долю секунди стає прозорою. На час переходу вона
+   суцільна, рівно як у запасному наборі для браузерів без
+   backdrop-filter. background-color тут важливий: його веде
+   scroll-анімація заслінки, а анімацію перебиває лише important.
+   Тільки theme-shift, і жодного :active-view-transition: той спрацьовує
+   на будь-якому переході, зокрема навігаційному, — а він тепер миттєвий,
+   боронити там нічого. Зате заслінка на кожному переході на кілька
+   кадрів ставала суцільною й світлішою за плиту під нею.
+   Панелі меню тут немає навмисно: суцільна заливка помітно міняла її
+   там, де вона лежить поверх кадрів. Замість цього theme.js не заводить
+   переходу взагалі, поки бургер відкритий */
+html.theme-shift .topbar::before{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background-color:var(--plate-top)!important
+}
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root){ animation:none; mix-blend-mode:normal }
+/* Виняток — саме перефарбування теми: новий кадр стоїть, старий згасає
+   поверх нього. --ease тут не годиться: це різкий ease-out під рух, він
+   обриває хвіст розчинення */
+html.theme-shift::view-transition-old(root){ animation:pt-out 520ms cubic-bezier(.4,0,.2,1) both }
+/* запасний перехід для браузерів без @view-transition */
+@keyframes pt-in{ from{opacity:0} to{opacity:1} }
+@keyframes pt-out{ from{opacity:1} to{opacity:0} }
+html.pt-js body{ animation:none }
+html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important; transition:none!important}
+  .rev [data-rev]{opacity:1!important; translate:none!important}
+  ::view-transition-old(root),::view-transition-new(root){ animation:none }
+  html.pt-js body,html.pt-leave body{ animation:none }
+}
+@media (max-width:640px){
+  .rev [data-rev]{translate:0 10px}
+  .rev [data-rev].is-in{transition-duration:200ms,240ms}
+}
+
+/* ── підвал сайту ─────────────────────────────────────────── */
+/* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
+   такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
+   темною плашкою, і сенс у ній був лише в світлій темі: на папері вона
+   давала контраст 11,2:1 і читалася як подія, а на темному тлі — 1,41:1,
+   тобто ледь помітну пляму замість блоку.
+   Прийом працював наполовину, а сторінка з волосяних лінійок і
+   повітря обходиться без суцільної заливки */
+.site-foot{
+  color:var(--ink);
+  --uline:2px;
+}
+@media (min-width:700px){
+.site-foot{--uline:3px}
+}
+/* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
+   тримають ліві десять колонок, соцмережі починаються з одинадцятої
+   лінії. Доти стовпчик просто тулився до правого краю, і його ліва межа
+   гуляла за довжиною найдовшої назви */
+.foot-in{
+  position:relative;
+  padding-block:var(--foot-pad);
+  display:grid; grid-template-columns:repeat(12,1fr);
+  column-gap:var(--colgap); row-gap:var(--rule-gap);
+  align-items:start;
+}
+/* контакти починаються з другої колонки — тим самим уступом, що ім'я з
+   текстом угорі й номери з назвами в переліку напрямків. Перша колонка
+   лишається наскрізним полем від шапки до підвалу */
+.foot-in .say{grid-column:1/-1;margin-left:var(--col2);min-width:0}
+/* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
+   «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
+   на всю ширину верстки, впритул до підпису, як border-top першого рядка
+   напрямків. Доти підпис був на 800 і повним чорнилом, а лінійка стояла
+   над ним; підвал єдиний на сторінці відкривався не так, як решта.
+   line-height:1 — бо тут це <p>, а не <h2> з глобальним line-height */
+.foot-in .k{
+  /* на 404 базовий набір ставить p{max-width:34ch}, і підпис разом із
+     лінійкою обрізало до 244px; тут міра не потрібна — рядок один */
+  grid-column:1/-1; position:relative; margin:0; max-width:none;
+  font-size:var(--fs-label); letter-spacing:var(--ls-tiny); text-transform:uppercase;
+  font-weight:600; line-height:1; color:var(--mute);
+  /* коробка тексту завширшки з першу колонку, напис по її правому краю —
+     тому самому місці, від якого за міжколонником починається лінійка.
+     Флекс, а не text-align: коли підпис ширший за колонку, text-align
+     лишає його на лівій межі й пускає через лінійку, а flex-end тримає
+     праву межу і вирощує напис ліворуч, у поле сторінки */
+  display:flex; justify-content:flex-end; align-items:flex-start;
+  text-align:right; padding-right:calc(100% - var(--col1));
+  /* нульова висота, як і в підписів розділів: інакше до просвіту під
+     лінійкою додавалася б ще й висота самого підпису, і підвал відбивав
+     би вдвічі більше за решту сторінки */
+  height:0;
+}
+/* та сама лінійка, що й у переліку категорій вище: по верхній межі
+   підпису і від початку другої колонки — тієї, з якої починаються самі
+   контакти. Доти підпис стояв над лінійкою, і на лінії лежала його нижня
+   межа */
+.foot-in .k::after{
+  content:""; position:absolute; left:var(--col2); right:0; top:0;
+  height:var(--rule); background:var(--divider);
+}
+.site-foot a{color:inherit; text-decoration:none}
+/* контактні рядки стоять під поясненням, а не над ним, і в тому ж
+     кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
+     дрібний рядок-мітка, просвіт, велике посилання */
+.site-foot .lines{
+  min-width:0;
+  margin-top:clamp(12px,1.8vh,20px);
+  display:flex; align-items:baseline; flex-wrap:wrap;
+  column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
+}
+.site-foot .lines > a{
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  font-family:var(--font); font-stretch:var(--text-stretch); font-size:var(--fs-link); font-weight:600; text-transform:none;
+  letter-spacing:-.02em; line-height:1.02;
+  position:relative;
+  color:color-mix(in srgb,var(--ink) 60%,transparent);
+  transition:color 260ms var(--ease);
+}
+/* лінія окремим шаром і через transform — background-size тут не інтерполюється */
+.site-foot .lines > a::before{
+  content:none;
+  position:absolute; left:0; right:0; bottom:-.02em;
+  height:var(--uline); background:var(--pencil);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 420ms var(--ease);
+  will-change:transform;
+}
+.site-foot .lines > a::after{
+  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
+  vertical-align:.9em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .site-foot .lines > a:hover,
+  .site-foot .lines > a:focus-visible{color:var(--accent)}
+  .site-foot .lines > a:hover::before,
+  .site-foot .lines > a:focus-visible::before{transform:scaleX(1)}
+  .site-foot .lines > a:hover::after,
+  .site-foot .lines > a:focus-visible::after{opacity:1; transform:none}
+}
+@media (hover:none){
+.site-foot .lines > a::after{opacity:.72;transform:none}
+}
+.site-foot .lines > a:active{color:var(--accent)}
+.site-foot .lines > a:active::before{transform:scaleX(1)}
+.site-foot .lines > a:active::after{opacity:1; transform:none}
+/* соцмережі названі словами, а не марками: кожна своїм рядком, текст
+   вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
+   плашки тримає вагу, права її врівноважує і не сперечається за вісь */
+.site-foot .sub{
+  margin:0; max-width:34ch; text-wrap:pretty;
+  color:var(--mute);
+}
+.foot-bar{
+  position:relative;
+  padding-block:clamp(8px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  /* без відступу в другу колонку: цей рядок — не ще один пункт переліку
+     контактів над ним, а рамка сторінки, як і службовий рядок угорі
+     («Київ, UA», час) — обидва стоять від справжнього поля сторінки */
+  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+}
+/* остання лінійка сторінки йде на всю ширину верстки, від поля до поля:
+   рядки вище вона не повторює — вона їх закриває. Не border-top: той
+   тягнувся б і по падінгу */
+.foot-bar::before{
+  content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
+  height:var(--rule); background:var(--divider);
+}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:var(--chrome-pad);min-width:0}
+.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:var(--chrome-pad);padding-right:0}
+.foot-bar > .footer-left > .mobile-meta-slot{display:block}
+.foot-bar > .footer-left > .mobile-meta-slot > .cols{padding-left:0}
+.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:var(--chrome-pad); padding-right:var(--chrome-pad); color:var(--mute)}
+.foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
+.foot-meta .tiny{white-space:nowrap}
+.foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
+.foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
+/* рядок стоїть рівно під лінійкою: його правий край — там само, де її
+   кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
+   не вкорочує і рядок на ховері не смикається */
+/* колір заданий тут, а не класом .tiny: .site-foot a{color:inherit} має
+   вищу вагу за .tiny і забирав приглушення — рядок світився повним
+   чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
+   --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
+.foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
+.foot-bar .arch::after{
+  content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
+  color:var(--ink); opacity:0; transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .foot-bar .arch:hover{color:var(--accent)}
+  .foot-bar .arch:hover::after{opacity:1; transform:none}
+}
+.foot-bar .arch:active::after{opacity:1; transform:none}
+@media (max-width:560px){
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0 0 0 var(--chrome-pad);width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0 0 0 var(--chrome-pad);width:100%}
+  /* Приватність стоїть першим рядком, місто з годинником — другим. У
+     розмітці порядок обернений (його складає білд), тож міняє їх місцями
+     сам стовпчик: .footer-left тут flex-column, і order працює. */
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
+  .foot-bar > .footer-left > .foot-meta{order:2}
+  .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
+  .foot-meta .tiny{white-space:nowrap; min-width:0}
+}
+/* вузько сітка підвалу згортається в одну колонку, а контакти відходять
+   за першу — за ту саму вертикаль, від якої йде лінійка над ними */
+@media (max-width:640px){
+  .foot-in{grid-template-columns:1fr}
+  .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
+  .site-foot{--foot-pad:var(--foot-pad-narrow)}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
+  /* Лінійка нижнього рядка належить до рамки сторінки, тому йде від
+     звичайного поля верстки, а не від другої колонки контенту. А текст
+     під нею несе ті самі 8px оптичного зсуву, що й рядок шапки та цей
+     самий рядок на десктопі: доти вузько їх знімали, і текст ставав
+     урівень із лінійкою замість того, щоб від неї відступити. */
+  .foot-bar::before{left:var(--pad)}
+  .foot-bar .cols{margin-left:0;padding:0 0 0 var(--chrome-pad)}
+  .foot-meta{gap:var(--footer-row-gap);padding:0}
+}
+/* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
+   20px. Блок стоїть наприкінці файлу, після базових правил підвала:
+   раніше він ішов перед ними і вони його ж і перебивали */
+@media (max-width:960px){
+  .foot-in .k::after{content:none}
+  .foot-in::before{
+    content:""; position:absolute; top:var(--foot-pad);
+    left:calc(var(--pad) + var(--col2)); right:var(--pad);
+    height:var(--rule); background:var(--divider);
+  }
+  .foot-in .k{
+    justify-content:flex-start; padding-right:0;
+    /* rotate лишається окремою властивістю, незалежною від hover-руху.
+       Центр обертання .5em .5em: за годинниковою довкола нього рядок
+       лягає рівно в колонку завширшки з себе, від тієї самої верхньої
+       межі, на якій стоїть лінійка */
+    transform-origin:.5em .5em; rotate:90deg;
+    /* width:max-content — інакше коробка лишається на всю ширину верстки,
+       а після повороту ця ширина стає висотою: підпис підвала тягнув за
+       собою 358px, з них 113 звисали нижче за сам підвал і додавалися до
+       висоти сторінки порожнечею. Тепер коробка завширшки з напис */
+    width:max-content;
+  }
+}
+/* повітря між останнім блоком сторінки і темною плашкою */

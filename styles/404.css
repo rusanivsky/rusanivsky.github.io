@@ -1,0 +1,96 @@
+/* Сторінка 404: лише те, чого немає в /styles/base.css.
+
+   Вона єдина на сайті без шапки — тільки велика цифра, рядок і посилання
+   на головну, — тож замість хрому розділів тут власна кнопка «назад» і
+   власна розкладка: body на flex із min-height:100vh, щоб підвал сідав
+   на низ екрана навіть на порожній сторінці.
+
+   Спільне — токени, шрифт, теми, плита тла, підвал — у base.css, який
+   стоїть перед цим файлом.
+*/
+
+body{
+  margin:0; min-height:100vh; background:transparent; color:var(--ink);
+  font-family:var(--font); font-stretch:var(--text-stretch);
+  font-size:var(--fs-text); line-height:1.55;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+body > .tiny{width:min(100%, var(--maxw)); margin-inline:auto; padding:var(--pad) var(--pad) 0}
+.tiny{font-size:var(--fs-chrome); letter-spacing:var(--ls-tiny); text-transform:uppercase; font-weight:600; color:var(--mute)}
+main{display:flex; flex-direction:column; justify-content:center; flex:1; min-height:0; padding-block:clamp(16px,2.5vh,40px)}
+h1{
+  margin:0; font-family:var(--font); font-stretch:var(--display-stretch); font-weight:700; letter-spacing:-.04em; line-height:.88;
+  /* шостий щабель — той самий, що й ім'я на головній. Доти цифра
+     стояла на 320 і була сьомим кеглем сайту заради однієї сторінки */
+  font-size:var(--fs-name);
+}
+hr{height:2px; background:var(--divider); border:0; margin:clamp(20px,3vw,36px) 0}
+p{margin:0; max-width:34ch; text-wrap:pretty}
+a.back{
+  display:inline-flex; align-self:flex-start; width:max-content; max-width:100%; margin-left:0;
+  align-items:baseline; white-space:nowrap;
+  margin-top:clamp(22px,3.4vw,40px);
+  font-family:var(--font); font-stretch:var(--text-stretch); font-weight:600; font-size:var(--fs-title); letter-spacing:-.035em; line-height:1.02;
+  color:var(--ink); text-decoration:none; border:0;
+  transition:color 260ms var(--ease);
+}
+a.back::before{
+  content:"←"; display:inline-block; width:0; margin-right:0; opacity:0;
+  font-size:.34em; line-height:1; vertical-align:middle;
+  transform:translateX(-.4em);
+  transition:width 320ms var(--ease),margin-right 320ms var(--ease),opacity 220ms var(--ease),transform 320ms var(--ease);
+}
+@media (hover:hover){
+  a.back:hover{color:var(--accent)}
+  a.back:hover::before{width:1.2em; margin-right:.18em; opacity:1; transform:none}
+}
+/* ── підвал сайту ─────────────────────────────────────────── */
+/* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
+   такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
+   темною плашкою, і сенс у ній був лише в світлій темі: на папері вона
+   давала контраст 11,2:1 і читалася як подія, а на темному тлі — 1,41:1,
+   тобто ледь помітну пляму замість блоку.
+   Прийом працював наполовину, а сторінка з волосяних лінійок і
+   повітря обходиться без суцільної заливки */
+.site-foot{
+  color:var(--ink);
+  --uline:2px;
+  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
+     доводиться малювати не від нього, а від самої плашки — і треба знати,
+     на якій висоті в ній стоїть перший рядок */
+  --foot-pad:clamp(22px,3.85vh,52px);
+}
+/* контакти починаються з другої колонки — тим самим уступом, що ім'я з
+   текстом угорі й номери з назвами в переліку напрямків. Перша колонка
+   лишається наскрізним полем від шапки до підвалу */
+.foot-in .say{grid-column:1/-1; margin-left:var(--col2)}
+/* контактні рядки стоять під поясненням, а не над ним, і в тому ж
+     кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
+     дрібний рядок-мітка, просвіт, велике посилання */
+.site-foot .lines{
+  margin-top:clamp(12px,1.8vh,20px);
+  display:flex; align-items:baseline; flex-wrap:wrap;
+  column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
+}
+.site-foot .lines > a::after{
+  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
+  vertical-align:.9em; opacity:0; transform:translate(-.25em,.25em);
+  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+@media (hover:hover){
+  .site-foot .lines > a:hover{color:var(--accent)}
+  .site-foot .lines > a:hover::before{transform:scaleX(1)}
+  .site-foot .lines > a:hover::after{opacity:1; transform:none}
+}
+
+@media (max-width:560px){
+.foot-bar{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
+     на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
+     вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
+  .site-foot{--foot-pad:clamp(18px,5vw,24px)}
+  .foot-bar{padding-block:clamp(8px,1.8vw,18px) clamp(18px,4.5vw,24px)}
+  .foot-bar .cols{padding-left:0}
+}

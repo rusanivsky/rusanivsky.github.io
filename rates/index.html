@@ -21,7 +21,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rates & Terms — Kyrylo Rusanivsky">
 <meta name="twitter:description" content="Work terms, prices and payment for Kyrylo Rusanivsky — video editor, photographer and graphic designer in Kyiv. Rates, timelines, revisions and paperwork.">
-<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7"><link rel="icon" href="/favicon.ico?v=11" sizes="32x32"><link rel="icon" href="/favicon.svg?v=11" type="image/svg+xml"><link rel="icon" href="/favicon-dark.ico?v=11" sizes="32x32" media="(prefers-color-scheme: dark)"><link rel="icon" href="/favicon-dark.svg?v=11" type="image/svg+xml" media="(prefers-color-scheme: dark)"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=117">
+<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7"><link rel="icon" href="/favicon.ico?v=11" sizes="32x32"><link rel="icon" href="/favicon.svg?v=11" type="image/svg+xml"><link rel="icon" href="/favicon-dark.ico?v=11" sizes="32x32" media="(prefers-color-scheme: dark)"><link rel="icon" href="/favicon-dark.svg?v=11" type="image/svg+xml" media="(prefers-color-scheme: dark)"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles/base.css?v=1">
+<link rel="stylesheet" href="/styles/section.css?v=1">
+<link rel="stylesheet" href="/photo/photo.css?v=117">
 <link rel="stylesheet" href="/styles/section-header.css?v=23">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
@@ -79,21 +82,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 }
 .tsec > h2{scroll-margin-top:var(--rates-anchor-offset,clamp(56px,8vh,96px))}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-/* Contact повторює сітку .tbody над ним: перший трек тримає відступ
-   лінійки й коробку номера, тому назви платформ на третій лінії рівні
-   тексту секції Note, а не від'їжджають за шириною номера. */
-.cats.contact-list{padding-top:0;font-size:var(--fs-label);grid-template-columns:calc(var(--col2) + 3ch) repeat(11,minmax(0,1fr))}
-/* Контакти мають той самий просвіт, що й рядки напрямків на головній.
-   Явне правило тримає rates синхронним навіть під час оновлення кешу CSS. */
-.contact-list .cat{padding-block:var(--rule-gap)}
-.contact-list .cat .lab{font-stretch:var(--text-stretch)}
-.contact-list .cat .num{
-  /* Контакти мають нестандартний перший трек, який тримає їхні назви на
-     вертикалі тіла умов. Номер використовує те саме поле до лінійки, що й
-     головна сітка. */
-  grid-column:1; margin-left:var(--col2); min-width:3ch;
-  text-align:right
-}
 @media(max-width:640px){
   /* Уступу тут немає: на телефоні все тіло умов розпрямляється до лівого
      краю сторінки (.tbody{margin-left:0} нижче), і вступ мусить стояти на
@@ -102,7 +90,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
      photo.css другий раз, і .wrap{padding-inline} перекривав цей уступ.
      Другий лінк прибрано — прибрано й уступ. */
   .contact-head{display:block}
-  .contact-list .cat .num{margin-left:0;min-width:0;text-align:left}
 }
 
 /* ── умови роботи ─────────────────────────────────────────────
@@ -205,8 +192,8 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   }
   /* У секцій із тілом перша лінійка починається після нульового заголовка.
      Повернутий підпис треба опустити на той самий просвіт, щоб його верхній
-     край стояв на лінійці, як у CONTACT; сам CONTACT лишається на місці. */
-  .tsec:not([aria-labelledby="s-contact"]) > h2{top:var(--rule-gap)}
+     край стояв на лінійці. */
+  .tsec > h2{top:var(--rule-gap)}
   .steps{display:block}
   .steps .step{display:grid;grid-template-columns:3ch 1fr;
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
@@ -306,9 +293,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   display:block;left:calc(var(--col3) - .75rem)
 }
 
-/* Контакти починаються одразу під підписом розділу, а не після
-   додаткового верхнього поля .cats. */
-.tsec[aria-labelledby="s-contact"] + .contact-list{padding-top:0}
 /* вузько колонок-треків немає: рядок стає парою «підпис — значення», а
    тіло розділу відходить за першу колонку цілим блоком, тож лінійки
    всередині нього стоять від його ж краю — на спільній із підписом
@@ -380,7 +364,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   <a class="part" href="#s-risk" data-en="Risks" data-ua="Ризики">Risks</a>
   <a class="part" href="#s-no" data-en="Out of scope" data-ua="Не беруся">Out of scope</a>
   <a class="part" href="#s-note" data-en="Note" data-ua="Примітка">Note</a>
-  <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Contact</a>
 </nav></div></div>
 <main>
 <h1 class="wrap page-title" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</h1>
@@ -536,12 +519,24 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   </div>
 </section>
 
-<section class="wrap tsec" aria-labelledby="s-contact">
-  <h2 class="tiny" id="s-contact" data-en="Contact" data-ua="Контакти">Contact</h2>
-</section>
-<section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://m.me/rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Messenger</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">11</span><span class="lab">TikTok</span></a></section>
+
 </main>
-<footer class="site-foot"><div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
+<footer class="site-foot" aria-labelledby="ft">
+  <div class="wrap foot-in">
+    <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
+    <div class="say">
+      <p class="sub" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
+      <div class="lines">
+        <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
+        <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
+        <a href="https://t.me/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:210ms">Telegram</a>
+        <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener" data-rev style="--d:270ms">Instagram</a>
+        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:330ms">LinkedIn</a>
+        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:390ms">Facebook</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
       <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>
     </div>
     <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div></footer>
