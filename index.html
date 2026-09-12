@@ -1360,20 +1360,19 @@ figure{margin:0; position:relative; z-index:1}
       <figure>
         <div class="shot">
           <!-- Портрет — найбільший елемент першого екрана, тож він і задає LCP.
-               1280px потрібні тільки телефону з подвійною щільністю: широко
-               знімок стоїть у трьох колонках, тобто близько 310px, і навіть на
-               2x йому досить 640. sizes описує ці три випадки, і браузер сам
-               бере менший файл — 19КБ замість 49 на десктопі.
-               JPEG лишається один: це запасний шлях для браузерів без webp і
-               avif, і сьогодні ним не ходить майже ніхто -->
+               На телефоні знімок стоїть приблизно на 380px, а з подвійною
+               щільністю дисплея браузеру потрібен кандидат близько 760px.
+               Проміжні 768px не змушують його стрибати одразу на 1280.
+               JPEG лишається запасним шляхом для браузерів без webp і avif;
+               сьогодні ним не ходить майже ніхто -->
           <picture>
             <source type="image/avif"
-                    srcset="/photo-640.avif 640w, /photo.avif 1280w"
+                    srcset="/photo-640.avif 640w, /photo-768.avif 768w, /photo.avif 1280w"
                     sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
             <source type="image/webp"
-                    srcset="/photo-640.webp 640w, /photo.webp 1280w"
+                    srcset="/photo-640.webp 640w, /photo-768.webp 768w, /photo.webp 1280w"
                     sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
-            <img src="/photo.jpg" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
+            <img src="/photo.jpg" srcset="/photo-768.jpg 768w, /photo.jpg 1280w" sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
           </picture>
         </div>
       </figure>
