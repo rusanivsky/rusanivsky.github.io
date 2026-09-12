@@ -200,9 +200,14 @@ function addFooterMeta(html, route) {
 function addPrivacyFooterLink(html) {
   html = html.replace(/\s*<a class="tiny footer-privacy" href="\/privacy\/" data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   const link = '<a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>';
-  const footer = /(<div class="wrap foot-bar">\s*<div class="cols">)/;
+  const footerLeft = /(<div class="footer-left">\s*(?:<div class="mobile-meta-slot"[^>]*><\/div>|<div class="foot-meta"[^>]*>[\s\S]*?<\/div>))\s*<\/div>/;
+  if (footerLeft.test(html)) {
+    return html.replace(footerLeft, `$1\n      ${link}\n    </div>`);
+  }
+
+  const footer = /(<div class="wrap foot-bar">\s*)<div class="cols">([\s\S]*?)<\/div>\s*(<div class="(?:mobile-meta-slot|foot-meta)"[\s\S]*?<\/div>)(\s*<\/div>)/;
   if (!footer.test(html)) throw new Error('No footer bar found for privacy link');
-  return html.replace(footer, `$1\n      ${link}`);
+  return html.replace(footer, `$1<div class="footer-left">$3\n      ${link}\n    </div>\n    <div class="cols">$2</div>$4`);
 }
 
 function addKyivClockScript(html, route) {

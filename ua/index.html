@@ -1140,7 +1140,7 @@ figure{margin:0; position:relative; z-index:1}
   /* без відступу в другу колонку: цей рядок — не ще один пункт переліку
      контактів над ним, а рамка сторінки, як і службовий рядок угорі
      («Київ, UA», час) — обидва стоять від справжнього поля сторінки */
-  display:grid; grid-template-columns:1fr auto; gap:8px 24px;
+  display:grid; grid-template-columns:auto 1fr; gap:8px 24px;
 }
 /* остання лінійка сторінки йде на всю ширину верстки, від поля до поля:
    рядки вище вона не повторює — вона їх закриває. Не border-top: той
@@ -1149,7 +1149,10 @@ figure{margin:0; position:relative; z-index:1}
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
+.foot-bar > .footer-left{grid-column:1;grid-row:1;display:flex;align-items:baseline;gap:clamp(14px,3vw,48px);padding-left:8px;min-width:0}
+.foot-bar > .cols{grid-column:2;grid-row:1;justify-self:end;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:0;padding-right:8px}
+.foot-bar > .footer-left > .mobile-meta-slot{display:block}
+.foot-bar > .footer-left > .mobile-meta-slot > .cols{display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:0}
 .mobile-meta-slot{display:none}
 /* В англійській версії службовий рядок із містом і часом не займає
    місце у верхній шапці — він живе внизу сторінки разом із футером. */
@@ -1162,6 +1165,10 @@ figure{margin:0; position:relative; z-index:1}
    вищу вагу за .tiny і забирав приглушення — рядок світився повним
    чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
    --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
+.foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
+.foot-meta .tiny{white-space:nowrap}
+.foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
+.foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
 .foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
 .foot-bar .arch::after{
   content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
@@ -1390,11 +1397,12 @@ figure{margin:0; position:relative; z-index:1}
     </div>
   </div>
   <div class="wrap foot-bar">
-    <div class="cols">
+    <div class="footer-left"><div class="mobile-meta-slot" aria-label="Location and local time"></div>
       <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
+    </div>
+    <div class="cols">
 <span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span>
     </div>
-    <div class="mobile-meta-slot" aria-label="Location and local time"></div>
   </div>
 </footer>
 
