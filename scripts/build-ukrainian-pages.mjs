@@ -2,6 +2,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
+const googleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -104,6 +105,11 @@ function updateHead(html, route, title, description, ukrainian) {
   html = html.replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${title}">`);
   html = html.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${description}">`);
   return html;
+}
+
+function addGoogleTag(html) {
+  if (html.includes('googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6')) return html;
+  return html.replace('</head>', `${googleTag}\n</head>`);
 }
 
 function ukrainianiseContent(html) {
@@ -272,6 +278,7 @@ for (const [route, source, title, description] of pages) {
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
+  english = addGoogleTag(english);
   english = renameWorkTerms(english);
   english = normalizeBackLinks(english);
   english = addContactsLink(english, route);
