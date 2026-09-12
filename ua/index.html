@@ -500,6 +500,54 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     transform:translate3d(0,-6px,0) scale(.95,.98)
   }
 }
+/* Розділи в панелі стоять першими й тим самим стовпчиком рядків, що й
+   службові посилання під ними: та сама висота рядка, те саме поле. */
+.home-meta.header-menu-mode .header-menu-panel .parts{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;overflow:visible
+}
+.home-meta.header-menu-mode .header-menu-panel .part{
+  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;
+  line-height:1;white-space:normal
+}
+/* Відбивка між розділами й службовою групою — та сама волосяна лінійка,
+   якою на всьому сайті розділені рядки. Вона з'являється рівно тоді, коли
+   над групою справді стоять розділи, тобто тільки на головній. */
+.home-meta.header-menu-mode .header-menu-panel .parts + .switches{
+  margin-top:10px;padding-top:10px;border-top:var(--rule) solid var(--divider)
+}
+/* ── заклик замовити послугу ──────────────────────────────── */
+/* На телефоні розділи їдуть у бургер, а на їхньому місці в рядку шапки
+   лишається єдина дія сторінки. Охра тут за тим самим правилом, що й
+   усюди на сайті: вона означає «сюди можна натиснути». Лінійка під
+   написом стоїть завжди, а не тільки на ховері — це кнопка, а не рядок
+   переліку. Широко заклику немає: там у рядку стоять і розділи, і умови,
+   і контакти, і зайвий заклик лише сперечався б із ними.
+   Поле й рівне від'ємне зовнішнє поле — той самий прийом, яким винесено
+   44px ціль перемикачів: коробка росте, видимий рядок лишається 24px.
+   Висота при цьому мусить бути 24+20, а не 24: box-sizing тут border-box,
+   і 24px разом із полями лишали б написові 4px — лінійка під ним ставала
+   б перекресленням. */
+.order-cta{display:none}
+@media (max-width:760px){
+  .home-meta.header-menu-mode > .order-cta{
+    grid-column:1;grid-row:1;align-self:center;justify-self:start;
+    display:inline-flex;align-items:center;position:relative;
+    height:calc(var(--mobile-meta-row) + 20px);margin-left:8px;
+    padding-block:10px;margin-block:-10px;
+    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
+    font-weight:700;font-variation-settings:"wght" 700;line-height:1;
+    color:var(--pencil);white-space:nowrap;transform-origin:left center;
+    transition:transform 220ms var(--ease)
+  }
+  .home-meta.header-menu-mode > .order-cta::after{
+    content:"";position:absolute;left:0;right:0;bottom:10px;
+    height:var(--pen);background:var(--pencil)
+  }
+  @media (hover:hover){
+    .home-meta.header-menu-mode > .order-cta:hover{transform:scaleX(1.025)}
+  }
+}
 /* ── герой ─────────────────────────────────────────────────── */
 /* усе, що клієнт має побачити не гортаючи, живе в одному гріді:
    ім'я, одне речення по суті, три ремесла дрібним кеглем, кнопка й
@@ -1275,6 +1323,7 @@ figure{margin:0; position:relative; z-index:1}
     <a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a>
     <a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a>
   </nav>
+  <a class="order-cta" href="/ua/contacts/" data-en="Order a service" data-ua="Замовити послугу">Замовити послугу</a>
   <div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
@@ -1566,6 +1615,6 @@ figure{margin:0; position:relative; z-index:1}
   }
 }
 </script>
-<script src="/scripts/move-language-switcher.js?v=4"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script>
 </body>
 </html>

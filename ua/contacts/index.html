@@ -33,7 +33,7 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/photo/photo.css?v=115">
-<link rel="stylesheet" href="/styles/section-header.css?v=19">
+<link rel="stylesheet" href="/styles/section-header.css?v=20">
 <style>
 .contact-list{padding-top:clamp(48px,9vh,112px)}
 .contact-list .cat{padding-block:var(--rule-gap)}
@@ -73,7 +73,7 @@
 </div>
 
 <main>
-  <h1 class="sr" data-en="Contacts" data-ua="Контакти">Контакти</h1>
+  <h1 class="wrap page-title" data-en="Contacts" data-ua="Контакти">Контакти</h1>
   <section class="wrap cats contact-list" aria-label="Contact links">
     <a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a>
     <a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a>
@@ -94,7 +94,7 @@
     </div>
     <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div></footer>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();</script>
-<script src="/scripts/move-language-switcher.js?v=4"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script>
 <script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

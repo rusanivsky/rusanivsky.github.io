@@ -17,10 +17,13 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/photo/photo.css?v=115">
-<link rel="stylesheet" href="/styles/section-header.css?v=19">
+<link rel="stylesheet" href="/styles/section-header.css?v=20">
 <style>
 .privacy-copy{grid-column:3/9;max-width:66ch;padding-block:clamp(48px,10vh,128px) clamp(72px,14vh,180px)}
-.privacy-copy h1{font-family:var(--font);font-stretch:var(--display-stretch);font-size:var(--fs-title);font-weight:700;letter-spacing:-.035em;line-height:1.02;margin-bottom:clamp(28px,5vh,56px)}
+/* Заголовок — той самий набір, що й на решті зелених сторінок
+   (styles/section-header.css): просвіт під шапкою тут тримає власний
+   падінг статті, тому заголовку лишається лише відбивка під ним. */
+.privacy-copy .page-title{padding-block:0;margin-bottom:clamp(28px,5vh,56px)}
 .privacy-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
 .privacy-copy p{font-size:var(--fs-text);line-height:1.55;margin:0 0 16px;max-width:62ch}
 .privacy-copy a{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700;transition:color 240ms var(--ease)}
@@ -52,7 +55,7 @@
 
 <main class="wrap">
   <article class="privacy-copy">
-    <h1 data-en="Privacy" data-ua="Приватність">Privacy</h1>
+    <h1 class="page-title" data-en="Privacy" data-ua="Приватність">Privacy</h1>
     <p data-en="This short notice explains what happens when you visit rusanivsky.com. It was last updated on 12 September 2026." data-ua="Це коротке повідомлення пояснює, що відбувається, коли ви відвідуєте rusanivsky.com. Оновлено 12 вересня 2026 року.">This short notice explains what happens when you visit rusanivsky.com. It was last updated on 12 September 2026.</p>
 
     <h2 data-en="Analytics" data-ua="Аналітика">Analytics</h2>
@@ -73,7 +76,7 @@
     </div>
     <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div></footer>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();</script>
-<script src="/scripts/move-language-switcher.js?v=4"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script>
 <script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

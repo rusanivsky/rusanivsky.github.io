@@ -11,6 +11,11 @@
 
     var switchesSlot=document.createComment('header-switches');
     header.insertBefore(switchesSlot,switches);
+    // Головна ховає в бургер і розділи: у вузькій шапці замість них стоїть
+    // заклик замовити послугу. На сторінках розділів навігація лишається
+    // в самому рядку — там вона єдиний спосіб перейти між розділами.
+    var partsSlot=document.createComment('header-parts');
+    header.insertBefore(partsSlot,parts);
 
     var button=document.createElement('button');
     button.className='header-menu-toggle';
@@ -72,15 +77,22 @@
     function restore(){
       switchesSlot.parentNode.insertBefore(switches,switchesSlot.nextSibling);
     }
+    function restoreParts(){
+      partsSlot.parentNode.insertBefore(parts,partsSlot.nextSibling);
+    }
     function setCompact(value){
       if(value===compact) return;
       compact=value;
       closeMenu(false);
       if(compact){
+        // Порядок у панелі: спершу розділи, під ними — через лінійку —
+        // службова група, яка була тут і доти.
+        if(isHome) panel.appendChild(parts);
         panel.appendChild(switches);
         header.classList.add('header-menu-mode');
         button.hidden=false;
       }else{
+        if(isHome) restoreParts();
         restore();
         header.classList.remove('header-menu-mode');
         button.hidden=true;
