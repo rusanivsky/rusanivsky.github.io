@@ -12,9 +12,9 @@
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/video/short-form/">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e8ebe6">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1b">
-<link rel="icon" href="/favicon.ico?v=6" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=6" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
+<link rel="icon" href="/favicon.ico?v=7" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=7" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kyrylo Rusanivsky">
 <meta property="og:locale" content="uk_UA">
@@ -27,12 +27,14 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <script src="/scripts/theme.js?v=5"></script>
-<link rel="stylesheet" href="/video/video.css?v=113">
-<link rel="stylesheet" href="/styles/section-header.css?v=19">
-<script src="/scripts/reveal.js?v=7"></script>
-<script src="/scripts/plate-parallax.js?v=9"></script>
+<link rel="stylesheet" href="/video/video.css?v=118">
+<link rel="stylesheet" href="/styles/section-header.css?v=23">
+<script src="/scripts/reveal.js?v=8"></script>
+<script src="/scripts/plate-parallax.js?v=9" defer></script>
 <script src="/scripts/horizontal-edge-fade.js?v=1" defer></script>
-<script src="/scripts/language-switcher.js"></script>
+<script src="/scripts/language-switcher.js" defer></script>
+
+<script src="/scripts/google-analytics.js" defer></script>
 </head>
 <body>
 <div class="topbar">
@@ -186,8 +188,10 @@
       </div>
     </div>
   </div>
-  <div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div>
-    <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div></div>
+  <div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
+      <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
+    </div>
+    <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div>
 </footer>
 <script>
 (function(){
@@ -210,6 +214,6 @@
   document.querySelectorAll('.local-fac').forEach(function(wrap){var video=wrap.querySelector('video'),play=wrap.querySelector('.local-play');video.setAttribute('controlslist','nodownload');play.addEventListener('click',function(){if(video.paused)video.play();else video.pause();});video.addEventListener('contextmenu',function(e){e.preventDefault();});video.addEventListener('play',function(){video.controls=true;wrap.classList.add('is-playing');});video.addEventListener('pause',function(){wrap.classList.remove('is-playing');});video.addEventListener('ended',function(){wrap.classList.remove('is-playing');});});
 })();
 </script>
-<script src="/scripts/move-language-switcher.js?v=4"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

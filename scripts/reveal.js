@@ -34,7 +34,17 @@
       element.classList.add('is-in');
     }
 
-    var stagger = 72;
+    /* Крок між сусідніми блоками і стеля, далі якої черга не тягнеться.
+       Доти крок був 72мс, а queueUntil накопичувався без обмеження: на
+       довгій сторінці (в умовах співпраці понад сто рядків) швидка
+       прокрутка складала чергу на секунди, і рядки з'являлися помітно
+       пізніше, ніж потрапляли на екран. Тепер крок 26мс, у межах одного
+       заходу він рахується щонайбільше для шести блоків, а сама черга
+       не буває далі ніж на 240мс уперед: скільки б не було рядків, увесь
+       екран проявляється за чверть секунди. */
+    var stagger = 26;
+    var maxSteps = 6;
+    var maxQueueAhead = 240;
     var queueUntil = 0;
 
     function byReadingOrder(a, b) {
@@ -53,13 +63,14 @@
       if (!batch.length) return;
 
       var now = performance.now();
-      var start = Math.max(now, queueUntil);
+      var start = Math.min(Math.max(now, queueUntil), now + maxQueueAhead);
       var ordered = batch.slice().sort(byReadingOrder);
 
       ordered.forEach(function (element, index) {
-        window.setTimeout(function () { show(element); }, start - now + index * stagger);
+        var step = Math.min(index, maxSteps) * stagger;
+        window.setTimeout(function () { show(element); }, start - now + step);
       });
-      queueUntil = start + ordered.length * stagger;
+      queueUntil = start + Math.min(ordered.length, maxSteps + 1) * stagger;
     }
 
     if (reduceMotion || !('IntersectionObserver' in window)) {

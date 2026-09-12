@@ -21,8 +21,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Умови співпраці — Кирило Русанівський">
 <meta name="twitter:description" content="Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.">
-<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7"><link rel="icon" href="/favicon.ico?v=6" sizes="32x32"><link rel="icon" href="/favicon.svg?v=6" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=112">
-<link rel="stylesheet" href="/styles/section-header.css?v=19">
+<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7"><link rel="icon" href="/favicon.ico?v=7" sizes="32x32"><link rel="icon" href="/favicon.svg?v=7" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=117">
+<link rel="stylesheet" href="/styles/section-header.css?v=23">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(28px,5vh,64px) 0}
@@ -95,7 +95,13 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   text-align:right
 }
 @media(max-width:640px){
-  .contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}
+  /* Уступу тут немає: на телефоні все тіло умов розпрямляється до лівого
+     краю сторінки (.tbody{margin-left:0} нижче), і вступ мусить стояти на
+     тій самій вертикалі, що й текст під ним. Доти правило зсувало його на
+     --col2, але не діяло: після інлайнових стилів сторінка вантажила
+     photo.css другий раз, і .wrap{padding-inline} перекривав цей уступ.
+     Другий лінк прибрано — прибрано й уступ. */
+  .contact-head{display:block}
   .contact-list .cat .num{margin-left:0;min-width:0;text-align:left}
 }
 
@@ -308,6 +314,10 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
    всередині нього стоять від його ж краю — на спільній із підписом
    вертикалі */
 @media (max-width:640px){
+  /* Просвіт між секціями на телефоні — у півтора раза менший за широкий:
+     на vh він тут виходив як на десктопі (46px на екрані 844), хоч сам
+     рядок і кегль удвічі дрібніші, і секції розсипалися. */
+  .tsec{padding-top:calc(clamp(30px,5.5vh,68px) / 1.5)}
   /* Перший рядок цін іде одразу після вступу: великий вертикальний
      просвіт між ними тут не додає нічого до композиції. */
   .contact-head + .tsec{padding-top:0}
@@ -348,10 +358,11 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
 </style>
-<link rel="stylesheet" href="/photo/photo.css?v=112">
-<script src="/scripts/reveal.js?v=7"></script>
-<script src="/scripts/plate-parallax.js?v=9"></script>
-<script src="/scripts/language-switcher.js"></script>
+<script src="/scripts/reveal.js?v=8"></script>
+<script src="/scripts/plate-parallax.js?v=9" defer></script>
+<script src="/scripts/language-switcher.js" defer></script>
+
+<script src="/scripts/google-analytics.js" defer></script>
 </head>
 <body><div class="topbar"><header class="wrap meta"><a class="back" href="/ua/"><span class="back-arrow">←</span> <span class="back-label" data-en="Home" data-ua="На головну">На головну</span></a><nav class="parts" aria-label="Sections"><a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a><a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a><a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a></nav><div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" aria-current="page" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
@@ -372,7 +383,8 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   <a class="part" href="#s-contact" data-en="Contact" data-ua="Контакти">Контакти</a>
 </nav></div></div>
 <main>
-<section class="wrap contact-head"><h1 class="sr" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</h1><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
+<h1 class="wrap page-title" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</h1>
+<section class="wrap contact-head"><p class="intro" data-en="I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account." data-ua="Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.">Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.</p></section>
 
 <section class="wrap tsec" aria-labelledby="s-price">
   <h2 class="tiny" id="s-price" data-en="Pricing" data-ua="Ціни">Ціни</h2>
@@ -529,10 +541,12 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 </section>
 <section class="wrap cats contact-list" aria-label="Contact links"><a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a><a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a><a class="cat" href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span class="num">03</span><span class="lab">Telegram</span></a><a class="cat" href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener"><span class="num">04</span><span class="lab">Instagram</span></a><a class="cat" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener"><span class="num">05</span><span class="lab">Behance</span></a><a class="cat" href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener"><span class="num">06</span><span class="lab">LinkedIn</span></a><a class="cat" href="https://www.upwork.com/freelancers/~01538086fd314c4cfa?mp_source=share" target="_blank" rel="noopener"><span class="num">07</span><span class="lab">Upwork</span></a><a class="cat" href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener"><span class="num">08</span><span class="lab">Facebook</span></a><a class="cat" href="https://m.me/rusanivsky" target="_blank" rel="noopener"><span class="num">09</span><span class="lab">Messenger</span></a><a class="cat" href="https://www.threads.net/@rusanivsky" target="_blank" rel="noopener"><span class="num">10</span><span class="lab">Threads</span></a><a class="cat" href="https://www.tiktok.com/@rusanivsky" target="_blank" rel="noopener"><span class="num">11</span><span class="lab">TikTok</span></a></section>
 </main>
-<footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div>
-    <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div></div></footer>
+<footer class="site-foot"><div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
+      <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
+    </div>
+    <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector('.topbar');if(!b)return;function set(){r.style.setProperty('--rates-anchor-offset',b.getBoundingClientRect().height+'px')}set();addEventListener('resize',set,{passive:true});if(window.ResizeObserver){var o=new ResizeObserver(set);o.observe(b)}})();</script>
 <script>(function(){var r=document.documentElement,n=document.querySelector('.rates-nav');if(!n)return;var links=[].slice.call(n.querySelectorAll('a[href^="#"]')),sections=links.map(function(a){var h=document.getElementById(a.getAttribute('href').slice(1));return h&&h.parentElement}).filter(Boolean),currentId='',edgeFrame=0;function edges(){edgeFrame=0;var max=Math.max(0,n.scrollWidth-n.clientWidth),fade=Math.min(44,Math.max(24,n.clientWidth*.07)),left=Math.min(1,Math.max(0,n.scrollLeft/fade)),right=Math.min(1,Math.max(0,(max-n.scrollLeft)/fade));n.style.setProperty('--rates-fade-left',String(1-left));n.style.setProperty('--rates-fade-right',String(1-right));}function edgeUpdate(){if(!edgeFrame)edgeFrame=requestAnimationFrame(edges)}function reveal(a){if(!a||n.scrollWidth<=n.clientWidth)return;var left=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2;n.scrollTo({left:Math.max(0,Math.min(left,n.scrollWidth-n.clientWidth)),behavior:'smooth'});}function select(id){if(id===currentId)return;currentId=id;links.forEach(function(a){var on=a.getAttribute('href')==='#'+id;a.toggleAttribute('aria-current',on);if(on){a.setAttribute('aria-current','location');reveal(a);}});}function scrollToSection(section,behavior){var offset=parseFloat(getComputedStyle(r).getPropertyValue('--rates-anchor-offset'))||0;var top=section.getBoundingClientRect().top+scrollY-offset;scrollTo({top:Math.max(0,top),behavior:behavior||'auto'});}function sectionForId(id){return sections.find(function(s){var h=s.querySelector(':scope > h2');return h&&h.id===id});}function update(){var offset=parseFloat(getComputedStyle(r).getPropertyValue('--rates-anchor-offset'))||0,active=sections[0];sections.forEach(function(s){if(s.getBoundingClientRect().top<=offset+8)active=s});var h=active&&active.querySelector(':scope > h2');if(h)select(h.id);}function frame(){requestAnimationFrame(update)}function initial(){var id=location.hash.slice(1),section=sectionForId(id);if(section){select(id);scrollToSection(section,'auto');}else update();edgeUpdate();}function go(a){var id=a.getAttribute('href').slice(1),section=sectionForId(id);if(!section)return;history.pushState(null,'','#'+id);select(id);scrollToSection(section,matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth');}addEventListener('scroll',frame,{passive:true});addEventListener('resize',function(){frame();edgeUpdate()},{passive:true});addEventListener('hashchange',initial);addEventListener('popstate',initial);n.addEventListener('scroll',edgeUpdate,{passive:true});n.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(a){e.preventDefault();go(a)}});new MutationObserver(edgeUpdate).observe(n,{childList:true,subtree:true});initial();})();</script>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();</script>
-<script src="/scripts/move-language-switcher.js?v=4"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 </body></html>

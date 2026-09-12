@@ -27,13 +27,13 @@
 <meta name="twitter:title" content="Контакти — Кирило Русанівський">
 <meta name="twitter:description" content="Контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7">
-<link rel="icon" href="/favicon.ico?v=6" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=6" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
+<link rel="icon" href="/favicon.ico?v=7" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=7" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/photo/photo.css?v=112">
-<link rel="stylesheet" href="/styles/section-header.css?v=19">
+<link rel="stylesheet" href="/photo/photo.css?v=117">
+<link rel="stylesheet" href="/styles/section-header.css?v=23">
 <style>
 .contact-list{padding-top:clamp(48px,9vh,112px)}
 .contact-list .cat{padding-block:var(--rule-gap)}
@@ -48,9 +48,11 @@
   .contact-list{padding-top:clamp(48px,9vh,112px)}
 }
 </style>
-<script src="/scripts/reveal.js?v=7"></script>
-<script src="/scripts/plate-parallax.js?v=9"></script>
-<script src="/scripts/language-switcher.js"></script>
+<script src="/scripts/reveal.js?v=8"></script>
+<script src="/scripts/plate-parallax.js?v=9" defer></script>
+<script src="/scripts/language-switcher.js" defer></script>
+
+<script src="/scripts/google-analytics.js" defer></script>
 </head>
 <body class="contacts-page">
 <div class="topbar">
@@ -71,7 +73,7 @@
 </div>
 
 <main>
-  <h1 class="sr" data-en="Contacts" data-ua="Контакти">Контакти</h1>
+  <h1 class="wrap page-title" data-en="Contacts" data-ua="Контакти">Контакти</h1>
   <section class="wrap cats contact-list" aria-label="Contact links">
     <a class="cat" href="mailto:info@rusanivsky.com"><span class="num">01</span><span class="lab">Email</span></a>
     <a class="cat" href="https://wa.me/380938676581" target="_blank" rel="noopener"><span class="num">02</span><span class="lab">WhatsApp</span></a>
@@ -87,10 +89,12 @@
   </section>
 </main>
 
-<footer class="site-foot"><div class="wrap foot-bar"><div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div>
-    <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div></div></footer>
+<footer class="site-foot"><div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
+      <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
+    </div>
+    <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span></div></div></footer>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L('ua',false)})();</script>
-<script src="/scripts/move-language-switcher.js?v=4"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script>
 <script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

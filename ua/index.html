@@ -27,9 +27,9 @@
 <meta name="twitter:description" content="Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7">
 <meta name="theme-color" content="#42563f">
-<link rel="icon" href="/favicon.ico?v=6" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=6" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
+<link rel="icon" href="/favicon.ico?v=7" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=7" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -405,7 +405,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (min-width:641px){
   .home-meta .parts{padding-left:8px}
   .home-meta .switches{justify-self:end}
-  .mobile-meta-slot .cols{padding-left:8px;padding-right:8px}
   :root[lang="en"] .home-meta,
   :root[lang="uk"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
   :root[lang="en"] .home-meta .parts,
@@ -499,6 +498,51 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   }
   .home-meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
     transform:translate3d(0,-6px,0) scale(.95,.98)
+  }
+}
+/* Розділи в панелі стоять першими й тим самим стовпчиком рядків, що й
+   службові посилання під ними: та сама висота рядка, те саме поле. */
+.home-meta.header-menu-mode .header-menu-panel .parts{
+  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
+  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;overflow:visible
+}
+.home-meta.header-menu-mode .header-menu-panel .part{
+  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;
+  line-height:1;white-space:normal
+}
+/* Відбивка між розділами й службовою групою — та сама волосяна лінійка,
+   якою на всьому сайті розділені рядки. Вона з'являється рівно тоді, коли
+   над групою справді стоять розділи, тобто тільки на головній. */
+.home-meta.header-menu-mode .header-menu-panel .parts + .switches{
+  margin-top:10px;padding-top:10px;border-top:var(--rule) solid var(--divider)
+}
+/* ── заклик замовити послугу ──────────────────────────────── */
+/* На телефоні розділи їдуть у бургер, а на їхньому місці в рядку шапки
+   лишається єдина дія сторінки. Охра тут за тим самим правилом, що й
+   усюди на сайті: вона означає «сюди можна натиснути». Лінійки під
+   написом немає — сам колір уже виділяє його з рядка, а риска робила з
+   заклику перекреслений напис на 24px-рядку. Широко заклику немає: там у
+   рядку стоять і розділи, і умови, і контакти, і зайвий заклик лише
+   сперечався б із ними.
+   Поле й рівне від'ємне зовнішнє поле — той самий прийом, яким винесено
+   44px ціль перемикачів: коробка росте, видимий рядок лишається 24px.
+   Висота при цьому мусить бути 24+20, а не 24: box-sizing тут border-box,
+   і 24px разом із полями лишали б написові 4px — лінійка під ним ставала
+   б перекресленням. */
+.order-cta{display:none}
+@media (max-width:760px){
+  .home-meta.header-menu-mode > .order-cta{
+    grid-column:1;grid-row:1;align-self:center;justify-self:start;
+    display:inline-flex;align-items:center;position:relative;
+    height:calc(var(--mobile-meta-row) + 20px);margin-left:8px;
+    padding-block:10px;margin-block:-10px;
+    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
+    font-weight:700;font-variation-settings:"wght" 700;line-height:1;
+    color:var(--pencil);white-space:nowrap;transform-origin:left center;
+    transition:transform 220ms var(--ease)
+  }
+  @media (hover:hover){
+    .home-meta.header-menu-mode > .order-cta:hover{transform:scaleX(1.025)}
   }
 }
 /* ── герой ─────────────────────────────────────────────────── */
@@ -990,6 +1034,10 @@ figure{margin:0; position:relative; z-index:1}
 @media (hover:hover){.logos a:hover .lg{color:var(--ink)}}
 .logos a:active .lg{color:var(--ink)}
 .logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
+/* Логотип малюється маскою, а не картинкою: колір дає currentColor, з
+   файлу читається лише альфа. Тому три растрові марки лежать у WebP —
+   у ньому альфа стискається без утрат, і 77 КБ трьох PNG стали 43 КБ
+   при тій самій роздільності (scripts/make-client-masks.mjs). */
 .lg{
   display:block; position:relative; background:currentColor;
   color:color-mix(in srgb,var(--ink) 70%,transparent);
@@ -1000,12 +1048,12 @@ figure{margin:0; position:relative; z-index:1}
   -webkit-mask-image:var(--src); mask-image:var(--src);
 }
 .lg.kmbs{--src:url(/img/clients/kmbs.svg); height:var(--lg); width:calc(var(--lg) * 3.09)}
-.lg.naukma{--src:url(/img/clients/naukma.png); height:calc(var(--lg) * 1.38); width:calc(var(--lg) * 1.46)}
-.lg.defenders{--src:url(/img/clients/defenders-ukma.png); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
+.lg.naukma{--src:url(/img/clients/naukma.webp); height:calc(var(--lg) * 1.38); width:calc(var(--lg) * 1.46)}
+.lg.defenders{--src:url(/img/clients/defenders-ukma.webp); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
 .lg.kooperativ{--src:url(/img/clients/kooperativ.svg); height:calc(var(--lg) * .91); width:calc(var(--lg) * 4.93)}
 .lg.yd{--src:url(/img/clients/yd.svg); height:calc(var(--lg) * 1.2642); width:calc(var(--lg) * 1.9012)}
 .lg.tsyronian{--src:url(/img/clients/tsyronian.svg); height:calc(var(--lg) * 1.1); width:calc(var(--lg) * 3.8)}
-.lg.shylero{--src:url(/img/clients/shylero.png); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
+.lg.shylero{--src:url(/img/clients/shylero.webp); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
 /* на телефоні марки лишаються рядом, а не сіткою два на два: --lg тут не
    1,7vw (це давало б 13px — марки читалися як дрібний шум під заголовком),
    а 5,6vw, і міжмарковий просвіт стискається їм під розмір. На типових
@@ -1149,12 +1197,9 @@ figure{margin:0; position:relative; z-index:1}
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
-.mobile-meta-slot{display:none}
-/* В англійській версії службовий рядок із містом і часом не займає
-   місце у верхній шапці — він живе внизу сторінки разом із футером. */
-:root[lang="en"] .mobile-meta-slot,
-:root[lang="uk"] .mobile-meta-slot{display:block}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:8px;min-width:0}
+.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:8px;padding-right:0}
+.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:8px;padding-right:8px;color:var(--mute)}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається.
@@ -1162,6 +1207,10 @@ figure{margin:0; position:relative; z-index:1}
    вищу вагу за .tiny і забирав приглушення — рядок світився повним
    чорнилом і без наведення, хоч поряд стоять такі самі дрібні написи в
    --mute. Тепер він мовчить, доки на нього не навели, як і всі інші */
+.foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
+.foot-meta .tiny{white-space:nowrap}
+.foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
+.foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
 .foot-bar .arch{position:relative; color:var(--mute); transition:color 240ms var(--ease)}
 .foot-bar .arch::after{
   content:"↗"; position:absolute; left:100%; bottom:0; margin-left:.45em; line-height:1;
@@ -1173,7 +1222,16 @@ figure{margin:0; position:relative; z-index:1}
   .foot-bar .arch:hover::after{opacity:1; transform:none}
 }
 .foot-bar .arch:active::after{opacity:1; transform:none}
-@media (max-width:560px){.foot-bar{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
+  /* Приватність стоїть першим рядком, місто з годинником — другим. У
+     розмітці порядок обернений (його складає білд), тож міняє їх місцями
+     сам стовпчик: .footer-left тут flex-column, і order працює. */
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
+  .foot-bar > .footer-left > .foot-meta{order:2}
+}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){
@@ -1188,16 +1246,14 @@ figure{margin:0; position:relative; z-index:1}
   .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
   .site-foot{--foot-pad:clamp(18px,5vw,24px)}
-  .foot-bar{grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
-  .foot-bar > .cols{padding-left:8px}
-  .mobile-meta-slot .cols{padding-left:0;padding-right:8px}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
+  .foot-bar > .cols{padding:0}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar > .cols,.mobile-meta-slot{margin-left:0}
-  .mobile-meta-slot{display:block;grid-column:1/-1;padding-top:clamp(10px,2.5vw,16px);min-width:0}
-  .mobile-meta-slot .cols{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:8px;padding-right:0;min-width:0;text-align:left;white-space:nowrap}
-  .mobile-meta-slot .cols .tiny{white-space:normal;min-width:0}
+  .foot-bar > .cols{margin-left:0}
+  .site-foot .foot-meta{width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
+  .site-foot .foot-meta .tiny{white-space:nowrap;min-width:0}
 }
 /* підпис підвалу лягає на тій самій ширині, що й підписи розділів: вони
    стоять в одній колонці й мають повертатися разом */
@@ -1228,7 +1284,7 @@ figure{margin:0; position:relative; z-index:1}
 /* ── reveal ───────────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; translate:0 16px}
-.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 440ms var(--ease), translate 480ms var(--ease)}
+.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 260ms var(--ease), translate 300ms var(--ease)}
 .rev [data-rev].is-in{transition-delay:var(--d,0ms)}
 /* Перший екран і блоки нижче використовують один рух; перехід між
    сторінками не додає другого вертикального зсуву. */
@@ -1239,7 +1295,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 @media (max-width:640px){
   .rev [data-rev]{translate:0 10px}
-  .rev [data-rev].is-in{transition-duration:360ms,400ms}
+  .rev [data-rev].is-in{transition-duration:200ms,240ms}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
 /* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
@@ -1258,22 +1314,30 @@ figure{margin:0; position:relative; z-index:1}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
-<script src="/scripts/reveal.js?v=7"></script>
-<script src="/scripts/plate-parallax.js?v=9"></script>
-<script src="/scripts/language-switcher.js"></script>
+<!-- reveal.js лишається без defer навмисно: він ставить .rev на <html>, а з
+     ним і opacity:0 на все, що з'являється. З defer сторінка спершу
+     намалювалась би видимою й аж потім стрибнула в невидиме. Виносити
+     class="rev" у саму розмітку теж не варіант: зараз, якщо скрипт не
+     завантажився, сторінка просто лишається видимою — з класом у HTML вона
+     лишилась би порожньою. Решта трьох до першого малювання не потрібні:
+     параллакс лише пише --plate-shift і --plate-brightness (у CSS вони мають
+     фолбеки рівно на значення спокою), перемикач мови міняє підпис кнопки
+     вже на DOMContentLoaded, аналітика тягне googletagmanager. -->
+<script src="/scripts/reveal.js?v=8"></script>
+<script src="/scripts/plate-parallax.js?v=9" defer></script>
+<script src="/scripts/language-switcher.js" defer></script>
+
+<script src="/scripts/google-analytics.js" defer></script>
 </head>
 <body>
 
 <header class="wrap meta home-meta">
-  <div class="cols">
-    <span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span>
-    <span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span id="clock">—:—</span> <span id="tz">EET</span></span>
-  </div>
   <nav class="parts" aria-label="Sections">
     <a class="part" href="/ua/video/" data-en="Video" data-ua="Відео">Відео</a>
     <a class="part" href="/ua/photo/" data-en="Photo" data-ua="Фото">Фото</a>
     <a class="part" href="/ua/design/" data-en="Design" data-ua="Дизайн">Дизайн</a>
   </nav>
+  <a class="order-cta" href="/ua/contacts/" data-en="Order a service" data-ua="Замовити послугу">Замовити послугу</a>
   <div class="switches">
     <a class="tiny contact-link" href="/ua/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Умови співпраці</a>
     <a class="tiny contact-link mobile-contact-link" href="/ua/contacts/" data-en="Contacts" data-ua="Контакти">Контакти</a>
@@ -1289,23 +1353,26 @@ figure{margin:0; position:relative; z-index:1}
       <span data-en="Rusanivsky" data-ua="Русанівський">Русанівський</span>
     </h1>
     <div class="figwrap">
-      <figure data-rev style="--d:80ms">
+      <!-- Портрет поза reveal: він і є LCP сторінки, а показ першого екрана
+           reveal.js робить аж на DOMContentLoaded плюс два кадри. Знімок
+           приходив за 31 мс і чекав невидимим до 836 — з ним LCP дорівнює
+           FCP (240 мс). Анімація нижчих блоків лишається. -->
+      <figure>
         <div class="shot">
           <!-- Портрет — найбільший елемент першого екрана, тож він і задає LCP.
-               1280px потрібні тільки телефону з подвійною щільністю: широко
-               знімок стоїть у трьох колонках, тобто близько 310px, і навіть на
-               2x йому досить 640. sizes описує ці три випадки, і браузер сам
-               бере менший файл — 19КБ замість 49 на десктопі.
-               JPEG лишається один: це запасний шлях для браузерів без webp і
-               avif, і сьогодні ним не ходить майже ніхто -->
+               На телефоні знімок стоїть приблизно на 380px, а з подвійною
+               щільністю дисплея браузеру потрібен кандидат близько 760px.
+               Проміжні 768px не змушують його стрибати одразу на 1280.
+               JPEG лишається запасним шляхом для браузерів без webp і avif;
+               сьогодні ним не ходить майже ніхто -->
           <picture>
             <source type="image/avif"
-                    srcset="/photo-640.avif 640w, /photo.avif 1280w"
+                    srcset="/photo-640.avif 640w, /photo-768.avif 768w, /photo.avif 1280w"
                     sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
             <source type="image/webp"
-                    srcset="/photo-640.webp 640w, /photo.webp 1280w"
+                    srcset="/photo-640.webp 640w, /photo-768.webp 768w, /photo.webp 1280w"
                     sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
-            <img src="/photo.jpg" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
+            <img src="/photo.jpg" srcset="/photo-768.jpg 768w, /photo.jpg 1280w" sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
           </picture>
         </div>
       </figure>
@@ -1387,10 +1454,13 @@ figure{margin:0; position:relative; z-index:1}
     </div>
   </div>
   <div class="wrap foot-bar">
+    <div class="footer-left">
+      <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Київ</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Україна</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Місцевий час</span> <span id="clock" class="kyiv-clock">—:—</span> <span id="tz" class="kyiv-tz">EET</span></span></div>
+      <a class="tiny footer-privacy" href="/ua/privacy/" data-en="Privacy" data-ua="Приватність">Приватність</a>
+    </div>
     <div class="cols">
 <span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Кирило Русанівський</span>
     </div>
-    <div class="mobile-meta-slot" aria-label="Location and local time"></div>
   </div>
 </footer>
 
@@ -1468,7 +1538,7 @@ figure{margin:0; position:relative; z-index:1}
     return null;
   })();
   function tick(){
-    var c = document.getElementById('clock'), z = document.getElementById('tz');
+    var c = document.querySelector('.kyiv-clock'), z = document.querySelector('.kyiv-tz');
     if(!c) return;
     try{
       var now = new Date();
@@ -1562,7 +1632,6 @@ figure{margin:0; position:relative; z-index:1}
   }
 }
 </script>
-<script src="/scripts/move-language-switcher.js?v=4"></script>
-<script src="/scripts/move-home-meta.js?v=3"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script>
 </body>
 </html>

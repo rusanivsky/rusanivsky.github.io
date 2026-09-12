@@ -2,10 +2,16 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
+const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
+// defer: скрипт тягне googletagmanager, і без нього дві довгі задачі
+// (109 і 82 мс) стояли в розборі документа. Нічого до першого малювання
+// він не робить.
+const googleTag = '<script src="/scripts/google-analytics.js" defer></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
   ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
+  ['/privacy/', 'privacy/index.html', 'Приватність — Кирило Русанівський', 'Коротка інформація про приватність і використання Google Analytics на сайті Кирила Русанівського.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/reels/', 'video/reels/index.html', 'Reels — Кирило Русанівський', 'Монтаж Reels у Києві: вертикальні відео для Instagram, TikTok і YouTube Shorts.'],
   ['/video/interviewandvlogs/', 'video/interviewandvlogs/index.html', 'Інтерв’ю і влоги — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю та влогів у Києві: розмовні відео, YouTube-контент і соціальні мережі.'],
@@ -106,6 +112,12 @@ function updateHead(html, route, title, description, ukrainian) {
   return html;
 }
 
+function addGoogleTag(html) {
+  html = html.split(legacyGoogleTag).join('');
+  if (html.includes('src="/scripts/google-analytics.js"')) return html;
+  return html.replace('</head>', `${googleTag}\n</head>`);
+}
+
 function ukrainianiseContent(html) {
   // The source already stores approved Ukrainian copy in data-ua. Make it the
   // literal server-delivered text rather than relying on JavaScript to swap it.
@@ -140,7 +152,7 @@ function addContactsLink(html, route) {
   // Усі три іконки лежать у розмітці, потрібну показує CSS за
   // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
   // чекає на DOMContentLoaded і шапка не стрибає на кожному завантаженні.
-  // У бургері цей рядок стає четвертим після мови
+  // Privacy живе тільки у футері; у бургері лишаються умови, контакти й мова.
   const themeIcons =
     '<span class="ti" data-mode="auto"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
       + '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'
@@ -157,6 +169,7 @@ function addContactsLink(html, route) {
   // same desktop header on every page, including pages whose older source had
   // the link as the fourth item in .parts.
   html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  html = html.replace(/\s*<a class="tiny privacy-link" href="\/privacy\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   html = html.replace(/\s*<div class="tgl" id="(?:lang|theme)"[^>]*>[\s\S]*?<\/div>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
@@ -164,8 +177,8 @@ function addContactsLink(html, route) {
     `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
-  if (!html.includes('<script src="/scripts/language-switcher.js"></script>')) {
-    html = html.replace('</head>', '<script src="/scripts/language-switcher.js"></script>\n</head>');
+  if (!html.includes('<script src="/scripts/language-switcher.js" defer></script>')) {
+    html = html.replace('</head>', '<script src="/scripts/language-switcher.js" defer></script>\n</head>');
   }
   return html;
 }
@@ -185,17 +198,30 @@ function addFooterMeta(html, route) {
   return html.replace(footer, `$1\n    ${footerMeta}$2`);
 }
 
+function addPrivacyFooterLink(html) {
+  html = html.replace(/\s*<a class="tiny footer-privacy" href="\/privacy\/" data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  const link = '<a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>';
+  const footerLeft = /(<div class="footer-left">\s*(?:<div class="mobile-meta-slot"[^>]*><\/div>|<div class="foot-meta"[^>]*>[\s\S]*?<\/div>))\s*<\/div>/;
+  if (footerLeft.test(html)) {
+    return html.replace(footerLeft, `$1\n      ${link}\n    </div>`);
+  }
+
+  const footer = /(<div class="wrap foot-bar">\s*)<div class="cols">([\s\S]*?)<\/div>\s*(<div class="(?:mobile-meta-slot|foot-meta)"[\s\S]*?<\/div>)(\s*<\/div>)/;
+  if (!footer.test(html)) throw new Error('No footer bar found for privacy link');
+  return html.replace(footer, `$1<div class="footer-left">$3\n      ${link}\n    </div>\n    <div class="cols">$2</div>$4`);
+}
+
 function addKyivClockScript(html, route) {
   if (route === '/' || html.includes('/scripts/kyiv-clock.js')) return html;
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 19;
+const sectionHeaderStyleVersion = 23;
 
 const sectionStyleVersions = {
-  '/photo/photo.css': 112,
-  '/video/video.css': 113,
-  '/design/design.css': 104,
+  '/photo/photo.css': 117,
+  '/video/video.css': 118,
+  '/design/design.css': 109,
 };
 
 function updateSectionStyleVersions(html) {
@@ -272,10 +298,12 @@ for (const [route, source, title, description] of pages) {
   const englishTitle = english.match(/<title>([^<]*)<\/title>/)?.[1] ?? title;
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
+  english = addGoogleTag(english);
   english = renameWorkTerms(english);
   english = normalizeBackLinks(english);
   english = addContactsLink(english, route);
   english = addFooterMeta(english, route);
+  english = addPrivacyFooterLink(english);
   english = addKyivClockScript(english, route);
   english = updateSectionStyleVersions(english);
   english = addSectionHeaderStyle(english, route);
@@ -330,5 +358,5 @@ for (const [from, to] of moved) {
 }
 
 const sitemapUrls = pages.flatMap(([route]) => [route, uaRoute(route)]);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((route) => `  <url><loc>${absolute(route)}</loc><lastmod>2026-09-09</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((route) => `  <url><loc>${absolute(route)}</loc><lastmod>2026-09-12</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);

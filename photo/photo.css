@@ -682,7 +682,7 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; translate:0 16px}
 .rev [data-rev].is-in{opacity:1; translate:none;
-  transition:opacity 440ms var(--ease), translate 480ms var(--ease);
+  transition:opacity 260ms var(--ease), translate 300ms var(--ease);
   transition-delay:var(--d,0ms)}
 /* Перший екран і блоки нижче використовують один рух; перехід між
    сторінками не додає другого вертикального зсуву. */
@@ -737,7 +737,7 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 @media (max-width:640px){
   .rev [data-rev]{translate:0 10px}
-  .rev [data-rev].is-in{transition-duration:360ms,400ms}
+  .rev [data-rev].is-in{transition-duration:200ms,240ms}
 }
 
 /* ── перемикач категорій у шапці ─────────────────────────── */
@@ -1039,9 +1039,15 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar .cols{display:flex; gap:clamp(14px,3vw,48px); flex-wrap:wrap; padding-left:8px}
-.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(14px,3vw,48px); padding-left:8px; padding-right:8px; color:var(--mute)}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:8px;min-width:0}
+.foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:8px;padding-right:0}
+.foot-bar > .footer-left > .mobile-meta-slot{display:block}
+.foot-bar > .footer-left > .mobile-meta-slot > .cols{padding-left:0}
+.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:8px; padding-right:8px; color:var(--mute)}
+.foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
 .foot-meta .tiny{white-space:nowrap}
+.foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
+.foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
 /* рядок стоїть рівно під лінійкою: його правий край — там само, де її
    кінець. Стрілка винесена за цю межу, у поле сторінки, тож вона нічого
    не вкорочує і рядок на ховері не смикається */
@@ -1061,8 +1067,15 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
-  .foot-bar{grid-template-columns:1fr}
-  .foot-meta{grid-column:1/-1; flex-direction:row; flex-wrap:nowrap; align-items:baseline; justify-content:flex-start; gap:clamp(12px,1.8vw,26px); padding:clamp(10px,2.5vw,16px) 0 0 8px; min-width:0; text-align:left; white-space:nowrap}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0;width:100%}
+  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0;width:100%}
+  /* Приватність стоїть першим рядком, місто з годинником — другим. У
+     розмітці порядок обернений (його складає білд), тож міняє їх місцями
+     сам стовпчик: .footer-left тут flex-column, і order працює. */
+  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
+  .foot-bar > .footer-left > .foot-meta{order:2}
+  .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
@@ -1075,11 +1088,12 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
   .cats{padding-block:var(--cats-pad-top) var(--cats-pad-bottom-narrow)}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow); margin-top:clamp(20px,5vw,32px)}
-  .foot-bar{padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
   /* Нижній службовий рядок належить до рамки сторінки, тому починається
      від звичайного поля верстки, а не від другої колонки контенту. */
   .foot-bar::before{left:var(--pad)}
-  .foot-bar .cols{margin-left:0;padding-left:8px}
+  .foot-bar .cols{margin-left:0;padding:0}
+  .foot-meta{gap:var(--footer-row-gap);padding:0}
 }
 /* підпис підвалу лягає на тій самій ширині, на якій колонка сходить до
    20px. Блок стоїть наприкінці файлу, після базових правил підвала:
