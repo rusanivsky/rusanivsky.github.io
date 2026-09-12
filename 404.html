@@ -332,6 +332,10 @@ a.back::before{
   display:flex; align-items:baseline; flex-wrap:wrap;
   column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
 }
+/* Ціль дотику контактів: 22px при нормі 24px. Поле росте, від’ємне
+   зовнішнє поле повертає потік. 404 має власні стилі й section-header.css
+   не вантажить, тому правило дублюється тут. */
+.site-foot .lines > a{padding-block:3px;margin-block:-3px}
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
   font-family:var(--font); font-stretch:var(--text-stretch); font-size:var(--fs-link); font-weight:600; text-transform:none;

@@ -64,3 +64,16 @@ body.footer-at-bottom{
   min-height:100vh;min-height:100dvh;display:flex;flex-direction:column
 }
 body.footer-at-bottom .site-foot{margin-top:auto}
+
+/* Цілі дотику вузлів навігації. WCAG 2.2 AA (2.5.8) просить 24×24px;
+   вимір на 390px давав .part 14px і контакти підвалу 22px. Стрілка
+   «назад» цього не потребує — у неї власне 44px поле в ::after.
+
+   Поле й рівне від’ємне зовнішнє поле — той самий прийом, яким у
+   photo.css винесено 44px ціль перемикачів: коробка посилання росте,
+   у потоці не змінюється нічого. Перевірено: висота шапки, позиція
+   лінійки й висота сторінки лишаються ті самі до пікселя. */
+@media (max-width:760px){
+  .topbar .parts > .part{padding-block:6px;margin-block:-6px}
+}
+.site-foot .lines > a{padding-block:3px;margin-block:-3px}

@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const root = process.cwd();
 const pages = [
-  ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна та портретна фотографія.'],
+  ['/', 'index.html', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф', 'Кирило Русанівський — графічний дизайнер, відеомонтажер і фотограф із Києва. Дизайн книжок і обкладинок, верстка, монтаж відео, репортажна фотографія.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — графічного дизайнера, відеомонтажера і фотографа з Києва.'],
   ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
@@ -52,6 +52,42 @@ function alternates(route) {
   ].join('\n');
 }
 
+// Структурні дані досі їхали в /ua/ англійською копією — разом із
+// полем url, яке вказувало на англійську адресу. Для Google це сторінка,
+// що називає себе чужим URL. Перебираємо об’єкт як JSON, а не регексом:
+// поля лежать на двох рівнях, і будь-яка зміна розмітки вище зламала б
+// пошук за текстом.
+const ukrainianProfile = {
+  jobTitle: ['Графічний дизайнер', 'Відеомонтажер', 'Фотограф'],
+  knowsAbout: [
+    'Графічний дизайн', 'Дизайн книжок', 'Дизайн обкладинок', 'Редакційний дизайн',
+    'Верстка', 'Поліграфія', 'Відеомонтаж', 'Зйомка інтерв’ю',
+    'Виробництво музичних кліпів', 'Документальне кіно', 'Монтаж влогів',
+    'Івент-фотографія', 'Концертна фотографія', 'Театральна фотографія',
+    'Бекстейдж-фотографія', 'Портретна фотографія',
+  ],
+};
+
+function localiseStructuredData(html, route, description) {
+  return html.replace(
+    /(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/,
+    (whole, open, body, close) => {
+      let data;
+      try { data = JSON.parse(body); } catch { return whole; }
+      const canonical = absolute(uaRoute(route));
+      if (data.url) data.url = canonical;
+      const person = data.mainEntity;
+      if (person) {
+        if (person.url) person.url = canonical;
+        person.description = description;
+        if (person.jobTitle) person.jobTitle = ukrainianProfile.jobTitle;
+        if (person.knowsAbout) person.knowsAbout = ukrainianProfile.knowsAbout;
+      }
+      return open + '\n' + JSON.stringify(data, null, 2) + '\n' + close;
+    },
+  );
+}
+
 function updateHead(html, route, title, description, ukrainian) {
   const canonical = absolute(ukrainian ? uaRoute(route) : route);
   html = html.replace(/\n<link rel="alternate" hreflang="(?:en|uk|x-default)" href="[^"]+">/g, '');
@@ -60,6 +96,7 @@ function updateHead(html, route, title, description, ukrainian) {
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`);
   html = html.replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${canonical}">\n${alternates(route)}`);
   html = html.replace(/<meta property="og:locale" content="[^"]*">/, `<meta property="og:locale" content="${ukrainian ? 'uk_UA' : 'en_US'}">`);
+  html = html.replace(/<meta property="og:locale:alternate" content="[^"]*">/, `<meta property="og:locale:alternate" content="${ukrainian ? 'en_US' : 'uk_UA'}">`);
   html = html.replace(/<meta property="og:url" content="[^"]+">/, `<meta property="og:url" content="${canonical}">`);
   html = html.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${title}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${description}">`);
@@ -152,12 +189,12 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 16;
+const sectionHeaderStyleVersion = 17;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 112,
   '/video/video.css': 113,
-  '/design/design.css': 103,
+  '/design/design.css': 104,
 };
 
 function updateSectionStyleVersions(html) {
@@ -248,6 +285,7 @@ for (const [route, source, title, description] of pages) {
   let ukrainian = ukrainianiseContent(english);
   ukrainian = localiseLinks(ukrainian);
   ukrainian = updateHead(ukrainian, route, title, description, true);
+  ukrainian = localiseStructuredData(ukrainian, route, description);
   const output = path.join(root, uaRoute(route), 'index.html');
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, ukrainian);
@@ -277,7 +315,6 @@ for (const [from, to] of moved) {
 <meta charset="utf-8">
 <title>${title}</title>
 <link rel="canonical" href="${absolute(newRoute)}">
-<meta name="robots" content="noindex">
 <meta http-equiv="refresh" content="0; url=${newRoute}">
 </head>
 <body>

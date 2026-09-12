@@ -884,6 +884,10 @@ html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
    що й основний текст. Кегль — щабель text зі спільної шкали. */
 .pt{font-family:var(--font);font-size:var(--fs-text);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-wrap:pretty}
+/* Ціль дотику назви проєкту: сама по собі вона 17px при нормі WCAG 2.2
+   AA у 24px. Посилання рядкове, тож вертикальне поле збільшує область
+   натискання, а на висоту рядка не впливає взагалі. */
+.pt > a{padding-block:4px}
 .pd{margin:0;font-size:var(--fs-text);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 
 /* ── підвал сайту ─────────────────────────────────────────── */
