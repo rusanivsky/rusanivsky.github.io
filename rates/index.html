@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Rates & Terms — Kyrylo Rusanivsky">
 <meta name="twitter:description" content="Work terms, prices and payment for Kyrylo Rusanivsky — video editor, photographer and graphic designer in Kyiv. Rates, timelines, revisions and paperwork.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7"><link rel="icon" href="/favicon.ico?v=7" sizes="32x32"><link rel="icon" href="/favicon.svg?v=7" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=7"><link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/photo/photo.css?v=115">
-<link rel="stylesheet" href="/styles/section-header.css?v=21">
+<link rel="stylesheet" href="/styles/section-header.css?v=22">
 <style>
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(28px,5vh,64px) 0}
@@ -95,7 +95,13 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   text-align:right
 }
 @media(max-width:640px){
-  .contact-head{display:block;padding-left:calc(var(--pad) + var(--col2))}
+  /* Уступу тут немає: на телефоні все тіло умов розпрямляється до лівого
+     краю сторінки (.tbody{margin-left:0} нижче), і вступ мусить стояти на
+     тій самій вертикалі, що й текст під ним. Доти правило зсувало його на
+     --col2, але не діяло: після інлайнових стилів сторінка вантажила
+     photo.css другий раз, і .wrap{padding-inline} перекривав цей уступ.
+     Другий лінк прибрано — прибрано й уступ. */
+  .contact-head{display:block}
   .contact-list .cat .num{margin-left:0;min-width:0;text-align:left}
 }
 
@@ -348,7 +354,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .tsec[aria-labelledby="s-time"] .steps{margin-left:var(--col2)}
 }
 </style>
-<link rel="stylesheet" href="/photo/photo.css?v=115">
 <script src="/scripts/reveal.js?v=7"></script>
 <script src="/scripts/plate-parallax.js?v=9"></script>
 <script src="/scripts/language-switcher.js"></script>
