@@ -218,6 +218,10 @@ function addKyivClockScript(html, route) {
 
 const sectionHeaderStyleVersion = 23;
 
+// Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
+// файли розділів тільки доповнюють його і нічого з нього не повторюють.
+const baseStyleVersion = 1;
+
 const sectionStyleVersions = {
   '/photo/photo.css': 117,
   '/video/video.css': 118,
@@ -229,6 +233,17 @@ function updateSectionStyleVersions(html) {
     html = html.replace(new RegExp(`${stylesheet.replaceAll('/', '\\/')}\\?v=\\d+`, 'g'), `${stylesheet}?v=${version}`);
   }
   return html;
+}
+
+// Спільний base.css стоїть перед стилем розділу — інакше розділ не зміг би
+// нічого в ньому перекрити. Перезапис ідемпотентний: старе посилання
+// знімається й ставиться заново з поточною версією.
+function addBaseStyle(html, route) {
+  if (route === '/') return html;
+  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/base\.css(?:\?[^\"]*)?">/g, '');
+  const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
+  if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
+  return html.replace(sectionStyle, `<link rel="stylesheet" href="/styles/base.css?v=${baseStyleVersion}">\n$&`);
 }
 
 function addSectionHeaderStyle(html, route) {
@@ -306,6 +321,7 @@ for (const [route, source, title, description] of pages) {
   english = addPrivacyFooterLink(english);
   english = addKyivClockScript(english, route);
   english = updateSectionStyleVersions(english);
+  english = addBaseStyle(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
   english = applyThemePolicy(english, route);
