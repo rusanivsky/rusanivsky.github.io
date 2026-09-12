@@ -1034,6 +1034,10 @@ figure{margin:0; position:relative; z-index:1}
 @media (hover:hover){.logos a:hover .lg{color:var(--ink)}}
 .logos a:active .lg{color:var(--ink)}
 .logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
+/* Логотип малюється маскою, а не картинкою: колір дає currentColor, з
+   файлу читається лише альфа. Тому три растрові марки лежать у WebP —
+   у ньому альфа стискається без утрат, і 77 КБ трьох PNG стали 43 КБ
+   при тій самій роздільності (scripts/make-client-masks.mjs). */
 .lg{
   display:block; position:relative; background:currentColor;
   color:color-mix(in srgb,var(--ink) 70%,transparent);
@@ -1044,12 +1048,12 @@ figure{margin:0; position:relative; z-index:1}
   -webkit-mask-image:var(--src); mask-image:var(--src);
 }
 .lg.kmbs{--src:url(/img/clients/kmbs.svg); height:var(--lg); width:calc(var(--lg) * 3.09)}
-.lg.naukma{--src:url(/img/clients/naukma.png); height:calc(var(--lg) * 1.38); width:calc(var(--lg) * 1.46)}
-.lg.defenders{--src:url(/img/clients/defenders-ukma.png); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
+.lg.naukma{--src:url(/img/clients/naukma.webp); height:calc(var(--lg) * 1.38); width:calc(var(--lg) * 1.46)}
+.lg.defenders{--src:url(/img/clients/defenders-ukma.webp); height:calc(var(--lg) * 1.64); width:calc(var(--lg) * 4.79)}
 .lg.kooperativ{--src:url(/img/clients/kooperativ.svg); height:calc(var(--lg) * .91); width:calc(var(--lg) * 4.93)}
 .lg.yd{--src:url(/img/clients/yd.svg); height:calc(var(--lg) * 1.2642); width:calc(var(--lg) * 1.9012)}
 .lg.tsyronian{--src:url(/img/clients/tsyronian.svg); height:calc(var(--lg) * 1.1); width:calc(var(--lg) * 3.8)}
-.lg.shylero{--src:url(/img/clients/shylero.png); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
+.lg.shylero{--src:url(/img/clients/shylero.webp); height:calc(var(--lg) * 1.29); width:calc(var(--lg) * 4.98)}
 /* на телефоні марки лишаються рядом, а не сіткою два на два: --lg тут не
    1,7vw (це давало б 13px — марки читалися як дрібний шум під заголовком),
    а 5,6vw, і міжмарковий просвіт стискається їм під розмір. На типових
@@ -1280,7 +1284,7 @@ figure{margin:0; position:relative; z-index:1}
 /* ── reveal ───────────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
 .rev [data-rev]{opacity:0; translate:0 16px}
-.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 440ms var(--ease), translate 480ms var(--ease)}
+.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 260ms var(--ease), translate 300ms var(--ease)}
 .rev [data-rev].is-in{transition-delay:var(--d,0ms)}
 /* Перший екран і блоки нижче використовують один рух; перехід між
    сторінками не додає другого вертикального зсуву. */
@@ -1291,7 +1295,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 @media (max-width:640px){
   .rev [data-rev]{translate:0 10px}
-  .rev [data-rev].is-in{transition-duration:360ms,400ms}
+  .rev [data-rev].is-in{transition-duration:200ms,240ms}
 }
 /* ── плавний перехід між сторінками ──────────────────────── */
 /* Перехід між сторінками — підміна кадру, а не рух: браузер тримає
@@ -1319,7 +1323,7 @@ figure{margin:0; position:relative; z-index:1}
      параллакс лише пише --plate-shift і --plate-brightness (у CSS вони мають
      фолбеки рівно на значення спокою), перемикач мови міняє підпис кнопки
      вже на DOMContentLoaded, аналітика тягне googletagmanager. -->
-<script src="/scripts/reveal.js?v=7"></script>
+<script src="/scripts/reveal.js?v=8"></script>
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
 <script src="/scripts/language-switcher.js" defer></script>
 

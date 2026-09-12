@@ -219,9 +219,9 @@ function addKyivClockScript(html, route) {
 const sectionHeaderStyleVersion = 23;
 
 const sectionStyleVersions = {
-  '/photo/photo.css': 116,
-  '/video/video.css': 117,
-  '/design/design.css': 108,
+  '/photo/photo.css': 117,
+  '/video/video.css': 118,
+  '/design/design.css': 109,
 };
 
 function updateSectionStyleVersions(html) {
