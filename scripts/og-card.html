@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og-card</title>
+<!-- Джерело картки для соцмереж. Сама по собі сторінка нікуди не
+     віддається: її рендерить scripts/make-og-image.mjs і кладе результат
+     у /og-image.jpg. Правити треба тут, а не в готовому JPEG. -->
+<style>
+@font-face{
+  font-family:"Fixel";
+  src:url("/fixel-latin.woff2") format("woff2");
+  font-weight:100 900; font-stretch:75% 100%;
+  font-style:normal; font-display:block;
+  unicode-range:U+0000-00FF,U+0100-017F,U+2010-2027,U+2190-2199,U+20AC;
+}
+@font-face{
+  font-family:"Fixel";
+  src:url("/fixel-cyrillic.woff2") format("woff2");
+  font-weight:100 900; font-stretch:75% 100%;
+  font-style:normal; font-display:block;
+  unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* Ті самі змінні, що й у зеленої теми головної сторінки. Не «схожі
+   кольори», а буквально скопійовані значення: картка і сайт мають
+   збігатися, коли вони стоять поруч у стрічці. */
+:root{
+  --ink:#eaf1e7;
+  --pencil:#e6bb7c;
+  --plate-base:linear-gradient(154deg,#4f5f49 0%,#4b5b47 8.3%,#445542 16.7%,#3b4d3d 25%,#344738 33.3%,#2f4234 41.7%,#2b3e31 50%,#283a2e 58.3%,#24352a 66.7%,#1f2f25 75%,#1a2a21 83.3%,#15241d 91.7%,#13211a 100%);
+  --grain:.18;
+  --font:"Fixel",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{
+  position:relative;
+  font-family:var(--font);
+  background-color:#2b3e2d;
+  /* Один градієнтний шар, як і на сайті: другий зверху вбиває дизер у
+     WebKit і плита розлягається сходинками. Плями лежать окремою
+     растровою плиткою — вони не градієнт. */
+  background-image:url("/img/mottle.png"),var(--plate-base);
+  background-repeat:repeat,no-repeat;
+  background-size:1280px 1280px,auto;
+  background-position:center,center;
+  /* Плями йдуть overlay, а не лягають зверху: плитка сіра й непрозора,
+     і без режиму змішування вона просто накриває градієнт сірим. */
+  background-blend-mode:overlay,normal;
+}
+/* Зерно — та сама плитка 160px, що й на сайті, тим самим overlay.
+   soft-light тут не використовувати: WebKit і Chromium рахують його
+   по-різному. */
+body::after{
+  content:""; position:absolute; inset:0;
+  background-image:url("/img/grain.png");
+  background-size:160px 160px;
+  opacity:var(--grain); mix-blend-mode:overlay;
+  pointer-events:none;
+}
+.card{
+  position:relative; z-index:1;
+  width:100%; height:100%;
+  display:grid; grid-template-columns:1fr 430px;
+  align-items:center; column-gap:60px;
+  padding:72px;
+}
+.left{display:flex; flex-direction:column; height:486px}
+/* Ім'я — чисто біле. --ink (#eaf1e7) має зеленуватий підмішок, і в
+   стрічці Facebook, де картку ще й тиснуть у ширину, він читався
+   продовженням тла, а не написом на ньому. */
+.name{
+  color:#fff;
+  font-stretch:100%;
+  font-size:92px; font-weight:700;
+  letter-spacing:-.045em; line-height:1.04;
+  white-space:nowrap;
+}
+.rule{
+  height:1px; margin:34px 0 30px;
+  background:color-mix(in srgb,#eaf1e7 34%,transparent);
+}
+/* Напрямки — охра. Той самий --pencil, яким сайт позначає головне;
+   на картці він робить те саме, що й у переліку «Чим займаюсь». */
+.jobs{
+  color:var(--pencil);
+  font-size:38px; font-weight:600;
+  letter-spacing:-.01em; line-height:1.42;
+  white-space:nowrap;
+}
+.site{
+  margin-top:auto;
+  color:color-mix(in srgb,#eaf1e7 80%,transparent);
+  font-size:30px; font-weight:600; letter-spacing:.005em;
+}
+.shot{
+  width:430px; height:486px;
+  overflow:hidden;
+  background:#1f2f25;
+}
+.shot img{width:100%; height:100%; object-fit:cover; display:block}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="left">
+      <div class="name">Kyrylo<br>Rusanivsky</div>
+      <div class="rule"></div>
+      <div class="jobs">Video editing<br>Photography<br>Design</div>
+      <div class="site">rusanivsky.com</div>
+    </div>
+    <div class="shot"><img src="/photo.jpg" alt=""></div>
+  </div>
+</body>
+</html>
