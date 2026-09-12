@@ -97,3 +97,28 @@ body.footer-at-bottom .site-foot{margin-top:auto}
 @media (max-width:760px){
   :root[data-theme="green"] section.wrap.cats:first-of-type{padding-top:31px}
 }
+
+/* Лінійка під шапкою там, де шапка НЕ фіксована.
+
+   У photo.css лінійка згасає за прокруткою (veil-out на 0–84px): угорі
+   межу тримає вона, нижче — матова заслінка .topbar::before, і двох їх
+   не буває водночас. Умова там описана через відсутність другого ряду
+   в шапці, і коментар поруч прямо каже: «чи взагалі не фіксована,
+   лінійка стоїть завжди». Але сам відбір цього не перевіряє.
+
+   А на Photo, Video, Design (body.no-plate-darkening) і на мобільних
+   Контактах (body.contacts-page) шапка стоїть у потоці, і заслінка в
+   них вимкнена через display:none. Лінійка згасала — а замінити її не
+   було чим: межа просто зникала при першому ж скролі.
+
+   Вага відбору мусить перекрити 0,4,1 у photo.css, звідси :not(:has())
+   в обох частинах. Контакти — лише під мобільним: на десктопі їхня
+   шапка знову sticky, заслінка працює, і згасання там правильне. */
+body.no-plate-darkening:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
+  animation:none; opacity:1; display:block;
+}
+@media (max-width:760px){
+  body.contacts-page:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
+    animation:none; opacity:1; display:block;
+  }
+}

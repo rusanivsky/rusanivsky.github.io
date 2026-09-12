@@ -6,9 +6,9 @@
 <title>404 — Kyrylo Rusanivsky</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#42563f">
-<link rel="icon" href="/favicon.ico?v=5" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=5" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5">
+<link rel="icon" href="/favicon.ico?v=6" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=6" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -136,10 +136,12 @@
 :root[data-theme="light"]{color-scheme:light}
 :root[data-theme="green"]{
   color-scheme:dark;
-  /* та сама охра, світліша й тепліша — на плиті вона тримає від 5:1
-     у найсвітлішому її куті до 9:1 у найтемнішому.
+  /* та сама охра, світліша й тепліша. Доти тут стояло #e6bb7c, і в
+     найсвітлішому куті плити воно давало 3,84:1 — нижче за поріг, хоч
+     коментар обіцяв 5:1. Піднято на пів тону: тепер 4,53:1 угорі,
+     7,56:1 посередині, 11:1 унизу, тобто поріг тримається на всій плиті.
      Не яскравіше: це підкреслення, а не заклик */
-  --pencil:#e6bb7c;
+  --pencil:#f0cd96;
   --bg:#2b3e2d; --ink:#eaf1e7;
   /* верх плити: до нього примикає скляна шапка й обвід браузера */
   --plate-top:#42563f;

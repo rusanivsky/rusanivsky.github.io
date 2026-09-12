@@ -190,7 +190,7 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 18;
+const sectionHeaderStyleVersion = 19;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 112,

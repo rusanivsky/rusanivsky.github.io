@@ -15,7 +15,7 @@
  * векторна й растрова іконки розійдуться, і розійдуться тихо.
  * Шлях до Chrome: змінна CHROME, типове значення — macOS.
  */
-import { deflateSync } from 'node:zlib';
+import { deflateSync, inflateSync } from 'node:zlib';
 import { writeFileSync, readFileSync, existsSync, unlinkSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -116,6 +116,52 @@ ${monogram}
 writeFileSync(path.join(root, 'favicon.svg'), svg);
 console.log(`favicon.svg: ${(Buffer.byteLength(svg) / 1024).toFixed(1)} КБ`);
 
+/* Найдальший піксель PNG: розпаковуємо IDAT і знімаємо фільтри рядків.
+   Кількість байтів на піксель беремо з IHDR, а не припускаємо: Chromium
+   пише повністю непрозорий кадр як RGB (тип 2), а не RGBA, і перевірка,
+   написана під чотири байти, читала б чужі байти й мовчки брехала. */
+function cornerPixel(buf) {
+  let off = 8, width = 0, height = 0, depth = 8, colour = 6, idat = [];
+  while (off < buf.length) {
+    const len = buf.readUInt32BE(off);
+    const type = buf.toString('latin1', off + 4, off + 8);
+    const data = buf.subarray(off + 8, off + 8 + len);
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0); height = data.readUInt32BE(4);
+      depth = data[8]; colour = data[9];
+    } else if (type === 'IDAT') idat.push(data);
+    else if (type === 'IEND') break;
+    off += 12 + len;
+  }
+  const channels = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[colour];
+  if (depth !== 8 || !channels) throw new Error(`PNG ${depth} біт, тип ${colour} — розбір не підтримує`);
+  const bpp = channels, stride = width * bpp;
+  const raw = inflateSync(Buffer.concat(idat));
+  const out = Buffer.alloc(stride * height);
+  for (let y = 0; y < height; y++) {
+    const filter = raw[y * (stride + 1)];
+    const line = raw.subarray(y * (stride + 1) + 1, y * (stride + 1) + 1 + stride);
+    for (let x = 0; x < stride; x++) {
+      const a = x >= bpp ? out[y * stride + x - bpp] : 0;
+      const b = y > 0 ? out[(y - 1) * stride + x] : 0;
+      const c = (x >= bpp && y > 0) ? out[(y - 1) * stride + x - bpp] : 0;
+      let v = line[x];
+      if (filter === 1) v += a;
+      else if (filter === 2) v += b;
+      else if (filter === 3) v += (a + b) >> 1;
+      else if (filter === 4) {
+        const pa = Math.abs(b - c), pb = Math.abs(a - c), pc = Math.abs(a + b - 2 * c);
+        v += (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c);
+      }
+      out[y * stride + x] = v & 0xff;
+    }
+  }
+  const i = (height - 1) * stride + (width - 1) * bpp;
+  if (channels === 1) return { r: out[i], g: out[i], b: out[i], a: 255 };
+  if (channels === 2) return { r: out[i], g: out[i], b: out[i], a: out[i + 1] };
+  return { r: out[i], g: out[i + 1], b: out[i + 2], a: channels === 4 ? out[i + 3] : 255 };
+}
+
 /* ── Растри з того самого SVG ─────────────────────────────────── */
 const sizes = [16, 32, 48, 180];
 const shots = new Map();
@@ -140,13 +186,17 @@ for (const size of sizes) {
     `--screenshot=${shot}`, `file://${page}`,
   ]);
   const shotData = readFileSync(shot);
-  /* Перевіряємо розмір знімка, а не віримо йому. SVG без width/height
-     малюється у типових 300×150, і тоді знімок виходить обрізаним —
-     мовчки, бо Chrome при цьому не лається. Краще впасти тут. */
-  const gotW = shotData.readUInt32BE(16), gotH = shotData.readUInt32BE(20);
-  if (gotW !== size || gotH !== size) {
-    throw new Error(`Знімок ${size}px вийшов ${gotW}×${gotH}. `
-      + `Цей Chrome не дає --screenshot потрібного розміру — візьміть інший бінарник.`);
+  /* Розміру кадру мало: він завжди виходить той, що замовили, а от
+     вміст у ньому може стояти обрізаним — саме так і сталося, коли SVG
+     малювався у типових 300×150 замість заданих. Дивимось у найдальший
+     від початку піксель: плита має покривати весь кадр, тож він мусить
+     бути непрозорим. Порожній кут означає, що іконка не заповнила кадр. */
+  const corner = cornerPixel(shotData);
+  const empty = corner.a < 250 || (corner.r > 240 && corner.g > 240 && corner.b > 240);
+  if (empty) {
+    throw new Error(`Знімок ${size}px порожній у правому нижньому куті `
+      + `(rgba ${corner.r},${corner.g},${corner.b},${corner.a}) — там має бути темний низ `
+      + `плити. Іконка не заповнила кадр: цей Chrome малює SVG не того розміру.`);
   }
   shots.set(size, shotData);
   unlinkSync(page); unlinkSync(shot);
