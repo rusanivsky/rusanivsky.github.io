@@ -33,30 +33,43 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1200px;height:630px;overflow:hidden}
-body{
-  position:relative;
-  font-family:var(--font);
+body{position:relative; font-family:var(--font); background:#2b3e2d}
+
+/* ── плита, знята на початку сторінки ─────────────────────────
+   Доти картка брала градієнт на свої 1200×630 і виходила темнішою
+   за сайт удвічі: на сайті плита має inset:-60vh 0, тобто вона 220%
+   висоти вікна, і гість бачить лише середню смугу — найсвітліший і
+   найтемніший кінці лишаються за кадром. Плюс уся плита йде крізь
+   brightness(1.15).
+
+   Тут те саме число в число: коробка 220% висоти картки, зсунута на
+   -60% угору, і той самий фільтр. Виходить рівно те, що видно на
+   rusanivsky.com до першої прокрутки — саме там keyframe plate-scroll
+   починається (from{brightness(1.15)}) і там же стоїть --plate-shift:0. */
+.plate,.grain{
+  position:absolute; left:0; right:0; top:-60%; bottom:-60%;
+  /* та сама яскравість, що й у стані спокою на сайті: змінна
+     --plate-brightness має дефолт 1.15 і падає до .95 аж на 900px
+     прокрутки, куди картка ніколи не доходить */
+  filter:brightness(1.15);
+  pointer-events:none;
+}
+.plate{
   background-color:#2b3e2d;
-  /* Один градієнтний шар, як і на сайті: другий зверху вбиває дизер у
-     WebKit і плита розлягається сходинками. Плями лежать окремою
-     растровою плиткою — вони не градієнт. */
   background-image:url("/img/mottle.png"),var(--plate-base);
   background-repeat:repeat,no-repeat;
   background-size:1280px 1280px,auto;
-  background-position:center,center;
   /* Плями йдуть overlay, а не лягають зверху: плитка сіра й непрозора,
      і без режиму змішування вона просто накриває градієнт сірим. */
   background-blend-mode:overlay,normal;
 }
-/* Зерно — та сама плитка 160px, що й на сайті, тим самим overlay.
+/* Зерно окремим шаром зі своїм змішуванням — як body::after на сайті.
    soft-light тут не використовувати: WebKit і Chromium рахують його
    по-різному. */
-body::after{
-  content:""; position:absolute; inset:0;
+.grain{
   background-image:url("/img/grain.png");
   background-size:160px 160px;
   opacity:var(--grain); mix-blend-mode:overlay;
-  pointer-events:none;
 }
 .card{
   position:relative; z-index:1;
@@ -102,6 +115,8 @@ body::after{
 </style>
 </head>
 <body>
+  <div class="plate"></div>
+  <div class="grain"></div>
   <div class="card">
     <div class="left">
       <div class="name">Kyrylo<br>Rusanivsky</div>
