@@ -221,6 +221,7 @@ const sectionHeaderStyleVersion = 23;
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
 const baseStyleVersion = 1;
+const sectionStyleVersion = 1;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 117,
@@ -235,15 +236,20 @@ function updateSectionStyleVersions(html) {
   return html;
 }
 
-// Спільний base.css стоїть перед стилем розділу — інакше розділ не зміг би
-// нічого в ньому перекрити. Перезапис ідемпотентний: старе посилання
-// знімається й ставиться заново з поточною версією.
-function addBaseStyle(html, route) {
+// Порядок аркушів фіксований і має значення:
+//   base.css     спільне для всього сайту
+//   section.css  хром сторінок розділів (головна його не вантажить)
+//   photo|video|design.css  власне розділу — перекриває окремі правила вище
+//   section-header.css      заголовок сторінки й перелік категорій
+// Перезапис ідемпотентний: старі посилання знімаються й ставляться заново.
+function addSharedStyles(html, route) {
   if (route === '/') return html;
-  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/base\.css(?:\?[^\"]*)?">/g, '');
+  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/(?:base|section)\.css(?:\?[^\"]*)?">/g, '');
   const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
   if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
-  return html.replace(sectionStyle, `<link rel="stylesheet" href="/styles/base.css?v=${baseStyleVersion}">\n$&`);
+  return html.replace(sectionStyle,
+    `<link rel="stylesheet" href="/styles/base.css?v=${baseStyleVersion}">\n`
+    + `<link rel="stylesheet" href="/styles/section.css?v=${sectionStyleVersion}">\n$&`);
 }
 
 function addSectionHeaderStyle(html, route) {
@@ -321,7 +327,7 @@ for (const [route, source, title, description] of pages) {
   english = addPrivacyFooterLink(english);
   english = addKyivClockScript(english, route);
   english = updateSectionStyleVersions(english);
-  english = addBaseStyle(english, route);
+  english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
   english = applyThemePolicy(english, route);
