@@ -1310,11 +1310,20 @@ figure{margin:0; position:relative; z-index:1}
   ::view-transition-old(root),::view-transition-new(root){ animation:none }
 }
 </style>
+<!-- reveal.js лишається без defer навмисно: він ставить .rev на <html>, а з
+     ним і opacity:0 на все, що з'являється. З defer сторінка спершу
+     намалювалась би видимою й аж потім стрибнула в невидиме. Виносити
+     class="rev" у саму розмітку теж не варіант: зараз, якщо скрипт не
+     завантажився, сторінка просто лишається видимою — з класом у HTML вона
+     лишилась би порожньою. Решта трьох до першого малювання не потрібні:
+     параллакс лише пише --plate-shift і --plate-brightness (у CSS вони мають
+     фолбеки рівно на значення спокою), перемикач мови міняє підпис кнопки
+     вже на DOMContentLoaded, аналітика тягне googletagmanager. -->
 <script src="/scripts/reveal.js?v=7"></script>
-<script src="/scripts/plate-parallax.js?v=9"></script>
-<script src="/scripts/language-switcher.js"></script>
+<script src="/scripts/plate-parallax.js?v=9" defer></script>
+<script src="/scripts/language-switcher.js" defer></script>
 
-<script src="/scripts/google-analytics.js"></script>
+<script src="/scripts/google-analytics.js" defer></script>
 </head>
 <body>
 
@@ -1340,7 +1349,11 @@ figure{margin:0; position:relative; z-index:1}
       <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
     </h1>
     <div class="figwrap">
-      <figure data-rev style="--d:80ms">
+      <!-- Портрет поза reveal: він і є LCP сторінки, а показ першого екрана
+           reveal.js робить аж на DOMContentLoaded плюс два кадри. Знімок
+           приходив за 31 мс і чекав невидимим до 836 — з ним LCP дорівнює
+           FCP (240 мс). Анімація нижчих блоків лишається. -->
+      <figure>
         <div class="shot">
           <!-- Портрет — найбільший елемент першого екрана, тож він і задає LCP.
                1280px потрібні тільки телефону з подвійною щільністю: широко

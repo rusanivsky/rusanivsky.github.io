@@ -3,7 +3,10 @@ import path from 'node:path';
 
 const root = process.cwd();
 const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
-const googleTag = '<script src="/scripts/google-analytics.js"></script>';
+// defer: скрипт тягне googletagmanager, і без нього дві довгі задачі
+// (109 і 82 мс) стояли в розборі документа. Нічого до першого малювання
+// він не робить.
+const googleTag = '<script src="/scripts/google-analytics.js" defer></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -174,8 +177,8 @@ function addContactsLink(html, route) {
     `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
-  if (!html.includes('<script src="/scripts/language-switcher.js"></script>')) {
-    html = html.replace('</head>', '<script src="/scripts/language-switcher.js"></script>\n</head>');
+  if (!html.includes('<script src="/scripts/language-switcher.js" defer></script>')) {
+    html = html.replace('</head>', '<script src="/scripts/language-switcher.js" defer></script>\n</head>');
   }
   return html;
 }
