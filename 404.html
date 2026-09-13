@@ -11,13 +11,29 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11">
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/base.css?v=4">
-<link rel="stylesheet" href="/styles/404.css?v=1">
+<link rel="stylesheet" href="/styles/base.css?v=10">
+<link rel="stylesheet" href="/styles/section.css?v=2">
+<link rel="stylesheet" href="/styles/home.css?v=12">
+<link rel="stylesheet" href="/styles/404.css?v=6">
 
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
+<script src="/scripts/language-switcher.js" defer></script>
 </head>
-<body>
-<span class="tiny">Kyrylo Rusanivsky</span>
+<body class="no-plate-darkening footer-at-bottom">
+<header class="wrap meta home-meta">
+  <a class="order-cta" href="/contacts/" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>
+  <nav class="parts" aria-label="Sections">
+    <a class="part" href="/video/" data-en="Video" data-ua="Відео">Video</a>
+    <a class="part" href="/photo/" data-en="Photo" data-ua="Фото">Photo</a>
+    <a class="part" href="/design/" data-en="Design" data-ua="Дизайн">Design</a>
+  </nav>
+  <div class="switches">
+    <a class="tiny contact-link" href="/rates/" data-en="Rates &amp; Terms" data-ua="Умови співпраці">Rates &amp; Terms</a>
+    <a class="tiny contact-link mobile-contact-link" href="/contacts/" data-en="Contacts" data-ua="Контакти">Contacts</a>
+    <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
+  </div>
+</header>
+<hr class="rule">
 <main class="wrap">
   <h1>404</h1>
   <hr>
@@ -40,8 +56,7 @@
     </div>
   </div>
   <div class="wrap foot-bar">
-    <div class="footer-left">
-      <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
+    <div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
       <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>
     </div>
     <div class="cols">
@@ -50,6 +65,6 @@
 
   </div>
 </footer>
-<script src="/scripts/kyiv-clock.js?v=1"></script>
+<script src="/scripts/move-language-switcher.js?v=5"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

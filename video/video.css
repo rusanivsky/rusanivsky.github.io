@@ -108,6 +108,7 @@
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
    що й основний текст. Кегль — щабель text зі спільної шкали. */
 .vt{font-family:var(--font);font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
+.vt + .vc{margin-top:calc(var(--heading-copy-gap) - 10px)}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
 .plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--ink)}

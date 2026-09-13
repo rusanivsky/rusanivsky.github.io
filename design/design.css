@@ -2,12 +2,24 @@
    Сітка карток проєктів і стрілка назовні на посиланнях до Behance.
    Спільне — у base.css. */
 
-/* два з трьох напрямків живуть на Behance — вони одразу показують стрілку
-   назовні, щоб перехід не був несподіванкою. Місце під неї тримає падінг,
-   а лінійка ховера, як і доти, йде тільки під словами */
-.sec[target]{padding-right:1.1em}
-.sec[target]::after{right:1.1em}
-.sec[target]::before{content:"↗";position:absolute;right:0;bottom:6px;line-height:1;color:var(--ink);opacity:.8}
+/* Два з трьох напрямків живуть на Behance. Стрілка в шапці має той самий
+   контракт, що й інші зовнішні посилання: маленька, біля назви, з'являється
+   на hover у desktop і видима одразу на touch. Попереднє окреме ::before
+   тримало її на дальньому краї пункту й візуально ламало загальний ритм. */
+.sec[target]::after{
+  content:"↗";display:inline-block;margin-left:.16em;font-size:.36em;
+  vertical-align:.95em;color:var(--ink);opacity:0;
+  transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease),transform 320ms var(--ease)
+}
+@media (hover:hover){
+  .sec[target]:hover::after,
+  .sec[target]:focus-visible::after{opacity:1;transform:none}
+}
+@media (hover:none){
+  .sec[target]::after{opacity:.72;transform:none}
+}
+.sec[target]:active::after{opacity:1;transform:none}
 
 /* ── картки проєктів ─────────────────────────────────────── */
 /* Проєкти розкладаються по спільній 12-колонковій сітці: дві картки
@@ -25,7 +37,7 @@
 @media (min-width:1280px){
 .grid > .p{grid-column:span 4}
 }
-.p{display:flex;flex-direction:column;gap:12px}
+.p{display:flex;flex-direction:column;gap:var(--heading-copy-gap)}
 .p .shots{display:flex;flex-direction:column;gap:10px}
 /* Та сама тінь, що й у фото та відео: медіа на сайті має єдину глибину. */
 .p img{width:100%;height:auto;background:var(--surface);display:block;

@@ -147,12 +147,15 @@ function addContactsLink(html, route) {
   const en = 'Rates & Terms', ua = 'Умови співпраці';
   const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
   const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
-  const contactsLink = `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
+  const contactsLink = route === '/'
+    ? ''
+    : `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
   // Усі три іконки лежать у розмітці, потрібну показує CSS за
   // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
   // чекає на DOMContentLoaded і шапка не стрибає на кожному завантаженні.
-  // Privacy живе тільки у футері; у бургері лишаються умови, контакти й мова.
+  // Privacy живе тільки у футері; на головній прямий контакт — це CTA,
+  // а на інших сторінках у бургері лишається Contacts.
   const themeIcons =
     '<span class="ti" data-mode="auto"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
       + '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'
@@ -165,16 +168,17 @@ function addContactsLink(html, route) {
   const themeToggle = switchableRoutes.has(route)
     ? `\n    <div class="tgl" id="theme" role="group" aria-label="Theme"><button type="button" aria-label="Theme: auto">${themeIcons}</button></div>`
     : '';
-  // On the home page the link sits next to the language switcher. Keep the
-  // same desktop header on every page, including pages whose older source had
-  // the link as the fourth item in .parts.
+  const contactsMarkup = contactsLink ? `\n    ${contactsLink}` : '';
+  // Keep the same header contract on every page, including pages whose older
+  // source had the link as the fourth item in .parts. The homepage uses the
+  // dedicated CTA instead of a duplicate Contacts link.
   html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   html = html.replace(/\s*<a class="tiny privacy-link" href="\/privacy\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   html = html.replace(/\s*<div class="tgl" id="(?:lang|theme)"[^>]*>[\s\S]*?<\/div>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
     /<div class="switches">/,
-    `<div class="switches">\n    ${termsLink}\n    ${contactsLink}\n    ${langToggle}${themeToggle}`,
+    `<div class="switches">\n    ${termsLink}${contactsMarkup}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
   if (!html.includes('<script src="/scripts/language-switcher.js" defer></script>')) {
@@ -216,17 +220,17 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 24;
+const sectionHeaderStyleVersion = 25;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 4;
-const sectionStyleVersion = 1;
+const baseStyleVersion = 10;
+const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 117,
-  '/video/video.css': 119,
-  '/design/design.css': 109,
+  '/video/video.css': 120,
+  '/design/design.css': 110,
 };
 
 function updateSectionStyleVersions(html) {

@@ -135,10 +135,22 @@
      клієнтів 16, а підвал аж 37 — бо там до просвіту додавалась ще й
      висота підпису. Тепер одне число на всі три */
   --rule-gap:clamp(22px,2.6vw,32px);
-  /* Єдиний мобільний просвіт після заголовка сторінки. Зразок —
-     компактний вступ на /rates/: він лишається тим самим ритмом, що й
-     відбивка між рядками, але має окреме ім'я, щоб не змішувати дві ролі. */
+  /* Єдиний просвіт після видимого заголовка сторінки. Rates задає зразок:
+     на телефоні діє та сама відбивка, що й між рядками переліку. */
   --heading-after-gap:var(--rule-gap);
+  /* Невеликий оптичний відступ номера від початку лінійки; назви й сама
+     геометрія рядка від цього не зсуваються. */
+  --mobile-number-nudge:6px;
+  /* Відступ від видимого заголовка картки/статті до його пояснення.
+     Це окремий, коротший ритм: --heading-after-gap лишається просвітом
+     між великим заголовком сторінки та наступним блоком. */
+  --heading-copy-gap:12px;
+  /* Єдиний горизонтальний просвіт між кнопками шапки на всіх сторінках
+     і в обох responsive-режимах. */
+  --header-gap:clamp(12px,1.8vw,26px);
+  /* Мобільний футер має власний рядковий ритм: він не залежить від
+     desktop-відступу шапки, хоча зараз зберігає ту саму плавну шкалу. */
+  --footer-gap-mobile:clamp(12px,1.8vw,26px);
   /* Контакти в «Замовленні» — одна група, тому міжрядковий просвіт
      менший за звичайну відбивку між окремими блоками. */
   --contact-row-gap:clamp(10px,1.8vw,16px);
@@ -439,12 +451,16 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
-.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:clamp(6px,1.2vw,18px)}
+.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:var(--header-gap)}
 .switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
 
 @media (min-width:641px) and (max-width:760px){
   .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
   .meta .switches > .tgl button{padding-block:16px;min-height:44px;margin-block:-10px}
+}
+
+@media (max-width:640px){
+  .cat .num,.spec .no,.step .no{transform:translateX(var(--mobile-number-nudge))}
 }
 
 @media (max-width:640px){
@@ -507,8 +523,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 .meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
 .meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
-  font-size:var(--fs-chrome);font-weight:600;letter-spacing:var(--ls-tiny);
+  font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-tiny);
   text-transform:uppercase;color:var(--mute)
+}
+.meta.header-menu-mode .header-menu-panel .switches > .tgl button{
+  font-size:var(--fs-label);font-stretch:var(--text-stretch);
+  font-weight:600;letter-spacing:var(--ls-tiny);line-height:1;
+  text-transform:uppercase
 }
 .meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
 :root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
@@ -745,11 +766,11 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   content:""; position:absolute; top:0; left:var(--pad); right:var(--pad);
   height:var(--rule); background:var(--divider);
 }
-.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:0;padding-right:var(--chrome-pad);min-width:0}
+.foot-bar > .footer-left{grid-column:2;grid-row:1;display:flex;align-items:baseline;gap:var(--header-gap);padding-left:0;padding-right:var(--chrome-pad);min-width:0}
 .foot-bar > .cols{grid-column:1;grid-row:1;justify-self:start;display:flex;gap:clamp(14px,3vw,48px);flex-wrap:wrap;padding-left:var(--chrome-pad);padding-right:0}
 .foot-bar > .footer-left > .mobile-meta-slot{display:block}
 .foot-bar > .footer-left > .mobile-meta-slot > .cols{padding-left:0}
-.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:clamp(12px,1.8vw,26px); padding-left:var(--chrome-pad); padding-right:var(--chrome-pad); color:var(--mute)}
+.foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:var(--header-gap); padding-left:var(--chrome-pad); padding-right:var(--chrome-pad); color:var(--mute)}
 .foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
 .foot-meta .tiny{white-space:nowrap}
 .foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
@@ -787,7 +808,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
      --chrome-pad повертається кожному рядку окремо: доти його давав
      .footer-left своїм padding-left, а з display:contents цієї коробки в
      потоці вже немає. */
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);
+  .foot-bar{--footer-row-gap:var(--footer-gap-mobile);
     display:flex;flex-wrap:wrap;align-items:baseline;
     column-gap:calc(var(--footer-row-gap) - var(--chrome-pad));row-gap:var(--footer-row-gap)}
   .foot-bar > .footer-left{display:contents}
@@ -808,7 +829,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   .foot-in{grid-template-columns:1fr}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow)}
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-bottom:var(--foot-bar-pad-narrow)}
+  .foot-bar{--footer-row-gap:var(--footer-gap-mobile);padding-bottom:var(--foot-bar-pad-narrow)}
   /* Лінійка нижнього рядка належить до рамки сторінки, тому йде від
      звичайного поля верстки, а не від другої колонки контенту. Її
      геометрія спільна з десктопом і живе в одному .foot-bar::before. */

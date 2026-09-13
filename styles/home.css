@@ -75,7 +75,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .meta .switches{grid-column:auto; justify-content:flex-end; flex-wrap:nowrap}
 }
 @media (max-width:560px){
-  .meta{grid-template-columns:minmax(0,1fr) auto; column-gap:12px; row-gap:0}
+  .meta{grid-template-columns:minmax(0,1fr) auto; column-gap:var(--header-gap); row-gap:0}
   .meta .cols{gap:14px}
   /* Terms лишається праворуч від міста й часу; мова нижче 640px
      переноситься у футер, тому перший рядок не перевантажується. */
@@ -91,9 +91,8 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   .meta .switches{height:var(--mobile-meta-row);padding-bottom:0}
 }
 @media (max-width:640px){
-  /* На головній усі елементи .switches лишаються в шапці й читаються
-     зліва направо в тому самому порядку, що й на десктопі:
-     «Умови співпраці», «Контакти», EN/UA. */
+  /* На головній у шапці лишаються умови та EN/UA; контакт має окрему
+     видиму дію «Замовити послугу», тому дубль не займає місце. */
   /* Мобільна шапка має один спільний вертикальний контракт із розділами:
      24px на видимий рядок і 8px оптичного поля до лінійки. Поле належить
      самій .meta, тому висоту більше не визначає випадково найвища кнопка. */
@@ -104,13 +103,12 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   }
   .meta .cols{display:none}
   .meta .switches > .tgl{display:flex}
-  .meta .switches > .mobile-contact-link{display:inline-block}
   .meta .switches{
     grid-column:1;grid-row:1;justify-content:flex-end;
     height:var(--mobile-meta-row);padding:0 var(--chrome-pad) 0 0
   }
-  .language-slot{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
-  .language-slot .mobile-contact-link{display:inline-block;margin-right:clamp(12px,1.8vw,26px);white-space:nowrap}
+  .language-slot{display:flex;align-items:center;gap:var(--header-gap)}
+  .language-slot .mobile-contact-link{display:inline-block;margin-right:var(--header-gap);white-space:nowrap}
   .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
   .site-foot .language-slot .mobile-contact-link:hover{color:var(--accent)}
   .language-slot > .tgl button:first-child{padding-left:0}
@@ -124,18 +122,31 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 }
 
 /* Десктопна шапка має дихати від лінійки так само, як копірайт у футері:
-   навігація відступає зліва на 8px, правий блок — справа на 8px. В
-   англійській версії .cols уже внизу, тому шапка переходить із трьох
-   колонок у дві, але сама навігація лишається у верхньому рядку. */
-@media (min-width:641px){
-  .home-meta .parts{padding-left:var(--chrome-pad)}
-  .home-meta .switches{justify-self:end}
-  :root[lang="en"] .home-meta,
-  :root[lang="uk"] .home-meta{grid-template-columns:minmax(0,1fr) auto}
-  :root[lang="en"] .home-meta .parts,
-  :root[lang="uk"] .home-meta .parts{grid-column:1;grid-row:1}
-  :root[lang="en"] .home-meta .switches,
-  :root[lang="uk"] .home-meta .switches{grid-column:2;grid-row:1}
+   перша дія й навігація стоять зліва, правий блок — справа. */
+@media (min-width:761px){
+  .home-meta{
+    grid-template-columns:auto minmax(0,1fr) auto;
+    column-gap:var(--header-gap)
+  }
+  .home-meta > .order-cta{
+    grid-column:1;grid-row:1;display:inline-block;
+    padding:16px 0 16px var(--chrome-pad);
+    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
+    font-weight:600;line-height:1;color:var(--pencil);white-space:nowrap;
+    transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)
+  }
+  .home-meta .parts{grid-column:2;grid-row:1;padding-left:0}
+  .home-meta .switches{
+    justify-self:end;
+    margin-left:calc(clamp(18px,3vw,48px) - var(--header-gap))
+  }
+  .home-meta .mobile-contact-link{display:none}
+}
+@media (pointer:fine) and (min-width:761px){
+  .home-meta > .order-cta{padding-block:9px}
+}
+@media (hover:hover) and (min-width:761px){
+  .home-meta > .order-cta:hover{color:var(--pencil);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
 }
 
 /* ── навігація головної ───────────────────────────────────── */
@@ -143,8 +154,11 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
    перемикачами. На телефоні розділи лишаються видимими, а в плашку
    переноситься службова група — той самий overflow-контракт, що й у
    сторінок Photo, Video та Design. */
-.home-meta{position:relative;grid-template-columns:minmax(0,1fr) auto auto;column-gap:clamp(18px,3vw,48px)}
-.home-meta .parts{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px);justify-self:start;min-width:0}
+.home-meta{position:relative;grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(18px,3vw,48px)}
+@media (min-width:761px){
+  .home-meta{column-gap:var(--header-gap)}
+}
+.home-meta .parts{display:flex;align-items:center;gap:var(--header-gap);justify-self:start;min-width:0}
 .home-meta .part{font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
 @media (pointer:fine){
@@ -164,7 +178,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;text-align:left;white-space:normal
 }
 .home-meta.header-menu-mode .header-menu-panel .switches > .tgl{
-  display:grid;grid-template-columns:auto auto;gap:clamp(12px,1.8vw,26px);align-items:center;width:100%;min-height:40px
+  display:grid;grid-template-columns:auto auto;gap:var(--header-gap);align-items:center;width:100%;min-height:40px
 }
 .home-meta.header-menu-mode .header-menu-panel .tgl button{
   width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
@@ -206,14 +220,20 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .home-meta.header-menu-mode .header-menu-panel .parts + .switches{
   margin-top:10px;padding-top:10px;border-top:var(--rule) solid var(--divider)
 }
+/* «Замовити послугу» вже є першою дією в рядку: Contacts не дублюємо ні
+   у вузькому рядку, ні всередині його бургер-панелі. Друге правило має
+   вищу специфічність за спільний display:flex панелі. */
+@media (max-width:760px){
+  .home-meta .switches .mobile-contact-link{display:none}
+  .home-meta.header-menu-mode .header-menu-panel .mobile-contact-link{display:none}
+}
 /* ── заклик замовити послугу ──────────────────────────────── */
 /* На телефоні розділи їдуть у бургер, а на їхньому місці в рядку шапки
    лишається єдина дія сторінки. Охра тут за тим самим правилом, що й
    усюди на сайті: вона означає «сюди можна натиснути». Лінійки під
    написом немає — сам колір уже виділяє його з рядка, а риска робила з
-   заклику перекреслений напис на 24px-рядку. Широко заклику немає: там у
-   рядку стоять і розділи, і умови, і контакти, і зайвий заклик лише
-   сперечався б із ними.
+   заклику перекреслений напис на 24px-рядку. На десктопі заклик стоїть
+   першим зліва перед розділами, а «Contacts» прибрано з правого блоку.
    Поле й рівне від'ємне зовнішнє поле — той самий прийом, яким винесено
    44px ціль перемикачів: коробка росте, видимий рядок лишається 24px.
    Висота при цьому мусить бути 24+20, а не 24: box-sizing тут border-box,
@@ -386,9 +406,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   text-align:right;
 }
 .spec .sect{position:relative; display:inline-block; transition:transform 380ms var(--ease),color 260ms var(--ease); transform-origin:left}
-/* «Графічний дизайн» може стабільно ділитися на два рядки на будь-якій
-   ширині, не змінюючи позицію самого заголовка в сітці. */
-.spec.design-spec .sect{width:11ch;max-width:100%}
+/* «Graphic design» / «Графічний дизайн» примусово діляться на два рядки
+   на будь-якій ширині, не змінюючи позицію самого заголовка в сітці. */
+.spec.design-spec .sect{width:10ch;max-width:100%}
 /* Вулична фотографія завжди має два рядки. Окремі текстові вузли зберігають
    мовний білд і дають обом рядкам одну ліву вертикаль — без висячого відступу
    першого коротшого слова. */
@@ -544,6 +564,21 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     font-size:var(--number-size);font-weight:600;letter-spacing:-.02em;
     line-height:round(1.55em,1px);color:var(--mute)
   }
+  /* «Graphic design» має два рядки, тож його перелік добирає висоту
+     другого рядка: просвіт до категорій лишається таким самим, як у
+     однорядкової «Photography». На мобільному список уже стоїть у
+     власному рядку з row-gap і цього зсуву не потребує. */
+  .spec.design-spec ul{
+    margin-top:calc(var(--fs-title) * .55 + 2.8em + var(--fs-title) * 1.02)
+  }
+}
+/* У планшетному гріді baseline багаторядкової назви рахується за останнім
+   рядком. Повертаємо номер до першого рядка для двох таких назв. */
+@media (min-width:641px) and (max-width:960px){
+  .spec.design-spec .no,
+  .spec.under .no{
+    transform:translateY(calc(-1.02 * var(--fs-title)))
+  }
 }
 /* вузько назва розділу й перелік знову стоять один під одним, але всі
    переліки починаються з однієї лівої вертикалі */
@@ -592,6 +627,16 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
      того самого, що в списках відео й фото. */
   .spec.design-spec ul{row-gap:6px}
   .spec.design-spec li{max-width:24ch;text-wrap:balance}
+  /* У дворядкових назвах baseline гріда припадає на другий рядок.
+     Піднімаємо номери на висоту одного рядка, щоб 03 і 04 стояли на
+     першій базовій лінії, як 01 і 02. Для 04 повертаємо той самий режим
+     baseline, що й у решти номерів. */
+  .spec.under{align-items:baseline}
+  .spec.design-spec .no,
+  .spec.under .no{
+    margin-top:0;
+    transform:translate(var(--mobile-number-nudge),calc(-1.02 * clamp(23.2px,6.16vw,32px)))
+  }
   /* На телефоні назви напрямків трохи компактніші, але лишаються
      головним акцентом списку; вага 700 тримає їх виразними. */
   .spec h3{font-size:clamp(23.2px,6.16vw,32px);font-weight:700}
@@ -662,6 +707,31 @@ figure{margin:0; position:relative; z-index:1}
      по центру, тож object-fit:cover лишає в кадрі і обличчя, і камеру */
   .shot picture{aspect-ratio:5/4}
   .lede{max-width:38ch}
+}
+/* Surface Duo та близькі ширини трактуємо як мобільний стек: портрет
+   доходить до обох країв внутрішньої верстки. Верхній фрагмент лишаємо
+   на попередній візуальній точці, а додатковий crop забираємо знизу. */
+@media (max-width:640px){
+  .figwrap{width:100%;justify-self:stretch}
+  .shot img{object-position:50% 45%}
+}
+/* Планшет зберігає двоколонковий герой: назва й опис зліва, фото справа.
+   Кадр розтягується на висоту двох лівих рядків, тому його верх і низ
+   збігаються з назвою та останнім рядком опису, а пропорція стає ширшою. */
+@media (min-width:641px) and (max-width:960px){
+  .hero{grid-template-rows:auto 1fr}
+  .name{grid-column:1/span 7;grid-row:1}
+  .hero-copy{grid-column:1/span 7;grid-row:2;padding-left:var(--col2)}
+  .figwrap{
+    grid-column:8/span 5;grid-row:1/span 2;
+    width:auto;max-width:none;justify-self:stretch;align-self:stretch;
+    display:flex;align-items:center
+  }
+  .figwrap figure,.figwrap .shot,.figwrap .shot picture{
+    width:100%;height:100%
+  }
+  .figwrap figure{height:calc(100% - clamp(12px,1.8vw,20px))}
+  .figwrap .shot picture{aspect-ratio:auto}
 }
 
 /* ── клієнти ─────────────────────────────────────────────── */
@@ -760,7 +830,7 @@ figure{margin:0; position:relative; z-index:1}
    home.css вантажиться після base.css, і на телефоні стрілки в «Замовленні»
    не з’являлися взагалі, хоч на решті сторінок стояли на місці. */
 .site-foot .lines > a::after{vertical-align:.95em}
-.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:var(--chrome-pad);padding-right:var(--chrome-pad);color:var(--mute)}
+.site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:var(--header-gap);padding-left:var(--chrome-pad);padding-right:var(--chrome-pad);color:var(--mute)}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){

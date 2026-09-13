@@ -65,6 +65,18 @@ body.footer-at-bottom{
 }
 body.footer-at-bottom .site-foot{margin-top:auto}
 
+/* Short green pages keep the footer at the viewport edge on portrait tablets. */
+@media (min-width:641px) and (max-width:1024px) and (orientation:portrait){
+  body.no-plate-darkening,
+  body.contacts-page,
+  body:has(.text-page-copy){
+    min-height:100vh;min-height:100dvh;display:flex;flex-direction:column
+  }
+  body.no-plate-darkening .site-foot,
+  body.contacts-page .site-foot,
+  body:has(.text-page-copy) .site-foot{margin-top:auto}
+}
+
 /* Цілі дотику вузлів навігації. WCAG 2.2 AA (2.5.8) просить 24×24px;
    вимір на 390px давав .part 14px і контакти підвалу 22px. Стрілка
    «назад» цього не потребує — у неї власне 44px поле в ::after.
