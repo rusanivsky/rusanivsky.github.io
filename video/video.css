@@ -11,10 +11,11 @@
 .grid{display:grid;gap:clamp(26px,3.4vw,52px);grid-template-columns:1fr;
   padding-block:clamp(28px,5vh,64px) clamp(40px,7vh,90px)}
 @media (min-width:760px){
-.grid{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+.grid > .v{grid-column:span 6}
 }
 @media (min-width:1280px){
-.grid{grid-template-columns:repeat(3,1fr)}
+.grid > .v{grid-column:span 4}
 }
 .v{display:flex;flex-direction:column;gap:10px}
 .fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--video-preview-bg);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit;
@@ -88,10 +89,12 @@
 }
 }
 @media (min-width:760px){
-.short-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.short-form-grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+.short-form-grid .v{grid-column:span 6}
 }
 @media (min-width:1280px){
-.short-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.short-form-grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+.short-form-grid .v{grid-column:span 3}
 }
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
    що й основний текст. Кегль — щабель text зі спільної шкали. */
@@ -99,4 +102,3 @@
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
 .plat{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--ink)}
-

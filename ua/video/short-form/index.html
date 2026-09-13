@@ -57,7 +57,7 @@
 <nav class="wrap secs"><a class="sec" href="/ua/video/reels/" data-en="Reels" data-ua="Reels">Reels</a><a class="sec on" href="/ua/video/short-form/" aria-current="page" data-en="Short-form video" data-ua="Короткі відео">Короткі відео</a><a class="sec" href="/ua/video/interviewandvlogs/" data-en="Interviews &amp; vlogs" data-ua="Інтерв&#x27;ю і влоги">Інтерв&#x27;ю і влоги</a><a class="sec" href="/ua/video/music/" data-en="Music Videos" data-ua="Музичні відео">Музичні відео</a><a class="sec" href="/ua/video/documentary/" data-en="Documentary" data-ua="Документальні">Документальні</a></nav>
 </div>
 <h1 class="sr" data-en="Short-form video" data-ua="Короткі відео">Короткі відео</h1>
-<section class="wrap grid">
+<section class="wrap grid content-grid">
   <article class="v v-crop">
     <button class="fac" type="button" data-pl="yt" data-id="fxpXDw9TSi4" aria-label="Leadership and Resilience, Fall 2025">
       <img src="https://i.ytimg.com/vi/fxpXDw9TSi4/maxresdefault.jpg" referrerpolicy="no-referrer" alt="" loading="lazy" decoding="async" width="1280" height="720">
@@ -188,7 +188,7 @@
   document.addEventListener('click',function(e){
     var f=e.target.closest('.fac[data-pl]'); if(!f) return;
     var pl=f.dataset.pl, id=f.dataset.id;
-    var src=pl==='yt'?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0':'https://player.vimeo.com/video/'+id+'?autoplay=1';
+    var src=pl==='yt'?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0&iv_load_policy=3':'https://player.vimeo.com/video/'+id+'?autoplay=1';
     var fr=document.createElement('iframe');
     fr.src=src; fr.title=f.getAttribute('aria-label')||'';
     fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';

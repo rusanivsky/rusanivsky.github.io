@@ -10,18 +10,21 @@
 .sec[target]::before{content:"↗";position:absolute;right:0;bottom:6px;line-height:1;color:var(--ink);opacity:.8}
 
 /* ── картки проєктів ─────────────────────────────────────── */
-/* сітка рахує колонки від ширини екрана, а не від фіксованих двох. На двох
-   колонках три обкладинки лягали як 2+1, і поряд з останньою залишалася
-   порожня клітинка на пів екрана; до того ж висоту рядка задавав найвищий
-   макет, а обкладинки бувають і високі, і горизонтальні. Тепер колонок
-   стільки, скільки влізе по 340px, — на десктопі всі три стають в один
-   рядок, а з появою нових карток сітка перебудується сама.
-   align-items:start лишає кожну картку заввишки з її власний вміст:
-   нижній край рядка нерівний, зате під короткою карткою немає діри */
+/* Проєкти розкладаються по спільній 12-колонковій сітці: дві картки
+   займають по шість треків, три — по чотири. align-items:start лишає
+   кожну картку заввишки з її власний вміст, тож під короткою карткою немає
+   зайвої порожнечі. */
 .grid{display:grid;gap:clamp(34px,4.4vw,72px);
-  grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));
+  grid-template-columns:1fr;
   align-items:start;
   padding-block:clamp(28px,5vh,64px) clamp(40px,7vh,90px)}
+@media (min-width:760px){
+.grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+.grid > .p{grid-column:span 6}
+}
+@media (min-width:1280px){
+.grid > .p{grid-column:span 4}
+}
 .p{display:flex;flex-direction:column;gap:12px}
 .p .shots{display:flex;flex-direction:column;gap:10px}
 /* тінь удвічі коротша за попередню (20/34/-18) і тихіша за щільністю

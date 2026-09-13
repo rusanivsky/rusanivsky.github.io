@@ -365,6 +365,14 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 /* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
    (шапка й підвал на 404) */
 .wrap{width:100%; padding-inline:var(--pad); max-width:var(--maxw); margin-inline:auto}
+/* Спільний контракт для сіток контенту: на широкій ширині сторінка має
+   дванадцять треків. Кількість треків, яку займає конкретна картка, і
+   мобільні винятки задає CSS відповідного розділу. Нові сторінки зі списком
+   карток підключають цей клас, щоб не заводити ще одну незалежну сітку. */
+.content-grid{display:grid;grid-template-columns:1fr}
+@media (min-width:640px){
+  .content-grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+}
 /* жодна лінійка не йде до країв екрана — усі стоять по ширині верстки */
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
