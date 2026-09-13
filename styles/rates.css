@@ -390,6 +390,13 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   display:block
 }
 
+/* На початку секції просвіт від верхньої лінійки до першого тексту
+   однаковий у всіх розділах. Беремо найчастіше значення --rule-gap;
+   короткі внутрішні рядки нижче цього правила не змінюються. */
+.tsec > .tbody > .trow:first-child{
+  padding-top:var(--rule-gap)
+}
+
 /* Після останнього текстового блоку додаткового поля немає: відстань до
    підвалу задає його власний верхній ритм, як і на Privacy. */
 main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bottom:0}
@@ -424,9 +431,8 @@ main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bot
      на vh він тут виходив як на десктопі (46px на екрані 844), хоч сам
      рядок і кегль удвічі дрібніші, і секції розсипалися. */
   .tsec{padding-top:calc(clamp(30px,5.5vh,68px) / 1.5)}
-  /* Перший рядок цін іде одразу після вступу: великий вертикальний
-     просвіт між ними тут не додає нічого до композиції. */
-  .contact-head + .tsec{padding-top:0}
+  /* Після вступу до першої секції цін діє той самий просвіт, що й між
+     наступними секціями; окремого мобільного винятку тут немає. */
   /* Як у .specs на головній: тіло відходить за вертикальний підпис, а
      лінійка починається від його власного лівого краю, не повертається
      назад у поле сторінки. */
@@ -442,8 +448,15 @@ main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bot
   .trow::before{left:0}
   .trow{display:grid;grid-template-columns:auto 1fr;
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
-  .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts,
-  .prow .svc,.prow .fee{grid-column:1/-1;max-width:none;margin-left:0}
+  .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts{grid-column:1/-1;max-width:none;margin-left:0}
+  /* Цінові позиції мають ту саму вкладеність, що й заголовок Brief:
+     назва та сума стоять після того самого --col2 і кроку колонки номера.
+     em спільний для обох елементів, щоб різна насиченість шрифту не
+     розвела їх по горизонталі через різний розрахунок ch. */
+  .tsec[aria-labelledby="s-price"] .prow .svc,
+  .tsec[aria-labelledby="s-price"] .prow .fee{
+    grid-column:2;max-width:none;margin-left:calc(var(--col2) + 1.866em)
+  }
 
   /* Суцільний текст лишається на колонку вужчим за блок. Доти він
      розтягувався на всю ширину, і на найвужчому екрані рядок ставав
@@ -470,6 +483,17 @@ main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bot
     /* font-size на псевдоелементі потрібен лише для ch у формулі треків;
        тут формули немає, тож і кегль лишається успадкованим */
     font-size:inherit !important
+  }
+  /* Лінійки між ціновими позиціями мають ту саму довжину, що й перед
+     Brief: спільний правий край і початок після --col2. */
+  .tsec[aria-labelledby="s-price"] .prow::before{
+    left:var(--col2) !important
+  }
+  /* Лінійки, що відкривають групи Video editing і Design and typesetting,
+     лишаються повної ширини — це межі груп, а не внутрішні рядкові лінії. */
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(3)::before,
+  .tsec[aria-labelledby="s-price"] .prow:nth-child(7)::before{
+    left:0 !important
   }
   .tsec[aria-labelledby="s-price"] .pts{grid-column:1/-1}
   .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
