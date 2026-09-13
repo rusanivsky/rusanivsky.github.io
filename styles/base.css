@@ -139,6 +139,9 @@
      компактний вступ на /rates/: він лишається тим самим ритмом, що й
      відбивка між рядками, але має окреме ім'я, щоб не змішувати дві ролі. */
   --heading-after-gap:var(--rule-gap);
+  /* Контакти в «Замовленні» — одна група, тому міжрядковий просвіт
+     менший за звичайну відбивку між окремими блоками. */
+  --contact-row-gap:clamp(10px,1.8vw,16px);
   /* Ті самі міри, але цілим числом пікселів — з тієї ж причини, що й
      поля шапки: на них стоять волосяні лінійки, і півпікселя під
      лінійкою читається то тоншою, то товщою рискою */
@@ -659,7 +662,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   min-width:0;
   margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
-  column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
+  column-gap:clamp(7px,1.1vw,14px); row-gap:var(--contact-row-gap);
 }
 .site-foot .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;

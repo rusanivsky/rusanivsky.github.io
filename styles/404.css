@@ -62,7 +62,7 @@ a.back::before{
 .site-foot .lines{
   margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
-  column-gap:clamp(7px,1.1vw,14px); row-gap:clamp(16px,4vw,24px);
+  column-gap:clamp(7px,1.1vw,14px); row-gap:var(--contact-row-gap);
 }
 .site-foot .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
