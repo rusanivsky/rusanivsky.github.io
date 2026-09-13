@@ -4,6 +4,7 @@
 .contact-list{padding-top:clamp(48px,9vh,112px)}
 .contact-list .cat{padding-block:var(--rule-gap)}
 @media (max-width:640px){
+  .contact-list{padding-top:var(--heading-after-gap)}
   /* На мобільному контакти мають ту саму шапку в потоці й ту саму
      поведінку плити під час скролу, що Photo, Video та Design. Десктопна
      sticky-шапка лишається без змін. */

@@ -19,7 +19,7 @@
 
 /* Стаття використовує ту саму текстову міру, що й вступ в Умовах. */
 .text-page-copy{grid-column:3/9;max-width:66ch;padding-block:0}
-.text-page-copy > .text-page-lead{margin-top:var(--rule-gap);max-width:62ch;line-height:1.55}
+.text-page-copy > .text-page-lead{margin-top:var(--heading-after-gap);max-width:62ch;line-height:1.55}
 .text-page-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
 .text-page-copy p{font-size:var(--fs-text);line-height:1.55;margin:0 0 16px;max-width:62ch}
 .text-page-copy > p:last-child{margin-bottom:0}

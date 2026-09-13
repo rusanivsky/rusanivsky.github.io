@@ -94,11 +94,11 @@ body.footer-at-bottom .site-foot{margin-top:auto}
 
    Головної це не стосується взагалі — вона цього файлу не вантажить. */
 @media (max-width:760px){
-  :root[data-theme="green"] section.wrap.cats:first-of-type{padding-top:31px}
+  :root[data-theme="green"] section.wrap.cats:first-of-type{padding-top:var(--heading-after-gap)}
   /* Там, де над переліком стоїть заголовок сторінки, просвіт під шапкою
      тримає він — а переліку лишається та сама відбивка, що й між його
      власними рядками. Вага відбору мусить перекрити правило вище. */
-  :root[data-theme="green"] .page-title + section.wrap.cats:first-of-type{padding-top:var(--rule-gap)}
+  :root[data-theme="green"] .page-title + section.wrap.cats:first-of-type{padding-top:var(--heading-after-gap)}
 }
 
 /* ── заголовок сторінки ──────────────────────────────────────
@@ -166,7 +166,7 @@ body.footer-at-bottom .site-foot{margin-top:auto}
   padding-inline-start:0
 }
 .page-title + .cats,
-.page-title + .contact-head{padding-top:var(--rule-gap)}
+.page-title + .contact-head{padding-top:var(--heading-after-gap)}
 @media (max-width:640px){
   .page-title{--page-title-size:clamp(22.4px,5.76vw,30.4px);--home-name-size:clamp(48px,11vw,72px)}
   .page-title{padding-inline-start:var(--pad)}
