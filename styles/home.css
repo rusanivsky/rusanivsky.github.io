@@ -35,7 +35,11 @@ body{
      контейнера прокрутки не заводить */
   overflow-x:hidden; overflow-x:clip;
 }
-h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-spacing:-.02em; line-height:1}
+/* base.css описує h1,h2; головна додає до них h3 — назви напрямків.
+   letter-spacing тут мусить збігатися з base.css (-.03em), інакше головна
+   тихо розходиться з рештою сайту. Фактичний трекінг кожен заголовок і так
+   бере зі свого правила: .name, .tiny, .spec h3. */
+h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-spacing:-.03em; line-height:1}
 .meta + .rule{margin-bottom:2px}
 
 /* ── marginalia bar ───────────────────────────────────────── */
@@ -725,21 +729,10 @@ figure{margin:0; position:relative; z-index:1}
   .logos{column-gap:clamp(12px,4vw,20px); row-gap:clamp(18px,5vw,26px)}
 }
 /* ── підвал сайту ─────────────────────────────────────────── */
-/* підвал стоїть на тому самому тлі, що й уся сторінка, і відділений
-   такою ж волосяною лінійкою, як кожен розділ вище. Доти він був
-   темною плашкою, і сенс у ній був лише в світлій темі: на папері вона
-   давала контраст 11,2:1 і читалася як подія, а на темному тлі — 1,41:1,
-   тобто ледь помітну пляму замість блоку.
-   Прийом працював наполовину, а сторінка з волосяних лінійок і
-   повітря обходиться без суцільної заливки */
-.site-foot{
-  color:var(--ink);
-  --uline:2px;
-  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
-     доводиться малювати не від нього, а від самої плашки — і треба знати,
-     на якій висоті в ній стоїть перший рядок */
-  --foot-pad:clamp(22px,3.85vh,52px);
-}
+/* Сам підвал — колір, --uline, --foot-pad — описаний у base.css і однаковий
+   на всіх сторінках. Тут лишаються тільки відмінності головної. Копія тих
+   самих рядків, що стояла тут раніше, глушила вужчі варіанти з base.css:
+   --uline:3px від 700px і --foot-pad, округлений через round() у @supports. */
 /* контакти починаються з другої колонки — від тієї самої вертикалі, від
    якої йдуть лінійки й номери на всій сторінці. Доти вони стояли з
    третьої й були єдиним блоком сайту зі своїм уступом. Не grid-column:2,
@@ -750,11 +743,13 @@ figure{margin:0; position:relative; z-index:1}
 /* Цілі дотику: контакти підвалу давали 22px, марки клієнтів 20px при
    нормі 24px. Поле росте, від’ємне зовнішнє поле повертає потік. */
 .logos li > a{padding-block:3px;margin-block:-3px;display:inline-block}
-.site-foot .lines > a::after{
-  content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
-  vertical-align:.95em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
-  transition:opacity 320ms var(--ease), transform 320ms var(--ease);
-}
+/* Стрілка підвала живе в base.css разом з усіма своїми станами — ховер,
+   :active і @media (hover:none), де на дотикових екранах вона відкрита
+   назавжди. Тут лишається тільки різниця головної — на півсотої вище
+   над рядком. Повна копія правила замість цього перекривала й opacity:
+   home.css вантажиться після base.css, і на телефоні стрілки в «Замовленні»
+   не з’являлися взагалі, хоч на решті сторінок стояли на місці. */
+.site-foot .lines > a::after{vertical-align:.95em}
 .site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:clamp(12px,1.8vw,26px);padding-left:var(--chrome-pad);padding-right:var(--chrome-pad);color:var(--mute)}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
@@ -768,12 +763,18 @@ figure{margin:0; position:relative; z-index:1}
      від останнього рядка до кінця сторінки при 223px самого вмісту */
   .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
-  .site-foot{--foot-pad:clamp(18px,5vw,24px)}
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
-  .foot-bar > .cols{padding:0}
-  .foot-bar > .cols{margin-left:0}
+  /* Вертикальні поля нижнього рядка беремо з base.css: там той самий вираз,
+     але з --foot-bar-pad-narrow, округленим через round(). Копія з голим
+     clamp() давала на головній 20,205px замість 20. Тут лишається тільки
+     своє: рядок згортається в одну колонку вже від 640, а не від 560. */
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr}
+  /* Рядок копірайту лишається на --chrome-pad із base.css — тому самому
+     оптичному зсуві службового набору, що й «Приватність» та «Київ»
+     під ним. Обнулення тут відсувало його на 8px лівіше за ці два рядки,
+     і тільки на головній. */
   .site-foot .foot-meta{width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .site-foot .foot-meta .tiny{white-space:nowrap;min-width:0}
 }
-.rev [data-rev].is-in{opacity:1; translate:none; transition:opacity 260ms var(--ease), translate 300ms var(--ease)}
-.rev [data-rev].is-in{transition-delay:var(--d,0ms)}
+/* Поява блоків цілком живе в base.css. Копія цих двох рядків тут глушила
+   @media (max-width:640px){transition-duration:200ms,240ms}: на телефоні
+   головна проявлялася повільніше за решту сайту. */
