@@ -86,6 +86,10 @@
      телефоні в підвалі його просто знімали. */
   --chrome-pad:8px;
   --meta-pad:clamp(4px,.8vh,10px);
+  /* Відступ тексту під лінійкою футера дзеркалить відступ тексту шапки
+     над її лінійкою. На вузьких ширинах нижче до нього додається те саме
+     8px поле, яке шапка віддає тач-рядку. */
+  --footer-rule-gap:var(--meta-pad);
   --meta-pad-top:clamp(16px,3vw,24px);
   --meta-pad-bottom:clamp(12px,3.75vw,18px);
   /* волосяна лінійка розділювачів і товща лінія, яку малює ховер:
@@ -394,6 +398,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   /* Обвід браузера на телефоні — ненадійне джерело повітря згори;
      шапка тримає власне оптичне поле всередині сторінки. */
   .meta{padding-top:var(--meta-pad-top)}
+  :root{--footer-rule-gap:calc(var(--meta-pad) + 8px)}
 }
 @media (max-width:960px){
   :root{--col1:20px}
@@ -685,7 +690,10 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 }
 .foot-bar{
   position:relative;
-  padding-block:clamp(8px,2.6vh,28px) clamp(22px,3.4vh,40px);
+  /* Текст під нижньою лінійкою відбитий тією самою мірою, якою текст
+     шапки відбитий від її лінійки. Це один вертикальний контракт для
+     десктопа, планшета й телефона; нижнє поле лишається окремим. */
+  padding-top:var(--footer-rule-gap); padding-bottom:clamp(22px,3.4vh,40px);
   /* без відступу в другу колонку: цей рядок — не ще один пункт переліку
      контактів над ним, а рамка сторінки, як і службовий рядок угорі
      («Київ, UA», час) — обидва стоять від справжнього поля сторінки */
@@ -761,13 +769,10 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   .foot-in{grid-template-columns:1fr}
   .language-slot{grid-column:1/-1;padding-top:clamp(10px,2vw,16px)}
   .site-foot{--foot-pad:var(--foot-pad-narrow)}
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-block:calc(var(--meta-pad) + 8px) var(--foot-bar-pad-narrow)}
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);padding-bottom:var(--foot-bar-pad-narrow)}
   /* Лінійка нижнього рядка належить до рамки сторінки, тому йде від
-     звичайного поля верстки, а не від другої колонки контенту. А текст
-     під нею несе ті самі 8px оптичного зсуву, що й рядок шапки та цей
-     самий рядок на десктопі: доти вузько їх знімали, і текст ставав
-     урівень із лінійкою замість того, щоб від неї відступити. */
-  .foot-bar::before{left:var(--pad)}
+     звичайного поля верстки, а не від другої колонки контенту. Її
+     геометрія спільна з десктопом і живе в одному .foot-bar::before. */
   .foot-bar .cols{margin-left:0;padding:0 0 0 var(--chrome-pad)}
   .foot-meta{gap:var(--footer-row-gap);padding:0}
 }
