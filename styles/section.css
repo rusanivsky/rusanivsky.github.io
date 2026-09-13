@@ -289,6 +289,10 @@
 :root[data-theme="green"] .tgl button[aria-pressed="true"],
 :root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:700;font-variation-settings:"wght" 700}
 
+/* Короткий вступний рядок не мусить набирати повний просвіт звичайного
+   рядка: цей клас спільний для сторінок із такою самою структурою. */
+.section-intro-row{padding-block:clamp(8px,1.2vw,16px)}
+
 /* ── перелік категорій ───────────────────────────────────── */
 /* перший рядок стоїть там, де раніше починався заголовок сторінки.
    Рядки підхоплюють треки сторінкової сітки через subgrid, тож номери й
