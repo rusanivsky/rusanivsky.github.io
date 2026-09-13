@@ -353,6 +353,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 
 /* У «Термінах» і «Правках» не потрібне велике повітря між внутрішніми
    рядками: кожен блок і так читається одним потоком. */
+.tsec[aria-labelledby="s-flow"] > .tbody > .trow:first-child{padding-block:clamp(8px,1.2vw,16px)}
 .tsec[aria-labelledby="s-rev"] .trow,
 .tsec[aria-labelledby="s-time"] .trow{padding-block:clamp(8px,1.2vw,16px)}
 .tsec[aria-labelledby="s-time"] .steps .step{padding-block:var(--rule-gap)}
