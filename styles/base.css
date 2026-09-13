@@ -536,12 +536,17 @@ html.theme-shift .topbar::before{
 /* Виняток — саме перефарбування теми: новий кадр стоїть, старий згасає
    поверх нього. --ease тут не годиться: це різкий ease-out під рух, він
    обриває хвіст розчинення */
-html.theme-shift::view-transition-old(root){ animation:pt-out 520ms cubic-bezier(.4,0,.2,1) both }
+html.theme-shift::view-transition-old(root){ animation:fade-out 520ms cubic-bezier(.4,0,.2,1) both }
 /* запасний перехід для браузерів без @view-transition */
-@keyframes pt-in{ from{opacity:0} to{opacity:1} }
-@keyframes pt-out{ from{opacity:1} to{opacity:0} }
+/* Одна пара згасання на весь сайт. Просять її чотири різні місця: виїзд
+   сторінки, старий кадр при перефарбуванні теми, заслінка під шапкою і
+   лінійка під нею. Доти та сама проста зміна прозорості лежала двома
+   парами під чотирма назвами — pt-in/pt-out тут і veil-in/veil-out у
+   section.css, — причому pt-in не вживався ніде. */
+@keyframes fade-in{ from{opacity:0} to{opacity:1} }
+@keyframes fade-out{ from{opacity:1} to{opacity:0} }
 html.pt-js body{ animation:none }
-html.pt-leave body{ animation:pt-out 220ms var(--ease) both }
+html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important; transition:none!important}
   .rev [data-rev]{opacity:1!important; translate:none!important}

@@ -215,7 +215,6 @@
    порожнім місцем помітніше за чисту плиту. Веде її сама прокрутка —
    без слухача, без кадру на такт. Там, де scroll-таймлайнів немає,
    заслінка просто стоїть на місці */
-@keyframes veil-in{from{opacity:0}to{opacity:1}}
 /* Фіксована плашка проходить той самий 0–100% шлях, що й плита:
    на довгих сторінках вона більше не лишається світлою смугою над
    вже затемненим тлом. */
@@ -226,7 +225,7 @@
 @supports (animation-timeline:scroll()){
   .topbar::before{
     opacity:0;
-    animation:veil-in linear both,sticky-plate-scroll linear both;
+    animation:fade-in linear both,sticky-plate-scroll linear both;
     animation-timeline:scroll(),scroll();
     animation-range:0 84px,0 100%;
   }
@@ -238,10 +237,9 @@
    прокруткою, тож розходитись їм ні на чому.
    Там, де шапка ділить два ряди (перелік підрозділів або смуга розділів
    на /rates/) чи взагалі не фіксована, лінійка стоїть завжди */
-@keyframes veil-out{from{opacity:1}to{opacity:0}}
 @supports (animation-timeline:scroll()){
   body:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
-    animation:veil-out linear both;
+    animation:fade-out linear both;
     animation-timeline:scroll();
     animation-range:0 84px;
   }
