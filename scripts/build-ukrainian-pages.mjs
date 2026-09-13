@@ -96,6 +96,7 @@ function localiseStructuredData(html, route, description) {
 }
 
 function updateHead(html, route, title, description, ukrainian) {
+  html = html.replace(/<meta name="viewport" content="[^"]+">/, '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">');
   const canonical = absolute(ukrainian ? uaRoute(route) : route);
   html = html.replace(/\n<link rel="alternate" hreflang="(?:en|uk|x-default)" href="[^"]+">/g, '');
   html = html.replace(/<html lang="en"/, `<html lang="${ukrainian ? 'uk' : 'en'}"`);
@@ -224,13 +225,13 @@ const sectionHeaderStyleVersion = 25;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 10;
+const baseStyleVersion = 11;
 const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 117,
   '/video/video.css': 120,
-  '/design/design.css': 110,
+  '/design/design.css': 111,
 };
 
 function updateSectionStyleVersions(html) {
@@ -265,6 +266,14 @@ function addSectionHeaderStyle(html, route) {
 }
 
 const themeScriptVersion = 5;
+
+const photoLightboxScriptVersion = 1;
+
+function addPhotoLightboxScript(html, route) {
+  html = html.replace(/\s*<script src="\/scripts\/photo-lightbox\.js(?:\?[^" ]*)?"[^>]*><\/script>/g, '');
+  if (!lightPortfolioRoutes.has(route)) return html;
+  return html.replace('</body>', `<script src="/scripts/photo-lightbox.js?v=${photoLightboxScriptVersion}" defer></script>\n</body>`);
+}
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми
@@ -334,6 +343,7 @@ for (const [route, source, title, description] of pages) {
   english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
+  english = addPhotoLightboxScript(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 

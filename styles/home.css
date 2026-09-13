@@ -832,13 +832,16 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:480px){
   .clients{--lg:clamp(18px,5.6vw,24px)}
   .logos{column-gap:clamp(12px,4vw,20px); row-gap:clamp(18px,5vw,26px)}
-  .logos .logo-break{display:block;flex:0 0 100%;width:0;height:0;margin:0;padding:0;order:1}
-  /* Могилянка починає другий ряд разом із Defenders і Tsyronian;
-     ShyLero лишається наступним рядом, коли ширини вже не вистачає. */
-  .logos li:has(.lg.naukma),
+  /* Могилянка повертається в перший ряд. Далі марки течуть природним
+     flex-wrap, без штучного нульового рядка між ними. */
+  .logos li:has(.lg.naukma){order:0}
   .logos li:has(.lg.defenders),
   .logos li:has(.lg.tsyronian){order:1}
   .logos li:has(.lg.shylero){order:2}
+  /* Висота flex-лінії однакова, тому міжрядковий просвіт не залежить
+     від того, який логотип у конкретному ряду найвищий. */
+  .logos{align-items:flex-start}
+  .logos > li{min-height:calc(var(--lg) * 1.64)}
 }
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* Сам підвал — колір, --uline, --foot-pad — описаний у base.css і однаковий
@@ -938,10 +941,10 @@ figure{margin:0; position:relative; z-index:1}
     display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
     column-gap:var(--colgap)
   }
-  .logos{grid-column:3/-1;margin-left:0}
+  .logos{grid-column:2/-1;margin-left:0}
 
   /* На головній цей локальний рядок ішов після base.css, тому явно
      повертаємо спільний desktop-контракт блоку «Замовлення». */
-  .foot-in .say{grid-column:3/8;margin-left:0}
+  .foot-in .say{grid-column:1/-1;margin-left:var(--col2)}
 
 }
