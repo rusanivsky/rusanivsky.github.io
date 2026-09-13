@@ -716,14 +716,32 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 }
 .foot-bar .arch:active::after{opacity:1; transform:none}
 @media (max-width:560px){
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;gap:var(--footer-row-gap)}
-  .foot-bar > .footer-left{grid-column:1;grid-row:auto;flex-direction:column;align-items:flex-start;gap:var(--footer-row-gap);order:2;padding:0 0 0 var(--chrome-pad);width:100%}
-  .foot-bar > .cols{grid-column:1;grid-row:auto;justify-self:start;order:1;padding:0 0 0 var(--chrome-pad);width:100%}
-  /* Приватність стоїть першим рядком, місто з годинником — другим. У
-     розмітці порядок обернений (його складає білд), тож міняє їх місцями
-     сам стовпчик: .footer-left тут flex-column, і order працює. */
-  .foot-bar .footer-privacy{display:block;margin:0;align-self:flex-start;order:1}
-  .foot-bar > .footer-left > .foot-meta{order:2}
+  /* Копірайт і «Приватність» стоять одним рядком, місто з годинником —
+     другим. Щоб копірайт і посилання опинились на спільному рядку, .foot-bar
+     тут не сітка, а flex із переносом, а .footer-left віддає своїх дітей
+     контейнеру через display:contents — у розмітці посилання лежить
+     усередині нього, і сіткою його на чужий рядок не винести.
+
+     Перенос лишається живим: коли рядок копірайту з посиланням не
+     вміщається (десь від 300px і вужче), flex-wrap опускає «Приватність»
+     на власний рядок, як було доти. Місто з годинником тримає свій рядок
+     завжди — flex-basis:100%.
+
+     --chrome-pad повертається кожному рядку окремо: доти його давав
+     .footer-left своїм padding-left, а з display:contents цієї коробки в
+     потоці вже немає. */
+  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);
+    display:flex;flex-wrap:wrap;align-items:baseline;
+    column-gap:calc(var(--footer-row-gap) - var(--chrome-pad));row-gap:var(--footer-row-gap)}
+  .foot-bar > .footer-left{display:contents}
+  .foot-bar > .cols{order:1;justify-self:start;width:auto;padding:0 0 0 var(--chrome-pad)}
+  /* Оптичний зсув висить на самій «Приватності», а не на рядку: коли вона
+     переноситься на власний рядок, її край мусить стати під копірайт. Тому
+     column-gap вище зменшено рівно на --chrome-pad — на спільному рядку
+     просвіт між копірайтом і посиланням лишається той самий, що й між
+     містом і годинником під ними. */
+  .foot-bar .footer-privacy{display:block;margin:0;order:2;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar > .footer-left > .foot-meta{order:3;flex:0 0 100%;padding:0 0 0 var(--chrome-pad)}
   .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
