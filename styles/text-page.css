@@ -11,10 +11,11 @@
 .text-page-lead{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
 
 /* Стаття використовує ту саму текстову міру, що й вступ в Умовах. */
-.text-page-copy{grid-column:3/9;max-width:66ch;padding-block:0 clamp(32px,6vh,80px)}
+.text-page-copy{grid-column:3/9;max-width:66ch;padding-block:0}
 .text-page-copy > .text-page-lead{margin-top:var(--rule-gap);max-width:62ch;line-height:1.55}
 .text-page-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
 .text-page-copy p{font-size:var(--fs-text);line-height:1.55;margin:0 0 16px;max-width:62ch}
+.text-page-copy > p:last-child{margin-bottom:0}
 .text-page-body a{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700;transition:color 240ms var(--ease)}
 .text-page-body a:hover,.text-page-body a:focus-visible{color:var(--pencil)}
 .text-page-body a[target="_blank"],
@@ -33,5 +34,4 @@
 @media(max-width:640px){
   .text-page-grid{display:block}
   .text-page-lead{max-width:none}
-  .text-page-copy{padding-block:0 48px}
 }

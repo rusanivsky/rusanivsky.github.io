@@ -681,6 +681,26 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 .site-foot .lines > a:active{color:var(--accent)}
 .site-foot .lines > a:active::before{transform:scaleX(1)}
 .site-foot .lines > a:active::after{opacity:1; transform:none}
+
+/* На touch-пристрої немає hover, тому маркер переходу не може чекати
+   наведення. Це один site-wide контракт для зовнішніх і email-посилань:
+   на десктопі стрілка з'являється при наведенні, на телефоні — видима
+   одразу. !important тут навмисний: стрілки малюють власні шари home,
+   section і photo CSS, які вантажаться після base.css. */
+@media (hover:none){
+  .text-page-body a[target="_blank"]::after,
+  .text-page-body a[href^="mailto:"]::after,
+  .cat[target] .lab::after,
+  .cat[href^="mailto:"] .lab::after,
+  .work .spec.under .sect > span:first-child::after,
+  .work .spec.under .sect > span:last-child::after,
+  .spec a.it[target]::after,
+  .photo-pixover .pixover-link::after,
+  .site-foot .lines > a::after,
+  .foot-bar .arch::after{
+    opacity:.72!important;transform:none!important
+  }
+}
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */

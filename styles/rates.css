@@ -379,6 +379,10 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   display:block
 }
 
+/* Після останнього текстового блоку додаткового поля немає: відстань до
+   підвалу задає його власний верхній ритм, як і на Privacy. */
+main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bottom:0}
+
 /* ── міра набору у смузі 641–960 ────────────────────────────
 
    Суцільний текст стоїть у колонках 3–8, і на десктопі це дає 60–67
