@@ -635,6 +635,18 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   content:""; position:absolute; left:var(--col2); right:0; top:0;
   height:var(--rule); background:var(--divider);
 }
+/* Desktop-контракт спільного блоку замовлень: пояснення й контакти
+   починаються з третьої колонки, а лінійка — з тієї самої grid-line 3.
+   Нижній .foot-bar має окрему геометрію й цим правилом не змінюється. */
+@media (min-width:961px){
+  .foot-in{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .foot-in .say{grid-column:3/8;margin-left:0}
+  .foot-in .k{
+    grid-column:1/-1;
+    padding-right:calc(100% - (16.6666667% - 5 * var(--colgap) / 6))
+  }
+  .foot-in .k::after{left:calc(16.6666667% + var(--colgap) / 6)}
+}
 .site-foot a{color:inherit; text-decoration:none}
 /* контактні рядки стоять під поясненням, а не над ним, і в тому ж
      кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
