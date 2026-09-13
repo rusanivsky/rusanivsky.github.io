@@ -194,11 +194,46 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .step p{grid-column:2;grid-row:2;min-width:0}
 }
 
-/* На десктопі лінійки Timelines мають починатися там само, де лінійки
-   між етапами Process; решта лінійок сторінки не змінюється. */
+/* Лінійки між етапами — «Етапи роботи», «Терміни» і лінійка під
+   «Окремо оплачуються». Доти вони
+   стояли двома окремими правилами, хоч мали збігатися: у коментарі так і
+   було написано. Тепер це одне правило, і розійтись вони більше не
+   можуть.
+
+   Ліва межа — вертикаль нумерації, права — початок десятої колонки:
+   рядок етапу коротший за ціновий, і лінійка кінчається там, де кінчається
+   його вміст, а не на краю верстки.
+
+   Треки рахуються вручну: у repeat(12,1fr) перший роздутий розпіркою
+   .tbody::before до --col2 + 3ch, решта одинадцять ділять залишок, і
+   жодна з наявних змінних лінії не показує. font-size обов'язковий —
+   3ch міряється в кеглі підпису, а не рядка.
+
+   Межа — 961, а не 641: від 960 .steps{display:block}, кроки стають парою
+   «номер | вміст», і сітки під ними вже немає. Доти правило діяло й там,
+   і лінійка рахувалась по треках, яких не існує: на 800px вона йшла
+   95→609, тоді як її власний текст стояв 75→774. Тобто починалась
+   правіше за свій абзац і обривалась задовго до його кінця.
+
+   Рядок «Окремо оплачуються» лишається тут від 641: він звичайний .trow
+   на субсітці, і треки під ним є до самого 640. */
+@media (min-width:961px){
+  .tsec[aria-labelledby="s-time"] .steps .step::before,
+  .tsec[aria-labelledby="s-flow"] .steps .step::before{
+    font-size:var(--fs-label);
+    --t1:calc(var(--col2) + 3ch);
+    --tn:calc((100% - var(--t1) - 11 * var(--colgap)) / 11);
+    left:calc(var(--col3) - .75rem);
+    right:calc(100% - var(--t1) - 9 * var(--colgap) - 8 * var(--tn))
+  }
+}
 @media (min-width:641px){
-  .tsec[aria-labelledby="s-time"] .steps .step::before{
-    left:calc(var(--col3) - .75rem)
+  .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
+    font-size:var(--fs-label);
+    --t1:calc(var(--col2) + 3ch);
+    --tn:calc((100% - var(--t1) - 11 * var(--colgap)) / 11);
+    left:calc(var(--col3) - .75rem);
+    right:calc(100% - var(--t1) - 9 * var(--colgap) - 8 * var(--tn))
   }
 }
 
@@ -208,9 +243,23 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* Верхня лінійка навпроти підпису «Ціни» лишається на другій колонці. */
 .tsec[aria-labelledby="s-price"] .trow:first-child::before{left:var(--col2)}
 /* Внутрішні лінійки йдуть від початку основного тексту на третій колонці;
-   верхня лінійка секції лишається на другій. */
+   верхня лінійка секції лишається на другій.
+
+   Правий кінець у всіх внутрішніх лінійок один — початок дванадцятої
+   колонки. Доти вони тяглися до самого краю верстки й на колонку
+   вибігали за останній вміст рядка.
+
+   Арифметика треків тут та сама, що в розділювачів нижче: у сітці
+   repeat(12,1fr) перший трек роздутий розпіркою .tbody::before до
+   --col2 + 3ch, а решта одинадцять ділять залишок. Через це жодна з
+   наявних змінних не показує, де лежить лінія. font-size обов'язковий:
+   3ch міряється в кеглі підпису, а не рядка. */
 .tsec[aria-labelledby="s-price"] .trow:not(:first-child)::before{
-  left:calc(var(--col3) - .75rem)
+  font-size:var(--fs-label);
+  --t1:calc(var(--col2) + 3ch);
+  --tn:calc((100% - var(--t1) - 11 * var(--colgap)) / 11);
+  left:calc(var(--col3) - .75rem);
+  right:calc(100% - var(--t1) - 11 * var(--colgap) - 10 * var(--tn))
 }
 /* Назви груп у «Цінах» стоять на одну колонку лівіше за позиції. */
 @media (min-width:641px){
@@ -227,11 +276,20 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 .tsec[aria-labelledby="s-price"] .prow::before{
   left:calc(var(--col3) - .75rem) !important
 }
-/* Внутрішні розділювачі обох цінових груп повторюють точний відступ
-   верхньої лінійки від заголовка групи. У .tbody перший трек дорівнює
-   --col1 + --colgap + 3ch, решта одинадцять — ділять залишок; формула
-   ставить лінійку відносно фактичної четвертої лінії subgrid, а не від
-   приблизного rem-зсуву. */
+/* Внутрішні розділювачі обох цінових груп стоять від правого краю
+   третьої колонки — тобто з жолоба одразу за нею — і до початку
+   дванадцятої. Доти вони починались приблизно, від --col3 мінус rem, і
+   ні з чим у сітці не збігались.
+
+   Треки доводиться рахувати вручну, бо в repeat(12,1fr) перший роздутий
+   розпіркою .tbody::before: він дорівнює --col2 + 3ch, а решта
+   одинадцять ділять залишок. Через це жодна з наявних змінних (--col1,
+   --col2, --col3) не показує, де лежить лінія: вони рахуються від
+   --label-w, а не від треку.
+
+   3ch міряється в кеглі підпису, тому font-size на самому псевдоелементі
+   обов'язковий — інакше ch візьметься з кегля рядка й формула поїде.
+   100% — ширина .trow, від якої псевдоелемент і позиціюється. */
 @media (min-width:641px){
   .tsec[aria-labelledby="s-price"] .prow:nth-child(4)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(5)::before,
@@ -239,7 +297,10 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   .tsec[aria-labelledby="s-price"] .prow:nth-child(9)::before,
   .tsec[aria-labelledby="s-price"] .prow:nth-child(10)::before{
     font-size:var(--fs-label);
-    left:calc(2 * var(--col1) + 3 * var(--colgap) + (100% - 12 * var(--colgap) - var(--col1) - 3ch) / 11 - .75rem) !important
+    --t1:calc(var(--col2) + 3ch);
+    --tn:calc((100% - var(--t1) - 11 * var(--colgap)) / 11);
+    left:calc(var(--t1) + 2 * var(--colgap) + 2 * var(--tn)) !important;
+    right:calc(100% - var(--t1) - 11 * var(--colgap) - 10 * var(--tn)) !important
   }
 }
 /* Категорія одразу після вступного абзацу має стандартний просвіт
@@ -251,11 +312,6 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* Перший абзац секції починається разом з основним текстом — із третьої
    колонки; його лінійка при цьому лишається на другій. */
 .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:3/9}
-/* Вступ відкривається лінійкою на краю секції. Лінійки всіх етапів,
-   включно з «Брифом», починаються з однієї вертикалі нумерації. */
-.tsec[aria-labelledby="s-flow"] .steps .step::before{
-  left:calc(var(--col3) - .75rem)
-}
 /* Перед підсумковою приміткою в етапах лінійка не потрібна. */
 .tsec[aria-labelledby="s-flow"] .steps + .trow::before{display:none}
 
@@ -281,8 +337,11 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
    список після неї починається без додаткового верхнього просвіту. */
 .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(2){padding-bottom:clamp(8px,1.2vw,16px)}
 .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3){padding-top:var(--rule-gap)}
+/* Лінійка під «Окремо оплачуються» повертається — правило вище ховає всі
+   внутрішні лінійки розділу. Де їй стояти, каже спільне правило кроків
+   вище: геометрія в них та сама. */
 .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
-  display:block;left:calc(var(--col3) - .75rem)
+  display:block
 }
 
 /* вузько колонок-треків немає: рядок стає парою «підпис — значення», а
@@ -314,9 +373,16 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
     column-gap:clamp(14px,2.4vw,36px);row-gap:6px}
   .tsec .lead,.tsec .copy,.tsec .note,.grp,.pts,
   .prow .svc,.prow .fee{grid-column:1/-1;max-width:none;margin-left:0}
+  /* вузько сітки-треків немає, тож і правий кінець нема від чого
+     відміряти: лінійка знову йде від краю до краю блоку */
   .tsec[aria-labelledby="s-price"] .trow::before,
   .tsec[aria-labelledby="s-flow"] .trow::before,
-  .tsec[aria-labelledby="s-price"] .prow::before{left:0 !important}
+  .tsec[aria-labelledby="s-price"] .prow::before{
+    left:0 !important;right:0 !important;
+    /* font-size на псевдоелементі потрібен лише для ch у формулі треків;
+       тут формули немає, тож і кегль лишається успадкованим */
+    font-size:inherit !important
+  }
   .tsec[aria-labelledby="s-price"] .pts{grid-column:1/-1}
   .tsec[aria-labelledby="s-rev"] .tbody > .trow:nth-child(3)::before{
     left:0 !important
