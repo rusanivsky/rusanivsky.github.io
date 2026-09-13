@@ -735,10 +735,6 @@ figure{margin:0; position:relative; z-index:1}
 .site-foot{
   color:var(--ink);
   --uline:2px;
-  /* поле підвала винесено у змінну: коли підпис вертикальний, лінійку
-     доводиться малювати не від нього, а від самої плашки — і треба знати,
-     на якій висоті в ній стоїть перший рядок */
-  --foot-pad:clamp(22px,3.85vh,52px);
 }
 /* контакти починаються з другої колонки — від тієї самої вертикалі, від
    якої йдуть лінійки й номери на всій сторінці. Доти вони стояли з
@@ -768,10 +764,12 @@ figure{margin:0; position:relative; z-index:1}
      від останнього рядка до кінця сторінки при 223px самого вмісту */
   .work{padding-bottom:clamp(48px,9vw,64px)}
   .clients{padding-block:10px clamp(24px,6vw,32px)}
-  .site-foot{--foot-pad:clamp(18px,5vw,24px)}
-  .foot-bar{--footer-row-gap:clamp(12px,1.8vw,26px);grid-template-columns:1fr;padding-block:calc(var(--meta-pad) + 8px) clamp(18px,4.5vw,24px)}
-  .foot-bar > .cols{padding:0}
-  .foot-bar > .cols{margin-left:0}
+  /* Підвал головної згортається в одну колонку на 640, а не на 560, як
+     решта сайту: у ньому більше вмісту. Це єдине, що тут своє — поля,
+     просвіти й оптичний зсув каже base.css, і повторювати їх не можна.
+     Доти повторювались, і .foot-bar > .cols{padding:0} тихо знімало
+     --chrome-pad: копірайт на телефоні ставав урівень із лінійкою. */
+  .foot-bar{grid-template-columns:1fr}
   .site-foot .foot-meta{width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .site-foot .foot-meta .tiny{white-space:nowrap;min-width:0}
 }
