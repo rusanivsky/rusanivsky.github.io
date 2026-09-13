@@ -842,6 +842,5 @@ figure{margin:0; position:relative; z-index:1}
   /* На головній цей локальний рядок ішов після base.css, тому явно
      повертаємо спільний desktop-контракт блоку «Замовлення». */
   .foot-in .say{grid-column:3/8;margin-left:0}
-  .foot-in .k::after{left:calc(16.6666667% - var(--colgap) / 3)}
 
 }

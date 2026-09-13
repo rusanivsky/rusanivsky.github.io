@@ -645,7 +645,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
     grid-column:1/-1;
     padding-right:calc(100% - (16.6666667% - 5 * var(--colgap) / 6))
   }
-  .foot-in .k::after{left:calc(16.6666667% + var(--colgap) / 6)}
+  .foot-in .k::after{left:calc(16.6666667% - var(--colgap) / 3)}
 }
 .site-foot a{color:inherit; text-decoration:none}
 /* контактні рядки стоять під поясненням, а не над ним, і в тому ж
