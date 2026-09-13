@@ -32,7 +32,7 @@ body:has(.contact-head):not(:has(.rates-nav)) .topbar::before{
 .shots > *{grid-column:span 4}
 }
 .shots img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
-  background:var(--surface);display:block}
+  background:var(--surface);display:block;box-shadow:var(--media-shadow)}
 .shots > *{align-self:start}
 /* Вертикальний кадр займає дві клітинки заввишки. Доти він розтягував увесь
    рядок, і під сусідніми горизонтальними зяяла діра на пів екрана. */
