@@ -150,13 +150,21 @@ body.footer-at-bottom .site-foot{margin-top:auto}
   padding-block:calc(
     clamp(10px,2vh,28px) + .825 * var(--home-name-size) - .865 * var(--page-title-size)
   ) 0;
-  padding-inline-start:calc(var(--pad) + var(--col2));
+  /* На десктопі заголовок іде за класичною рівною сіткою: текст починається
+     на межі перед другою колонкою, а не на старій осі роздутої колонки
+     номерів, яку зберігає --col2. */
+  padding-inline-start:calc(
+    var(--pad) + ((var(--gridw) - 11 * var(--colgap)) / 12) + var(--colgap)
+  );
   text-wrap:balance;overflow-wrap:break-word;
 }
 /* На /privacy/ заголовок лишається всередині статті, що починається з
    третьої колонки. Виводимо лише сам заголовок на другу; текст статті
    не рухається. */
-.page-title:not(.wrap){margin-inline-start:calc(-1 * var(--col2));padding-inline-start:0}
+.page-title:not(.wrap){
+  margin-inline-start:calc(-1 * (((var(--gridw) - 11 * var(--colgap)) / 12) + var(--colgap)));
+  padding-inline-start:0
+}
 .page-title + .cats,
 .page-title + .contact-head{padding-top:var(--rule-gap)}
 @media (max-width:640px){

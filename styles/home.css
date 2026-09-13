@@ -467,8 +467,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 /* у категорій стрілки більше немає — лишилась тільки там, де посилання
    справді виводить із сайту */
 .spec a.it[target]::after{
-  content:"↗"; display:inline-block; margin-left:.35em; font-size:.9em; color:var(--ink);
-  opacity:0; transform:translate(-3px,3px);
+  content:"↗"; display:inline-block; margin-left:.16em; font-size:.36em;
+  vertical-align:.95em; line-height:1; color:var(--ink);
+  opacity:0; transform:translate(-.3em,.3em);
   transition:opacity 300ms var(--ease), transform 300ms var(--ease);
 }
 @media (hover:hover){
