@@ -90,6 +90,22 @@ const PROPS = [
   'grid-column', 'margin-left', 'padding-left', 'text-align', 'opacity',
 ];
 
+/* Псевдоелементи доводиться міряти окремо: getBoundingClientRect для них
+   не існує, у DOM їх немає, і обхід елементів їх не бачив зовсім.
+
+   А саме ними намальовано майже все, що тримає сторінку: волосяні лінійки
+   рядків (.trow::before, .spec::before), заслінка під шапкою, розпірка
+   першого треку, стрілки посилань. Через це гейт мовчав на правці, яка
+   пересувала лінійки прайсу на 90px, — і мовчав би на будь-якій іншій.
+
+   Беремо обчислені значення: для absolute-лінійки саме left/right/top і
+   вирішують, де вона ляже. */
+const PSEUDO_PROPS = [
+  'content', 'display', 'position', 'left', 'right', 'top', 'bottom',
+  'width', 'height', 'background-color', 'opacity', 'transform',
+  'margin-left', 'font-size',
+];
+
 const BLOCKED = [
   '*googletagmanager.com*', '*google-analytics.com*', '*analytics.google.com*',
   '*i.ytimg.com*', '*i.vimeocdn.com*', '*youtube.com*', '*youtube-nocookie.com*',
@@ -191,6 +207,15 @@ class Cdp {
 /* ---------- у сторінці ---------- */
 
 const FREEZE = `(() => {
+  /* Спершу глушимо всі таймери, і аж потім заморожуємо текст. Інакше
+     kyiv-clock.js, що чекає на межу хвилини, встигав перезаписати
+     годинник між заморожуванням і збором: раз на кількадесят прогонів
+     зліпок містив живий час, і сторінка «розходилась» на 5px там, де
+     ніхто нічого не міняв. Заморожування двічі вікно лише звужувало.
+     Після цього ми тільки читаємо верстку, тож знятий таймер нічого не
+     ламає — навпаки, це єдиний спосіб зробити заморозку остаточною. */
+  const last = setTimeout(() => {}, 0);
+  for (let id = 1; id <= last; id++) { clearTimeout(id); clearInterval(id); }
   document.documentElement.classList.remove('rev');
   document.querySelectorAll('[data-rev]').forEach((el) => el.classList.add('is-in'));
   /* Знятого .rev не досить: перехід, що вже пішов, Chrome доводить до
@@ -243,6 +268,7 @@ const COLLECT = `((expected) => {
     throw new Error(moving.length + ' анімацій ще йдуть — зліпок був би випадковим');
   }
   const PROPS = ${JSON.stringify(PROPS)};
+  const PSEUDO_PROPS = ${JSON.stringify(PSEUDO_PROPS)};
   const out = [];
   const round = (n) => Math.round(n * 100) / 100;
   const sx = window.scrollX;
@@ -256,6 +282,13 @@ const COLLECT = `((expected) => {
     };
     for (const prop of PROPS) rec[prop] = style.getPropertyValue(prop);
     out.push(rec);
+    for (const pseudo of ['::before', '::after']) {
+      const ps = getComputedStyle(el, pseudo);
+      if (!ps.content || ps.content === 'none' || ps.display === 'none') continue;
+      const prec = { p: where + pseudo, b: [0, 0, 0, 0] };
+      for (const prop of PSEUDO_PROPS) prec[prop] = ps.getPropertyValue(prop);
+      out.push(prec);
+    }
     const seen = Object.create(null);
     for (const child of el.children) {
       const tag = child.tagName.toLowerCase();
