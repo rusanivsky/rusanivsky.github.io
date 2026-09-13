@@ -10,8 +10,7 @@
    Доти все це лежало 314 рядками інлайну в rates/index.html. */
 
 /* ── шапка сторінки ───────────────────────────────────────── */
-.contact-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);padding-block:clamp(28px,5vh,64px) 0}
-.contact-head .intro{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
+.contact-head{padding-block:clamp(28px,5vh,64px) 0}
 /* Внутрішня навігація лишається одним горизонтальним рядом, як навігація
    розділів у Photo; прокрутка замість переносу тримає її компактною на вузьких
    екранах. Додаткової лінійки тут немає. */
@@ -109,7 +108,7 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
    між собою, з переліком контактів унизу і з рештою сайту.
    height:0 і порожній вміст: розпірка нічого не малює й нічого не
    зсуває — вона лише міряє трек */
-.tbody::before,.contact-head::before{
+.tbody::before{
   content:"";grid-column:1;grid-row:1;height:0;
   margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label);
 }

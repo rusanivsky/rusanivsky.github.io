@@ -216,7 +216,7 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 23;
+const sectionHeaderStyleVersion = 24;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.

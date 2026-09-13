@@ -1,0 +1,37 @@
+/* Спільне тіло коротких текстових сторінок — /rates/ і /privacy/.
+   Шапка й підвал живуть у base.css / section.css. Галереї та навігаційні
+   списки цей контракт не підключають. */
+
+/* 12-колонкова сітка текстової сторінки. Перша колонка лишається полем,
+   друга — початок лінійки, третя — початок читабельного тексту. */
+.text-page-grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap)}
+.text-page-grid::before{content:"";grid-column:1;grid-row:1;height:0;margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label)}
+
+/* Перший вступний абзац — один контракт для Rates і Privacy. */
+.text-page-lead{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
+
+/* Стаття використовує ту саму текстову міру, що й вступ в Умовах. */
+.text-page-copy{grid-column:3/9;max-width:66ch;padding-block:0 clamp(32px,6vh,80px)}
+.text-page-copy > .text-page-lead{margin-top:var(--rule-gap);max-width:62ch;line-height:1.55}
+.text-page-copy h2{font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-label);text-transform:uppercase;margin:clamp(30px,5vh,56px) 0 12px}
+.text-page-copy p{font-size:var(--fs-text);line-height:1.55;margin:0 0 16px;max-width:62ch}
+.text-page-body a{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700;transition:color 240ms var(--ease)}
+.text-page-body a:hover,.text-page-body a:focus-visible{color:var(--pencil)}
+.text-page-body a[target="_blank"],
+.text-page-body a[href^="mailto:"]{position:relative}
+.text-page-body a[target="_blank"]::after,
+.text-page-body a[href^="mailto:"]::after{
+  content:"↗";position:absolute;left:100%;top:.18em;margin-left:.16em;
+  font-size:.44em;line-height:1;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
+  transition:opacity 320ms var(--ease),transform 320ms var(--ease)
+}
+.text-page-body a[target="_blank"]:hover::after,
+.text-page-body a[target="_blank"]:focus-visible::after,
+.text-page-body a[href^="mailto:"]:hover::after,
+.text-page-body a[href^="mailto:"]:focus-visible::after{opacity:1;transform:none}
+
+@media(max-width:640px){
+  .text-page-grid{display:block}
+  .text-page-lead{max-width:none}
+  .text-page-copy{padding-block:0 48px}
+}
