@@ -293,6 +293,32 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
   display:block;left:calc(var(--col3) - .75rem)
 }
 
+/* Від 641 до 960 рядок етапу не розкладається на дванадцять треків —
+   назва й опис стали б надто вузькими, — але й не відходить до лівого
+   краю тіла, як досі. Він лишається subgrid сторінки: номер стоїть на
+   третій колонці, як на десктопі, назва й опис — під нею. Лінійку теж
+   веде сама сітка (абсолютний ::before з grid-column), а не --col3:
+   нижче 960 перша колонка фіксується на 20px, і --col3 відв'язується
+   від фактичного третього треку — саме через це номери з'їжджали вліво
+   від тексту, а лінійки лишалися окремо праворуч. */
+@media (min-width:641px) and (max-width:960px){
+  .steps{display:grid}
+  .steps .step{
+    display:grid;grid-template-columns:subgrid;grid-column:1/-1;
+    column-gap:var(--colgap);row-gap:6px
+  }
+  .tsec[aria-labelledby="s-flow"] .steps .step::before,
+  .tsec[aria-labelledby="s-time"] .steps .step::before{
+    grid-column:3/-1;left:-.75rem;right:0
+  }
+  .step .no{
+    position:static;grid-column:3;grid-row:1;width:auto;
+    margin-left:.65rem;align-self:baseline
+  }
+  .step h3{grid-column:4/-1;grid-row:1;min-width:0}
+  .step p{grid-column:4/-1;grid-row:2;min-width:0}
+}
+
 /* вузько колонок-треків немає: рядок стає парою «підпис — значення», а
    тіло розділу відходить за першу колонку цілим блоком, тож лінійки
    всередині нього стоять від його ж краю — на спільній із підписом
