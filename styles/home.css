@@ -803,6 +803,7 @@ figure{margin:0; position:relative; z-index:1}
 }
 .logos a:active .lg{color:var(--ink)}
 .logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
+.logo-break{display:none}
 /* Логотип малюється маскою, а не картинкою: колір дає currentColor, з
    файлу читається лише альфа. Тому три растрові марки лежать у WebP —
    у ньому альфа стискається без утрат, і 77 КБ трьох PNG стали 43 КБ
@@ -831,6 +832,13 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:480px){
   .clients{--lg:clamp(18px,5.6vw,24px)}
   .logos{column-gap:clamp(12px,4vw,20px); row-gap:clamp(18px,5vw,26px)}
+  .logos .logo-break{display:block;flex:0 0 100%;width:0;height:0;margin:0;padding:0;order:1}
+  /* Могилянка починає другий ряд разом із Defenders і Tsyronian;
+     ShyLero лишається наступним рядом, коли ширини вже не вистачає. */
+  .logos li:has(.lg.naukma),
+  .logos li:has(.lg.defenders),
+  .logos li:has(.lg.tsyronian){order:1}
+  .logos li:has(.lg.shylero){order:2}
 }
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* Сам підвал — колір, --uline, --foot-pad — описаний у base.css і однаковий
