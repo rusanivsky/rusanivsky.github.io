@@ -7,12 +7,12 @@
 .text-page-grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap)}
 .text-page-grid::before{content:"";grid-column:1;grid-row:1;height:0;margin-left:var(--col2);min-width:3ch;font-size:var(--fs-label)}
 
-/* Privacy uses the same page-level grid as the section landings: the title
-   sits on column 2 while the article starts on column 3. Rates keeps its
-   existing text flow until its separate grid pass. */
-.privacy-page{grid-template-columns:repeat(12,minmax(0,1fr))}
-.privacy-page::before{display:none}
-.privacy-page > .page-title{grid-column:2/-1;margin-inline-start:0;padding-inline-start:0}
+/* A page title that participates directly in the text grid uses the same
+   geometry as the section landings: title on column 2, copy on column 3.
+   Rates keeps its separate section flow. */
+.text-page-grid:has(> .page-title){grid-template-columns:repeat(12,minmax(0,1fr))}
+.text-page-grid:has(> .page-title)::before{display:none}
+.text-page-grid > .page-title{grid-column:2/-1;margin-inline-start:0;padding-inline-start:0}
 
 /* Перший вступний абзац — один контракт для Rates і Privacy. */
 .text-page-lead{grid-column:3/9;margin:0;max-width:50ch;font-size:var(--fs-text);line-height:1.5;text-wrap:pretty}
@@ -40,9 +40,9 @@
 
 @media(max-width:640px){
   .text-page-grid{display:block}
-  .privacy-page > .page-title{padding-inline-start:0}
-  .privacy-page .text-page-copy,
-  .privacy-page .text-page-copy > .text-page-lead,
-  .privacy-page .text-page-copy p{max-width:none}
+  .text-page-grid:has(> .page-title) > .page-title{padding-inline-start:0}
+  .text-page-grid:has(> .page-title) .text-page-copy,
+  .text-page-grid:has(> .page-title) .text-page-copy > .text-page-lead,
+  .text-page-grid:has(> .page-title) .text-page-copy p{max-width:none}
   .text-page-lead{max-width:none}
 }
