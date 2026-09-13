@@ -4,6 +4,7 @@
     photos=photos.concat(Array.prototype.slice.call(gallery.querySelectorAll('img')));
   });
   if(!photos.length) return;
+  if(window.matchMedia('(max-width:640px)').matches) return;
 
   var overlay=document.createElement('div');
   overlay.className='photo-lightbox';

@@ -267,7 +267,7 @@ function addSectionHeaderStyle(html, route) {
 
 const themeScriptVersion = 5;
 
-const photoLightboxScriptVersion = 1;
+const photoLightboxScriptVersion = 2;
 
 function addPhotoLightboxScript(html, route) {
   html = html.replace(/\s*<script src="\/scripts\/photo-lightbox\.js(?:\?[^" ]*)?"[^>]*><\/script>/g, '');

@@ -382,6 +382,9 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55;overflow-x:hidden;overflow-x:clip}
 img{display:block;max-width:100%}
 .shots img{cursor:zoom-in;touch-action:pan-x pan-y}
+@media (max-width:640px){
+  .shots img{cursor:default;touch-action:auto}
+}
 /* На телефоні масштабування належить окремому переглядачу фото, а не всій
    сторінці. pan-x/pan-y зберігає звичайне гортання, але віддає pinch-жест
    не браузеру. Легбокс нижче перехоплює його власним масштабуванням. */

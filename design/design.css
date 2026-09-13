@@ -51,15 +51,9 @@
 .pt > a{padding-block:4px}
 .pd{margin:0;font-size:var(--fs-text);line-height:1.5;color:var(--mute);text-wrap:pretty;max-width:52ch}
 
-/* Cover design — вільна masonry-розкладка без жорстких рядків: висота
-   сусіднього проєкту більше не створює порожнього просвіту під коротшим. */
-.covers-grid{display:block;column-count:1;column-gap:clamp(34px,4.4vw,72px)}
-.covers-grid > .p{break-inside:avoid;margin-bottom:clamp(34px,4.4vw,72px)}
-.covers-grid > .p:last-child{margin-bottom:0}
+/* Cover design — звичайний row-first grid: у кожному режимі картки
+   починаються від спільної верхньої межі. CSS columns давали інший порядок:
+   у двох колонках друга картка падала під першу, а третя вже стартувала
+   зверху сусідньої колонки. Розмір рядка визначає його найвища картка,
+   тож нижче короткої лишається контрольований спільний gap. */
 .covers-grid .shots{gap:0}
-@media (min-width:760px){
-  .covers-grid{column-count:2}
-}
-@media (min-width:1280px){
-  .covers-grid{column-count:3}
-}
