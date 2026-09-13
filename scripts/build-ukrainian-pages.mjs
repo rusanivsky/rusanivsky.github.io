@@ -225,7 +225,7 @@ const sectionStyleVersion = 1;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 117,
-  '/video/video.css': 118,
+  '/video/video.css': 119,
   '/design/design.css': 109,
 };
 

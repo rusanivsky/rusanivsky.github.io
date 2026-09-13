@@ -20,6 +20,7 @@
 .v{display:flex;flex-direction:column;gap:10px}
 .fac{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--video-preview-bg);border:0;padding:0;margin:0;cursor:pointer;overflow:hidden;font:inherit;color:inherit;
   box-shadow:var(--media-shadow)}
+.reels-grid .fac,.reels-grid .v iframe{aspect-ratio:9/16}
 .fac img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 .fac .pl{position:absolute;inset:0;display:grid;place-items:center}
 .fac .pl i{display:block;width:clamp(44px,5vw,60px);aspect-ratio:1;border-radius:50%;background:var(--ink);box-shadow:0 0 0 clamp(7px,.8vw,10px) color-mix(in srgb,var(--bg) 78%,transparent);position:relative;transition:transform 300ms var(--ease)}
