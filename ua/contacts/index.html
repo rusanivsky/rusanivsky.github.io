@@ -35,20 +35,7 @@
 <link rel="stylesheet" href="/styles/section.css?v=1">
 <link rel="stylesheet" href="/photo/photo.css?v=117">
 <link rel="stylesheet" href="/styles/section-header.css?v=23">
-<style>
-.contact-list{padding-top:clamp(48px,9vh,112px)}
-.contact-list .cat{padding-block:var(--rule-gap)}
-@media (max-width:640px){
-  /* На мобільному контакти мають ту саму шапку в потоці й ту саму
-     поведінку плити під час скролу, що Photo, Video та Design. Десктопна
-     sticky-шапка лишається без змін. */
-  body.contacts-page .topbar{position:static;z-index:auto}
-  body.contacts-page .topbar::before{display:none}
-  body.contacts-page::before,
-  body.contacts-page::after{filter:brightness(1.15)!important}
-  .contact-list{padding-top:clamp(48px,9vh,112px)}
-}
-</style>
+<link rel="stylesheet" href="/styles/contacts.css?v=1">
 <script src="/scripts/reveal.js?v=8"></script>
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
 <script src="/scripts/language-switcher.js" defer></script>
