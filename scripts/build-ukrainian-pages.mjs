@@ -97,7 +97,7 @@ function localiseStructuredData(html, route, description) {
 }
 
 function updateHead(html, route, title, description, ukrainian) {
-  html = html.replace(/<meta name="viewport" content="[^"]+">/, '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">');
+  html = html.replace(/<meta name="viewport" content="[^"]+">/, '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">');
   const canonical = absolute(ukrainian ? uaRoute(route) : route);
   html = html.replace(/\n<link rel="alternate" hreflang="(?:en|uk|x-default)" href="[^"]+">/g, '');
   html = html.replace(/<html lang="en"/, `<html lang="${ukrainian ? 'uk' : 'en'}"`);
