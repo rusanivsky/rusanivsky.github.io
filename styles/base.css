@@ -381,36 +381,6 @@ body.no-plate-darkening::after{filter:none}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);font-stretch:var(--text-stretch);font-size:var(--fs-text);line-height:1.55;overflow-x:hidden;overflow-x:clip}
 img{display:block;max-width:100%}
-.shots img{cursor:zoom-in;touch-action:pan-x pan-y}
-@media (max-width:640px){
-  .shots img{cursor:default;touch-action:auto}
-}
-/* На телефоні масштабування належить окремому переглядачу фото, а не всій
-   сторінці. pan-x/pan-y зберігає звичайне гортання, але віддає pinch-жест
-   не браузеру. Легбокс нижче перехоплює його власним масштабуванням. */
-@media (pointer:coarse){
-  html,body{touch-action:pan-x pan-y}
-}
-body.lightbox-open{overflow:hidden}
-.photo-lightbox[hidden]{display:none}
-.photo-lightbox{position:fixed;inset:0;z-index:1000;background:rgb(16 22 16 / .94);
-  color:#f5f7f3;touch-action:none;overscroll-behavior:contain}
-.photo-lightbox__stage{position:relative;width:100%;height:100%;display:grid;
-  place-items:center;overflow:hidden;touch-action:none}
-.photo-lightbox__image{display:block;max-width:calc(100% - 32px);max-height:calc(100% - 32px);
-  width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none;
-  cursor:grab;transform:translate3d(0,0,0) scale(1);transform-origin:center;
-  will-change:transform;touch-action:none;transition:transform 180ms var(--ease)}
-.photo-lightbox.is-dragging .photo-lightbox__image{cursor:grabbing;transition:none}
-.photo-lightbox__close{position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));
-  z-index:1;width:42px;height:42px;padding:0;border:1px solid rgb(245 247 243 / .42);
-  border-radius:50%;background:rgb(16 22 16 / .46);color:inherit;font:400 28px/1 var(--font);
-  cursor:pointer}
-.photo-lightbox__close:hover,.photo-lightbox__close:focus-visible{background:var(--pencil);color:var(--ink)}
-@media (max-width:639px){
-  .photo-lightbox__image{max-width:calc(100% - 20px);max-height:calc(100% - 20px)}
-  .photo-lightbox__close{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right))}
-}
 a{color:inherit;text-decoration:none}
 h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.03em;line-height:1}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}

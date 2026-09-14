@@ -35,12 +35,6 @@ const lightPortfolioRoutes = new Set([
   '/photo/portraits/',
 ]);
 
-const photoGalleryRoutes = new Set([
-  '/photo/reportage/',
-  '/photo/culture-art/',
-  '/photo/backstage/',
-  '/photo/portraits/',
-]);
 const nightPortfolioRoutes = new Set([
   '/video/reels/',
   '/video/interviewandvlogs/',
@@ -232,7 +226,7 @@ const sectionHeaderStyleVersion = 25;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 11;
+const baseStyleVersion = 12;
 const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
@@ -255,7 +249,9 @@ function updateSectionStyleVersions(html) {
 //   section-header.css      заголовок сторінки й перелік категорій
 // Перезапис ідемпотентний: старі посилання знімаються й ставляться заново.
 function addSharedStyles(html, route) {
-  if (route === '/') return html;
+  if (route === '/') {
+    return html.replace(/\/styles\/base\.css\?v=\d+/g, `/styles/base.css?v=${baseStyleVersion}`);
+  }
   html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/(?:base|section)\.css(?:\?[^\"]*)?">/g, '');
   const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
   if (!sectionStyle.test(html)) throw new Error(`No section stylesheet found for ${route}`);
@@ -273,21 +269,6 @@ function addSectionHeaderStyle(html, route) {
 }
 
 const themeScriptVersion = 5;
-
-const photoLightboxScriptVersion = 3;
-const photoLightboxStyleVersion = 1;
-
-function addPhotoLightboxStyle(html, route) {
-  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/photo-lightbox\.css(?:\?[^\"]*)?">/g, '');
-  if (!photoGalleryRoutes.has(route)) return html;
-  return html.replace('</head>', `<link rel="stylesheet" href="/styles/photo-lightbox.css?v=${photoLightboxStyleVersion}">\n</head>`);
-}
-
-function addPhotoLightboxScript(html, route) {
-  html = html.replace(/\s*<script src="\/scripts\/photo-lightbox\.js(?:\?[^" ]*)?"[^>]*><\/script>/g, '');
-  if (!photoGalleryRoutes.has(route)) return html;
-  return html.replace('</body>', `<script src="/scripts/photo-lightbox.js?v=${photoLightboxScriptVersion}" defer></script>\n</body>`);
-}
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми
@@ -357,8 +338,6 @@ for (const [route, source, title, description] of pages) {
   english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
-  english = addPhotoLightboxStyle(english, route);
-  english = addPhotoLightboxScript(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
