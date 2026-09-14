@@ -849,7 +849,10 @@ figure{margin:0; position:relative; z-index:1}
   /* Вирівнюємо марки в кожному flex-рядку по спільній центральній осі,
      щоб різні за висотою знаки не прилипали до верхньої межі. */
   .logos{align-items:center}
-  .logos > li{min-height:calc(var(--lg) * 1.64)}
+  .logos > li{
+    height:calc(var(--lg) * 1.64);
+    display:flex;align-items:center
+  }
 }
 /* ── підвал сайту ─────────────────────────────────────────── */
 /* Сам підвал — колір, --uline, --foot-pad — описаний у base.css і однаковий
