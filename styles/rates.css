@@ -139,7 +139,8 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 /* суцільний текст тримається лівої половини — треків 3–8, як назва
    розділу на головній: міра рядка лишається читною, а права половина
    віддана ціні або опису */
-.tsec .lead,.tsec .copy,.tsec .note{grid-column:3/9;margin:0;max-width:56ch;text-wrap:pretty}
+.tsec .lead{grid-column:3/9;margin:0;max-width:50ch;line-height:1.5;text-wrap:pretty}
+.tsec .copy,.tsec .note{grid-column:3/9;margin:0;max-width:56ch;text-wrap:pretty}
 .tsec .copy > p{margin:0;text-wrap:pretty}
 .tsec .copy > p + p{margin-top:clamp(8px,1vw,14px)}
 .tsec .note{color:inherit}
