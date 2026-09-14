@@ -61,7 +61,7 @@ main a.back{
 main a.back::before{
   content:"←"; display:inline-block; width:0; margin-right:0; opacity:0;
   position:absolute; right:100%;
-  font-size:.34em; line-height:1; vertical-align:middle;
+  font-size:.68em; line-height:1; vertical-align:middle;
   transform:translateX(-.6em) translateY(-50%);
   top:50%;
   transition:opacity 220ms var(--ease);
@@ -73,12 +73,14 @@ main a.back::before{
   main a.back:hover::before{opacity:1}
   main:has(a.back:hover) > .error-rule::after{transform:scaleX(1)}
 }
+main a.back:focus-visible{color:var(--accent)}
+main a.back:focus-visible::before{opacity:1}
 main:has(a.back:focus-visible) > .error-rule::after,
 main:has(a.back:active) > .error-rule::after{transform:scaleX(1)}
 @media (min-width:641px){
   /* На десктопі стрілка повторює .back-arrow у спільній шапці за кеглем
      і висотою, але в ховері оптично центрується відносно букв. */
   main a.back::before{
-    font-size:var(--fs-label); line-height:1; vertical-align:middle
+    font-size:calc(var(--fs-label) + var(--fs-label)); line-height:1; vertical-align:middle
   }
 }
