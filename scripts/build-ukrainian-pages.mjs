@@ -34,6 +34,13 @@ const lightPortfolioRoutes = new Set([
   '/photo/backstage/',
   '/photo/portraits/',
 ]);
+
+const photoGalleryRoutes = new Set([
+  '/photo/reportage/',
+  '/photo/culture-art/',
+  '/photo/backstage/',
+  '/photo/portraits/',
+]);
 const nightPortfolioRoutes = new Set([
   '/video/reels/',
   '/video/interviewandvlogs/',
@@ -267,11 +274,18 @@ function addSectionHeaderStyle(html, route) {
 
 const themeScriptVersion = 5;
 
-const photoLightboxScriptVersion = 2;
+const photoLightboxScriptVersion = 3;
+const photoLightboxStyleVersion = 1;
+
+function addPhotoLightboxStyle(html, route) {
+  html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/photo-lightbox\.css(?:\?[^\"]*)?">/g, '');
+  if (!photoGalleryRoutes.has(route)) return html;
+  return html.replace('</head>', `<link rel="stylesheet" href="/styles/photo-lightbox.css?v=${photoLightboxStyleVersion}">\n</head>`);
+}
 
 function addPhotoLightboxScript(html, route) {
   html = html.replace(/\s*<script src="\/scripts\/photo-lightbox\.js(?:\?[^" ]*)?"[^>]*><\/script>/g, '');
-  if (!lightPortfolioRoutes.has(route)) return html;
+  if (!photoGalleryRoutes.has(route)) return html;
   return html.replace('</body>', `<script src="/scripts/photo-lightbox.js?v=${photoLightboxScriptVersion}" defer></script>\n</body>`);
 }
 
@@ -343,6 +357,7 @@ for (const [route, source, title, description] of pages) {
   english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
+  english = addPhotoLightboxStyle(english, route);
   english = addPhotoLightboxScript(english, route);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
