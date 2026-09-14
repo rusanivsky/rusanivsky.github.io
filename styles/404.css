@@ -59,7 +59,7 @@ main a.back{
   transition:color 260ms var(--ease);
 }
 main a.back::before{
-  content:"←"; display:inline-block; width:0; margin-right:0; opacity:0;
+  content:"←"; display:none; width:0; margin-right:0; opacity:0;
   position:absolute; right:100%;
   font-size:.68em; line-height:1; vertical-align:middle;
   transform:translateX(-1.1em) translateY(-50%);
@@ -77,10 +77,11 @@ main a.back:focus-visible{color:var(--accent)}
 main a.back:focus-visible::before{opacity:1}
 main:has(a.back:focus-visible) > .error-rule::after,
 main:has(a.back:active) > .error-rule::after{transform:scaleX(1)}
-@media (min-width:641px){
-  /* На десктопі стрілка повторює .back-arrow у спільній шапці за кеглем
-     і висотою, але в ховері оптично центрується відносно букв. */
+@media (min-width:1101px) and (hover:hover) and (pointer:fine){
+  /* Стрілка належить лише десктопній взаємодії з мишею. На телефонах і
+     планшетах кнопка лишається чистим текстом без прихованого маркера. */
   main a.back::before{
-    font-size:calc(var(--fs-label) + var(--fs-label)); line-height:1; vertical-align:middle
+    display:inline-block; font-size:calc(var(--fs-label) + var(--fs-label));
+    line-height:1; vertical-align:middle
   }
 }
