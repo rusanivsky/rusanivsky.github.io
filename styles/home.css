@@ -901,12 +901,13 @@ figure{margin:0; position:relative; z-index:1}
   /* Текст героя: від третьої колонки до межі перед восьмою. */
   .hero-copy{grid-column:3/8;padding-left:0}
 
-  /* Напрямки тепер рахуються по рівних треках: номер не роздуває першу
-     колонку, а grid-line 3/7/8 збігаються з desktop-прев'ю сітки. */
+  /* Напрямки тепер рахуються по рівних треках: номер стоїть у третій
+     колонці й вирівнюється під її правим краєм; grid-line 3/7/8
+     збігаються з desktop-прев'ю сітки. */
   .specs{
     grid-template-columns:repeat(12,minmax(0,1fr))
   }
-  .spec .no{grid-column:3;grid-row:1;align-self:baseline;margin-left:0;text-align:left}
+  .spec .no{grid-column:3;grid-row:1;align-self:baseline;margin-left:0;text-align:right}
   /* Для дворядкових назв базова лінія grid-елемента інакше береться з
      останнього рядка. Піднімаємо номер на один кеглевий рядок, щоб він
      став на нижню базову лінію першого рядка. */
