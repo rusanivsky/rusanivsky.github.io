@@ -594,6 +594,11 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 /* У планшетному гріді baseline багаторядкової назви рахується за останнім
    рядком. Повертаємо номер до першого рядка для двох таких назв. */
 @media (min-width:641px) and (max-width:960px){
+  /* На меншому планшеті номер стоїть під правим краєм другої колонки,
+     перед назвою, яка починається з третьої. */
+  .spec .no{
+    grid-column:2;margin-left:0;text-align:right
+  }
   .spec.design-spec .no,
   .spec.under .no{
     transform:translateY(calc(-1.02 * var(--fs-title)))
