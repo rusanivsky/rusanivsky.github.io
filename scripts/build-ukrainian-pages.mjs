@@ -8,7 +8,7 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 // він не робить.
 const googleTag = '<script src="/scripts/google-analytics.js" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
-const revealScript = '<script src="/scripts/reveal.js?v=8" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
+const revealScript = '<script src="/scripts/reveal.js?v=9" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -202,8 +202,11 @@ function addContactsLink(html, route) {
     `<div class="switches">\n    ${termsLink}${contactsMarkup}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
-  if (!html.includes('<script src="/scripts/language-switcher.js" defer></script>')) {
-    html = html.replace('</head>', '<script src="/scripts/language-switcher.js" defer></script>\n</head>');
+  const languageSwitcher = '<script src="/scripts/language-switcher.js?v=2" defer></script>';
+  if (/<script src="\/scripts\/language-switcher\.js(?:\?v=\d+)?" defer><\/script>/.test(html)) {
+    html = html.replace(/<script src="\/scripts\/language-switcher\.js(?:\?v=\d+)?" defer><\/script>/, languageSwitcher);
+  } else {
+    html = html.replace('</head>', `${languageSwitcher}\n</head>`);
   }
   return html;
 }
@@ -241,16 +244,16 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 25;
+const sectionHeaderStyleVersion = 26;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 12;
+const baseStyleVersion = 13;
 const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
-  '/photo/photo.css': 117,
-  '/video/video.css': 120,
+  '/photo/photo.css': 118,
+  '/video/video.css': 121,
   '/design/design.css': 111,
 };
 

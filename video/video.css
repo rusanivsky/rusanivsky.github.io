@@ -41,7 +41,6 @@
 }
 .v iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:var(--video-preview-bg);box-shadow:var(--media-shadow)}
 .v video{width:100%;height:auto;aspect-ratio:9/16;display:block;background:var(--video-preview-bg);object-fit:contain}
-.local-fac.landscape video{aspect-ratio:16/9}
 .local-fac video{transition:transform 700ms var(--ease),opacity 300ms var(--ease)}
 @media (hover:hover){
 .local-fac:not(.is-playing):hover video{transform:scale(1.04);opacity:.82}

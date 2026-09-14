@@ -14,8 +14,7 @@
       'section.shots > *',
       '.tsec > h2',
       '.trow',
-      '.contact-head .intro',
-      '.photo-pixover'
+      '.contact-head .intro'
     ].join(',');
     var elements = Array.prototype.slice.call(document.querySelectorAll(selector));
 

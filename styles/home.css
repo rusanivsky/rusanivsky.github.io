@@ -126,11 +126,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     grid-column:1;grid-row:1;justify-content:flex-end;
     height:var(--mobile-meta-row);padding:0 var(--chrome-pad) 0 0
   }
-  .language-slot{display:flex;align-items:center;gap:var(--header-gap)}
-  .language-slot .mobile-contact-link{display:inline-block;margin-right:var(--header-gap);white-space:nowrap}
-  .site-foot .language-slot .mobile-contact-link{color:var(--mute)}
-  .site-foot .language-slot .mobile-contact-link:hover{color:var(--accent)}
-  .language-slot > .tgl button:first-child{padding-left:0}
 }
 /* EN/UA не має власного вертикального просвіту: напис стоїть точно в
    24px-рядку шапки, на тій самій вертикалі, що й лінійка. */
@@ -217,7 +212,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
   }
   .home-meta.header-menu-mode > .parts > .part{line-height:1}
   .home-meta.header-menu-mode > .header-menu-toggle{
-    align-self:center;width:24px;height:24px;margin:0 8px 0 0
+    align-self:center;width:44px;height:44px;margin:-10px -2px -10px -10px
   }
   .home-meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
     transform:translate3d(0,-6px,0) scale(.95,.98)
@@ -808,7 +803,6 @@ figure{margin:0; position:relative; z-index:1}
 }
 .logos a:active .lg{color:var(--ink)}
 .logos a:focus-visible{outline:2px solid var(--accent); outline-offset:6px}
-.logo-break{display:none}
 /* Логотип малюється маскою, а не картинкою: колір дає currentColor, з
    файлу читається лише альфа. Тому три растрові марки лежать у WebP —
    у ньому альфа стискається без утрат, і 77 КБ трьох PNG стали 43 КБ
