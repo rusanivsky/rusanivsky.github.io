@@ -423,12 +423,10 @@ main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bot
    верстку на 640. Ліва межа не рухається: вертикаль основного тексту
    лишається тією самою, що на десктопі. */
 @media (max-width:1280px) and (min-width:641px){
-  .tsec .lead,.tsec .copy,.tsec .note,
   .pts,
   .tsec[aria-labelledby="s-price"] .pts,
   .tsec[aria-labelledby="s-rev"] .pts,
-  .tsec[aria-labelledby="s-time"] .pts,
-  .tsec[aria-labelledby="s-price"] .trow:first-child .lead{grid-column:3/-1}
+  .tsec[aria-labelledby="s-time"] .pts{grid-column:3/-1}
 }
 
 /* вузько колонок-треків немає: рядок стає парою «підпис — значення», а
