@@ -252,10 +252,9 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
    а рядок не переноситься */
 .name{
   grid-column:1/span 7; grid-row:1;
-  /* трохи жирніше за 400: на такому кеглі тонкий накреслення читалося як
-     недонабране, а 500 лишає ім'я легким і водночас дає йому вагу */
+  /* Вітринна вага 700 тримає ім'я головним акцентом на кожній ширині. */
   font-family:var(--font); font-stretch:var(--display-stretch);
-  font-size:var(--fs-name); font-weight:600;
+  font-size:var(--fs-name); font-weight:700;
   letter-spacing:-.045em; line-height:.94;
 }
 .name span{display:block; white-space:nowrap}
@@ -377,7 +376,7 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .spec h3{
   margin:0;
   font-family:var(--font); font-stretch:var(--display-stretch);
-  font-size:var(--fs-title); font-weight:600;
+  font-size:var(--fs-title); font-weight:700;
   letter-spacing:-.035em; line-height:1.02;
   color:var(--ink);
   text-align:right;

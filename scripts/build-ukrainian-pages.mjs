@@ -319,13 +319,13 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 26;
+const sectionHeaderStyleVersion = 27;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
 const baseStyleVersion = 14;
-const homeStyleVersion = 2;
-const sectionStyleVersion = 2;
+const homeStyleVersion = 3;
+const sectionStyleVersion = 3;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
