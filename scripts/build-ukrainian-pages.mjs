@@ -7,6 +7,8 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 // (109 і 82 мс) стояли в розборі документа. Нічого до першого малювання
 // він не робить.
 const googleTag = '<script src="/scripts/google-analytics.js" defer></script>';
+const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
+const revealScript = '<script src="/scripts/reveal.js?v=8" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -118,6 +120,23 @@ function addGoogleTag(html) {
   html = html.split(legacyGoogleTag).join('');
   if (html.includes('src="/scripts/google-analytics.js"')) return html;
   return html.replace('</head>', `${googleTag}\n</head>`);
+}
+
+function optimizeRevealLoading(html) {
+  const revealPattern = /<script src="\/scripts\/reveal\.js(?:\?v=\d+)?"[^>]*><\/script>/g;
+  if (!html.match(revealPattern)) return html;
+
+  html = html.replace(/\n?<script data-reveal-boot>[^<]*<\/script>/g, '');
+  let firstReveal = true;
+  html = html.replace(revealPattern, () => {
+    if (!firstReveal) return '';
+    firstReveal = false;
+    return revealScript;
+  });
+
+  const firstStylesheet = /<link rel="stylesheet" href="[^"]+">/;
+  if (!firstStylesheet.test(html)) throw new Error('No stylesheet found before reveal.js');
+  return html.replace(firstStylesheet, `${revealBoot}\n$&`);
 }
 
 function ukrainianiseContent(html) {
@@ -338,6 +357,7 @@ for (const [route, source, title, description] of pages) {
   english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
+  english = optimizeRevealLoading(english);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);
 
