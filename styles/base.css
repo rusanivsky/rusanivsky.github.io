@@ -661,6 +661,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
    текстом угорі й номери з назвами в переліку напрямків. Перша колонка
    лишається наскрізним полем від шапки до підвалу */
 .foot-in .say{grid-column:1/-1;margin-left:var(--col2);min-width:0}
+.foot-in .say,.foot-in .k,.foot-bar > .cols{min-width:0}
 /* підпис підвалу говорить тією самою мовою, що «Чим займаюсь» і
    «Клієнти»: 11px капітель у --mute, а одразу під нею — волосяна лінійка
    на всю ширину верстки, впритул до підпису, як border-top першого рядка
@@ -704,6 +705,10 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
     padding-right:calc(100% - (16.6666667% - 5 * var(--colgap) / 6))
   }
   .foot-in .k::after{left:calc(16.6666667% - var(--colgap) / 3)}
+}
+@media (min-width:641px) and (max-width:960px),
+  (max-width:640px){
+  .foot-in .say{margin-left:calc(var(--col2) + var(--chrome-pad))}
 }
 .site-foot a{color:inherit; text-decoration:none}
 /* контактні рядки стоять під поясненням, а не над ним, і в тому ж

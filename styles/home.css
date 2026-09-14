@@ -859,13 +859,8 @@ figure{margin:0; position:relative; z-index:1}
    на всіх сторінках. Тут лишаються тільки відмінності головної. Копія тих
    самих рядків, що стояла тут раніше, глушила вужчі варіанти з base.css:
    --uline:3px від 700px і --foot-pad, округлений через round() у @supports. */
-/* контакти починаються з другої колонки — від тієї самої вертикалі, від
-   якої йдуть лінійки й номери на всій сторінці. Доти вони стояли з
-   третьої й були єдиним блоком сайту зі своїм уступом. Не grid-column:2,
-   а поле в --col2: трек сітки й наскрізне поле сторінки — різні міри,
-   відколи колонка тримає під собою підпис */
-.foot-in .say{grid-column:1/-1; margin-left:var(--col2)}
-.foot-in .say,.foot-in .k,.foot-bar > .cols{min-width:0}
+/* Контакти в блоці підвалу беруть загальне правило з base.css. Тут лишаються
+   лише локальні правки головної для стрілок і внутрішніх відступів. */
 /* Цілі дотику: контакти підвалу давали 22px, марки клієнтів 20px при
    нормі 24px. Поле росте, від’ємне зовнішнє поле повертає потік. */
 .logos li > a{padding-block:3px;margin-block:-3px;display:inline-block}
@@ -955,20 +950,14 @@ figure{margin:0; position:relative; z-index:1}
   }
   .logos{grid-column:3/-1;margin-left:0}
 
-  /* На головній цей локальний рядок ішов після base.css, тому явно
-     повертаємо спільний desktop-контракт блоку «Замовлення». */
-  .foot-in .say{grid-column:3/8;margin-left:0}
-
 }
 /* На планшеті потрібен лише малий оптичний зсув, як у службового рядка
    шапки, а не перехід на іншу колонку. Контакти успадковують вісь .say. */
 @media (min-width:641px) and (max-width:960px){
   .logos::before{left:calc(-1 * var(--chrome-pad))}
   .clients .logos{margin-left:calc(var(--col2) + var(--chrome-pad))}
-  .foot-in .say{margin-left:calc(var(--col2) + var(--chrome-pad))}
 }
 @media (max-width:640px){
   .logos::before{left:calc(-1 * var(--chrome-pad))}
   .clients .logos{margin-left:calc(var(--col2) + var(--chrome-pad))}
-  .foot-in .say{margin-left:calc(var(--col2) + var(--chrome-pad))}
 }

@@ -127,6 +127,13 @@ body:has(.rates-nav) .topbar .rule{margin-bottom:0}
 .trow.section-intro-row{
   padding-block:clamp(8px,1.2vw,16px)
 }
+/* Для вступних речень у секції процесу і термінів потрібен загальний ритм
+   з іншими основними блоками: відступ після цих абзаців має бути таким самим,
+   як і після фрази про два раунди правок. */
+.tsec[aria-labelledby="s-flow"] .section-intro-row,
+.tsec[aria-labelledby="s-time"] > .tbody > .trow:first-child{
+  padding-block:var(--rule-gap)
+}
 .trow::before{content:"";position:absolute;left:var(--col2);right:0;top:0;
   height:var(--rule);background:var(--divider)}
 /* суцільний текст тримається лівої половини — треків 3–8, як назва
