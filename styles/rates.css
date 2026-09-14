@@ -586,9 +586,17 @@ main.text-page-body > .tsec:last-of-type > .tbody > .trow:last-child{padding-bot
   }
 }
 
-/* On tablet the three referenced price dividers start three gutters deeper;
-   their right edge and all copy columns stay unchanged. */
+/* На tablet рядки етапів зберігають desktop-ритм: внутрішня лінія заходить
+   на 12px перед номером, але не стає повною верхньою межею секції. Три
+   розділювачі цін мають свій окремий зсув; текстові колонки не рухаються. */
 @media (min-width:641px) and (max-width:960px){
+  .tsec[aria-labelledby="s-flow"] .steps .step::before,
+  .tsec[aria-labelledby="s-time"] .steps .step::before{
+    grid-column:3/-1;
+    left:-.75rem !important;
+    right:0 !important
+  }
+
   .tsec[aria-labelledby="s-price"] .trow:nth-child(3)::before,
   .tsec[aria-labelledby="s-price"] .trow:nth-child(7)::before,
   .tsec[aria-labelledby="s-price"] .trow:nth-child(12)::before{
