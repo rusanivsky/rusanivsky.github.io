@@ -846,9 +846,9 @@ figure{margin:0; position:relative; z-index:1}
   .logos li:has(.lg.defenders),
   .logos li:has(.lg.tsyronian){order:1}
   .logos li:has(.lg.shylero){order:2}
-  /* Висота flex-лінії однакова, тому міжрядковий просвіт не залежить
-     від того, який логотип у конкретному ряду найвищий. */
-  .logos{align-items:flex-start}
+  /* Вирівнюємо марки в кожному flex-рядку по спільній центральній осі,
+     щоб різні за висотою знаки не прилипали до верхньої межі. */
+  .logos{align-items:center}
   .logos > li{min-height:calc(var(--lg) * 1.64)}
 }
 /* ── підвал сайту ─────────────────────────────────────────── */
