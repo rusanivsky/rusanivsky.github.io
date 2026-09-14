@@ -9,7 +9,7 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 // одразу, тож page_view і ранні кліки не губляться.
 const googleTag = '<script src="/scripts/google-analytics.js?v=2" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
-const revealScript = '<script src="/scripts/reveal.js?v=10" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
+const revealScript = '<script src="/scripts/reveal.js?v=11" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],

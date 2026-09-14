@@ -31,12 +31,8 @@ const grainSize = (await stat(new URL('img/grain.webp', root))).size;
 if (grainSize > 12000) throw new Error(`WebP grain is too large: ${grainSize} bytes`);
 
 const reveal = await read('scripts/reveal.js');
-const firstRectRead = reveal.indexOf('getBoundingClientRect()');
-const firstAttributeWrite = reveal.indexOf("setAttribute('data-rev'");
-const firstStyleWrite = reveal.indexOf("style.setProperty('--d'");
-
-if (firstRectRead === -1 || firstRectRead > firstAttributeWrite || firstRectRead > firstStyleWrite) {
-  throw new Error('reveal.js must measure the first viewport before invalidating styles');
+if (reveal.includes('getBoundingClientRect()')) {
+  throw new Error('reveal.js must not synchronously measure layout');
 }
 
 const analytics = await read('scripts/google-analytics.js');

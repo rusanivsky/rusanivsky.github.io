@@ -22,14 +22,9 @@
       return all.indexOf(element) === index;
     });
 
-    /* Read the first viewport before adding attributes or inline variables.
-       The old order invalidated styles first and then forced Chromium to
-       synchronously recalculate the whole page on the first rect read. */
-    var measurements = elements.map(function (element) {
-      return { element: element, rect: element.getBoundingClientRect() };
-    });
-
-    elements.forEach(function (element) {
+    var readingOrder = new WeakMap();
+    elements.forEach(function (element, index) {
+      readingOrder.set(element, index);
       if (!element.hasAttribute('data-rev')) {
         element.setAttribute('data-rev', '');
       }
@@ -54,15 +49,7 @@
     var queueUntil = 0;
 
     function byReadingOrder(a, b) {
-      var aRect = a.getBoundingClientRect();
-      var bRect = b.getBoundingClientRect();
-      var rowDifference = aRect.top - bRect.top;
-
-      /* Cards in the same visual row flow left-to-right; a single column
-         naturally follows top-to-bottom. The tolerance absorbs sub-pixel
-         grid differences without turning a row into a vertical sequence. */
-      if (Math.abs(rowDifference) > 12) return rowDifference;
-      return aRect.left - bRect.left;
+      return readingOrder.get(a) - readingOrder.get(b);
     }
 
     function revealInOrder(batch) {
@@ -86,12 +73,27 @@
 
     var pending = [];
     var pendingFrame = 0;
+    var initialBatch = true;
     var observer = new IntersectionObserver(function (entries) {
+      var visible = [];
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        pending.push(entry.target);
+        visible.push(entry.target);
         observer.unobserve(entry.target);
       });
+
+      /* IntersectionObserver supplies the first viewport after layout without
+         a synchronous geometry read. Keep its old two-frame composition: the
+         hidden state paints first, then the whole initial viewport appears. */
+      if (initialBatch) {
+        initialBatch = false;
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { visible.forEach(show); });
+        });
+        return;
+      }
+
+      Array.prototype.push.apply(pending, visible);
       if (!pending.length || pendingFrame) return;
       pendingFrame = requestAnimationFrame(function () {
         pendingFrame = 0;
@@ -101,29 +103,7 @@
       rootMargin: '0px 0px -8% 0px',
       threshold: 0.08
     });
-    var firstView = [];
-    var later = [];
-
-    measurements.forEach(function (measurement) {
-      var element = measurement.element;
-      var rect = measurement.rect;
-      if (rect.top < window.innerHeight && rect.bottom > 0 &&
-          rect.left < window.innerWidth && rect.right > 0) {
-        firstView.push(element);
-      } else {
-        later.push(element);
-      }
-    });
-
-    /* Two frames guarantee that the hidden state is painted before the reveal. */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        /* The first viewport enters as one composition. Scrolling content
-           still uses a stagger, but a newly opened page must not cascade. */
-        firstView.forEach(show);
-        later.forEach(function (element) { observer.observe(element); });
-      });
-    });
+    elements.forEach(function (element) { observer.observe(element); });
   }
 
   if (document.readyState === 'loading') {
