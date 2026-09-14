@@ -12,10 +12,12 @@
    око текстура та сама.
 
    node scripts/make-plate-textures.mjs
-     → img/grain.png   зерно, плитка 160
+     → img/grain.png   вихідне зерно, плитка 160
+     → img/grain.webp  бойове зерно, WebP q80
      → img/mottle.png  плями, плитка 512 (малюється на 1280) */
 import {deflateSync} from 'node:zlib';
 import {writeFileSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
 
 /* mulberry32: щоб файли виходили ті самі при кожному запуску */
 let seed = 0x9e3779b9;
@@ -77,6 +79,10 @@ const writeGray = (file, size, px) => {
   const px = new Float64Array(SIZE * SIZE);
   for (let i = 0; i < px.length; i++) px[i] = MEAN + gauss() * SIGMA;
   writeGray('img/grain.png', SIZE, px);
+  /* На плиті зерно видно через opacity .05, тому q80 зберігає характер
+     текстури без видимих блоків, але прибирає понад половину ваги. PNG
+     лишається джерелом для детермінованого повторного прогону. */
+  execFileSync('cwebp', ['-q', '80', '-quiet', 'img/grain.png', '-o', 'img/grain.webp']);
 }
 
 /* ── плями ───────────────────────────────────────────────────

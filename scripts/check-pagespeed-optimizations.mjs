@@ -5,7 +5,7 @@ const root = new URL('../', import.meta.url);
 const read = (relative) => readFile(new URL(relative, root), 'utf8');
 
 const index = await read('index.html');
-const bundleLink = '<link rel="stylesheet" href="/styles/home.bundle.min.css?v=1">';
+const bundleLink = '<link rel="stylesheet" href="/styles/home.bundle.min.css?v=2">';
 
 if ((index.split(bundleLink).length - 1) !== 1) {
   throw new Error('index.html must load the minified home bundle exactly once');
@@ -23,6 +23,12 @@ if (bundle.includes('/*')) throw new Error('home CSS bundle still contains comme
 for (const contract of ['--plate-base:', 'body::after', '.home-meta']) {
   if (!bundle.includes(contract)) throw new Error(`home CSS bundle lost ${contract}`);
 }
+if (!bundle.includes('--grain-img:url("/img/grain.webp")')) {
+  throw new Error('homepage bundle must use the approved WebP grain');
+}
+
+const grainSize = (await stat(new URL('img/grain.webp', root))).size;
+if (grainSize > 12000) throw new Error(`WebP grain is too large: ${grainSize} bytes`);
 
 const reveal = await read('scripts/reveal.js');
 const firstRectRead = reveal.indexOf('getBoundingClientRect()');
