@@ -11,6 +11,7 @@
 
 /* ── шапка сторінки ───────────────────────────────────────── */
 .contact-head{padding-block:clamp(28px,5vh,64px) 0}
+.contact-head .text-page-lead + .text-page-lead{margin-top:var(--heading-copy-gap)}
 @media (min-width:641px) and (max-width:960px){
   /* Keep tablet copy at the same measure as the introductory paragraph. */
   .tsec .lead,.tsec .copy,.tsec .note,.tsec .pts{max-width:50ch}
