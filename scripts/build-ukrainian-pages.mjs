@@ -1,14 +1,15 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { buildHomeStyleBundle } from './build-home-styles.mjs';
 
 const root = process.cwd();
 const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-ZGH5PBS8H6');\n</script>`;
-// defer: скрипт тягне googletagmanager, і без нього дві довгі задачі
-// (109 і 82 мс) стояли в розборі документа. Нічого до першого малювання
-// він не робить.
-const googleTag = '<script src="/scripts/google-analytics.js" defer></script>';
+// Локальний завантажувач чекає, доки промалюється пріоритетне зображення,
+// і лише потім тягне важкий gtag. Черга dataLayer при цьому створюється
+// одразу, тож page_view і ранні кліки не губляться.
+const googleTag = '<script src="/scripts/google-analytics.js?v=2" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
-const revealScript = '<script src="/scripts/reveal.js?v=9" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
+const revealScript = '<script src="/scripts/reveal.js?v=10" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -123,7 +124,8 @@ function updateHead(html, route, title, description, ukrainian) {
 
 function addGoogleTag(html) {
   html = html.split(legacyGoogleTag).join('');
-  if (html.includes('src="/scripts/google-analytics.js"')) return html;
+  const localTag = /<script src="\/scripts\/google-analytics\.js(?:\?v=\d+)?" defer><\/script>/g;
+  if (localTag.test(html)) return html.replace(localTag, googleTag);
   return html.replace('</head>', `${googleTag}\n</head>`);
 }
 
@@ -322,6 +324,7 @@ const sectionHeaderStyleVersion = 26;
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
 const baseStyleVersion = 13;
+const homeStyleVersion = 1;
 const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
@@ -345,7 +348,11 @@ function updateSectionStyleVersions(html) {
 // Перезапис ідемпотентний: старі посилання знімаються й ставляться заново.
 function addSharedStyles(html, route) {
   if (route === '/') {
-    return html.replace(/\/styles\/base\.css\?v=\d+/g, `/styles/base.css?v=${baseStyleVersion}`);
+    html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/(?:base|home|home\.bundle\.min)\.css(?:\?[^\"]*)?">/g, '');
+    const revealBoot = /<script data-reveal-boot>[^<]*<\/script>/;
+    if (!revealBoot.test(html)) throw new Error('No reveal boot found on homepage');
+    return html.replace(revealBoot,
+      `$&\n<link rel="stylesheet" href="/styles/home.bundle.min.css?v=${homeStyleVersion}">`);
   }
   html = html.replace(/\s*<link rel="stylesheet" href="\/styles\/(?:base|section)\.css(?:\?[^\"]*)?">/g, '');
   const sectionStyle = /<link rel="stylesheet" href="\/(?:photo\/photo|video\/video|design\/design)\.css\?v=\d+">/;
@@ -416,6 +423,7 @@ function applyThemePolicy(html, route) {
   return html;
 }
 
+await buildHomeStyleBundle(root);
 await rm(path.join(root, 'ua'), { recursive: true, force: true });
 for (const [route, source, title, description] of pages) {
   let english = await readFile(path.join(root, source), 'utf8');

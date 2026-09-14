@@ -32,8 +32,42 @@
     }
   });
 
-  var script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6';
-  document.head.appendChild(script);
+  var loaded = false;
+
+  function loadTag() {
+    if (loaded) return;
+    loaded = true;
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZGH5PBS8H6';
+    document.head.appendChild(script);
+  }
+
+  function loadAfterPaint() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(loadTag);
+    });
+  }
+
+  function waitForCriticalImage() {
+    var image = document.querySelector('img[fetchpriority="high"]');
+    if (!image) {
+      loadAfterPaint();
+      return;
+    }
+
+    if (image.complete) {
+      if (image.decode) image.decode().catch(function () {}).then(loadAfterPaint);
+      else loadAfterPaint();
+      return;
+    }
+
+    image.addEventListener('load', loadAfterPaint, { once: true });
+    image.addEventListener('error', loadAfterPaint, { once: true });
+  }
+
+  window.addEventListener('load', waitForCriticalImage, { once: true });
+  window.addEventListener('pointerdown', loadTag, { once: true, passive: true });
+  window.addEventListener('keydown', loadTag, { once: true });
+  window.setTimeout(loadTag, 6000);
 }());

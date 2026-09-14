@@ -22,6 +22,13 @@
       return all.indexOf(element) === index;
     });
 
+    /* Read the first viewport before adding attributes or inline variables.
+       The old order invalidated styles first and then forced Chromium to
+       synchronously recalculate the whole page on the first rect read. */
+    var measurements = elements.map(function (element) {
+      return { element: element, rect: element.getBoundingClientRect() };
+    });
+
     elements.forEach(function (element) {
       if (!element.hasAttribute('data-rev')) {
         element.setAttribute('data-rev', '');
@@ -97,8 +104,9 @@
     var firstView = [];
     var later = [];
 
-    elements.forEach(function (element) {
-      var rect = element.getBoundingClientRect();
+    measurements.forEach(function (measurement) {
+      var element = measurement.element;
+      var rect = measurement.rect;
       if (rect.top < window.innerHeight && rect.bottom > 0 &&
           rect.left < window.innerWidth && rect.right > 0) {
         firstView.push(element);

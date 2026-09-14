@@ -6,7 +6,7 @@ const files = execFileSync('rg', ['--files', '-g', '*.html'], { encoding: 'utf8'
   .split('\n');
 
 const boot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
-const revealPattern = /<script src="\/scripts\/reveal\.js\?v=9" defer onerror="document\.documentElement\.classList\.remove\('rev'\)"><\/script>/g;
+const revealPattern = /<script src="\/scripts\/reveal\.js\?v=10" defer onerror="document\.documentElement\.classList\.remove\('rev'\)"><\/script>/g;
 const anyRevealPattern = /<script src="\/scripts\/reveal\.js(?:\?v=\d+)?"[^>]*><\/script>/g;
 const failures = [];
 let checked = 0;
