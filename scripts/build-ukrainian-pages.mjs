@@ -329,7 +329,7 @@ const sectionStyleVersion = 3;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
-  '/video/video.css': 122,
+  '/video/video.css': 123,
   '/design/design.css': 111,
 };
 
