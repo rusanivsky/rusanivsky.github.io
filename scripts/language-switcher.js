@@ -26,6 +26,7 @@
     if(!group) return;
     sync();
     group.addEventListener('click',function(){ setTimeout(sync,0); });
+    new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind);
   else bind();

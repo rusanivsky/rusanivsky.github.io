@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="/styles/section-header.css?v=26">
 <script src="/scripts/reveal.js?v=9" defer onerror="document.documentElement.classList.remove('rev')"></script>
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
-<script src="/scripts/language-switcher.js?v=2" defer></script>
+<script src="/scripts/language-switcher.js?v=3" defer></script>
 
 <script src="/scripts/google-analytics.js" defer></script>
 </head>
@@ -84,77 +84,8 @@
 
   </div>
 </footer>
-<script>
-(function(){
-  var root=document.documentElement;
-  function setLang(v,save){
-    root.setAttribute('lang', v==='ua'?'uk':'en');
-    document.querySelectorAll('[data-en]').forEach(function(el){
-      var t=el.getAttribute('data-'+v); if(t) el.textContent=t;
-    });
-    if(save){
-      try{ localStorage.setItem('kr-lang',v); }catch(e){}
-      try{ var u=new URL(location.href);
-        if(v==='ua'){u.searchParams.set('lang','uk');} else {u.searchParams.delete('lang');}
-        history.replaceState(null,'',u);
-      }catch(e){}
-    }
-    document.querySelectorAll('#lang button').forEach(function(b){
-      b.setAttribute('aria-pressed', String(b.dataset.lang===v));
-    });
-  }
-  function detect(){
-    try{ var q=new URLSearchParams(location.search).get('lang');
-      if(q==='uk'||q==='ua') return 'ua'; if(q==='en') return 'en';
-    }catch(e){}
-    try{ var s=localStorage.getItem('kr-lang'); if(s==='en'||s==='ua') return s; }catch(e){}
-    var x=String((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase();
-    return(x.indexOf('uk')===0||x.indexOf('ru')===0)?'ua':'en';
-  }
-  document.querySelectorAll('#lang button').forEach(function(b){
-    b.addEventListener('click',function(){ setLang(b.dataset.lang,true); });
-  });
-  try{ setLang('ua', false); }catch(e){}
-
-  /* плавний перехід між сторінками там, де немає @view-transition */
-  (function(){
-    var native = ('startViewTransition' in document) && CSS.supports && CSS.supports('selector(::view-transition)');
-    if(native) return;
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var root = document.documentElement;
-    root.classList.add('pt-js');
-    document.addEventListener('click', function(e){
-      if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      var a = e.target.closest && e.target.closest('a');
-      if(!a || a.hasAttribute('download')) return;
-      if(a.target && a.target !== '_self') return;
-      var href = a.getAttribute('href') || '';
-      if(/^(mailto:|tel:|#)/.test(href)) return;
-      var u; try{ u = new URL(a.href); }catch(err){ return; }
-      if(u.origin !== location.origin) return;
-      if(u.pathname === location.pathname && u.search === location.search) return;
-      e.preventDefault();
-      root.classList.add('pt-leave');
-      setTimeout(function(){ location.href = a.href; }, 210);
-    });
-    addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
-  })();
-
-  document.addEventListener('click',function(e){
-    var f=e.target.closest('.fac'); if(!f) return;
-    var pl=f.dataset.pl, id=f.dataset.id;
-    var src = pl==='yt'
-      ? 'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0'
-      : 'https://player.vimeo.com/video/'+id+'?autoplay=1';
-    var fr=document.createElement('iframe');
-    fr.src=src; fr.title=f.getAttribute('aria-label')||'';
-    fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
-    fr.setAttribute('allowfullscreen','');
-    fr.loading='lazy';
-    f.replaceWith(fr);
-  });
-})();
-</script>
+<script src="/scripts/portfolio-runtime.js?v=3" defer></script>
+<script src="/scripts/active-section-scroll.js?v=1" defer></script>
 <script src="/scripts/move-language-switcher.js?v=5"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>

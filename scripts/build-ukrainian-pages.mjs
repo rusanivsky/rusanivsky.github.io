@@ -49,6 +49,11 @@ const nightPortfolioRoutes = new Set([
 // лишаються зеленими: перший перемикач тем зламався саме на тому, що
 // вибір гостя їхав за ним по всьому сайту
 const switchableRoutes = new Set([...lightPortfolioRoutes, ...nightPortfolioRoutes]);
+const portfolioRuntimeRoutes = new Set([
+  '/photo/', '/design/', '/video/',
+  ...lightPortfolioRoutes,
+  ...nightPortfolioRoutes,
+]);
 
 const absolute = (route) => `https://rusanivsky.com${route}`;
 const uaRoute = (route) => route === '/' ? '/ua/' : `/ua${route}`;
@@ -143,6 +148,10 @@ function ukrainianiseContent(html) {
   // The source already stores approved Ukrainian copy in data-ua. Make it the
   // literal server-delivered text rather than relying on JavaScript to swap it.
   html = html.replace(/(<([a-z][\w-]*)(?:\s[^>]*)?\sdata-en="[^"]*"\sdata-ua="([^"]*)"(?:\s[^>]*)?>)([^<]*)(<\/\2>)/gi, '$1$3$5');
+  html = html.replace(/data-alt-en="([^"]*)" data-alt-ua="([^"]*)" alt="[^"]*"/g, 'data-alt-en="$1" data-alt-ua="$2" alt="$2"');
+  html = html.replace(/alt="[^"]*" data-alt-en="([^"]*)" data-alt-ua="([^"]*)"/g, 'alt="$2" data-alt-en="$1" data-alt-ua="$2"');
+  html = html.replace(/data-aria-en="([^"]*)" data-aria-ua="([^"]*)" aria-label="[^"]*"/g, 'data-aria-en="$1" data-aria-ua="$2" aria-label="$2"');
+  html = html.replace(/aria-label="[^"]*" data-aria-en="([^"]*)" data-aria-ua="([^"]*)"/g, 'aria-label="$2" data-aria-en="$1" data-aria-ua="$2"');
   html = html.replace(/try\{\s*setLang\(detect\w*\(\),\s*false\);\s*\}catch\(e\)\{\s*setLang\('en',\s*false\);\s*\}/, "try{ setLang('ua', false); }catch(e){}");
   // без крапки з комою: у джерелі виклик стоїть як L(D(),false)})();, тож
   // точний рядок із ; не збігався ніколи. Сторінка умов — єдина, що
@@ -152,6 +161,70 @@ function ukrainianiseContent(html) {
   html = html.replace("L(D(),false)", "L('ua',false)");
   html = html.replace(/(<button type="button" data-lang="en" aria-pressed=")true("[^>]*>EN<\/button><button type="button" data-lang="ua" aria-pressed=")false/, '$1false$2true');
   return html;
+}
+
+const photoAltLabels = new Map([
+  ['/photo/reportage/', ['Reportage', 'Репортаж']],
+  ['/photo/culture-art/', ['Culture and art', 'Культура та мистецтво']],
+  ['/photo/backstage/', ['Backstage', 'Бекстейдж']],
+  ['/photo/portraits/', ['Portrait', 'Портрет']],
+]);
+
+const designAltLabels = new Map([
+  ['/design/img/istoriya-ukrayini-2020.webp', ['History of Ukraine. 2020 cover', 'Обкладинка «Історія України. 2020»']],
+  ['/design/img/istorichna-shevchenkiana-1.webp', ['Historical Shevchenkiana cover, front', 'Обкладинка «Історична Шевченкіана», лицьова сторона']],
+  ['/design/img/istorichna-shevchenkiana-2.webp', ['Historical Shevchenkiana cover, back', 'Обкладинка «Історична Шевченкіана», зворотна сторона']],
+]);
+
+function withLocalizedAlt(tag, english, ukrainian) {
+  let clean = tag
+    .replace(/\sdata-alt-en="[^"]*"/g, '')
+    .replace(/\sdata-alt-ua="[^"]*"/g, '');
+  return clean.replace(/\salt="[^"]*"/, ` alt="${english}" data-alt-en="${english}" data-alt-ua="${ukrainian}"`);
+}
+
+function normalizeMediaAccessibility(html, route) {
+  const photoLabels = photoAltLabels.get(route);
+  if (photoLabels) {
+    html = html.replace(/<img\b[^>]*>/g, tag => withLocalizedAlt(tag, ...photoLabels));
+  }
+  if (route === '/design/covers/') {
+    html = html.replace(/<img\b[^>]*>/g, tag => {
+      const source = tag.match(/\ssrc="([^"]+)"/)?.[1];
+      const labels = designAltLabels.get(source);
+      return labels ? withLocalizedAlt(tag, ...labels) : tag;
+    });
+  }
+  if (route.startsWith('/video/')) {
+    html = html.replace(/<article class="[^"]*\bv\b[^"]*">[\s\S]*?<\/article>/g, article => {
+      const title = article.match(/<h2[^>]*data-en="([^"]*)" data-ua="([^"]*)"/);
+      if (!title) return article;
+      return article.replace(/<button class="[^"]*\bfac\b[^"]*"[^>]*>/, button => {
+        if (button.includes('data-aria-en=')) return button;
+        const clean = button.replace(/\saria-label="[^"]*"/g, '');
+        return clean.replace(/>$/, ` aria-label="${title[1]}" data-aria-en="${title[1]}" data-aria-ua="${title[2]}">`);
+      });
+    });
+  }
+  return html;
+}
+
+function normalizePortfolioRuntime(html, route) {
+  if (!portfolioRuntimeRoutes.has(route)) return html;
+  html = html.replace(/\n?<script>([\s\S]*?)<\/script>/g, (whole, body) => {
+    if (/function setLang/.test(body) && /#lang button/.test(body)) return '';
+    if (/показати активну вкладку|активна категорія починається/.test(body)) return '';
+    return whole;
+  });
+  html = html.replace(/\n?<script src="\/scripts\/(?:portfolio-runtime|active-section-scroll|video-extras|reels-carousel)\.js(?:\?v=\d+)?" defer><\/script>/g, '');
+  const scripts = [
+    '<script src="/scripts/portfolio-runtime.js?v=3" defer></script>',
+    '<script src="/scripts/active-section-scroll.js?v=1" defer></script>',
+  ];
+  if (route === '/video/reels/') {
+    scripts.push('<script src="/scripts/reels-carousel.js?v=1" defer></script>');
+  }
+  return html.replace(/(?=<script src="\/scripts\/move-language-switcher)/, `${scripts.join('\n')}\n`);
 }
 
 function localiseLinks(html) {
@@ -202,7 +275,7 @@ function addContactsLink(html, route) {
     `<div class="switches">\n    ${termsLink}${contactsMarkup}\n    ${langToggle}${themeToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
-  const languageSwitcher = '<script src="/scripts/language-switcher.js?v=2" defer></script>';
+  const languageSwitcher = '<script src="/scripts/language-switcher.js?v=3" defer></script>';
   if (/<script src="\/scripts\/language-switcher\.js(?:\?v=\d+)?" defer><\/script>/.test(html)) {
     html = html.replace(/<script src="\/scripts\/language-switcher\.js(?:\?v=\d+)?" defer><\/script>/, languageSwitcher);
   } else {
@@ -253,7 +326,7 @@ const sectionStyleVersion = 2;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
-  '/video/video.css': 121,
+  '/video/video.css': 122,
   '/design/design.css': 111,
 };
 
@@ -360,6 +433,8 @@ for (const [route, source, title, description] of pages) {
   english = addSharedStyles(english, route);
   english = addSectionHeaderStyle(english, route);
   english = addThemeScript(english, route);
+  english = normalizeMediaAccessibility(english, route);
+  english = normalizePortfolioRuntime(english, route);
   english = optimizeRevealLoading(english);
   english = applyThemePolicy(english, route);
   await writeFile(path.join(root, source), english);

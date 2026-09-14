@@ -29,12 +29,12 @@
 <link rel="stylesheet" href="/styles/base.css?v=13">
 <link rel="stylesheet" href="/styles/section.css?v=2">
 <script src="/scripts/theme.js?v=5"></script>
-<link rel="stylesheet" href="/video/video.css?v=121">
+<link rel="stylesheet" href="/video/video.css?v=122">
 <link rel="stylesheet" href="/styles/section-header.css?v=26">
 <script src="/scripts/reveal.js?v=9" defer onerror="document.documentElement.classList.remove('rev')"></script>
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
 <script src="/scripts/horizontal-edge-fade.js?v=1" defer></script>
-<script src="/scripts/language-switcher.js?v=2" defer></script>
+<script src="/scripts/language-switcher.js?v=3" defer></script>
 
 <script src="/scripts/google-analytics.js" defer></script>
 </head>
@@ -124,27 +124,9 @@
     </div>
     <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div>
 </footer>
-<script>
-(function(){
-  var root=document.documentElement;
-  function setLang(v,save){root.setAttribute('lang',v==='ua'?'uk':'en');document.querySelectorAll('[data-en]').forEach(function(el){var t=el.getAttribute('data-'+v);if(t)el.textContent=t;});document.querySelectorAll('[data-aria-en]').forEach(function(el){var t=el.getAttribute('data-aria-'+v);if(t)el.setAttribute('aria-label',t);});if(save){try{localStorage.setItem('kr-lang',v);}catch(e){}}document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v));});}
-  function detect(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en';}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s;}catch(e){}var x=String((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase();return x.indexOf('uk')===0||x.indexOf('ru')===0?'ua':'en';}
-  document.querySelectorAll('#lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang,true);});});
-  try{setLang(detect(),false);}catch(e){setLang('en',false);}
-  document.addEventListener('click',function(e){
-    var f=e.target.closest('.fac[data-pl]'); if(!f) return;
-    var pl=f.dataset.pl, id=f.dataset.id;
-    var src=pl==='yt'?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0&iv_load_policy=3':'https://player.vimeo.com/video/'+id+'?autoplay=1';
-    var fr=document.createElement('iframe');
-    fr.src=src; fr.title=f.getAttribute('aria-label')||'';
-    fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
-    fr.setAttribute('allowfullscreen','');
-    fr.loading=pl==='yt'?'eager':'lazy';
-    f.replaceWith(fr);
-  });
-  (function(){var track=document.querySelector('.short-form-grid'),next=document.querySelector('.carousel-next');if(!track||!next)return;function update(){var atEnd=track.scrollWidth<=track.clientWidth+1||track.scrollLeft+track.clientWidth>=track.scrollWidth-2;next.classList.toggle('is-end',atEnd);next.setAttribute('aria-hidden',String(atEnd));next.tabIndex=atEnd?-1:0;}next.addEventListener('click',function(){var card=track.querySelector('.v');if(!card)return;var gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:card.getBoundingClientRect().width+gap,behavior:'smooth'});});track.addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();})();
-})();
-</script>
+<script src="/scripts/portfolio-runtime.js?v=3" defer></script>
+<script src="/scripts/active-section-scroll.js?v=1" defer></script>
+<script src="/scripts/reels-carousel.js?v=1" defer></script>
 <script src="/scripts/move-language-switcher.js?v=5"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 </body>
 </html>
