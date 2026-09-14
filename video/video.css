@@ -92,6 +92,9 @@
 /* Назви проєктів під прев’ю набираються Fixel — тією самою гарнітурою,
    що й основний текст. Кегль — щабель text зі спільної шкали. */
 .vt{font-family:var(--font);font-size:var(--fs-text);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty}
-.vt + .vc{margin-top:calc(var(--heading-copy-gap) - 10px)}
+.vt + .vclient{margin-top:calc(var(--heading-copy-gap) - 10px)}
 /* підпис під карткою — другий щабель, той самий, що й підписи розділів */
 .vc{margin:0;font-size:var(--fs-label);line-height:1.45;color:var(--mute);text-wrap:pretty}
+/* Клієнт стоїть між назвою роботи й переліком ролей: це допомагає
+   зрозуміти контекст, не конкуруючи з самою назвою. */
+.vclient{margin:0;font-size:var(--fs-label);font-weight:600;line-height:1.45;color:color-mix(in srgb,var(--ink) 82%,transparent);text-wrap:pretty}

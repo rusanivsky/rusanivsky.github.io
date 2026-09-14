@@ -179,9 +179,15 @@ body.footer-at-bottom .site-foot{margin-top:auto}
 }
 .page-title + .cats,
 .page-title + .contact-head{padding-top:var(--heading-after-gap)}
+.contact-intro{margin:var(--heading-after-gap) 0 0 calc(var(--col2) + var(--colgap));max-width:34ch;color:var(--mute);text-wrap:pretty}
+.contact-intro + .contact-list{padding-top:clamp(18px,3vh,34px)}
+.contact-list .contact-primary .lab{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700}
+.contact-list .contact-alternative .lab{color:color-mix(in srgb,var(--ink) 82%,transparent)}
+.contact-list .contact-secondary .lab,.contact-list .contact-secondary .num{color:color-mix(in srgb,var(--mute) 76%,transparent)}
 @media (max-width:640px){
   .page-title{--page-title-size:clamp(22.4px,5.76vw,30.4px);--home-name-size:clamp(48px,11vw,72px)}
   .page-title{padding-inline-start:var(--pad)}
+  .contact-intro{margin-left:calc(var(--pad) + var(--col2));padding-right:var(--pad)}
   .page-title:not(.wrap){margin-inline-start:0;padding-inline-start:0}
 }
 @media (max-width:360px){
