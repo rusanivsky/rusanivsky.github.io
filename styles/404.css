@@ -62,19 +62,23 @@ main a.back::before{
   content:"←"; display:none; width:0; margin-right:0; opacity:0;
   position:absolute; right:100%;
   font-size:.68em; line-height:1; vertical-align:middle;
-  transform:translateX(-1.1em) translateY(-50%);
+  transform:translateX(calc(-1.1em - .3em)) translateY(-50%);
   top:50%;
-  transition:opacity 220ms var(--ease);
+  transition:opacity 300ms var(--ease),transform 300ms var(--ease);
 }
 @media (hover:hover){
   main a.back:hover{
     color:var(--accent); transform:none; -webkit-text-stroke:0 transparent
   }
-  main a.back:hover::before{opacity:1}
+  main a.back:hover::before{
+    opacity:1; transform:translateX(-1.1em) translateY(-50%)
+  }
   main:has(a.back:hover) > .error-rule::after{transform:scaleX(1)}
 }
 main a.back:focus-visible{color:var(--accent)}
-main a.back:focus-visible::before{opacity:1}
+main a.back:focus-visible::before{
+  opacity:1; transform:translateX(-1.1em) translateY(-50%)
+}
 main:has(a.back:focus-visible) > .error-rule::after,
 main:has(a.back:active) > .error-rule::after{transform:scaleX(1)}
 @media (min-width:1101px) and (hover:hover) and (pointer:fine){
