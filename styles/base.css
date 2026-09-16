@@ -25,6 +25,13 @@
   font-style:normal; font-display:swap;
   unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
+@font-face{
+  font-family:"Word Music";
+  src:url("/word-music-display-0.600.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   /* охра — єдиний теплий колір на сайті: лінія-підкреслення на ховері,
      кільце фокуса й виділення тексту (--accent нижче) тепер справді
@@ -448,6 +455,37 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .tgl button:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
 }
 .tgl button[aria-pressed="true"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
+
+/* F — примірочний перемикач авторського Word Music. Шрифт застосовується
+   тільки до двох вітринних рівнів; службовий набір і весь текст лишаються
+   Fixel, тож сторінка не втрачає звичної читабельності. */
+#font button{min-width:30px}
+.font-wordmusic .name,
+.font-wordmusic .page-title{
+  font-family:"Word Music",var(--font);
+  font-stretch:normal;
+  font-weight:400;
+  font-variation-settings:normal;
+  -webkit-text-stroke:0
+}
+.font-wordmusic .name{
+  font-size:var(--fs-name);
+  letter-spacing:-.018em;
+  line-height:.87
+}
+.font-wordmusic .page-title{
+  --page-title-size:var(--fs-title);
+  letter-spacing:-.012em;
+  line-height:.94
+}
+@media (max-width:640px){
+  .font-wordmusic .name{font-size:clamp(48px,11vw,72px)}
+  .font-wordmusic .page-title{--page-title-size:clamp(22.4px,5.76vw,30.4px)}
+}
+@media (max-width:360px){
+  .font-wordmusic .name{font-size:clamp(40px,10.5vw,52px)}
+  .font-wordmusic .page-title{--page-title-size:clamp(20px,5.44vw,25.6px)}
+}
 
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */

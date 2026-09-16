@@ -32,7 +32,8 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <script data-reveal-boot>document.documentElement.classList.add('rev')</script>
-<link rel="stylesheet" href="/styles/home.bundle.min.css?v=3">
+<link rel="stylesheet" href="/styles/home.bundle.min.css?v=4">
+<script data-font-boot>try{if(localStorage.getItem('kr-font')==='wordmusic')document.documentElement.classList.add('font-wordmusic')}catch(e){}</script>
 <!-- Короткий inline-boot ставить .rev ще до CSS і не дає контенту спершу
      з'явитися, а потім згаснути. Повний reveal.js іде з defer та при помилці
      знімає .rev, щоб сторінка не лишилася прихованою. Решта трьох скриптів
@@ -45,6 +46,7 @@
 <script src="/scripts/language-switcher.js?v=3" defer></script>
 
 <script src="/scripts/google-analytics.js?v=2" defer></script>
+<script src="/scripts/font-switcher.js?v=1" defer></script>
 </head>
 <body>
 

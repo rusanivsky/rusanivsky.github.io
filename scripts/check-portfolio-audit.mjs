@@ -90,6 +90,16 @@ const portfolioRuntime = await readFile(path.join(root, 'scripts', 'portfolio-ru
 if (!/\^\(\?:\\\/ua\)\?\\\/video/.test(portfolioRuntime)) fail('player policy is not tied to the video route');
 const languageSwitcher = await readFile(path.join(root, 'scripts', 'language-switcher.js'), 'utf8');
 if (!/MutationObserver\(sync\)/.test(languageSwitcher)) fail('language switcher does not observe initial runtime language changes');
+const fontSwitcher = await readFile(path.join(root, 'scripts', 'font-switcher.js'), 'utf8');
+if (!/localStorage\.setItem\(storageKey/.test(fontSwitcher)) fail('font switcher does not persist its selection');
+for (const source of ['index.html', 'rates/index.html', 'contacts/index.html', 'privacy/index.html', ...routes]) {
+  for (const prefix of ['', 'ua/']) {
+    const file = prefix + source;
+    const html = await readFile(path.join(root, file), 'utf8');
+    if (!html.includes('data-font-boot')) fail(`${file}: font choice is not applied before first paint`);
+    if (!html.includes('/scripts/font-switcher.js?v=1')) fail(`${file}: font switcher runtime is missing`);
+  }
+}
 
 if (failures.length) {
   console.error(failures.join('\n'));
