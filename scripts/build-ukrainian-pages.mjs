@@ -1,4 +1,5 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { buildHomeStyleBundle } from './build-home-styles.mjs';
 
@@ -58,6 +59,24 @@ const portfolioRuntimeRoutes = new Set([
 
 const absolute = (route) => `https://rusanivsky.com${route}`;
 const uaRoute = (route) => route === '/' ? '/ua/' : `/ua${route}`;
+
+function sitemapLastModified(source) {
+  // `lastmod` має описувати саме суттєву зміну сторінки, а не дату кожної
+  // збірки. Українська копія походить з того самого англійського джерела,
+  // тому обидві адреси отримують одну перевірювану дату з Git.
+  const hasUncommittedChange = execFileSync('git', ['status', '--porcelain', '--', source], {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim();
+  if (hasUncommittedChange) return new Date().toISOString().slice(0, 10);
+
+  const date = execFileSync('git', ['log', '-1', '--format=%as', '--', source], {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim();
+  if (!date) throw new Error(`No Git history found for sitemap source: ${source}`);
+  return date;
+}
 
 function alternates(route) {
   return [
@@ -493,6 +512,9 @@ for (const [from, to] of moved) {
   }
 }
 
-const sitemapUrls = pages.flatMap(([route]) => [route, uaRoute(route)]);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((route) => `  <url><loc>${absolute(route)}</loc><lastmod>2026-09-12</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
+const sitemapUrls = pages.flatMap(([route, source]) => {
+  const lastmod = sitemapLastModified(source);
+  return [[route, lastmod], [uaRoute(route), lastmod]];
+});
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(([route, lastmod]) => `  <url><loc>${absolute(route)}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>${route === '/' || route === '/ua/' ? '1.0' : '0.7'}</priority></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
