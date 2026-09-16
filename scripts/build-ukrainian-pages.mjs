@@ -11,8 +11,6 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 const googleTag = '<script src="/scripts/google-analytics.js?v=2" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
 const revealScript = '<script src="/scripts/reveal.js?v=11" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
-const fontBoot = "<script data-font-boot>try{if(localStorage.getItem('kr-font')==='wordmusic')document.documentElement.classList.add('font-wordmusic')}catch(e){}</script>";
-const fontSwitcher = '<script src="/scripts/font-switcher.js?v=1" defer></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -148,15 +146,6 @@ function addGoogleTag(html) {
   const localTag = /<script src="\/scripts\/google-analytics\.js(?:\?v=\d+)?" defer><\/script>/g;
   if (localTag.test(html)) return html.replace(localTag, googleTag);
   return html.replace('</head>', `${googleTag}\n</head>`);
-}
-
-function addFontSwitcher(html) {
-  html = html.replace(/\n?<script data-font-boot>[^<]*<\/script>/g, '');
-  html = html.replace(/\n?<script src="\/scripts\/font-switcher\.js(?:\?v=\d+)?" defer><\/script>/g, '');
-  const firstStylesheet = /<link rel="stylesheet" href="[^"]+">/;
-  if (!firstStylesheet.test(html)) throw new Error('No stylesheet found before font switcher');
-  html = html.replace(firstStylesheet, `${fontBoot}\n$&`);
-  return html.replace('</head>', `${fontSwitcher}\n</head>`);
 }
 
 function optimizeRevealLoading(html) {
@@ -353,8 +342,8 @@ const sectionHeaderStyleVersion = 28;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 15;
-const homeStyleVersion = 4;
+const baseStyleVersion = 14;
+const homeStyleVersion = 3;
 const sectionStyleVersion = 3;
 
 const sectionStyleVersions = {
@@ -461,7 +450,6 @@ for (const [route, source, title, description] of pages) {
   const englishDescription = english.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? description;
   english = updateHead(english, route, englishTitle, englishDescription, false);
   english = addGoogleTag(english);
-  english = addFontSwitcher(english);
   english = renameWorkTerms(english);
   english = normalizeBackLinks(english);
   english = addContactsLink(english, route);
