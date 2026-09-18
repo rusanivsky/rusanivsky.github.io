@@ -751,18 +751,6 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   min-height:calc(100dvh - var(--foot-h, 0px) - var(--topbar-h, 0px))
 }
 
-/* «Умови співпраці» більше не живуть у шапці: посилання стоїть першим
-   рядком блоку замовлень — над поясненням і контактами. Власного набору
-   в нього немає: це такий самий рядок .lines, як контакти під ним, і
-   працює на ньому те саме правило. Відрізняється лише відбивка: верхній
-   просвіт переходить від нього до пояснення, бо першим у блоці тепер
-   стоїть посилання, а не текст.
-
-   Стрілки назовні тут немає: по всьому сайту вона позначає перехід на
-   чужий майданчик, а умови — своя ж сторінка. */
-:is(.site-foot,.contact-slab) .lines.terms{margin-top:0}
-:is(.site-foot,.contact-slab) .lines.terms + .sub{margin-top:clamp(12px,1.8vh,20px)}
-:is(.site-foot,.contact-slab) .lines.terms > a::after{content:none}
 .foot-bar{
   position:relative;
   /* Текст під нижньою лінійкою відбитий тією самою мірою, якою текст
@@ -786,8 +774,13 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 .foot-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:var(--header-gap); padding-left:var(--chrome-pad); padding-right:var(--chrome-pad); color:var(--mute)}
 .foot-bar > .footer-left > .foot-meta{justify-content:flex-start;padding-left:0;padding-right:0}
 .foot-meta .tiny{white-space:nowrap}
-.foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
-.foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
+/* «Умови співпраці» стоять поруч із «Приватністю» — двома службовими
+   рядками того самого рангу. Доти умови були першим рядком блоку
+   замовлень, великим посиланням над контактами; там вони конкурували
+   з самим замовленням, а в підвалі читаються тим, чим є — довідкою. */
+.foot-bar :is(.footer-terms,.footer-privacy){color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
+.foot-bar :is(.footer-terms,.footer-privacy):hover,
+.foot-bar :is(.footer-terms,.footer-privacy):focus-visible{color:var(--accent)}
 /* Мова живе у підвалі на будь-якій ширині: у шапці для неї не лишилось ні
    місця, ні сенсу — це не дія сторінки, а налаштування. На десктопі вона
    замикає праву групу одразу за «Приватністю», на телефоні йде власним
@@ -843,8 +836,9 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
      мовою і стовпчик читався двома різними блоками. */
   .foot-bar > .cols{order:1;justify-self:start;flex:0 0 100%;width:auto;padding:0 0 0 var(--chrome-pad)}
   .foot-bar .footer-lang{order:2;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
-  .foot-bar .footer-privacy{display:block;margin:0;order:3;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
-  .foot-bar > .footer-left > .foot-meta{order:4;flex:0 0 100%;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar .footer-terms{display:block;margin:0;order:3;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar .footer-privacy{display:block;margin:0;order:4;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar > .footer-left > .foot-meta{order:5;flex:0 0 100%;padding:0 0 0 var(--chrome-pad)}
   .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
@@ -885,3 +879,66 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   }
 }
 /* повітря між останнім блоком сторінки і темною плашкою */
+
+/* ── коротко: питання й відповіді в блоці замовлення ──────────
+
+   Сім питань із відповідями, у які стиснуті умови співпраці: ціни,
+   терміни, оплата, правки, права, файли й що буде, коли щось
+   зміниться. Стоять у блоці замовлення на кожній сторінці — між
+   підписом блоку й проханням написати формат. Читач зібрався писати —
+   і тут-таки має відповіді на те, що питають найчастіше перед листом.
+
+   Власного уступу блок не заводить: він у тій самій колонці, що й
+   контакти під ним, а підпис «Замовлення» лишається ліворуч, у
+   наскрізному полі сторінки.
+
+   Відповідь схована в <details> без жодного скрипта. Розгорнуті одразу,
+   вони зробили б блок замовлення вчетверо довшим за саме замовлення.
+
+   Розкриття без анімації навмисно. Висота не інтерполюється, а
+   підробляти її через max-height означає рухати все, що нижче, під
+   пальцем — саме те, від чого сайт щойно позбувся у прокрутці головної.
+   Рухається тільки знак праворуч.
+
+   Знак — псевдоелемент, і це не декор: перемикач мов присвоює
+   summary.textContent, тож будь-який справжній тег усередині зник би з
+   першим же клацанням EN/UA. */
+.foot-in .asks{margin-top:0;min-width:0}
+.foot-in .asks + .sub{margin-top:clamp(18px,2.6vh,28px)}
+/* Підпис групи говорить тією самою капітеллю, що й «Замовлення»
+   ліворуч, і тим самим приглушеним чорнилом: це друга мітка того самого
+   блоку, а не новий розділ сторінки. */
+.ask-k{
+  margin:0 0 clamp(10px,1.4vw,16px);
+  font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
+  font-weight:600;line-height:1;color:var(--mute)
+}
+/* Лінійка по верхній межі рядка — так само, як у переліку напрямків:
+   під останнім питанням її немає сама собою. */
+.qa{border-top:var(--rule) solid var(--divider);padding-block:clamp(12px,1.6vw,20px)}
+/* summary лишається своїм типовим display:list-item, а знак стоїть
+   абсолютно. display:flex тут виглядав би так само, але Chrome при ньому
+   перестає віддавати summary як кнопку розкриття: у дереві доступності
+   лишається просто текст, без стану «розгорнуто». */
+.qa > summary{
+  /* Знак не впирається в правий край, а відбитий від нього тим самим
+     --chrome-pad, яким відбиті крайні написи шапки й підвала. */
+  position:relative;padding-right:calc(2.2em + var(--chrome-pad));
+  list-style:none;cursor:pointer;
+  font-stretch:var(--display-stretch);font-weight:700;letter-spacing:-.01em;
+  text-wrap:pretty;transition:color 260ms var(--ease)
+}
+.qa > summary::-webkit-details-marker{display:none}
+.qa > summary::after{
+  content:"+";position:absolute;right:var(--chrome-pad);top:0;
+  color:var(--mute);font-weight:400;
+  transition:color 260ms var(--ease),rotate 260ms var(--ease)
+}
+.qa[open] > summary::after{rotate:45deg}
+@media (hover:hover){
+  .qa > summary:hover,
+  .qa > summary:hover::after{color:var(--accent)}
+}
+.qa > summary:active,
+.qa > summary:active::after{color:var(--accent)}
+.qa > p{margin:clamp(10px,1.4vw,16px) 0 0;max-width:50ch;text-wrap:pretty;line-height:1.5}

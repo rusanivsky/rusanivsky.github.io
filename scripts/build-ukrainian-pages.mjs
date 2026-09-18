@@ -240,7 +240,7 @@ function normalizePortfolioRuntime(html, route) {
   // Стрічка розділів потрібна там, де вкладок більше однієї: у фото й
   // відео. У дизайні вкладка одна, і гортати нікуди.
   if (/^\/(?:photo|video)\//.test(route)) {
-    scripts.push('<script src="/scripts/gallery-turn.js?v=1" defer></script>');
+    scripts.push('<script src="/scripts/gallery-turn.js?v=2" defer></script>');
   }
   if (route === '/video/reels/') {
     scripts.push('<script src="/scripts/reels-carousel.js?v=1" defer></script>');
@@ -322,9 +322,14 @@ function addFooterMeta(html, route) {
   return html.replace(footer, `$1\n    ${footerMeta}$2`);
 }
 
+// «Умови співпраці» стоять у підвалі перед «Приватністю», а не першим
+// рядком блоку замовлення: там вони конкурували з самим замовленням.
+// Разом із посиланням знімається і той рядок блоку.
 function addPrivacyFooterLink(html) {
-  html = html.replace(/\s*<a class="tiny footer-privacy" href="\/privacy\/" data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
-  const link = '<a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>';
+  html = html.replace(/\n\s*<div class="lines terms">[\s\S]*?<\/div>/g, '');
+  html = html.replace(/\s*<a class="tiny footer-(?:terms|privacy)" href="\/(?:rates|privacy)\/" data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  const link = '<a class="tiny footer-terms" href="/rates/" data-en="Rates &amp; Terms" data-ua="Умови співпраці">Rates &amp; Terms</a>'
+    + '\n      <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>';
   const footerLeft = /(<div class="footer-left">\s*(?:<div class="mobile-meta-slot"[^>]*><\/div>|<div class="foot-meta"[^>]*>[\s\S]*?<\/div>))\s*<\/div>/;
   if (footerLeft.test(html)) {
     return html.replace(footerLeft, `$1\n      ${link}\n    </div>`);
@@ -335,6 +340,59 @@ function addPrivacyFooterLink(html) {
   return html.replace(footer, `$1<div class="footer-left">$3\n      ${link}\n    </div>\n    <div class="cols">$2</div>$4`);
 }
 
+// Сім питань із відповідями в блоці замовлення. Живуть тут, а не в
+// сорсах сторінок, рівно з тієї ж причини, що й підвал: блок замовлення
+// однаковий на всіх чотирнадцятьох сторінках, і тримати сім однакових
+// відповідей у чотирнадцяти файлах руками — це чотирнадцять нагод їх
+// розсинхронити. Цифри тут ті самі, що в /rates/: правка ціни чи
+// терміну має дійти і сюди, і туди.
+const orderQuestions = [
+  '<div class="asks">',
+  '<h2 class="ask-k" data-rev data-en="Short answers" data-ua="Коротко">Short answers</h2>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="What does it cost?" data-ua="Скільки це коштує?">What does it cost?</summary>'
+    + '<p data-en="From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Від 600 грн за годину. Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="How long does it take?" data-ua="Скільки часу це займе?">How long does it take?</summary>'
+    + '<p data-en="A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in." data-ua="Короткий ролик — від 2 робочих днів, інтерв’ю — від 3, обкладинка — від 4, верстка книжки — від 2 тижнів. Відлік іде від передоплати й усіх матеріалів.">A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="How does payment work?" data-ua="Як відбувається оплата?">How does payment work?</summary>'
+    + '<p data-en="A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included." data-ua="Передоплата 50% ставить задачу в графік, решта — до передачі файлів. Безготівково на рахунок ФОП; із-за кордону — SWIFT у доларах або Payoneer. Рахунок, акт і за потреби договір.">A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="How many revisions are included?" data-ua="Скільки правок входить у ціну?">How many revisions are included?</summary>'
+    + '<p data-en="Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 an hour." data-ua="Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину.">Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 an hour.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="Who owns the finished work?" data-ua="Кому належать права на роботу?">Who owns the finished work?</summary>'
+    + '<p data-en="You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA." data-ua="Вам — з моменту повної оплати. За собою лишаю право показувати роботу в портфоліо; якщо матеріал конфіденційний, скажіть на старті — узгодимо ембарго або NDA.">You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="What do I get at the end?" data-ua="Що я отримую в кінці?">What do I get at the end?</summary>'
+    + '<p data-en="Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge." data-ua="Через Google Drive: відео — MP4 H.264 у 1080p або 4K, дизайн — PDF/X-4 для друку плюс JPG чи PNG для мережі. Робочі файли проєкту — за запитом, без доплати.">Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge.</p>'
+    + '</details>',
+  '<details class="qa" data-rev>'
+    + '<summary data-en="What if something changes?" data-ua="А якщо щось зміниться?">What if something changes?</summary>'
+    + '<p data-en="A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk." data-ua="Уже сплачена передоплата покриває виконану роботу й не повертається; затримка з вашого боку зсуває дедлайн на стільки ж днів. Я в Україні, тож тривалий блекаут теж може зсунути терміни — попереджаю одразу, щойно бачу ризик.">A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk.</p>'
+    + '</details>',
+  '</div>',
+].join('\n      ');
+
+// Блок замовлення однаковий скрізь, тож і питання в ньому ставить білд.
+// Знімаємо й ставимо заново — прогін ідемпотентний.
+function addOrderQuestions(html, route) {
+  html = html.replace(/\n\s*<div class="asks">[\s\S]*?\n\s*<\/div>(?=\n\s*<p class="sub")/g, '');
+  // На самих умовах питань немає: там усе те саме розписано повністю, і
+  // стислий переказ під ним був би переказом сусіднього тексту.
+  if (route === '/rates/') return html;
+  const sub = /(\n\s*)(<p class="sub")/;
+  if (!sub.test(html)) throw new Error('No order block found for the questions');
+  // Заміна функцією, а не рядком: у відповідях є «$25» і «$400», а в
+  // рядку заміни $2 і $4 читалися б як посилання на групи.
+  return html.replace(sub, (match, gap, tag) => `${gap}${orderQuestions}${gap}${tag}`);
+}
 function addKyivClockScript(html, route) {
   if (route === '/' || html.includes('/scripts/kyiv-clock.js')) return html;
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
@@ -344,8 +402,8 @@ const sectionHeaderStyleVersion = 29;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 24;
-const homeStyleVersion = 14;
+const baseStyleVersion = 25;
+const homeStyleVersion = 15;
 const sectionStyleVersion = 8;
 
 const sectionStyleVersions = {
@@ -457,6 +515,7 @@ for (const [route, source, title, description] of pages) {
   english = addHeaderChrome(english, route);
   english = addFooterMeta(english, route);
   english = addPrivacyFooterLink(english);
+  english = addOrderQuestions(english, route);
   english = addKyivClockScript(english, route);
   english = updateSectionStyleVersions(english);
   english = addSharedStyles(english, route);
