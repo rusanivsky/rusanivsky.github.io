@@ -33,6 +33,15 @@
    стоїть щось одне: на 404 кнопки «назад» у шапці немає, і без цього
    група лягала б у середню колонку замість правого краю. */
 .meta > .switches{grid-column:-2;justify-self:end}
+/* Вибір напрямку в шапці лишається тільки на десктопі — це правило для
+   всіх сторінок без винятку. У вузькому рядку для нього немає місця
+   поряд із закликом, а в галереях під ним стоїть ще й перелік категорій,
+   і два ряди навігації поспіль з'їдали екран. На телефоні його заміняє
+   кнопка «назад»: у галереях вона веде на блок вибору напрямків на
+   головній. */
+@media (max-width:760px){
+  .meta > .parts{display:none}
+}
 .meta .back,.meta .part{font-size:var(--fs-label)}
 .part{font-size:var(--fs-chrome);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
   color:var(--mute);position:relative;white-space:nowrap;padding-block:16px;

@@ -341,7 +341,7 @@ const sectionHeaderStyleVersion = 29;
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
 const baseStyleVersion = 24;
 const homeStyleVersion = 13;
-const sectionStyleVersion = 7;
+const sectionStyleVersion = 8;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
