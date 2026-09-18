@@ -30,7 +30,7 @@ for (const file of files) {
   }
 }
 
-if (checked !== 34) failures.push(`expected 34 EN/UA reveal pages, found ${checked}`);
+if (checked !== 26) failures.push(`expected 26 EN/UA reveal pages, found ${checked}`);
 
 if (failures.length) {
   console.error(failures.join('\n'));
