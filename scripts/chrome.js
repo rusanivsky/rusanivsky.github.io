@@ -90,6 +90,7 @@
         slide.setAttribute('tabindex', '-1');
         try{ slide.focus({preventScroll:true}); }catch(err){ slide.focus(); }
         settle();
+        dropLandingOnLeave(slide);
       }
       if(matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(to - from) < 2){
         window.scrollTo(0, to); land(); return;
@@ -160,7 +161,40 @@
     var slide=id&&document.getElementById(id);
     if(!slide||!slide.classList.contains('contact-slab')) return;
     slide.classList.add('is-landing');
-    requestAnimationFrame(function(){ slide.scrollIntoView(); });
+    requestAnimationFrame(function(){ slide.scrollIntoView(); dropLandingOnLeave(slide); });
+  }
+
+  /* Порожній екран живе рівно доти, доки на нього дивляться. Щойно
+     людина піднялась вище — і блок замовлень разом із пустотою й підвалом
+     пішов під нижній край вікна, — зайва висота знімається, і вниз
+     сторінка вертається вже звичайною: підвал одразу під контактами.
+
+     Момент вибрано саме там, і не раніше: усе, що при цьому міняється,
+     лежить за екраном. Знімеш висоту, поки блок ще видно, — підвал
+     стрибне вгору просто під пальцем, а сторінка, ставши коротшою за
+     поточну прокрутку, потягне за собою й те, що людина читає.
+
+     Міряємо не сам блок, а його вміст: пустота починається там, де
+     вміст закінчився, тож поки його нижній край не пішов за нижній край
+     вікна — дивляться ще на блок.
+
+     Перше, чого чекає ця сторожа, — щоб блок таки з'явився на екрані. До
+     того нижній край вмісту так само лежить під вікном, і без цієї умови
+     вона зняла б висоту просто в дорозі: на довгій сторінці картинки
+     нижче добирають свою висоту вже під час ходу, і хід триває довше за
+     один кадр. */
+  function dropLandingOnLeave(slide){
+    if(!slide.classList.contains('is-landing')) return;
+    var inner=slide.querySelector('.foot-in')||slide;
+    var arrived=false;
+    function check(){
+      if(!slide.classList.contains('is-landing')){ removeEventListener('scroll',check); return; }
+      if(inner.getBoundingClientRect().bottom < window.innerHeight){ arrived=true; return; }
+      if(!arrived) return;
+      slide.classList.remove('is-landing');
+      removeEventListener('scroll',check);
+    }
+    addEventListener('scroll',check,{passive:true});
   }
 
   function setup(){

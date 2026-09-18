@@ -67,7 +67,7 @@
 
   </div>
 </footer>
-<script src="/scripts/chrome.js?v=8"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
+<script src="/scripts/chrome.js?v=9"></script><script src="/scripts/kyiv-clock.js?v=1"></script>
 <script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.title=v==='ua'?'404 — Кирило Русанівський':'404 — Kyrylo Rusanivsky';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t!==null)e.textContent=t});document.getElementById('lang').setAttribute('aria-label',v==='ua'?'Мова':'Language');if(s){try{localStorage.setItem('kr-lang',v)}catch(e){}try{var u=new URL(location.href);if(v==='ua')u.searchParams.set('lang','uk');else u.searchParams.delete('lang');history.replaceState(null,'',u)}catch(e){}}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelector('#lang button').onclick=function(){L(this.dataset.lang,true)};L(D(),false)})();</script>
 </body>
 </html>
