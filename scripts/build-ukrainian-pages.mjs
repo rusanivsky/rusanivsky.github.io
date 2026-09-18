@@ -261,7 +261,7 @@ function addHeaderChrome(html, route) {
   // «Контакти» в шапці немає: перше переїхало в рядок пояснення над
   // контактами, друге замінив заклик — він веде на той самий блок
   // замовлень, який тепер стоїть на кожній сторінці.
-  const orderCta = '<a class="order-cta" href="#contacts" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>';
+  const orderCta = '<a class="order-cta" href="#order" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>';
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
   // Усі три іконки лежать у розмітці, потрібну показує CSS за
   // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
@@ -339,8 +339,8 @@ const sectionHeaderStyleVersion = 29;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 23;
-const homeStyleVersion = 12;
+const baseStyleVersion = 24;
+const homeStyleVersion = 13;
 const sectionStyleVersion = 7;
 
 const sectionStyleVersions = {

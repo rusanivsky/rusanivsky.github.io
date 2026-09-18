@@ -47,6 +47,10 @@
       var slide = id && document.getElementById(id);
       if(!slide) return;
       e.preventDefault();
+      /* Повний останній екран з'являється саме тут, а не сам собою: доти
+         під контактами не має бути порожнього поля. Клас ставиться до
+         першого виміру, щоб ціль рахувалась уже по новій висоті. */
+      if(slide.classList.contains('contact-slab')) slide.classList.add('is-landing');
       var from = window.scrollY;
       /* Ціль рахується щокадру, а не один раз на клік: на довгій сторінці
          картинки нижче добирають свою висоту вже під час ходу, і знята
@@ -149,8 +153,19 @@
     }
   }
 
+  /* Той самий екран має відкриватись і з чужого посилання на /#order:
+     туди приходять із тим самим наміром, що й натиском на заклик. */
+  function openFromHash(){
+    var id=(location.hash||'').slice(1);
+    var slide=id&&document.getElementById(id);
+    if(!slide||!slide.classList.contains('contact-slab')) return;
+    slide.classList.add('is-landing');
+    requestAnimationFrame(function(){ slide.scrollIntoView(); });
+  }
+
   function setup(){
     sizeLastScreen();
+    openFromHash();
     setupFooterSwitches();
     setupAnchorScroll();
     revealActivePart();
