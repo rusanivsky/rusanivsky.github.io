@@ -30,12 +30,7 @@
   /* Якір на блок цієї ж сторінки. Браузерна плавність прив'язана до
      відстані: стрибок із першого екрана до контактів тягнеться близько
      секунди й читається як гальмо. Тут тривалість стала — 520 мс, із тим
-     самим сповільненням, що й решта руху на сайті.
-
-     На час ходу знімається прив'язка слайдів: інакше кожен проміжний
-     кадр виглядає для неї новою зупинкою й тягне сторінку назад. На
-     сторінках розділів прив'язки немає зовсім, і рядок нічого не
-     зачіпає. */
+     самим сповільненням, що й решта руху на сайті. */
   function setupAnchorScroll(){
     var page=document.documentElement;
     function eased(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
@@ -85,7 +80,6 @@
         })();
       }
       function land(){
-        page.style.scrollSnapType = '';
         try{ history.replaceState(null, '', '#' + id); }catch(err){}
         slide.setAttribute('tabindex', '-1');
         try{ slide.focus({preventScroll:true}); }catch(err){ slide.focus(); }
@@ -95,7 +89,6 @@
       if(matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(to - from) < 2){
         window.scrollTo(0, to); land(); return;
       }
-      page.style.scrollSnapType = 'none';
       var began = performance.now();
       requestAnimationFrame(function step(now){
         var t = Math.min(1, (now - began) / 520);
@@ -195,6 +188,10 @@
       removeEventListener('scroll',check);
     }
     addEventListener('scroll',check,{passive:true});
+    /* Перший погляд — одразу, а не з першою подією прокрутки: якщо хід до
+       блоку закінчився рівно там, де треба, прокрутка більше не
+       ворухнеться, і сторожа інакше лишилась би незарядженою. */
+    requestAnimationFrame(function(){ requestAnimationFrame(check); });
   }
 
   function setup(){

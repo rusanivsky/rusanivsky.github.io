@@ -345,7 +345,7 @@ const sectionHeaderStyleVersion = 29;
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
 const baseStyleVersion = 24;
-const homeStyleVersion = 13;
+const homeStyleVersion = 14;
 const sectionStyleVersion = 8;
 
 const sectionStyleVersions = {
