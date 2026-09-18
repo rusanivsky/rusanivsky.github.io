@@ -232,11 +232,16 @@ function normalizePortfolioRuntime(html, route) {
     if (/показати активну вкладку|активна категорія починається/.test(body)) return '';
     return whole;
   });
-  html = html.replace(/\n?<script src="\/scripts\/(?:portfolio-runtime|active-section-scroll|video-extras|reels-carousel)\.js(?:\?v=\d+)?" defer><\/script>/g, '');
+  html = html.replace(/\n?<script src="\/scripts\/(?:portfolio-runtime|active-section-scroll|gallery-turn|video-extras|reels-carousel)\.js(?:\?v=\d+)?" defer><\/script>/g, '');
   const scripts = [
     '<script src="/scripts/portfolio-runtime.js?v=3" defer></script>',
     '<script src="/scripts/active-section-scroll.js?v=1" defer></script>',
   ];
+  // Стрічка розділів потрібна там, де вкладок більше однієї: у фото й
+  // відео. У дизайні вкладка одна, і гортати нікуди.
+  if (/^\/(?:photo|video)\//.test(route)) {
+    scripts.push('<script src="/scripts/gallery-turn.js?v=1" defer></script>');
+  }
   if (route === '/video/reels/') {
     scripts.push('<script src="/scripts/reels-carousel.js?v=1" defer></script>');
   }
