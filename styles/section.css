@@ -257,120 +257,15 @@
    рядка: цей клас спільний для сторінок із такою самою структурою. */
 .section-intro-row{padding-block:clamp(8px,1.2vw,16px)}
 
-/* ── перелік категорій ───────────────────────────────────── */
-/* Внутрішній блок починається з другої колонки сторінкової сітки.
-   Рядки підхоплюють її треки через subgrid: номер стоїть у другій
-   колонці, назва — з третьої, а лінійка доходить до правого краю верстки.
-   На мобільному цей самий принцип нижче переходить у пару «номер — назва». */
-.cats{
-  display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--colgap);
-  padding-block:var(--cats-pad-top) var(--cats-pad-bottom);
-}
-.cat{
-  display:grid;grid-template-columns:subgrid;grid-column:2/-1;
-  align-items:baseline;padding-block:var(--rule-gap);
-  min-height:64px;position:relative;
-}
-/* У subgrid першою для .cat є друга колонка всієї сторінки, тому номер
-   більше не потребує штучного margin-left: він живе на початку блоку,
-   а назва починається наступним треком — із третьої колонки. */
-.cat .num{grid-column:1; min-width:3ch; text-align:right}
-.cat .lab{grid-column:2/-1}
-/* лінійка стоїть на верхній межі кожного рядка, а не під ним: так під
-   останнім рядком її немає сама собою. Оскільки .cat починається з другої
-   колонки, left:0 означає початок внутрішнього блоку, а right:0 — кінець
-   верстки. */
-.cat::before{
-  content:"";position:absolute;left:0;right:0;top:0;
-  height:var(--rule);background:var(--divider);
-}
-.cat .num{font-size:var(--number-size);font-weight:600;letter-spacing:-.02em;color:var(--mute);
-  /* цілий рядок, щоб висота рядка переліку лишалась цілим числом:
-     на його верхній межі стоїть лінійка */
-  line-height:round(1.55em,1px);
-  transition:color 240ms var(--ease)}
-/* лінійка ховера лягає там само, де розділювач: на верхню межу рядка і
-   від тієї самої вертикалі — так само, як у переліку напрямків на головній */
-.cat::after{
-  content:"";position:absolute;left:0;right:0;top:0;height:var(--pen);
-  background:var(--pencil);transform:scaleX(0);transform-origin:left;
-  transition:transform 620ms var(--ease);will-change:transform;
-}
-@media (hover:hover){
-  .cat:hover .lab{transform:translateX(clamp(8px,1.4vw,22px));color:var(--pencil)}
-  .cat:hover .num{color:var(--accent)}
-  .cat:hover::after{transform:scaleX(1)}
-}
-.cat:active .lab{transform:translateX(10px);color:var(--pencil)}
-.cat:active .num{color:var(--accent)}
-.cat:active::after{transform:scaleX(1)}
-/* поле на 120px варте себе, поки сторінка широка. Від 960 воно з'їдає
-   чверть рядка — там підпис лягає вертикально, а колонка сходить до
-   20px: те саме, що доти вмикалось аж на телефоні */
-@media (max-width:960px){
-  /* підпис стає вертикальним: горизонтально він просить під себе колонку
-     на 120px, а вузько це чверть рядка. Повернутий, він займає ширину
-     одного рядка, а не всього напису, — решта віддана вмісту, і трохи
-     повітря лишається між ним і лінійкою.
-     Коробка лишається нульової висоти й на своєму місці: обертання не
-     чіпає верстки, тож лінійка й далі стоїть на межі напису — тільки
-     тепер це його ліва межа, а не верхня. rotate(90deg) translateY(-1em)
-     повертає за годинниковою довкола лівого верхнього кута і піднімає на
-     висоту рядка, щоб напис пішов униз від тієї самої точки */
-}
+/* У переліку категорій колись жив ще й .site-foot .lines > a
+   з власним кеглем. Правило було мертве в усіх трьох файлах розділів:
+   нижче в тому ж файлі йшло безумовне .site-foot .lines > a, і воно
+   завжди вигравало. Не воскрешайте його при наступному перенесенні
+   блоку замовлення.
 
-/* та сама стрілка назовні, що й на .sect: рядок веде на сторонній
-   сайт, тож на ховері поруч із назвою з'являється ↗. Розмір і відступ —
-   ті самі .36em/.16em, що вже стоять на такій самій стрілці в design.css.
-   Email іде без target, але так само виводить із сторінки — у підвалі
-   стрілка в нього вже є, тож у списку контактів вона теж належить йому */
-.cat[target] .lab::after,
-.cat[href^="mailto:"] .lab::after{
-  content:"↗";display:inline-block;margin-left:.16em;font-size:.36em;
-  vertical-align:.95em;color:var(--ink);opacity:0;transform:translate(-.3em,.3em);
-  transition:opacity 320ms var(--ease),transform 320ms var(--ease);
-}
-@media (hover:hover){
-  .cat[target]:hover .lab::after,
-  .cat[href^="mailto:"]:hover .lab::after,
-  .cat[target]:focus-visible .lab::after,
-  .cat[href^="mailto:"]:focus-visible .lab::after{opacity:1;transform:none}
-}
-@media (hover:none){
-  .cat[target] .lab::after,
-  .cat[href^="mailto:"] .lab::after{opacity:.72;transform:none}
-}
-.cat[target]:active .lab::after,
-.cat[href^="mailto:"]:active .lab::after{opacity:1;transform:none}
-
-/* вузько колонок-треків немає: рядок стає парою «номер — назва», а
-   лінійки йдуть від краю верстки */
-@media (max-width:640px){
-  /* перша колонка лишається і тут — у ній стоїть підпис підвалу. Перелік
-     відходить за неї цілим блоком, тож лінійки й номери всередині нього
-     стоять від його ж краю, на спільній із підписом вертикалі */
-  /* .cats — це сам .wrap із width:100%, тож зсувати його від'ємним полем
-     не можна: ширина лишиться та сама і блок вийде за край екрана. Зсуває
-     падінг — у border-box він іде всередину коробки */
-  .cats{display:block; padding-left:calc(var(--pad) + var(--col2))}
-  /* вертикальні поля вузько рахуються від ширини екрана, а не від висоти:
-     на vh вони на телефоні виходили як на десктопі, хоч екран удвічі
-     вужчий, і відносно рядка та сама порожнеча читалась удвічі більшою */
-  .cats{padding-block:var(--cats-pad-top) var(--cats-pad-bottom-narrow)}
-  .cat::before,.cat::after{left:0}
-  .cat{
-    display:grid;grid-template-columns:minmax(3ch,auto) minmax(0,1fr);min-width:0;
-    column-gap:clamp(14px,2.4vw,36px);
-  }
-  .cat .num{grid-column:1; margin-left:0; min-width:0; text-align:left}
-  .cat .lab{grid-column:2}
-  .cat .lab{width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-wrap:pretty}
-  /* Тут стояло .site-foot .lines > a{font-size:calc(var(--fs-link) * 1.5)}.
-     Правило було мертве в усіх трьох файлах розділів: нижче в тому ж
-     файлі йшло безумовне .site-foot .lines > a з власним font-size, і
-     воно завжди вигравало. Знято, щоб не ожило при наступному
-     перенесенні блоку. */
-}
+   Сам перелік категорій (.cats / .cat) знято разом зі сторінками-оглядами
+   розділів: навігація веде одразу на першу підсторінку, і розмітки з
+   цими класами на сайті не лишилось. */
 
 /* Просвіт над блоком «Замовлення» на сторінках розділів. Головна його не
    має ніколи: у неї цей блок іде за логотипами клієнтів, а не за переліком

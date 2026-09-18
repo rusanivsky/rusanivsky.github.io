@@ -494,7 +494,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 }
 
 @media (max-width:640px){
-  .cat .num,.spec .no,.step .no{transform:translateX(var(--mobile-number-nudge))}
+  .spec .no,.step .no{transform:translateX(var(--mobile-number-nudge))}
 }
 
 @media (max-width:640px){
@@ -712,8 +712,6 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 @media (hover:none){
   .text-page-body a[target="_blank"]::after,
   .text-page-body a[href^="mailto:"]::after,
-  .cat[target] .lab::after,
-  .cat[href^="mailto:"] .lab::after,
   .work .spec.under .sect > span:first-child::after,
   .work .spec.under .sect > span:last-child::after,
   .spec a.it[target]::after,

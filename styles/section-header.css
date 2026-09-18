@@ -60,12 +60,10 @@ body.footer-at-bottom .site-foot{margin-top:auto}
 /* Short green pages keep the footer at the viewport edge on portrait tablets. */
 @media (min-width:641px) and (max-width:1024px) and (orientation:portrait){
   body.no-plate-darkening,
-  body.contacts-page,
   body:has(.text-page-copy){
     min-height:100vh;min-height:100dvh;display:flex;flex-direction:column
   }
   body.no-plate-darkening .site-foot,
-  body.contacts-page .site-foot,
   body:has(.text-page-copy) .site-foot{margin-top:auto}
 }
 
@@ -79,30 +77,6 @@ body.footer-at-bottom .site-foot{margin-top:auto}
    лінійки й висота сторінки лишаються ті самі до пікселя. */
 @media (max-width:760px){
   .topbar .parts > .part{padding-block:6px;margin-block:-6px}
-}
-
-/* Просвіт під шапкою на зелених сторінках розділів. Доти тут стояло
-   clamp(48px,9vh,112px) — на телефоні це 76px поля плюс 22px усередині
-   першого рядка, разом майже сто, і під шапкою зяяла порожнеча висотою
-   в третину екрана.
-
-   Міра — висота самої шапки в один рядок (55px): вміст починається на
-   тій же відстані, на якій закінчилась шапка. 31px поля дають рівно її,
-   бо 22px уже несе .cat.
-
-   :first-of-type — не прикраса. На /rates/ є другий .cats.contact-list
-   аж унизу сторінки, і в нього свідомо padding-top:0; без цього уточнення
-   правило переважило б його за вагою й відірвало б контакти від розділу,
-   під яким вони стоять. Сама /rates/ теж лишається як була: між її
-   навігацією і текстом 42px, тобто вже менше за шапку.
-
-   Головної це не стосується взагалі — вона цього файлу не вантажить. */
-@media (max-width:760px){
-  :root[data-theme="green"] section.wrap.cats:first-of-type{padding-top:var(--heading-after-gap)}
-  /* Там, де над переліком стоїть заголовок сторінки, просвіт під шапкою
-     тримає він — а переліку лишається та сама відбивка, що й між його
-     власними рядками. Вага відбору мусить перекрити правило вище. */
-  :root[data-theme="green"] .page-title + section.wrap.cats:first-of-type{padding-top:var(--heading-after-gap)}
 }
 
 /* ── заголовок сторінки ──────────────────────────────────────
@@ -169,17 +143,10 @@ body.footer-at-bottom .site-foot{margin-top:auto}
   margin-inline-start:calc(-1 * (((var(--gridw) - 11 * var(--colgap)) / 12) + var(--colgap)));
   padding-inline-start:0
 }
-.page-title + .cats,
 .page-title + .contact-head{padding-top:var(--heading-after-gap)}
-.contact-intro{margin:var(--heading-after-gap) 0 0 calc(var(--col2) + var(--colgap));max-width:34ch;color:var(--mute);text-wrap:pretty}
-.contact-intro + .contact-list{padding-top:clamp(18px,3vh,34px)}
-.contact-list .contact-primary .lab{color:var(--ink);font-weight:700;font-variation-settings:"wght" 700}
-.contact-list .contact-alternative .lab{color:color-mix(in srgb,var(--ink) 82%,transparent)}
-.contact-list .contact-secondary .lab,.contact-list .contact-secondary .num{color:color-mix(in srgb,var(--mute) 76%,transparent)}
 @media (max-width:640px){
   .page-title{--page-title-size:clamp(22.4px,5.76vw,30.4px);--home-name-size:clamp(48px,11vw,72px)}
   .page-title{padding-inline-start:var(--pad)}
-  .contact-intro{margin-left:calc(var(--pad) + var(--col2));padding-right:var(--pad)}
   .page-title:not(.wrap){margin-inline-start:0;padding-inline-start:0}
 }
 @media (max-width:360px){
@@ -187,25 +154,6 @@ body.footer-at-bottom .site-foot{margin-top:auto}
     --page-title-size:clamp(20px,5.44vw,25.6px);
     --home-name-size:clamp(40px,10.5vw,52px)
   }
-}
-
-/* ── перелік категорій і контактів на щабель нижче ───────────
-   Назви в переліку стояли на п'ятому щаблі (--fs-title) — тому самому,
-   на якому тепер стоїть заголовок сторінки, і рядок переліку сперечався
-   з назвою сторінки. Тепер вони на четвертому (--fs-link, 19–28px) і на
-   600 замість 700: тонші штрихи на тому ж накресленні. Заголовок лишається
-   єдиним вітринним рядком, а перелік читається переліком.
-
-   Правило живе тут, а не в трьох майже однакових photo.css / video.css /
-   design.css: .cat є лише на зелених сторінках, і всі вони вантажать цей
-   файл після свого. Через те воно перекриває і мобільне правило
-   (clamp(22.4px,5.76vw,30.4px)) у photo.css — кегль там тепер веде сам
-   --fs-link, тобто 19px на телефоні. */
-.cat .lab{
-  font-family:var(--font);font-stretch:var(--display-stretch);
-  font-size:var(--fs-link);font-weight:600;font-variation-settings:"wght" 600;
-  letter-spacing:-.035em;line-height:1.02;line-height:round(1.02em,1px);
-  transition:transform 380ms var(--ease),color 260ms var(--ease);transform-origin:left;
 }
 
 /* Лінійка під шапкою там, де шапка НЕ фіксована.
@@ -216,19 +164,11 @@ body.footer-at-bottom .site-foot{margin-top:auto}
    в шапці, і коментар поруч прямо каже: «чи взагалі не фіксована,
    лінійка стоїть завжди». Але сам відбір цього не перевіряє.
 
-   А на Photo, Video, Design (body.no-plate-darkening) і на мобільних
-   Контактах (body.contacts-page) шапка стоїть у потоці, і заслінка в
-   них вимкнена через display:none. Лінійка згасала — а замінити її не
-   було чим: межа просто зникала при першому ж скролі.
+   А на Photo, Video й Design (body.no-plate-darkening) шапка стоїть у
+   потоці, і заслінка в них вимкнена через display:none. Лінійка згасала
+   — а замінити її не було чим: межа просто зникала при першому ж скролі.
 
-   Вага відбору мусить перекрити 0,4,1 у photo.css, звідси :not(:has())
-   в обох частинах. Контакти — лише під мобільним: на десктопі їхня
-   шапка знову sticky, заслінка працює, і згасання там правильне. */
+   Вага відбору мусить перекрити 0,4,1 у photo.css, звідси :not(:has()). */
 body.no-plate-darkening:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
   animation:none; opacity:1; display:block;
-}
-@media (max-width:760px){
-  body.contacts-page:not(:has(.rates-nav)) .topbar:not(:has(.secs)) > .rule{
-    animation:none; opacity:1; display:block;
-  }
 }

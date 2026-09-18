@@ -5,7 +5,7 @@ const root = new URL('../', import.meta.url);
 const read = (relative) => readFile(new URL(relative, root), 'utf8');
 
 const index = await read('index.html');
-const bundleLink = '<link rel="stylesheet" href="/styles/home.bundle.min.css?v=15">';
+const bundleLink = '<link rel="stylesheet" href="/styles/home.bundle.min.css?v=16">';
 
 if ((index.split(bundleLink).length - 1) !== 1) {
   throw new Error('index.html must load the minified home bundle exactly once');

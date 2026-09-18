@@ -9,7 +9,6 @@
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var selector = [
       '[data-rev]',
-      '.cats .cat',
       '.grid > *',
       'section.shots > *',
       '.tsec > h2',

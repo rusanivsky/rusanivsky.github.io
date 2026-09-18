@@ -10,7 +10,7 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 // одразу, тож page_view і ранні кліки не губляться.
 const googleTag = '<script src="/scripts/google-analytics.js?v=4" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
-const revealScript = '<script src="/scripts/reveal.js?v=11" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
+const revealScript = '<script src="/scripts/reveal.js?v=12" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
@@ -232,7 +232,7 @@ function normalizePortfolioRuntime(html, route) {
     if (/показати активну вкладку|активна категорія починається/.test(body)) return '';
     return whole;
   });
-  html = html.replace(/\n?<script src="\/scripts\/(?:portfolio-runtime|active-section-scroll|gallery-turn|video-extras|reels-carousel)\.js(?:\?v=\d+)?" defer><\/script>/g, '');
+  html = html.replace(/\n?<script src="\/scripts\/(?:portfolio-runtime|active-section-scroll|gallery-chain|gallery-turn|video-extras|reels-carousel)\.js(?:\?v=\d+)?" defer><\/script>/g, '');
   const scripts = [
     '<script src="/scripts/portfolio-runtime.js?v=3" defer></script>',
     '<script src="/scripts/active-section-scroll.js?v=1" defer></script>',
@@ -348,7 +348,7 @@ function addPrivacyFooterLink(html) {
 // терміну має дійти і сюди, і туди.
 const orderQuestions = [
   '<div class="asks">',
-  '<h2 class="ask-k" data-rev data-en="Short answers" data-ua="Коротко">Short answers</h2>',
+  '<h2 class="ask-k" data-rev data-en="FAQ" data-ua="FAQ">FAQ</h2>',
   '<details class="qa" data-rev>'
     + '<summary data-en="What does it cost?" data-ua="Скільки це коштує?">What does it cost?</summary>'
     + '<p data-en="From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Від 600 грн за годину. Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p>'
@@ -398,13 +398,13 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 29;
+const sectionHeaderStyleVersion = 30;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 25;
-const homeStyleVersion = 15;
-const sectionStyleVersion = 8;
+const baseStyleVersion = 26;
+const homeStyleVersion = 16;
+const sectionStyleVersion = 9;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
