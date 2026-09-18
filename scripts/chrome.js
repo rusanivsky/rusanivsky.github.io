@@ -52,9 +52,13 @@
          картинки нижче добирають свою висоту вже під час ходу, і знята
          наперед відстань приводила б не туди. scrollY + top — це
          абсолютне місце блоку в документі, і воно саме себе виправляє. */
+      /* scroll-margin-top блоку — це його власне поле під липкою шапкою;
+         браузер його враховує при звичайному переході за якорем, і рахунок
+         тут має робити те саме. */
       function target(){
         var limit = Math.max(0, page.scrollHeight - window.innerHeight);
-        return Math.min(limit, Math.max(0, window.scrollY + slide.getBoundingClientRect().top));
+        var inset = parseFloat(getComputedStyle(slide).scrollMarginTop) || 0;
+        return Math.min(limit, Math.max(0, window.scrollY + slide.getBoundingClientRect().top - inset));
       }
       var to = target();
       /* Сторінка може дорости вже після приземлення — картинки нижче
@@ -116,7 +120,37 @@
     addEventListener('pageshow',reveal);
   }
 
+  /* Останній екран сторінки належить замовленню: блок стає під верх
+     екрана, а підвал сідає на низ, і разом вони займають рівно вікно.
+     Щоб це було саме вікно, блокові бракує висоти підвала під ним —
+     а її знає тільки браузер, і залежить вона від ширини: у вузькому
+     рядку підвал розкладається на три рядки замість одного. Тож міру
+     віддає сюди ResizeObserver, а решту рахує CSS. */
+  function sizeLastScreen(){
+    var foot=document.querySelector('.site-foot');
+    var bar=document.querySelector('.topbar');
+    if(!foot) return;
+    function height(box){ return box ? Math.round(box.getBoundingClientRect().height) : 0; }
+    function measure(){
+      /* Липка шапка стоїть над сторінкою, тож верх екрана для блоку
+         починається під нею. На сторінках без неї міра нульова. */
+      var stuck = bar && /^(sticky|fixed)$/.test(getComputedStyle(bar).position) ? bar : null;
+      var root = document.documentElement;
+      root.style.setProperty('--foot-h', height(foot) + 'px');
+      root.style.setProperty('--topbar-h', height(stuck) + 'px');
+    }
+    measure();
+    if(window.ResizeObserver){
+      var watch = new ResizeObserver(measure);
+      watch.observe(foot);
+      if(bar) watch.observe(bar);
+    }else{
+      addEventListener('resize', measure, {passive:true});
+    }
+  }
+
   function setup(){
+    sizeLastScreen();
     setupFooterSwitches();
     setupAnchorScroll();
     revealActivePart();

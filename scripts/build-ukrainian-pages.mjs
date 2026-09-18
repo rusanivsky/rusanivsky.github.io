@@ -249,7 +249,9 @@ function localiseLinks(html) {
     const to = `href="${uaRoute(route)}"`;
     html = html.split(from).join(to);
   }
-  return html;
+  // Кнопка «назад» у галереях веде не просто на головну, а на блок вибору
+  // напрямків — адресу з якорем перелік сторінок не покриває.
+  return html.split('href="/#').join(`href="${uaRoute('/')}#`);
 }
 
 function addHeaderChrome(html, route) {
@@ -337,8 +339,8 @@ const sectionHeaderStyleVersion = 29;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 21;
-const homeStyleVersion = 10;
+const baseStyleVersion = 23;
+const homeStyleVersion = 12;
 const sectionStyleVersion = 7;
 
 const sectionStyleVersions = {

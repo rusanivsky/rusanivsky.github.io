@@ -32,7 +32,7 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <script data-reveal-boot>document.documentElement.classList.add('rev')</script>
-<link rel="stylesheet" href="/styles/home.bundle.min.css?v=10">
+<link rel="stylesheet" href="/styles/home.bundle.min.css?v=12">
 <!-- Короткий inline-boot ставить .rev ще до CSS і не дає контенту спершу
      з'явитися, а потім згаснути. Повний reveal.js іде з defer та при помилці
      знімає .rev, щоб сторінка не лишилася прихованою. Решта трьох скриптів
@@ -92,7 +92,7 @@
     </div>
   </section>
 
-  <section class="wrap work" aria-labelledby="wk">
+  <section class="wrap work" id="work" aria-labelledby="wk">
       <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
       <ol class="specs">
         <li class="spec" data-rev style="--d:80ms">
@@ -343,6 +343,6 @@
   }
 }
 </script>
-<script src="/scripts/chrome.js?v=5"></script>
+<script src="/scripts/chrome.js?v=7"></script>
 </body>
 </html>
