@@ -386,6 +386,13 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* Якір переводить фокус на сам блок, щоб клавіатура й читалка читали
+   далі з нього, — і ставить йому tabindex="-1". Обводки такий блок не
+   потребує: клавішею в нього не потрапиш, це не контрол. Safari, на
+   відміну від Chromium, вважає програмний фокус «видимим», і після
+   натиску на заклик через усю ширину сторінки лягали дві охряні лінії —
+   верхня й нижня межі блоку замовлень. */
+[tabindex="-1"]:focus-visible{outline:none}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 /* width:100% — щоб .wrap не стискався до вмісту, коли він флекс-елемент
    (шапка й підвал на 404) */
