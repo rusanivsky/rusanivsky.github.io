@@ -346,7 +346,7 @@ const orderQuestions = [
   '<h2 class="ask-k" data-rev data-en="FAQ" data-ua="FAQ">FAQ</h2>',
   '<details class="qa" data-rev>'
     + '<summary data-en="What does it cost?" data-ua="Скільки це коштує?">What does it cost?</summary>'
-    + '<p data-en="From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Від 600 грн за годину. Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">From $25 an hour. An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p>'
+    + '<p data-en="An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p>'
     + '</details>',
   '<details class="qa" data-rev>'
     + '<summary data-en="How long does it take?" data-ua="Скільки часу це займе?">How long does it take?</summary>'
@@ -358,7 +358,7 @@ const orderQuestions = [
     + '</details>',
   '<details class="qa" data-rev>'
     + '<summary data-en="How many revisions are included?" data-ua="Скільки правок входить у ціну?">How many revisions are included?</summary>'
-    + '<p data-en="Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 an hour." data-ua="Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину.">Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 an hour.</p>'
+    + '<p data-en="Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work." data-ua="Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину роботи.">Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work.</p>'
     + '</details>',
   '<details class="qa" data-rev>'
     + '<summary data-en="Who owns the finished work?" data-ua="Кому належать права на роботу?">Who owns the finished work?</summary>'
