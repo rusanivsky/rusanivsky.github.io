@@ -237,11 +237,6 @@ function normalizePortfolioRuntime(html, route) {
     '<script src="/scripts/portfolio-runtime.js?v=3" defer></script>',
     '<script src="/scripts/active-section-scroll.js?v=1" defer></script>',
   ];
-  // Стрічка розділів потрібна там, де вкладок більше однієї: у фото й
-  // відео. У дизайні вкладка одна, і гортати нікуди.
-  if (/^\/(?:photo|video)\//.test(route)) {
-    scripts.push('<script src="/scripts/gallery-turn.js?v=2" defer></script>');
-  }
   if (route === '/video/reels/') {
     scripts.push('<script src="/scripts/reels-carousel.js?v=1" defer></script>');
   }
@@ -449,7 +444,7 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
-const themeScriptVersion = 6;
+const themeScriptVersion = 7;
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми

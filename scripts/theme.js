@@ -70,6 +70,14 @@
       root.classList.add('theme-shift');
       var shift=document.startViewTransition(function(){paint(mode);});
       shift.finished.then(clear,clear);
+      /* Перехід можна урвати — навігацією, другим клацанням, будь-чим.
+         Тоді браузер відхиляє всі три обіцянки переходу з AbortError
+         «Transition was skipped». finished ми й так слухаємо, а от ready
+         і updateCallbackDone без слухача падають у консоль неспійманою
+         відмовою. Ловимо порожнім catch: урваний перехід — не помилка,
+         сторінка від нього нічого не чекає. */
+      quiet(shift.ready); quiet(shift.updateCallbackDone);
+      function quiet(promise){ if(promise&&promise.catch) promise.catch(function(){}); }
       function clear(){ root.classList.remove('theme-shift'); }
     }
 
