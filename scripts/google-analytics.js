@@ -18,11 +18,7 @@
       ['instagram.com/', 'instagram'],
       ['behance.net/', 'behance'],
       ['linkedin.com/', 'linkedin'],
-      ['upwork.com/', 'upwork'],
       ['facebook.com/', 'facebook'],
-      ['m.me/', 'messenger'],
-      ['threads.net/', 'threads'],
-      ['tiktok.com/', 'tiktok'],
     ];
 
     for (var i = 0; i < methods.length; i++) {

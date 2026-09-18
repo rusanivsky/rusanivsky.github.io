@@ -3,14 +3,11 @@ import path from 'node:path';
 
 const root = process.cwd();
 const routes = [
-  'photo/index.html',
   'photo/reportage/index.html',
   'photo/culture-art/index.html',
   'photo/backstage/index.html',
   'photo/portraits/index.html',
-  'design/index.html',
   'design/covers/index.html',
-  'video/index.html',
   'video/reels/index.html',
   'video/short-form/index.html',
   'video/interviewandvlogs/index.html',

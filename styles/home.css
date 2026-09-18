@@ -34,7 +34,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (min-width:761px){
 .meta .cols > .tiny:first-child{padding-left:var(--chrome-pad)}
 }
-.home-meta .contact-link{font-size:var(--fs-label)}
 #clock{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
 .meta .tiny{white-space:nowrap}
 .meta .local-time{display:inline}
@@ -44,7 +43,6 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 .switches > .tgl:first-child button:first-child{padding-left:0}
 :root[data-theme="green"] .tgl button[aria-pressed="true"],
 :root[data-theme="night"] .tgl button[aria-pressed="true"]{font-weight:700;font-variation-settings:"wght" 700}
-.switches .contact-link{white-space:nowrap}
 /* широко шапка стає на ту саму 12-колонкову сітку, що й сторінка:
    перемикачі починаються з 11-ї колонки, а не просто тиснуться до
    правого краю. space-between лишає мову на правій межі верстки, тож
@@ -59,8 +57,8 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
 @media (max-width:560px){
   .meta{grid-template-columns:minmax(0,1fr) auto; column-gap:var(--header-gap); row-gap:0}
   .meta .cols{gap:14px}
-  /* Terms лишається праворуч від міста й часу; мова нижче 640px
-     переноситься у футер, тому перший рядок не перевантажується. */
+  /* Terms лишається праворуч від міста й часу; мова нижче 560px
+     переноситься у підвал, тому перший рядок не перевантажується. */
   .meta .switches{grid-column:2;grid-row:1;justify-content:flex-end}
 }
 @media (max-width:760px){
@@ -90,147 +88,30 @@ h1,h2,h3{margin:0; font-stretch:var(--display-stretch); font-weight:700; letter-
     height:var(--mobile-meta-row);padding:0 var(--chrome-pad) 0 0
   }
 }
-/* EN/UA не має власного вертикального просвіту: напис стоїть точно в
-   24px-рядку шапки, на тій самій вертикалі, що й лінійка. */
-@media (max-width:640px){
-  .meta .switches > .tgl#lang button{
-    padding:0;min-height:24px;margin-block:0;line-height:24px
-  }
-}
 
-/* Десктопна шапка має дихати від лінійки так само, як копірайт у футері:
-   перша дія й навігація стоять зліва, правий блок — справа. */
-@media (min-width:761px){
-  .home-meta{
-    grid-template-columns:auto minmax(0,1fr) auto;
-    column-gap:var(--header-gap)
-  }
-  .home-meta > .order-cta{
-    grid-column:1;grid-row:1;display:inline-block;
-    padding:16px 0 16px var(--chrome-pad);
-    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
-    font-weight:600;line-height:1;color:var(--pencil);white-space:nowrap;
-    transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)
-  }
-  .home-meta .parts{grid-column:2;grid-row:1;padding-left:0}
-  .home-meta .switches{
-    justify-self:end;
-    margin-left:calc(clamp(18px,3vw,48px) - var(--header-gap))
-  }
-  .home-meta .mobile-contact-link{display:none}
-}
-@media (pointer:fine) and (min-width:761px){
-  .home-meta > .order-cta{padding-block:9px}
-}
-@media (hover:hover) and (min-width:761px){
-  .home-meta > .order-cta:hover{color:var(--pencil);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
-}
-
-/* ── навігація головної ───────────────────────────────────── */
-/* На широкому екрані розділи стоять між службовою інформацією та
-   перемикачами. На телефоні розділи лишаються видимими, а в плашку
-   переноситься службова група — той самий overflow-контракт, що й у
-   сторінок Photo, Video та Design. */
-.home-meta{position:relative;grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(18px,3vw,48px)}
-@media (min-width:761px){
-  .home-meta{column-gap:var(--header-gap)}
-}
-.home-meta .parts{display:flex;align-items:center;gap:var(--header-gap);justify-self:start;min-width:0}
-.home-meta .part{font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;
-  color:var(--mute);white-space:nowrap;padding-block:16px;line-height:1;display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
-@media (pointer:fine){
-.home-meta .part{padding-block:9px}
-}
-@media (hover:hover){
-.home-meta .part:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
-}
-.home-meta.header-menu-mode{position:relative;grid-template-columns:minmax(0,1fr) auto}
-.home-meta.header-menu-mode > .parts{grid-column:1;grid-row:1;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.home-meta.header-menu-mode > .header-menu-toggle{
-  grid-column:2;grid-row:1;justify-self:end;display:grid;place-items:center;
-  appearance:none;width:44px;height:44px;margin:-10px -8px -10px 0;padding:0;
-  border:0;background:transparent;color:var(--ink);cursor:pointer
-}
-.home-meta.header-menu-mode .header-menu-panel .contact-link{
-  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;text-align:left;white-space:normal
-}
-.home-meta.header-menu-mode .header-menu-panel .switches > .tgl{
-  display:grid;grid-template-columns:auto auto;gap:var(--header-gap);align-items:center;width:100%;min-height:40px
-}
-.home-meta.header-menu-mode .header-menu-panel .tgl button{
-  width:auto;min-height:40px;margin:0;padding:10px 0 10px 16px
-}
-/* Єдиний контракт компактної шапки з Photo, Video та Design:
-   видимий рядок завжди 24px, а touch-зона бургеру не роздуває його. */
+/* ── шапка головної ───────────────────────────────────────
+   У рядку лишилась одна дія: заклик замовити послугу, і той стоїть у
+   спільній службовій групі праворуч — там само, де він на кожній іншій
+   сторінці. Розділи з шапки прибрано (перелік напрямків на самій
+   сторінці веде туди ж і докладніше), а разом із ними пішов і бургер.
+   Сам заклик описаний у base.css: він більше не належить головній. */
+.home-meta{position:relative;grid-template-columns:minmax(0,1fr)}
+.home-meta .switches{grid-column:1;grid-row:1;justify-self:end}
+/* Вузький рядок тримає той самий контракт, що й сторінки розділів:
+   видима висота рівно 24px, а 44px ціль дотику винесена від'ємними
+   полями й на лінійку не впливає. */
 @media (max-width:760px){
-  .home-meta.header-menu-mode{
+  .home-meta{
     --mobile-meta-row:24px;
     grid-template-rows:var(--mobile-meta-row);
     padding-top:var(--meta-pad-top);
     padding-bottom:var(--meta-pad-bottom);
     align-items:center
   }
-  .home-meta.header-menu-mode > .parts{
-    align-self:center;align-items:center;height:var(--mobile-meta-row);padding:0 0 0 var(--chrome-pad)
+  .home-meta .switches{
+    align-self:center;justify-content:flex-end;
+    height:var(--mobile-meta-row);padding:0 var(--chrome-pad) 0 0
   }
-  .home-meta.header-menu-mode > .parts > .part{line-height:1}
-  .home-meta.header-menu-mode > .header-menu-toggle{
-    align-self:center;width:44px;height:44px;margin:-10px -2px -10px -10px
-  }
-  .home-meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
-    transform:translate3d(0,-6px,0) scale(.95,.98)
-  }
-}
-/* Розділи в панелі стоять першими й тим самим стовпчиком рядків, що й
-   службові посилання під ними: та сама висота рядка, те саме поле. */
-.home-meta.header-menu-mode .header-menu-panel .parts{
-  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
-  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;overflow:visible
-}
-.home-meta.header-menu-mode .header-menu-panel .part{
-  display:flex;align-items:center;width:100%;min-height:40px;padding:10px 0;
-  line-height:1;white-space:normal
-}
-/* Відбивка між розділами й службовою групою — та сама волосяна лінійка,
-   якою на всьому сайті розділені рядки. Вона з'являється рівно тоді, коли
-   над групою справді стоять розділи, тобто тільки на головній. */
-.home-meta.header-menu-mode .header-menu-panel .parts + .switches{
-  margin-top:10px;padding-top:10px;border-top:var(--rule) solid var(--divider)
-}
-/* «Замовити послугу» вже є першою дією в рядку: Contacts не дублюємо ні
-   у вузькому рядку, ні всередині його бургер-панелі. Друге правило має
-   вищу специфічність за спільний display:flex панелі. */
-@media (max-width:760px){
-  .home-meta .switches .mobile-contact-link{display:none}
-  .home-meta.header-menu-mode .header-menu-panel .mobile-contact-link{display:none}
-}
-/* ── заклик замовити послугу ──────────────────────────────── */
-/* На телефоні розділи їдуть у бургер, а на їхньому місці в рядку шапки
-   лишається єдина дія сторінки. Охра тут за тим самим правилом, що й
-   усюди на сайті: вона означає «сюди можна натиснути». Лінійки під
-   написом немає — сам колір уже виділяє його з рядка, а риска робила з
-   заклику перекреслений напис на 24px-рядку. На десктопі заклик стоїть
-   першим зліва перед розділами, а «Contacts» прибрано з правого блоку.
-   Поле й рівне від'ємне зовнішнє поле — той самий прийом, яким винесено
-   44px ціль перемикачів: коробка росте, видимий рядок лишається 24px.
-   Висота при цьому мусить бути 24+20, а не 24: box-sizing тут border-box,
-   і 24px разом із полями лишали б написові 4px — лінійка під ним ставала
-   б перекресленням. */
-.order-cta{display:none}
-@media (max-width:760px){
-  .home-meta.header-menu-mode > .order-cta{
-    grid-column:1;grid-row:1;align-self:center;justify-self:start;
-    display:inline-flex;align-items:center;position:relative;
-    height:calc(var(--mobile-meta-row) + 20px);margin-left:var(--chrome-pad);
-    padding-block:10px;margin-block:-10px;
-    font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
-    font-weight:700;font-variation-settings:"wght" 700;line-height:1;
-    color:var(--pencil);white-space:nowrap;transform-origin:left center;
-    transition:transform 220ms var(--ease)
-  }
-  @media (hover:hover){
-    .home-meta.header-menu-mode > .order-cta:hover{transform:scaleX(1.025)}
-}
 }
 /* ── герой ─────────────────────────────────────────────────── */
 /* усе, що клієнт має побачити не гортаючи, живе в одному гріді:
@@ -826,7 +707,7 @@ figure{margin:0; position:relative; z-index:1}
    над рядком. Повна копія правила замість цього перекривала й opacity:
    home.css вантажиться після base.css, і на телефоні стрілки в «Замовленні»
    не з’являлися взагалі, хоч на решті сторінок стояли на місці. */
-.site-foot .lines > a::after{vertical-align:.95em}
+:is(.site-foot,.contact-slab) .lines > a::after{vertical-align:.95em}
 .site-foot .foot-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:var(--header-gap);padding-left:var(--chrome-pad);padding-right:var(--chrome-pad);color:var(--mute)}
 /* вузько сітка підвалу згортається в одну колонку, а контакти відходять
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
@@ -916,4 +797,27 @@ figure{margin:0; position:relative; z-index:1}
 @media (max-width:640px){
   .logos::before{left:calc(-1 * var(--chrome-pad))}
   .clients .logos{margin-left:calc(var(--col2) + var(--chrome-pad))}
+}
+
+/* ── лендінг: гортання по слайдах ──────────────────────────
+   Головна читається слайдами: перший екран, напрямки, клієнти, контакти.
+   Прив'язка м'яка (proximity), тобто секція підтягується до верху лише
+   тоді, коли прокрутка спинилася поруч із її межею. Секцію, вищу за
+   екран, — а такою на телефоні буває перелік напрямків, — за
+   специфікацією не притягує взагалі: поки знімок екрана вміщається в
+   саму секцію, будь-яке положення в ній чинне, і гортання лишається
+   звичайним.
+
+   Перший слайд починається від самого верху документа, тому мітка
+   стоїть на шапці, а не на герої: інакше прокрутка з'їдала б рядок із
+   закликом, і на першому екрані не було б куди натиснути.
+
+   scroll-behavior тут не ставиться навмисне. Браузерна плавність
+   прив'язана до відстані, і стрибок з першого екрана до контактів
+   тягнеться близько секунди; анімацію якоря веде скрипт сторінки з
+   власною сталою тривалістю. При prefers-reduced-motion прив'язки немає
+   зовсім — сторінка лишається простим документом. */
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-snap-type:y proximity}
+  .home-meta,.work,.clients,.contact-slab{scroll-snap-align:start}
 }

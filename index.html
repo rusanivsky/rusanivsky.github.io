@@ -32,7 +32,7 @@
 <link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <script data-reveal-boot>document.documentElement.classList.add('rev')</script>
-<link rel="stylesheet" href="/styles/home.bundle.min.css?v=3">
+<link rel="stylesheet" href="/styles/home.bundle.min.css?v=9">
 <!-- Короткий inline-boot ставить .rev ще до CSS і не дає контенту спершу
      з'явитися, а потім згаснути. Повний reveal.js іде з defer та при помилці
      знімає .rev, щоб сторінка не лишилася прихованою. Решта трьох скриптів
@@ -44,19 +44,13 @@
 <script src="/scripts/plate-parallax.js?v=9" defer></script>
 <script src="/scripts/language-switcher.js?v=3" defer></script>
 
-<script src="/scripts/google-analytics.js?v=2" defer></script>
+<script src="/scripts/google-analytics.js?v=4" defer></script>
 </head>
 <body>
 
 <header class="wrap meta home-meta">
-  <a class="order-cta" href="/contacts/" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>
-  <nav class="parts" aria-label="Sections">
-    <a class="part" href="/video/" data-en="Video" data-ua="Відео">Video</a>
-    <a class="part" href="/photo/" data-en="Photo" data-ua="Фото">Photo</a>
-    <a class="part" href="/design/" data-en="Design" data-ua="Дизайн">Design</a>
-  </nav>
   <div class="switches">
-    <a class="tiny contact-link" href="/rates/" data-en="Rates & Terms" data-ua="Умови співпраці">Rates & Terms</a>
+    <a class="order-cta" href="#contacts" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>
     <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
   </div>
 </header>
@@ -103,7 +97,7 @@
       <ol class="specs">
         <li class="spec" data-rev style="--d:80ms">
           <span class="no" aria-hidden="true">01</span>
-          <h3><a class="sect" href="/video/" data-en="Video editing" data-ua="Відеомонтаж">Video editing</a></h3>
+          <h3><a class="sect" href="/video/reels/" data-en="Video editing" data-ua="Відеомонтаж">Video editing</a></h3>
           <ul>
             <li><a class="it" href="/video/reels/" data-en="Reels" data-ua="Reels">Reels</a></li>
             <li><a class="it" href="/video/short-form/" data-en="Short-form video" data-ua="Короткі відео">Short-form video</a></li>
@@ -114,7 +108,7 @@
         </li>
         <li class="spec" data-rev style="--d:150ms">
           <span class="no" aria-hidden="true">02</span>
-          <h3><a class="sect" href="/photo/" data-en="Photography" data-ua="Фотографія">Photography</a></h3>
+          <h3><a class="sect" href="/photo/reportage/" data-en="Photography" data-ua="Фотографія">Photography</a></h3>
           <ul>
             <li><a class="it" href="/photo/reportage/" data-en="Reportage" data-ua="Репортаж">Reportage</a></li>
             <li><a class="it" href="/photo/culture-art/" data-en="Culture &amp; art" data-ua="Культура та мистецтво">Culture &amp; art</a></li>
@@ -124,7 +118,7 @@
         </li>
         <li class="spec design-spec" data-rev style="--d:220ms">
           <span class="no" aria-hidden="true">03</span>
-          <h3><a class="sect" href="/design/" data-en="Graphic design" data-ua="Графічний дизайн">Graphic design</a></h3>
+          <h3><a class="sect" href="/design/covers/" data-en="Graphic design" data-ua="Графічний дизайн">Graphic design</a></h3>
           <ul>
             <li><a class="it" href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-en="Typesetting &amp; layout for book editions" data-ua="Верстка книжкових видань">Typesetting &amp; layout for book editions</a></li>
             <li><a class="it" href="/design/covers/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
@@ -154,21 +148,25 @@
   </section>
 </main>
 
-<footer class="site-foot" aria-labelledby="ft">
+<section class="contact-slab" id="contacts" aria-labelledby="ft">
   <div class="wrap foot-in">
     <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
     <div class="say">
+      <div class="lines terms"><a href="/rates/" data-rev style="--d:90ms" data-en="Rates &amp; Terms" data-ua="Умови співпраці">Rates &amp; Terms</a></div>
       <p class="sub" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
       <div class="lines">
         <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
-        <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:150ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
-        <a href="https://t.me/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:210ms">Telegram</a>
+        <a href="https://t.me/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:150ms">Telegram</a>
+        <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:210ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
         <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener" data-rev style="--d:270ms">Instagram</a>
-        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:330ms">LinkedIn</a>
-        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:390ms">Facebook</a>
+        <a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:330ms">Behance</a>
+        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:390ms">LinkedIn</a>
+        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:450ms">Facebook</a>
       </div>
     </div>
   </div>
+</section>
+<footer class="site-foot">
   <div class="wrap foot-bar">
     <div class="footer-left">
       <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span id="clock" class="kyiv-clock">—:—</span> <span id="tz" class="kyiv-tz">EET</span></span></div>
@@ -340,14 +338,11 @@
       "https://www.instagram.com/rusanivsky/",
       "https://www.linkedin.com/in/rusanivsky/",
       "https://www.facebook.com/rusanivsky",
-      "https://www.upwork.com/freelancers/~01538086fd314c4cfa",
-      "https://www.threads.net/@rusanivsky",
-      "https://www.tiktok.com/@rusanivsky",
       "https://t.me/rusanivsky"
     ]
   }
 }
 </script>
-<script src="/scripts/move-language-switcher.js?v=5"></script>
+<script src="/scripts/chrome.js?v=5"></script>
 </body>
 </html>

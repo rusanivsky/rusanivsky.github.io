@@ -402,14 +402,6 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 .rule{height:var(--rule); background:var(--divider); border:0;
   width:calc(min(100%, var(--maxw)) - 2 * var(--pad)); margin:0 auto}
 .tiny{font-size:var(--fs-chrome);font-stretch:var(--text-stretch);letter-spacing:var(--ls-tiny);text-transform:uppercase;font-weight:600;color:var(--mute)}
-.contact-link{display:inline-block;transform-origin:center;transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)}
-.meta .contact-link{font-size:var(--fs-label)}
-/* та сама реакція, що й у розділів поряд: наведення й активна
-   сторінка засвічуються тим самим кольором тексту */
-@media (hover:hover){
-.contact-link:hover{color:var(--ink);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
-}
-.contact-link[aria-current="page"]{color:var(--active);font-weight:700;font-variation-settings:"wght" 700;-webkit-text-stroke:.12px currentColor}
 
 /* Останні три правила, що лежали у двох файлах одразу. Кожне дрібне, і
    саме тому вони й розійшлись би першими. */
@@ -423,7 +415,7 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
   :root{--col1:20px}
 }
 /* Ціль дотику посилань підвала: видимий рядок лишається той самий. */
-.site-foot .lines > a{padding-block:3px;margin-block:-3px}
+:is(.site-foot,.contact-slab) .lines > a{padding-block:3px;margin-block:-3px}
 
 /* ── спільна частина шапки ─────────────────────────────────
    Кнопки перемикачів, ряд .switches і випадне меню переповненої шапки
@@ -451,8 +443,43 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
 
 /* мова стоїть у правому куті шапки — сітка шапки лишається на трьох
    колонках, як була, коли поряд стояв ще й перемикач тем */
-.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:var(--header-gap)}
-.switches > .mobile-contact-link{margin-left:var(--switch-control-pad)}
+/* Праве поле групи — те саме оптичне поле, яким рядок шапки відбитий від
+   краю верстки в підвалі й ліворуч біля «Замовити послугу». Доти його
+   давав падінг кнопки EN/UA, яка стояла в групі останньою; мова поїхала в
+   підвал, і разом із нею зникло б поле — останній напис ліг би впритул до
+   межі, тоді як копірайт і мова під ним стоять із відступом. Тепер поле
+   належить самій групі й від її вмісту не залежить. */
+.switches{--switch-control-pad:var(--chrome-pad);display:flex;align-items:center;gap:var(--header-gap);
+  padding-right:var(--switch-control-pad)}
+
+/* Заклик замовити послугу стоїть у правій групі кожної сторінки й замикає
+   її — це єдина дія рядка, і вона тримає той самий край, що й копірайт із
+   мовою в підвалі. Веде він не на окрему сторінку, а на блок замовлень
+   цієї ж сторінки; хід до нього рівний і сталий — його веде chrome.js.
+
+   Охра тут без ховера за тим самим правилом, що й доти: це єдина кнопка
+   сторінки, і колір у неї не службовий, а сигнальний. */
+.switches .order-cta{
+  display:inline-flex;align-items:center;
+  font-size:var(--fs-label);letter-spacing:var(--ls-tiny);text-transform:uppercase;
+  font-weight:600;line-height:1;color:var(--pencil);white-space:nowrap;
+  padding-block:16px;transform-origin:right center;
+  transition:color 220ms var(--ease),transform 220ms var(--ease),-webkit-text-stroke 220ms var(--ease)
+}
+@media (pointer:fine){
+  .switches .order-cta{padding-block:9px}
+}
+@media (hover:hover){
+  .switches .order-cta:hover{color:var(--pencil);transform:scaleX(1.025);-webkit-text-stroke:.18px currentColor}
+}
+/* Вузький рядок шапки — рівно 24px видимої висоти, а 44px ціль дотику
+   винесена від'ємними полями й на лінійку не впливає. */
+@media (max-width:760px){
+  .switches .order-cta{
+    padding-block:10px;margin-block:-10px;
+    font-weight:700;font-variation-settings:"wght" 700
+  }
+}
 
 @media (min-width:641px) and (max-width:760px){
   .meta{--mobile-meta-row:24px;padding-bottom:calc(var(--meta-pad) + 8px)}
@@ -476,63 +503,6 @@ h1,h2{margin:0;font-family:var(--font);font-stretch:var(--display-stretch);font-
     padding-block:9px;min-height:30px;margin-block:-3px
   }
 }
-
-/* ── меню переповненої шапки ─────────────────────────────── */
-.header-menu-toggle,.header-menu-panel{display:none}
-.meta.header-menu-mode > .parts::-webkit-scrollbar{display:none}
-.header-menu-toggle span,.header-menu-toggle span::before,.header-menu-toggle span::after{
-  display:block;width:22px;height:1px;background:currentColor;
-  transition:transform 240ms var(--ease),opacity 180ms var(--ease)
-}
-.header-menu-toggle span{position:relative}
-.header-menu-toggle span::before,.header-menu-toggle span::after{content:"";position:absolute;left:0}
-.header-menu-toggle span::before{top:-6px}
-.header-menu-toggle span::after{top:6px}
-.header-menu-open .header-menu-toggle span{background:transparent}
-.header-menu-open .header-menu-toggle span::before{top:0;transform:rotate(45deg)}
-.header-menu-open .header-menu-toggle span::after{top:0;transform:rotate(-45deg)}
-.meta.header-menu-mode > .header-menu-panel{
-  /* зазор під шапкою: панель не приклеєна до лінійки, а лежить окремою
-     плашкою під нею */
-  position:absolute;top:calc(100% + 12px);right:var(--pad);z-index:40;
-  /* Шість із дванадцяти колонок: половина саме робочої ширини верстки,
-     без зовнішніх полів, а не половина вікна. */
-  display:grid;width:max-content;min-width:220px;max-width:calc(100vw - 2 * var(--pad));padding:10px 18px 14px;
-  /* тон самої плити в тому місці, де панель висить — не --plate-top,
-     той на 12 одиниць тепліший. Скло, а не суцільна заливка: прозоріше
-     за 80%, що були доти, але щільніше за саму шапку — вона розчиняється
-     в прокрутці, а меню має лишатися читаним, поки відкрите */
-  background:color-mix(in srgb,var(--menu-plate) 62%,transparent);
-  -webkit-backdrop-filter:blur(17.5px) saturate(1.4);
-  backdrop-filter:blur(17.5px) saturate(1.4);
-  /* Та сама тонка обводка, що й у фіксованої шапки. */
-  border:1px solid var(--hairline);border-radius:12px;
-  box-shadow:0 18px 42px color-mix(in srgb,#000 16%,transparent);
-  visibility:hidden;opacity:0;pointer-events:none;transform-origin:top right;
-  transform:translate3d(0,-6px,0) scale(.95,.98);
-  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s linear 340ms
-}
-.meta.header-menu-mode.header-menu-open > .header-menu-panel{
-  visibility:visible;opacity:1;pointer-events:auto;transform:translate3d(0,0,0) scale(1);
-  transition:opacity 260ms var(--ease),transform 340ms var(--ease),visibility 0s
-}
-.meta.header-menu-mode .header-menu-panel .switches{
-  position:static;display:grid;grid-template-columns:1fr;grid-column:auto;grid-row:auto;
-  justify-self:stretch;width:100%;height:auto;margin:0;padding:0;gap:0;
-  overflow:visible
-}
-.meta.header-menu-mode .header-menu-panel .switches > .mobile-contact-link{display:flex;margin:0}
-.meta.header-menu-mode .header-menu-panel .switches > .tgl::before{
-  font-size:var(--fs-label);font-weight:600;letter-spacing:var(--ls-tiny);
-  text-transform:uppercase;color:var(--mute)
-}
-.meta.header-menu-mode .header-menu-panel .switches > .tgl button{
-  font-size:var(--fs-label);font-stretch:var(--text-stretch);
-  font-weight:600;letter-spacing:var(--ls-tiny);line-height:1;
-  text-transform:uppercase
-}
-.meta.header-menu-mode .header-menu-panel #lang::before{content:"Language"}
-:root[lang="uk"] .meta.header-menu-mode .header-menu-panel #lang::before{content:"Мова"}
 
 /* ── поява блоків ─────────────────────────────────────────── */
 /* клас .rev вішає скрипт у <head>: без JS нічого не ховається */
@@ -609,12 +579,12 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
    тобто ледь помітну пляму замість блоку.
    Прийом працював наполовину, а сторінка з волосяних лінійок і
    повітря обходиться без суцільної заливки */
-.site-foot{
+:is(.site-foot,.contact-slab){
   color:var(--ink);
   --uline:2px;
 }
 @media (min-width:700px){
-.site-foot{--uline:3px}
+:is(.site-foot,.contact-slab){--uline:3px}
 }
 /* плашка живе на тій самій 12-колонковій сітці, що й сторінка: контакти
    тримають ліві десять колонок, соцмережі починаються з одинадцятої
@@ -680,17 +650,17 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   (max-width:640px){
   .foot-in .say{margin-left:calc(var(--col2) + var(--chrome-pad))}
 }
-.site-foot a{color:inherit; text-decoration:none}
+:is(.site-foot,.contact-slab) a{color:inherit; text-decoration:none}
 /* контактні рядки стоять під поясненням, а не над ним, і в тому ж
      кеглі, що й «Написати» вгорі — підвал повторює ритм першого екрана:
      дрібний рядок-мітка, просвіт, велике посилання */
-.site-foot .lines{
+:is(.site-foot,.contact-slab) .lines{
   min-width:0;
   margin-top:clamp(12px,1.8vh,20px);
   display:flex; align-items:baseline; flex-wrap:wrap;
   column-gap:clamp(7px,1.1vw,14px); row-gap:var(--contact-row-gap);
 }
-.site-foot .lines > a{
+:is(.site-foot,.contact-slab) .lines > a{
   display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
   font-family:var(--font); font-stretch:var(--text-stretch); font-size:var(--fs-link); font-weight:600; text-transform:none;
   letter-spacing:-.02em; line-height:1.02;
@@ -699,7 +669,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   transition:color 260ms var(--ease);
 }
 /* лінія окремим шаром і через transform — background-size тут не інтерполюється */
-.site-foot .lines > a::before{
+:is(.site-foot,.contact-slab) .lines > a::before{
   content:none;
   position:absolute; left:0; right:0; bottom:-.02em;
   height:var(--uline); background:var(--pencil);
@@ -707,25 +677,25 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   transition:transform 420ms var(--ease);
   will-change:transform;
 }
-.site-foot .lines > a::after{
+:is(.site-foot,.contact-slab) .lines > a::after{
   content:"↗"; display:inline-block; margin-left:.12em; font-size:.34em;
   vertical-align:.9em; color:var(--ink); opacity:0; transform:translate(-.25em,.25em);
   transition:opacity 320ms var(--ease), transform 320ms var(--ease);
 }
 @media (hover:hover){
-  .site-foot .lines > a:hover,
-  .site-foot .lines > a:focus-visible{color:var(--accent)}
-  .site-foot .lines > a:hover::before,
-  .site-foot .lines > a:focus-visible::before{transform:scaleX(1)}
-  .site-foot .lines > a:hover::after,
-  .site-foot .lines > a:focus-visible::after{opacity:1; transform:none}
+  :is(.site-foot,.contact-slab) .lines > a:hover,
+  :is(.site-foot,.contact-slab) .lines > a:focus-visible{color:var(--accent)}
+  :is(.site-foot,.contact-slab) .lines > a:hover::before,
+  :is(.site-foot,.contact-slab) .lines > a:focus-visible::before{transform:scaleX(1)}
+  :is(.site-foot,.contact-slab) .lines > a:hover::after,
+  :is(.site-foot,.contact-slab) .lines > a:focus-visible::after{opacity:1; transform:none}
 }
 @media (hover:none){
-.site-foot .lines > a::after{opacity:.72;transform:none}
+:is(.site-foot,.contact-slab) .lines > a::after{opacity:.72;transform:none}
 }
-.site-foot .lines > a:active{color:var(--accent)}
-.site-foot .lines > a:active::before{transform:scaleX(1)}
-.site-foot .lines > a:active::after{opacity:1; transform:none}
+:is(.site-foot,.contact-slab) .lines > a:active{color:var(--accent)}
+:is(.site-foot,.contact-slab) .lines > a:active::before{transform:scaleX(1)}
+:is(.site-foot,.contact-slab) .lines > a:active::after{opacity:1; transform:none}
 
 /* На touch-пристрої немає hover, тому маркер переходу не може чекати
    наведення. Це один site-wide контракт для зовнішніх і email-посилань:
@@ -740,17 +710,29 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
   .work .spec.under .sect > span:first-child::after,
   .work .spec.under .sect > span:last-child::after,
   .spec a.it[target]::after,
-  .site-foot .lines > a::after{
+  :is(.site-foot,.contact-slab) .lines > a::after{
     opacity:.72!important;transform:none!important
   }
 }
 /* соцмережі названі словами, а не марками: кожна своїм рядком, текст
    вирівняний ліворуч, а сам стовпчик стоїть праворуч — ліва половина
    плашки тримає вагу, права її врівноважує і не сперечається за вісь */
-.site-foot .sub{
+:is(.site-foot,.contact-slab) .sub{
   margin:0; max-width:34ch; text-wrap:pretty;
   color:var(--mute);
 }
+/* «Умови співпраці» більше не живуть у шапці: посилання стоїть першим
+   рядком блоку замовлень — над поясненням і контактами. Власного набору
+   в нього немає: це такий самий рядок .lines, як контакти під ним, і
+   працює на ньому те саме правило. Відрізняється лише відбивка: верхній
+   просвіт переходить від нього до пояснення, бо першим у блоці тепер
+   стоїть посилання, а не текст.
+
+   Стрілки назовні тут немає: по всьому сайту вона позначає перехід на
+   чужий майданчик, а умови — своя ж сторінка. */
+:is(.site-foot,.contact-slab) .lines.terms{margin-top:0}
+:is(.site-foot,.contact-slab) .lines.terms + .sub{margin-top:clamp(12px,1.8vh,20px)}
+:is(.site-foot,.contact-slab) .lines.terms > a::after{content:none}
 .foot-bar{
   position:relative;
   /* Текст під нижньою лінійкою відбитий тією самою мірою, якою текст
@@ -776,17 +758,40 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
 .foot-meta .tiny{white-space:nowrap}
 .foot-bar .footer-privacy{color:var(--mute);text-decoration:none;white-space:nowrap;transition:color 240ms var(--ease)}
 .foot-bar .footer-privacy:hover,.foot-bar .footer-privacy:focus-visible{color:var(--accent)}
+/* Мова живе у підвалі на будь-якій ширині: у шапці для неї не лишилось ні
+   місця, ні сенсу — це не дія сторінки, а налаштування. На десктопі вона
+   замикає праву групу одразу за «Приватністю», на телефоні йде власним
+   рядком під копірайтом (порядок вище). Набір той самий, що в сусідніх
+   рядках, а 44px ціль дотику винесена від'ємним полем — видимий рядок
+   лишається завввишки з рядок. */
+/* Тема й мова стоять парою: іконка ліворуч, дві літери праворуч, зазор
+   між ними — той самий, що й між сусідами в рядку шапки. Базова лінія
+   пари береться від літер, а не від іконки: у кнопки зі знаком своєї
+   лінії немає, і без цього «UA» з'їжджало б відносно «Приватності». */
+.foot-bar .footer-lang{display:flex;align-items:baseline;white-space:nowrap;gap:var(--header-gap)}
+.foot-bar .footer-lang > #theme{align-self:center}
+.foot-bar .footer-lang .tgl button{
+  padding:10px 0;margin-block:-10px;min-height:0;
+  font-stretch:var(--text-stretch);color:var(--mute);
+  transition:color 240ms var(--ease)
+}
+@media (hover:hover){
+  .foot-bar .footer-lang .tgl button:hover{
+    color:var(--accent);transform:none;-webkit-text-stroke:0
+  }
+}
 @media (max-width:560px){
-  /* Копірайт і «Приватність» стоять одним рядком, місто з годинником —
-     другим. Щоб копірайт і посилання опинились на спільному рядку, .foot-bar
-     тут не сітка, а flex із переносом, а .footer-left віддає своїх дітей
-     контейнеру через display:contents — у розмітці посилання лежить
-     усередині нього, і сіткою його на чужий рядок не винести.
+  /* Підвал на телефоні — це три рядки, і кожен свій: копірайт, мова з
+     приватністю, місто з годинником. Щоб сусідні рядки складались із
+     дітей різних коробок, .foot-bar тут не сітка, а flex із переносом,
+     а .footer-left віддає своїх дітей контейнеру через display:contents
+     — у розмітці приватність і мова лежать усередині нього, і сіткою їх
+     на чужий рядок не винести.
 
-     Перенос лишається живим: коли рядок копірайту з посиланням не
-     вміщається (десь від 300px і вужче), flex-wrap опускає «Приватність»
-     на власний рядок, як було доти. Місто з годинником тримає свій рядок
-     завжди — flex-basis:100%.
+     Перенос лишається живим: коли мова з приватністю не вміщаються
+     (десь від 300px і вужче), flex-wrap опускає приватність на власний
+     рядок. Копірайт і місто з годинником тримають свої рядки завжди —
+     flex-basis:100%.
 
      --chrome-pad повертається кожному рядку окремо: доти його давав
      .footer-left своїм padding-left, а з display:contents цієї коробки в
@@ -795,14 +800,21 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
     display:flex;flex-wrap:wrap;align-items:baseline;
     column-gap:calc(var(--footer-row-gap) - var(--chrome-pad));row-gap:var(--footer-row-gap)}
   .foot-bar > .footer-left{display:contents}
-  .foot-bar > .cols{order:1;justify-self:start;width:auto;padding:0 0 0 var(--chrome-pad)}
-  /* Оптичний зсув висить на самій «Приватності», а не на рядку: коли вона
-     переноситься на власний рядок, її край мусить стати під копірайт. Тому
-     column-gap вище зменшено рівно на --chrome-pad — на спільному рядку
-     просвіт між копірайтом і посиланням лишається той самий, що й між
-     містом і годинником під ними. */
-  .foot-bar .footer-privacy{display:block;margin:0;order:2;padding:0 0 0 var(--chrome-pad)}
-  .foot-bar > .footer-left > .foot-meta{order:3;flex:0 0 100%;padding:0 0 0 var(--chrome-pad)}
+  /* Три рядки від того самого лівого поля: копірайт, під ним через
+     порожній рядок мова з приватністю, а внизу місто з годинником. Це
+     один контракт для всіх сторінок — мова на телефоні живе у підвалі,
+     а не в шапці й не в бургері.
+
+     Мова й приватність стоять разом (flex-basis:auto), тож column-gap
+     плюс власний --chrome-pad приватності дають між ними ту саму
+     відстань, що й між іншими парами в рядку. Просвіт між усіма трьома
+     рядками один — row-gap підвалу; окремого відступу в рядок після
+     копірайту тут немає, інакше він виходив ширшим за просвіт під
+     мовою і стовпчик читався двома різними блоками. */
+  .foot-bar > .cols{order:1;justify-self:start;flex:0 0 100%;width:auto;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar .footer-lang{order:2;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar .footer-privacy{display:block;margin:0;order:3;flex:0 0 auto;padding:0 0 0 var(--chrome-pad)}
+  .foot-bar > .footer-left > .foot-meta{order:4;flex:0 0 100%;padding:0 0 0 var(--chrome-pad)}
   .foot-meta{grid-column:auto;width:100%;flex-direction:row;flex-wrap:nowrap;align-items:baseline;justify-content:flex-start;gap:var(--footer-row-gap);padding:0;min-width:0;text-align:left;white-space:nowrap}
   .foot-meta .tiny{white-space:nowrap; min-width:0}
 }
@@ -810,7 +822,7 @@ html.pt-leave body{ animation:fade-out 220ms var(--ease) both }
    за першу — за ту саму вертикаль, від якої йде лінійка над ними */
 @media (max-width:640px){
   .foot-in{grid-template-columns:1fr}
-  .site-foot{--foot-pad:var(--foot-pad-narrow)}
+  :is(.site-foot,.contact-slab){--foot-pad:var(--foot-pad-narrow)}
   .foot-bar{--footer-row-gap:var(--footer-gap-mobile);padding-bottom:var(--foot-bar-pad-narrow)}
   /* Лінійка нижнього рядка належить до рамки сторінки, тому йде від
      звичайного поля верстки, а не від другої колонки контенту. Її

@@ -17,11 +17,14 @@ body.no-plate-darkening::after{
      кнопки перемикачів мають line-height:1 — на мобільному це видно як
      «сходинку» між VIDEO/PHOTO та RATES/шрифтом. */
   .topbar > .meta > .parts > .part,
-  .topbar > .meta > .switches > .contact-link,
+  .topbar > .meta > .switches > .order-cta,
   .topbar > .meta > .switches > .tgl button{
     line-height:1
   }
-  .topbar > .meta.header-menu-mode{
+  /* Ця геометрія доти вмикалась разом із бургером — компактним рядком
+     шапка ставала тільки в ньому. Бургера немає, а рядок у цій ширині
+     компактний завжди, тож правила належать самій липкій шапці. */
+  .topbar > .meta{
     --mobile-meta-row:24px;
     grid-template-columns:auto minmax(0,1fr) auto;
     grid-template-rows:var(--mobile-meta-row);
@@ -29,22 +32,11 @@ body.no-plate-darkening::after{
     padding-bottom:var(--meta-pad-bottom);
     align-items:center
   }
-  .topbar > .meta.header-menu-mode > .back{
+  .topbar > .meta > .back{
     align-self:center;height:19px
   }
-  .topbar > .meta.header-menu-mode > .parts{
+  .topbar > .meta > .parts{
     grid-column:2;align-self:center;align-items:center;height:var(--mobile-meta-row);padding-bottom:0
-  }
-  .topbar > .meta.header-menu-mode > .parts > .part{
-    line-height:1
-  }
-  .topbar > .meta.header-menu-mode > .header-menu-toggle{
-    grid-column:3;align-self:center;width:44px;height:44px;margin:-10px -2px -10px -10px
-  }
-  /* Та сама початкова позиція, що й у головному меню: панель плавно
-     виїжджає справа наліво одночасно з fade in. */
-  .topbar > .meta.header-menu-mode:not(.header-menu-open) > .header-menu-panel{
-    transform:translate3d(0,-6px,0) scale(.95,.98)
   }
 }
 

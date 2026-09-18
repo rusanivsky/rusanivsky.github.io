@@ -8,26 +8,22 @@ const legacyGoogleTag = `<script async src="https://www.googletagmanager.com/gta
 // Локальний завантажувач чекає, доки промалюється пріоритетне зображення,
 // і лише потім тягне важкий gtag. Черга dataLayer при цьому створюється
 // одразу, тож page_view і ранні кліки не губляться.
-const googleTag = '<script src="/scripts/google-analytics.js?v=2" defer></script>';
+const googleTag = '<script src="/scripts/google-analytics.js?v=4" defer></script>';
 const revealBoot = "<script data-reveal-boot>document.documentElement.classList.add('rev')</script>";
 const revealScript = '<script src="/scripts/reveal.js?v=11" defer onerror="document.documentElement.classList.remove(\'rev\')"></script>';
 const pages = [
   ['/', 'index.html', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер', 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка.'],
   ['/rates/', 'rates/index.html', 'Умови співпраці — Кирило Русанівський', 'Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
-  ['/contacts/', 'contacts/index.html', 'Контакти — Кирило Русанівський', 'Контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва.'],
   ['/privacy/', 'privacy/index.html', 'Приватність — Кирило Русанівський', 'Коротка інформація про приватність і використання Google Analytics на сайті Кирила Русанівського.'],
-  ['/video/', 'video/index.html', 'Відеомонтаж — Кирило Русанівський', 'Портфоліо відеомонтажера з Києва Кирила Русанівського: інтерв’ю, YouTube-серії, музичні кліпи, документальні фільми, влоги та відео для соцмереж.'],
   ['/video/reels/', 'video/reels/index.html', 'Reels — Кирило Русанівський', 'Монтаж Reels у Києві: вертикальні відео для Instagram, TikTok і YouTube Shorts.'],
   ['/video/interviewandvlogs/', 'video/interviewandvlogs/index.html', 'Інтерв’ю і влоги — Кирило Русанівський', 'Зйомка й монтаж інтерв’ю та влогів у Києві: розмовні відео, YouTube-контент і соціальні мережі.'],
   ['/video/music/', 'video/music/index.html', 'Музичні кліпи — Кирило Русанівський', 'Портфоліо зі зйомки та монтажу музичних кліпів Кирила Русанівського: творчі відео для музикантів, артистів, релізів і живих виступів.'],
   ['/video/documentary/', 'video/documentary/index.html', 'Документалістика — Кирило Русанівський', 'Документальні фільми та відеомонтаж у Києві: історії людей, культурні проєкти, інтерв’ю та спостережне відео.'],
   ['/video/short-form/', 'video/short-form/index.html', 'Короткі відео — Кирило Русанівський', 'Монтаж коротких відео для соціальних мереж: вертикальні ролики для Instagram Reels, TikTok і YouTube Shorts.'],
-  ['/photo/', 'photo/index.html', 'Фотографія — Кирило Русанівський', 'Портфоліо фотографа Кирила Русанівського в Києві: репортаж, культура та мистецтво, бекстейдж і портрети.'],
   ['/photo/reportage/', 'photo/reportage/index.html', 'Репортаж — Кирило Русанівський', 'Репортажний фотограф у Києві. Кирило Русанівський знімає публічні заходи, культурні програми, святкування, нічне життя й аудиторії.'],
   ['/photo/culture-art/', 'photo/culture-art/index.html', 'Культура та мистецтво — Кирило Русанівський', 'Фотографія культури та мистецтва в Києві: галереї, інсталяції, відкриття, перформанси, концерти, театр, митці й культурні проєкти.'],
   ['/photo/backstage/', 'photo/backstage/index.html', 'Бекстейдж — Кирило Русанівський', 'Бекстейдж-фотограф у Києві. Фотографія процесів зйомок, знімальних груп, постановок, сцен і живих подій.'],
   ['/photo/portraits/', 'photo/portraits/index.html', 'Портрети — Кирило Русанівський', 'Портретний фотограф у Києві. Портрети для людей, митців і творчих професіоналів — у студії або на локації.'],
-  ['/design/', 'design/index.html', 'Друк і дизайн — Кирило Русанівський', 'Портфоліо графічного дизайнера з Києва: дизайн обкладинок, верстка книжок і видань, типографіка, бібліографічні покажчики та поліграфія.'],
   ['/design/covers/', 'design/covers/index.html', 'Дизайн обкладинок — Кирило Русанівський', 'Дизайнер книжкових обкладинок у Києві. Обкладинки, редакційна типографіка, верстка книжок і поліграфія для видавців, авторів і культурних проєктів.'],
 ];
 
@@ -52,7 +48,6 @@ const nightPortfolioRoutes = new Set([
 // вибір гостя їхав за ним по всьому сайту
 const switchableRoutes = new Set([...lightPortfolioRoutes, ...nightPortfolioRoutes]);
 const portfolioRuntimeRoutes = new Set([
-  '/photo/', '/design/', '/video/',
   ...lightPortfolioRoutes,
   ...nightPortfolioRoutes,
 ]);
@@ -245,7 +240,7 @@ function normalizePortfolioRuntime(html, route) {
   if (route === '/video/reels/') {
     scripts.push('<script src="/scripts/reels-carousel.js?v=1" defer></script>');
   }
-  return html.replace(/(?=<script src="\/scripts\/move-language-switcher)/, `${scripts.join('\n')}\n`);
+  return html.replace(/(?=<script src="\/scripts\/chrome)/, `${scripts.join('\n')}\n`);
 }
 
 function localiseLinks(html) {
@@ -257,20 +252,19 @@ function localiseLinks(html) {
   return html;
 }
 
-function addContactsLink(html, route) {
-  const current = route === '/rates/' ? ' aria-current="page"' : '';
-  const en = 'Rates & Terms', ua = 'Умови співпраці';
-  const termsLink = `<a class="tiny contact-link" href="/rates/"${current} data-en="${en}" data-ua="${ua}">${en}</a>`;
-  const contactsCurrent = route === '/contacts/' ? ' aria-current="page"' : '';
-  const contactsLink = route === '/'
-    ? ''
-    : `<a class="tiny contact-link mobile-contact-link" href="/contacts/"${contactsCurrent} data-en="Contacts" data-ua="Контакти">Contacts</a>`;
+function addHeaderChrome(html, route) {
+  // Службова група шапки однакова на кожній сторінці: заклик замовити
+  // послугу праворуч, перед ним — перемикач тем там, де він є, і мова,
+  // яку скрипт одразу забирає в підвал. Посилань «Умови співпраці» й
+  // «Контакти» в шапці немає: перше переїхало в рядок пояснення над
+  // контактами, друге замінив заклик — він веде на той самий блок
+  // замовлень, який тепер стоїть на кожній сторінці.
+  const orderCta = '<a class="order-cta" href="#contacts" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>';
   const langToggle = '<div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>';
   // Усі три іконки лежать у розмітці, потрібну показує CSS за
   // data-theme-mode — його theme.js ставить ще в <head>. Так кнопка не
   // чекає на DOMContentLoaded і шапка не стрибає на кожному завантаженні.
-  // Privacy живе тільки у футері; на головній прямий контакт — це CTA,
-  // а на інших сторінках у бургері лишається Contacts.
+  // Privacy живе тільки у футері.
   const themeIcons =
     '<span class="ti" data-mode="auto"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
       + '<circle cx="8" cy="8" r="5.7" fill="none" stroke="currentColor" stroke-width="1.4"/>'
@@ -283,17 +277,18 @@ function addContactsLink(html, route) {
   const themeToggle = switchableRoutes.has(route)
     ? `\n    <div class="tgl" id="theme" role="group" aria-label="Theme"><button type="button" aria-label="Theme: auto">${themeIcons}</button></div>`
     : '';
-  const contactsMarkup = contactsLink ? `\n    ${contactsLink}` : '';
-  // Keep the same header contract on every page, including pages whose older
-  // source had the link as the fourth item in .parts. The homepage uses the
-  // dedicated CTA instead of a duplicate Contacts link.
+  // Старий вміст групи знімається цілком і збирається наново — тоді
+  // порядок не залежить від того, з якої сторінки прийшла розмітка.
+  // Заклик знімається теж: на головній він доти стояв окремим елементом
+  // ліворуч від групи, а тепер живе всередині неї.
   html = html.replace(/<a class="[^"]*tiny contact-link[^"]*" href="\/(?:contacts|terms|rates)\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
   html = html.replace(/\s*<a class="tiny privacy-link" href="\/privacy\/"(?: aria-current="page")? data-en="[^"]*" data-ua="[^"]*">[^<]*<\/a>/g, '');
+  html = html.replace(/\s*<a class="order-cta"[^>]*>[^<]*<\/a>/g, '');
   html = html.replace(/\s*<div class="tgl" id="(?:lang|theme)"[^>]*>[\s\S]*?<\/div>/g, '');
   html = html.replace(/\n[ \t]*\n[ \t]*<\/nav>/g, '\n  </nav>');
   html = html.replace(
     /<div class="switches">/,
-    `<div class="switches">\n    ${termsLink}${contactsMarkup}\n    ${langToggle}${themeToggle}`,
+    `<div class="switches">${themeToggle}\n    ${orderCta}\n    ${langToggle}`,
   );
   html = html.replace(/(<div class="switches">)\n[ \t]*\n/g, '$1\n');
   const languageSwitcher = '<script src="/scripts/language-switcher.js?v=3" defer></script>';
@@ -338,13 +333,13 @@ function addKyivClockScript(html, route) {
   return html.replace('</body>', '<script src="/scripts/kyiv-clock.js?v=1"></script>\n</body>');
 }
 
-const sectionHeaderStyleVersion = 28;
+const sectionHeaderStyleVersion = 29;
 
 // Спільний шар усього сайту. Вантажиться першим, до файлу розділу:
 // файли розділів тільки доповнюють його і нічого з нього не повторюють.
-const baseStyleVersion = 14;
-const homeStyleVersion = 3;
-const sectionStyleVersion = 3;
+const baseStyleVersion = 20;
+const homeStyleVersion = 9;
+const sectionStyleVersion = 7;
 
 const sectionStyleVersions = {
   '/photo/photo.css': 118,
@@ -389,7 +384,7 @@ function addSectionHeaderStyle(html, route) {
   return html.replace(sectionStyle, `$&\n<link rel="stylesheet" href="/styles/section-header.css?v=${sectionHeaderStyleVersion}">`);
 }
 
-const themeScriptVersion = 5;
+const themeScriptVersion = 6;
 
 // Скрипт іде перед стилями розділу без defer: data-theme має стати на
 // місце до першого малювання, інакше видно спалах чужої теми
@@ -452,7 +447,7 @@ for (const [route, source, title, description] of pages) {
   english = addGoogleTag(english);
   english = renameWorkTerms(english);
   english = normalizeBackLinks(english);
-  english = addContactsLink(english, route);
+  english = addHeaderChrome(english, route);
   english = addFooterMeta(english, route);
   english = addPrivacyFooterLink(english);
   english = addKyivClockScript(english, route);
@@ -479,6 +474,14 @@ for (const [route, source, title, description] of pages) {
 // GitHub Pages не вміє 301.
 const moved = [
   ['/terms/', '/rates/'],
+  // Сторінки-огляди розділів і окрема сторінка контактів прибрані:
+  // навігація веде одразу на першу підсторінку розділу, а контакти
+  // стоять блоком замовлень на кожній сторінці. Адреси лишаються
+  // живими — вони роками були в пошуку й у чужих посиланнях.
+  ['/photo/', '/photo/reportage/'],
+  ['/video/', '/video/reels/'],
+  ['/design/', '/design/covers/'],
+  ['/contacts/', '/'],
   ['/video/interviews/', '/video/interviewandvlogs/'],
   ['/video/vlogs/', '/video/interviewandvlogs/'],
   ['/photo/public-events/', '/photo/reportage/'],
