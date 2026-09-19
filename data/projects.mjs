@@ -232,22 +232,24 @@ export const projects = [
   {
     id: 'p-shylero-utility-bag',
     slug: 'shylero-utility-bag',
-    title: { en: 'Utility Bag by SHYLERO', ua: 'Utility Bag by SHYLERO' },
+    /* The slug keeps the singular the first file was named with; the project
+       is the series, so the title does not. */
+    title: { en: 'Utility Bags by SHYLERO', ua: 'Utility Bags by SHYLERO' },
     year: null,
     client: 'SHYLERO',
     context: 'commissioned',
     disciplines: ['video'],
     roles: ['Camera', 'Editing'],
     shortDescription: {
-      en: 'A short product film for SHYLERO about its Utility Bag.',
-      ua: 'Короткий продуктовий ролик для SHYLERO про Utility Bag.',
+      en: 'A short product film for SHYLERO, a Ukrainian maker of bags — the series of utility bags and backpacks the company builds, filmed and cut as one piece.',
+      ua: 'Короткий продуктовий ролик для SHYLERO, українського виробника сумок, — про серію утилітарних сумок і рюкзаків, які робить компанія, зняту і змонтовану одним фільмом.',
     },
     credits: [
       { en: 'Camera Operator & Editor — Kyrylo Rusanivsky', ua: 'Оператор і монтажер — Кирило Русанівський' },
     ],
     cover: `${POSTER}utility-bag-poster.jpg`,
     media: [
-      video('yt', 'EfoTXc5AVkk', 'Utility Bag by SHYLERO', `${POSTER}utility-bag-poster.jpg`),
+      video('yt', 'EfoTXc5AVkk', 'Utility Bags by SHYLERO', `${POSTER}utility-bag-poster.jpg`),
     ],
     externalLinks: [],
     featured: false,
