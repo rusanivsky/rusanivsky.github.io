@@ -74,6 +74,7 @@
   --stage-bg: #ebe7db;
 
   --grain: 0.022;
+  --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* --- Grid --- */
   --cols: 12;
@@ -265,10 +266,38 @@ body::before {
   z-index: 0;
   pointer-events: none;
   opacity: var(--grain);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: var(--grain-image);
+}
+
+/* The paper grain is a surface treatment, not a page-only treatment. Repeat
+   it on every solid colour that creates a visual field, while keeping images
+   and video above the texture so the work itself stays clean. */
+:where(.bar, .drawer, .stage, .lb, .splash) { isolation: isolate; }
+:where(.row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot) {
+  position: relative;
+  isolation: isolate;
+}
+:where(.bar, .drawer, .stage, .row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot, .lb, .splash)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: var(--grain-image);
+}
+:where(.bar, .drawer, .stage, .lb, .splash) > *,
+:where(.row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot) img,
+:where(.player) iframe,
+:where(.player) button {
+  position: relative;
+  z-index: 1;
 }
 @media (prefers-reduced-transparency: reduce) {
-  body::before { display: none; }
+  body::before,
+  :where(.bar, .drawer, .stage, .row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot, .lb, .splash)::before {
+    display: none;
+  }
 }
 
 :focus-visible {
