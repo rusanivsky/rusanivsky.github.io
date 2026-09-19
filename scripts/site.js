@@ -303,11 +303,30 @@
       var item = group[at];
       /* srcset and sizes go on before src: set the other way round the
          browser starts fetching the plain src and then throws it away.
-         The viewer fills the window, so its sizes is 100vw — the step the
-         thumbnail chose for a 271px slot would be mush at full screen. */
-      if (item.srcset) { lbImg.srcset = item.srcset; lbImg.sizes = '100vw'; }
+         The viewer asks for the widest step there is, not the one that fits
+         the screen. Saving a picture from a phone hands over the file the
+         browser already holds, and a step chosen for a 390px screen is what
+         the person would keep. So sizes is set past every candidate, which
+         leaves the browser nothing to pick but the largest. It costs a phone
+         about 70kB more than the fitting step — paid once, in the view a
+         person opened on purpose, and not at all in the grid. */
+      var widestUrl = '';
+      if (item.srcset) {
+        var widest = 0;
+        item.srcset.split(',').forEach(function (c) {
+          var bits = c.trim().split(/\s+/);
+          var w = parseInt((bits[1] || ''), 10);
+          if (w > widest) { widest = w; widestUrl = bits[0]; }
+        });
+        lbImg.srcset = item.srcset;
+        lbImg.sizes = widest ? widest + 'px' : '100vw';
+      }
       else { lbImg.removeAttribute('srcset'); lbImg.removeAttribute('sizes'); }
-      lbImg.src = item.src;
+      /* The fallback points at the widest step too, so a browser that saves
+         src rather than the step it actually loaded still hands over the
+         large file. Nothing is fetched twice: srcset is already set, so src
+         is only read where srcset is not understood. */
+      lbImg.src = widestUrl || item.src;
       lbImg.alt = item.alt;
       if (item.w && item.h) { lbImg.width = item.w; lbImg.height = item.h; }
       if (lbCount) lbCount.textContent = (at + 1) + ' / ' + group.length;
