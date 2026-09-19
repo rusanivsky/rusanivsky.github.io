@@ -26,16 +26,21 @@ enlarged file is a bigger download of the same softness. The file already in
 `media/` is left untouched and stays a step of the ladder — the top step when
 there is no original, a middle one when there is.
 
-What the top step carries
--------------------------
-Only the widest step keeps the photograph's authorship, because that is the
-file someone saves when they save the picture; the smaller steps stay bare,
-where a tag block would weigh more than half the image. The block is built
-from scratch rather than copied: an untouched original carries the camera's
-serial number, the lens's serial number, the internal file name and, in a
-third of this archive, GPS to the metre with the hour of the shoot. None of
-that belongs on a public page, so KEEP_ROOT and KEEP_EXIF below name the tags
-that do — everything not named is dropped.
+What every step carries
+-----------------------
+Each step, down to the 480px one, is signed: the author, the rights, and the
+address of the site, in EXIF and in XMP both, because a picture saved from a
+phone or passed on by someone else should still say whose it is. The whole
+block is about 1 kB, which is 0.2% of the pictures on this site — the widest
+step barely notices it and the narrowest pays under two per cent.
+
+The signature is written from AUTHOR and SITE below, not copied, so it is the
+same on a picture whose original never carried it. Shooting data — camera,
+lens, exposure, the moment — is copied when the original has it, tag by tag
+through KEEP_ROOT and KEEP_EXIF. Nothing arrives that is not named there: an
+untouched original carries the camera's serial number, the lens's serial
+number, the internal file name and, in a third of this archive, GPS to the
+metre with the hour of the shoot, and none of that belongs on a public page.
 
 Run from the repository root:  python3 scripts/build-image-ladder.py [--write]
 Without --write it only reports what it would do.
@@ -44,12 +49,20 @@ import json, os, sys
 from PIL import Image
 
 STEPS = [480, 960, 1440, 2400]
-# Author, camera, and how the frame was taken. Named by their EXIF tag ids so
-# nothing else can arrive by accident: no GPS, no serial numbers, no software
-# or raw file name.
+AUTHOR = 'Kyrylo Rusanivsky'
+SITE = 'https://rusanivsky.com'
+# EXIF strings are ASCII, so the line that goes there spells the sign out;
+# XMP is UTF-8 and keeps the typographic one.
+RIGHTS = f'© {AUTHOR} · rusanivsky.com'
+RIGHTS_ASCII = f'(c) {AUTHOR} - rusanivsky.com'
+# What a phone shows in its caption field once the picture is saved.
+CAPTION = f'Photography by {AUTHOR}'
+# Camera and frame. Named by their EXIF tag ids so nothing else can arrive by
+# accident: no GPS, no serial numbers, no software or raw file name. Artist
+# and Copyright are not here — they are written from AUTHOR and SITE, never
+# copied, so every picture is signed the same way.
 KEEP_ROOT = {
     0x010F: 'Make', 0x0110: 'Model', 0x0112: 'Orientation',
-    0x013B: 'Artist', 0x8298: 'Copyright',
 }
 KEEP_EXIF = {
     0x829A: 'ExposureTime', 0x829D: 'FNumber', 0x8827: 'ISOSpeedRatings',
@@ -87,25 +100,45 @@ def media_files():
                 yield os.path.join(root, f)
 
 
-def authorship(path):
-    """The tags KEEP_ROOT and KEEP_EXIF name, as an EXIF block — about 300
-    bytes against the 12 kB an untouched original carries. Empty when the
-    source has no EXIF at all, which is every picture rebuilt from media/."""
+def signature(path):
+    """The EXIF and XMP a published step carries: the author and the site
+    always, the camera and the frame when the source knows them."""
+    out = Image.Exif()
     try:
         full = Image.open(path).getexif()
     except Exception:
-        return None
-    if not full:
-        return None
-    out = Image.Exif()
+        full = {}
     for tag in KEEP_ROOT:
         if tag in full:
             out[tag] = full[tag]
-    sub = full.get_ifd(0x8769)
-    kept = {tag: sub[tag] for tag in KEEP_EXIF if tag in sub}
-    if kept:
-        out[0x8769] = kept
-    return out.tobytes() if len(out) else None
+    if full:
+        sub = full.get_ifd(0x8769)
+        kept = {tag: sub[tag] for tag in KEEP_EXIF if tag in sub}
+        if kept:
+            out[0x8769] = kept
+    out[0x013B] = AUTHOR
+    out[0x8298] = RIGHTS_ASCII
+    out[0x010E] = CAPTION
+    xmp = (
+        '<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>'
+        '<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF'
+        ' xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'
+        '<rdf:Description rdf:about=""'
+        ' xmlns:dc="http://purl.org/dc/elements/1.1/"'
+        ' xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/"'
+        ' xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/">'
+        f'<dc:creator><rdf:Seq><rdf:li>{AUTHOR}</rdf:li></rdf:Seq></dc:creator>'
+        f'<dc:description><rdf:Alt><rdf:li xml:lang="x-default">{CAPTION}'
+        '</rdf:li></rdf:Alt></dc:description>'
+        f'<dc:rights><rdf:Alt><rdf:li xml:lang="x-default">{RIGHTS}</rdf:li>'
+        '</rdf:Alt></dc:rights>'
+        f'<xmpRights:WebStatement>{SITE}</xmpRights:WebStatement>'
+        '<Iptc4xmpCore:CreatorContactInfo><rdf:Description>'
+        f'<Iptc4xmpCore:CiUrlWork>{SITE}</Iptc4xmpCore:CiUrlWork>'
+        '</rdf:Description></Iptc4xmpCore:CreatorContactInfo>'
+        '</rdf:Description></rdf:RDF></x:xmpmeta><?xpacket end="w"?>'
+    ).encode('utf-8')
+    return out.tobytes(), xmp
 
 
 def top_width(path):
@@ -138,17 +171,17 @@ def main(write):
         steps = {bw: url}
         # The widest step this picture gets, wherever it ends up being written:
         # a source wider than about 2730px reaches 2400 through the loop below,
-        # a narrower one only through the branch after it. Authorship rides on
-        # that step alone, so both writers have to know which one it is.
+        # a narrower one only through the branch after it.
         top = min(sw, STEPS[-1]) if sw > bw else bw
+
+        exif_block, xmp_block = signature(src_path)
 
         def cut(width, out):
             im = Image.open(src_path).convert('RGB')
             h = round(im.size[1] * width / im.size[0])
-            tags = authorship(src_path) if width == top else None
-            kw = {'exif': tags} if tags else {}
             im.resize((width, h), Image.LANCZOS).save(
-                out, 'WEBP', quality=QUALITY, method=6, **kw)
+                out, 'WEBP', quality=QUALITY, method=6,
+                exif=exif_block, xmp=xmp_block)
 
         for w in STEPS:
             if w >= sw * (1 - CLOSE):
