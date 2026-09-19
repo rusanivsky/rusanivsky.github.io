@@ -36,16 +36,19 @@
 <link rel="manifest" href="/site.webmanifest?v=07ab25da">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=ae13e66f">
+<link rel="stylesheet" href="/styles/site.css?v=ffb31577">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');
 var r=document.documentElement;r.className+=' splash-on';
-addEventListener('DOMContentLoaded',function(){
-setTimeout(function(){r.className+=' splash-off';},1400);
-setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
-});}catch(e){}})();</script>
+var t0=Date.now(),done=false;
+function finish(){if(done)return;done=true;
+setTimeout(function(){r.className+=' splash-off';
+setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
+},Math.max(0,2200-(Date.now()-t0)));}
+addEventListener('load',finish);
+setTimeout(finish,6000);}catch(e){}})();</script>
 <script src="/scripts/site.js?v=5d85f398" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
@@ -95,7 +98,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
     <p class="project-dek t-lead col-7">A music project for the anniversary of the disaster: a documentary film and two performances recorded inside the exclusion zone.</p>
     <dl class="facts">
       <div><dt>Client</dt><dd>Ukrainian Cultural Foundation</dd></div>
-      <div><dt>Creative specialist</dt><dd>Camera</dd></div>
+      <div><dt>Role</dt><dd>Camera</dd></div>
       
       <div><dt>Practice</dt><dd>Video</dd></div>
     </dl>

@@ -183,17 +183,24 @@ const lightbox = () => `
    less motion never sees it at all. It carries the full name, with the role
    set quietly to its right on the same line. */
 const splash = () => `
-<div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">${ui('name')}</span><span class="splash-role">${ui('role')}</span></p></div>`;
+<div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">${ui('name')}</span><span class="splash-role">${ui('splashRole')}</span></p></div>`;
 
+/* Заставка не просто відлічує секунди — вона прикриває завантаження.
+   Іде, коли сторінка готова (подія load), але не раніше ніж через 2,2 с,
+   щоб не блимнути, і не пізніше ніж через 6 с: одне неквапливе фото не
+   має тримати екран замість того, щоб довантажитися вже під сторінкою. */
 const SPLASH_BOOT = `(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');
 var r=document.documentElement;r.className+=' splash-on';
-addEventListener('DOMContentLoaded',function(){
-setTimeout(function(){r.className+=' splash-off';},1400);
-setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
-});}catch(e){}})();`;
+var t0=Date.now(),done=false;
+function finish(){if(done)return;done=true;
+setTimeout(function(){r.className+=' splash-off';
+setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
+},Math.max(0,2200-(Date.now()-t0)));}
+addEventListener('load',finish);
+setTimeout(finish,6000);}catch(e){}})();`;
 
 /* The face is decided before the first paint, so the headlines do not start in
    one font and jump to the other. */

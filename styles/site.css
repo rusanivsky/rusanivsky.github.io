@@ -1216,14 +1216,12 @@ html.splash-off .splash {
   align-items: baseline;
   gap: 1.5em;
   white-space: nowrap;
-  /* Three times what it was. The splash holds the screen for a second and a
-     half and nothing else is on it, so the name is the picture, not a label
-     in the middle of a dark field. Three times is the ceiling, not a promise:
-     on a narrow desktop the line would run past both edges, so the second
-     term hands the size back to the width and the setting stays whole. */
-  font-size: min(calc(var(--t-meta) * 3), 2.5vw);
+  /* Заставка тримає екран сама, і напис на ній не має кричати: він
+     набраний як речення, а не капслоком, і на десктопі взятий на 40%
+     менше за той розмір, з якого починали. Другий доданок віддає розмір
+     ширині вікна, щоб на вузькому десктопі рядок не виходив за краї. */
+  font-size: min(calc(var(--t-meta) * 1.8), 1.5vw);
   font-weight: var(--w-semi);
-  text-transform: uppercase;
 }
 /* On the phone the line will not hold both parts, so it becomes two: the
    name, then the role under it, centred on the same axis. Three times the old
@@ -1242,16 +1240,16 @@ html.splash-off .splash {
     font-size: min(calc(var(--t-meta) * 2.7), 4.68vw);
   }
   .splash-name,
-  .splash-role { letter-spacing: 0.08em; text-indent: 0.08em; }
+  .splash-role { letter-spacing: 0.03em; text-indent: 0.03em; }
 }
 .splash-name {
   color: var(--ink);
-  /* Tracking is measured in the type's own size, so the value that opened a
-     twelve-pixel line to a whisper closes a thirty-six-pixel one into a
-     fence. At three times the size it is set to roughly a third of what it
-     was, which reads the same and leaves the line inside the page. */
-  letter-spacing: 0.12em;
-  text-indent: 0.12em;
+  /* Розрідження малювалося під капслок: великі літери його просять, рядок
+     звичайного набору від нього розсипається. Без капслока воно втричі
+     менше. text-indent повертає останній пробіл, який letter-spacing
+     дописує праворуч, інакше рядок стоїть не по центру. */
+  letter-spacing: 0.04em;
+  text-indent: 0.04em;
   animation: splash-in 320ms var(--ease) both;
 }
 .splash-role {
@@ -1259,8 +1257,8 @@ html.splash-off .splash {
      name by colour alone. It lands half a second behind, and only fades, so it
      settles rather than arrives. */
   color: var(--muted);
-  letter-spacing: 0.12em;
-  text-indent: 0.12em;
+  letter-spacing: 0.04em;
+  text-indent: 0.04em;
   animation: splash-fade 460ms var(--ease) 460ms both;
 }
 @keyframes splash-in {
