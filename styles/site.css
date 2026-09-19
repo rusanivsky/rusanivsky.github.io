@@ -1305,12 +1305,12 @@ html.splash-off .splash {
 }
 .splash-role {
   /* One size and one setting across the whole line — the role differs from the
-     name by colour alone. It lands half a second behind, and only fades, so it
-     settles rather than arrives. */
+     name by colour alone. It appears during the second second and fades in
+     slowly, so it settles rather than arrives. */
   color: var(--muted);
   letter-spacing: 0.04em;
   text-indent: 0.04em;
-  animation: splash-fade 460ms var(--ease) 460ms both;
+  animation: splash-fade 900ms var(--ease) 1000ms both;
 }
 @keyframes splash-in {
   from { opacity: 0; transform: translateY(0.25em); }
