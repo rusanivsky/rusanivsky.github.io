@@ -57,6 +57,11 @@ export const UI = {
   budget: { en: 'Budget', ua: 'Бюджет' },
   message: { en: 'Message', ua: 'Повідомлення' },
   send: { en: 'Send', ua: 'Надіслати' },
+  briefSubject: { en: 'Brief', ua: 'Бриф' },
+  briefNoJs: {
+    en: 'This form composes an email, which needs JavaScript. Without it, write to the address above.',
+    ua: 'Ця форма складає лист, і для цього потрібен JavaScript. Без нього напишіть на адресу вище.',
+  },
   moreThanOne: { en: 'More than one', ua: 'Кілька одразу' },
   graphicDesign: { en: 'Graphic design', ua: 'Графічний дизайн' },
 

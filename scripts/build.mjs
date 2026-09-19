@@ -954,7 +954,7 @@ function enquiriesPage() {
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">${ui('shortBrief')}</h2>
     <p class="page-intro col-7">${esc(L(ENQ_FORM_NOTE))} <a href="${href('/rates/')}">${ui('rates')}</a> ${ui('ratesCovers')}</p>
-    <form class="brief col-7" id="brief" action="mailto:${EMAIL}" method="post" enctype="text/plain">
+    <form class="brief col-7" id="brief" data-mailto="${EMAIL}" data-subject="${attr(ui('briefSubject'))}">
       <label for="b-contact">${ui('yourContact')}</label>
       <input id="b-contact" name="Contact" type="text" required
              aria-describedby="b-contact-note" autocomplete="email">
@@ -973,6 +973,7 @@ function enquiriesPage() {
       <label for="b-msg">${ui('message')}</label>
       <textarea id="b-msg" name="Message"></textarea>
       <button type="submit">${ui('send')}</button>
+      <noscript><p class="field-note">${ui('briefNoJs')}</p></noscript>
     </form>
   </section>
 

@@ -47,7 +47,7 @@ addEventListener('DOMContentLoaded',function(){
 setTimeout(function(){r.className+=' splash-off';},1400);
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
 });}catch(e){}})();</script>
-<script src="/scripts/site.js?v=74215f28" defer></script>
+<script src="/scripts/site.js?v=34cc07b0" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
 </head>
@@ -108,7 +108,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">Або надішліть короткий бриф</h2>
     <p class="page-intro col-7">Форма відкриє ваш поштовий клієнт із заповненими відповідями — більше нікуди нічого не йде. <a href="/ua/rates/">Умови співпраці</a> охоплюють ціни, терміни, правки, оплату, передачу файлів і права.</p>
-    <form class="brief col-7" id="brief" action="mailto:info@rusanivsky.com" method="post" enctype="text/plain">
+    <form class="brief col-7" id="brief" data-mailto="info@rusanivsky.com" data-subject="Бриф">
       <label for="b-contact">Ваш контакт</label>
       <input id="b-contact" name="Contact" type="text" required
              aria-describedby="b-contact-note" autocomplete="email">
@@ -127,6 +127,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
       <label for="b-msg">Повідомлення</label>
       <textarea id="b-msg" name="Message"></textarea>
       <button type="submit">Надіслати</button>
+      <noscript><p class="field-note">Ця форма складає лист, і для цього потрібен JavaScript. Без нього напишіть на адресу вище.</p></noscript>
     </form>
   </section>
 

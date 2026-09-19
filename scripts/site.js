@@ -179,6 +179,39 @@
     });
   });
 
+  /* ---------- Brief ----------
+     The form composes an email; it does not post anywhere. It used to say so
+     with action="mailto:", and browsers read that as a form submitting over
+     something that is not HTTPS: Chrome turned autofill off on the fields and
+     put a full-page «not secure» warning between the visitor and the send
+     button. Nothing was ever insecure — there is no server and no request —
+     but the warning was real and it stopped people. So the address lives in a
+     data attribute, the submit is handled here, and the mail client is opened
+     with the answers already in it. The labels on the page supply the field
+     names, so the letter arrives in the language the form was filled in.
+     Without JavaScript the form cannot compose anything, and a line inside
+     <noscript> says to write to the address printed just above it. */
+  var brief = document.getElementById('brief');
+  if (brief && brief.dataset.mailto) {
+    brief.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var lines = [];
+      var fields = brief.querySelectorAll('input[name], select[name], textarea[name]');
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        var value = (f.value || '').trim();
+        if (!value) continue;
+        var label = brief.querySelector('label[for="' + f.id + '"]');
+        lines.push((label ? label.textContent.trim() : f.name) + ': ' + value);
+      }
+      var disc = brief.querySelector('select[name="Discipline"]');
+      var subject = brief.dataset.subject + (disc && disc.value ? ' — ' + disc.value : '');
+      window.location.href = 'mailto:' + brief.dataset.mailto
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(lines.join('\n'));
+    });
+  }
+
   /* ---------- Lightbox ---------- */
   var lb = document.getElementById('lb');
   if (lb) {
