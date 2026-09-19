@@ -222,8 +222,33 @@ body {
   font-weight: var(--w-regular);
   line-height: var(--lh-text);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Why the theme fade lives behind an attribute ----------
+   Chromium will not restart a colour transition when the new value arrives
+   from a media query alone: nothing on the element changed, so the element
+   keeps the colour it was already showing. The page therefore stayed in the
+   old theme after the system flipped, although --paper and --ink had both
+   already moved — the automatic theme looked broken, and looked broken with
+   JavaScript off too, where nothing could paper over it.
+
+   So the fade now belongs to the manual switch only, where a script is by
+   definition present to ask for it. The automatic change is instant, which
+   is what it should always have been: the system fades its own windows, and
+   a second fade on top of that is a page arguing with the machine. */
+:root[data-theming] body {
   transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
 }
+
+/* The same bug in miniature: the small transitions that exist for hover hold
+   their old colour after an automatic change until something hovers them.
+   Dropping every transition for a single frame is the only thing that lets
+   them go — the script raises this flag around the change and lowers it
+   again before anything is painted. */
+:root[data-theme-settle] * {
+  transition: none !important;
+}
+
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }

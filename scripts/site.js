@@ -28,6 +28,7 @@
      choice is stored and wins until the visitor picks Auto again. The clock
      is never consulted — the brief rules that out explicitly. */
   var THEME_KEY = 'kr-theme';
+  var fadeOut = 0;
   var LIGHT = '#f4f1e9';
   var DARK = '#141412';
 
@@ -51,8 +52,19 @@
 
   paint(stored() || 'auto');
 
+  /* An automatic change needs no repainting from here — the media query in
+     the stylesheet has already moved every token. What it does need is one
+     frame with the transitions switched off, or the colours that were mid-
+     transition stay where they were; styles/site.css explains the bug this
+     works around. Both forced reads are the point: they flush the styles
+     while the flag is up, so nothing is ever painted in between. */
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-    if (root.getAttribute('data-theme') === 'auto') paint('auto');
+    if (root.getAttribute('data-theme') !== 'auto') return;
+    root.setAttribute('data-theme-settle', '');
+    void root.offsetHeight;
+    paint('auto');
+    void root.offsetHeight;
+    root.removeAttribute('data-theme-settle');
   });
 
   document.addEventListener('click', function (e) {
@@ -63,7 +75,12 @@
       if (mode === 'auto') localStorage.removeItem(THEME_KEY);
       else localStorage.setItem(THEME_KEY, mode);
     } catch (err) { /* private mode — the choice just will not persist */ }
+    /* The fade is for this moment only: a deliberate switch deserves one,
+       and here the attribute change restarts the transition properly. */
+    root.setAttribute('data-theming', '');
     paint(mode);
+    clearTimeout(fadeOut);
+    fadeOut = setTimeout(function () { root.removeAttribute('data-theming'); }, 400);
   });
 
   /* ---------- Holding the page still ----------
