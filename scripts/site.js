@@ -393,7 +393,7 @@
          to answer to a click the way the arrows promise: the half you are
          standing in is the way you go. */
       var stage = e.target.closest('.lb-stage');
-      if (stage && !lb.hidden) {
+      if (stage && !lb.hidden && !magnified()) {
         var b = stage.getBoundingClientRect();
         var back = e.clientX < b.left + b.width / 2;
         lb.setAttribute('data-side', back ? 'prev' : 'next');
@@ -424,12 +424,31 @@
       }
     });
 
-    var x0 = null;
-    lb.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, { passive: true });
+    /* Turning the page is a swipe with ONE finger. A pinch puts a second
+       finger down and lifts the two of them one at a time, and each lift is
+       a touchend carrying a wide dx — which turned the page out from under
+       somebody who was only trying to look closer. So a gesture that ever
+       held more than one finger turns nothing, and the lock is not released
+       until the last finger is up. A picture left magnified is still being
+       read, so it does not turn either. */
+    var x0 = null, pinched = false;
+    function magnified() {
+      var v = window.visualViewport;
+      return !!v && v.scale > 1.01;
+    }
+    lb.addEventListener('touchstart', function (e) {
+      if (e.touches.length > 1) { pinched = true; x0 = null; return; }
+      if (pinched) return;
+      x0 = e.changedTouches[0].clientX;
+    }, { passive: true });
     lb.addEventListener('touchend', function (e) {
+      if (pinched) {
+        if (e.touches.length === 0) { pinched = false; x0 = null; }
+        return;
+      }
       if (x0 === null) return;
       var dx = e.changedTouches[0].clientX - x0;
-      if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
+      if (Math.abs(dx) > 45 && !magnified()) step(dx < 0 ? 1 : -1);
       x0 = null;
     }, { passive: true });
   }
