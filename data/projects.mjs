@@ -322,7 +322,7 @@ export const projects = [
   {
     id: 'p-istorichna-shevchenkiana',
     slug: 'istorichna-shevchenkiana',
-    title: { en: 'Історична Шевченкіана', ua: 'Історична Шевченкіана' },
+    title: { en: '“Istorychna Shevchenkiana” Historical Shevchenkiana', ua: 'Історична Шевченкіана' },
     year: '2016',
     client: 'National Historical Library of Ukraine',
     context: 'commissioned',
