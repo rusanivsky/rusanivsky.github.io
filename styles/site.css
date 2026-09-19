@@ -710,8 +710,20 @@ body::before {
    Inner pages — every block lands on the grid
    ============================================================ */
 .page { padding-block: var(--page-top) 5rem; row-gap: 0; }
+/* 3.6rem is not a round number chosen for rhythm — it is the number that puts
+   the eyebrow's baseline on the last baseline of the name in the rail. Every
+   page starts with an eyebrow and the rail is on every page, so the two sit on
+   one line across the whole site, and the reader gets a horizon instead of two
+   headings at slightly different heights.
+
+   It is measured, so it depends on what it was measured against: the rail's
+   1.9rem of padding, the name set in Prata at --t-lead with line-height 1.3
+   over two lines, and the eyebrow's own metrics. Change any of those and this
+   number has to be measured again — there is no way to derive a font's
+   ascent in CSS. Below the breakpoint the rail is not on screen and none of
+   this applies. */
 @media (min-width: 61rem) {
-  :root { --page-top: 3.2rem; }
+  :root { --page-top: 3.6rem; }
   .page { padding-block: var(--page-top) 6rem; }
 }
 
