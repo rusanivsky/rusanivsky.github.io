@@ -14,6 +14,7 @@ import { dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { projects, videoCatalogue, clients } from '../data/projects.mjs';
 import { UI, PRACTICE_INTRO, CAPABILITIES } from '../data/ui.mjs';
+import ladder from '../data/media-ladder.json' with { type: 'json' };
 
 const short = (file) =>
   createHash('sha1').update(readFileSync(new URL('../' + file, import.meta.url))).digest('hex').slice(0, 8);
@@ -360,9 +361,39 @@ function projectMeta(p) {
   return bits;
 }
 
-function img(src, alt, { lazy = true, eager = false } = {}) {
+/* Рік не має ламатися навпіл: «2024–» на одному рядку, «2025» на
+   другому — це не перенос, це помилка набору. Тому рік іде одним
+   нерозривним шматком і, коли не вміщається, переходить на наступний
+   рядок цілим. */
+function metaBits(p, esc) {
+  const year = p.year;
+  return projectMeta(p).map((b) => (b === year ? `<span class="nowrap">${esc(b)}</span>` : esc(b)));
+}
+
+
+/* Ширина сітки на великому екрані — це вікно мінус бічна панель (14.5rem)
+   і два поля (по 3rem у верхній межі clamp). 328px — саме ця сума, і вона
+   стоїть у `sizes` числом, бо `sizes` читається до каскаду і змінних CSS
+   не бачить. Нижче 61rem панелі немає, лишаються самі поля. */
+const GRID = '100vw - 328px';
+const sizesFor = (n) => `(min-width: 61rem) calc((${GRID}) * ${n} / 12), 100vw`;
+/* Стіна кадрів — це колонки, а не дванадцята сітка: чотири колонки на
+   великому екрані, дві до 61rem, одна до 46rem. Вузький кадр займає 84%
+   своєї колонки (.is-inset), і це теж має бути в розрахунку. */
+const collageSizes = (share) =>
+  `(min-width: 61rem) calc((${GRID}) * ${share} / 4), (min-width: 46rem) calc(50vw * ${share}), 100vw`;
+
+/* Скільки пікселів справді треба, вирішує браузер: ми лише кажемо, які
+   файли є (srcset) і яку частину екрана картинка займе (sizes). Без sizes
+   браузер припускає всю ширину вікна й тягне найбільший крок на кожну
+   дрібну плитку. */
+function img(src, alt, { lazy = true, eager = false, sizes = '100vw' } = {}) {
   const d = dim(src);
-  return `<img src="${src}" alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
+  const steps = ladder[src];
+  const srcset = steps && steps.length > 1
+    ? ` srcset="${steps.map(([w, u]) => `${u} ${w}w`).join(', ')}" sizes="${attr(sizes)}"`
+    : '';
+  return `<img src="${src}"${srcset} alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
     `${eager ? ' fetchpriority="high"' : ''} loading="${lazy && !eager ? 'lazy' : 'eager'}" decoding="async">`;
 }
 
@@ -392,7 +423,7 @@ function player(item, eager = false) {
   const d = dim(item.poster);
   const vertical = d && d.h > d.w;
   return `<div class="player${vertical ? ' vertical' : ''}">
-  ${img(item.poster, '', { eager })}
+  ${img(item.poster, '', { eager, sizes: sizesFor(12) })}
   <button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>
 </div>`;
 }
@@ -558,7 +589,7 @@ function mosaic(p, eager) {
 
   const odd = a.c === 2 && a.n % 2 === 1;
   const tiles = cells.map((x, i) =>
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}">${img(x.src, x.alt, { lazy: !eager, eager })}</span>`).join('');
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c) })}</span>`).join('');
 
   /* The wall is given the shape of the frames it holds — columns and rows
      multiplied by the frames' own proportions — so it grows to the largest
@@ -588,8 +619,8 @@ function homePage() {
     <span class="row-no">${String(i + 1).padStart(2, '0')}</span>
     ${t(p.title, 'row-title')}
   </span>
-  <span class="row-meta">${projectMeta(p).map(esc).join('<span class="dot">·</span>')}</span>
-  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0 })}</span>
+  <span class="row-meta">${metaBits(p, esc).join('<span class="dot">·</span>')}</span>
+  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, sizes: sizesFor(4) })}</span>
 </a>`).join('\n');
 
   const slides = featured.map((p, i) =>
@@ -646,9 +677,9 @@ function workCard(p, { lead = false, curated = false } = {}) {
   if (p.coverFocus) vars.push(`--focus:${p.coverFocus}`);
   const style = vars.length ? ` style="${attr(vars.join(';'))}"` : '';
   return `<a class="work" href="${href(`/work/${p.slug}/`)}"${curated ? style : ''}>
-  <span class="work-cover"${curated ? '' : focusStyle(p)}>${img(p.cover, L(p.title))}</span>
+  <span class="work-cover"${curated ? '' : focusStyle(p)}>${img(p.cover, L(p.title), { sizes: sizesFor(curated ? (lead ? LEAD_SPAN : RESTSPAN)(d) : 6) })}</span>
   ${t(p.title, 'work-title')}
-  <span class="work-meta">${meta.slice(1).map(esc).join(' · ') || esc(meta[0])}</span>
+  <span class="work-meta">${metaBits(p, esc).slice(1).join(' · ') || esc(meta[0])}</span>
 </a>`;
 }
 
@@ -713,7 +744,7 @@ function collage(items, groupId, eagerFirst = false) {
     const portrait = d && d.h / d.w > 1.15;
     const width = portrait ? 'is-inset' : WIDTHS[i % WIDTHS.length];
     return `<a class="cell ${width} ${RHYTHM[i % RHYTHM.length]}" href="${item.src}" data-lb>
-      <figure class="shot">${img(item.src, item.alt, { eager: eagerFirst && i === 0 })}</figure>
+      <figure class="shot">${img(item.src, item.alt, { eager: eagerFirst && i === 0, sizes: collageSizes(width === 'is-full' ? 1 : 0.84) })}</figure>
     </a>`;
   }).join('\n');
   return `<div class="collage" data-lb-group="${groupId}">${cells}</div>`;
@@ -744,7 +775,7 @@ function projectPage(p, index) {
     // Design projects are one or two deliberate objects; a collage of two
     // items is not a collage, it is two pictures with an excuse.
     sequence = p.media.map((m, i) =>
-      `<a class="span-${spanFor(dim(m.src))}" href="${m.src}" data-lb><figure class="shot">${img(m.src, m.alt, { eager: i === 0 })}</figure></a>`).join('\n');
+      `<a class="span-${spanFor(dim(m.src))}" href="${m.src}" data-lb><figure class="shot">${img(m.src, m.alt, { eager: i === 0, sizes: sizesFor(spanFor(dim(m.src))) })}</figure></a>`).join('\n');
   }
 
   const others = projects.filter((o) => o.slug !== p.slug);

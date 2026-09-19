@@ -565,6 +565,7 @@ body::before {
   color: var(--muted);
 }
 .row-meta .dot { color: var(--line); margin: 0 0.4rem; }
+.nowrap { white-space: nowrap; }
 
 @media (hover: hover) and (min-width: 61rem) {
   .index:hover .row { opacity: 0.42; }

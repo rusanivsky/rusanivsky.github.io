@@ -224,6 +224,12 @@
 
     function render() {
       var item = group[at];
+      /* srcset and sizes go on before src: set the other way round the
+         browser starts fetching the plain src and then throws it away.
+         The viewer fills the window, so its sizes is 100vw — the step the
+         thumbnail chose for a 271px slot would be mush at full screen. */
+      if (item.srcset) { lbImg.srcset = item.srcset; lbImg.sizes = '100vw'; }
+      else { lbImg.removeAttribute('srcset'); lbImg.removeAttribute('sizes'); }
       lbImg.src = item.src;
       lbImg.alt = item.alt;
       if (item.w && item.h) { lbImg.width = item.w; lbImg.height = item.h; }
@@ -272,7 +278,14 @@
              decoded size as the fallback and never a zero. */
           var aw = parseInt(im.getAttribute('width'), 10) || im.naturalWidth || 0;
           var ah = parseInt(im.getAttribute('height'), 10) || im.naturalHeight || 0;
-          return { src: im.currentSrc || im.src, alt: im.alt, w: aw, h: ah };
+          /* Not currentSrc: that is the step the browser picked for a
+             thumbnail, and the viewer is not a thumbnail. The whole ladder
+             is handed over and the viewer chooses again at its own size. */
+          return {
+            src: im.getAttribute('src') || im.src,
+            srcset: im.getAttribute('srcset') || '',
+            alt: im.alt, w: aw, h: ah,
+          };
         });
         open(items, all.indexOf(trigger), trigger);
         return;
