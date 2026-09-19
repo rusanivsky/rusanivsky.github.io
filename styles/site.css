@@ -1345,11 +1345,12 @@ html.splash-off .splash {
 .splash-role {
   /* The role is set as a label, not a sentence: Fixel, capitals, tracked —
      the same voice as every other uppercase label on the site (nav,
-     eyebrows, the mobile menu button). Its cap-height is pitched close to
-     the name's own so the two read as one balanced pair rather than a
-     heading with a caption trailing off it. text-indent matches
-     letter-spacing to return the trailing space it adds, so the centred
-     line on a phone stays centred. */
+     eyebrows, the mobile menu button). On the one-line desktop layout its
+     cap-height is pitched close to the name's own, so the two read as a
+     balanced pair; on the phone, where it sits on its own line under an
+     already-larger name, a quieter caption reads better than a second
+     equally loud line. text-indent matches letter-spacing to return the
+     trailing space it adds, so the centred line on a phone stays centred. */
   font-family: var(--font-body);
   font-size: 0.88em;
   color: var(--muted);
@@ -1357,6 +1358,9 @@ html.splash-off .splash {
   letter-spacing: var(--track-label);
   text-indent: var(--track-label);
   animation: splash-fade 900ms var(--ease) 1000ms both;
+}
+@media (max-width: 60.99rem) {
+  .splash-role { font-size: 0.5em; }
 }
 @keyframes splash-in {
   from { opacity: 0; transform: translateY(0.25em); }
