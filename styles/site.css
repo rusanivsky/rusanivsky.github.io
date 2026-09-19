@@ -1317,20 +1317,18 @@ html.splash-off .splash {
   font-weight: var(--w-semi);
 }
 /* On the phone the line will not hold both parts, so it becomes two: the
-   name, then the role under it, centred on the same axis. Three times the old
-   size is still the ceiling, but a phone rarely reaches it — the longer of
-   the two lines is «КРЕАТИВНИЙ СПЕЦІАЛІСТ», and the size here is the largest
-   that keeps it inside a 320-pixel screen with air on both sides, less a
-   tenth: the two lines then sit in the middle of the screen with a margin
-   rather than against its edges. Anything larger would need a third line, and
-   two is the whole idea. */
+   name, then the role under it, centred on the same axis. The vw term keeps
+   the longer line — «КРЕАТИВНИЙ СПЕЦІАЛІСТ» — inside a 320-pixel screen with
+   air on both sides; the two lines then sit in the middle of the screen with
+   a margin rather than against its edges. Anything larger would need a third
+   line, and two is the whole idea. */
 @media (max-width: 60.99rem) {
   .splash-mark {
     flex-direction: column;
     align-items: center;
     gap: 0.5em;
     text-align: center;
-    font-size: min(calc(var(--t-meta) * 2.7), 4.68vw);
+    font-size: min(calc(var(--t-meta) * 3.51), 6.084vw);
   }
   .splash-name { letter-spacing: 0.03em; text-indent: 0.03em; }
 }
@@ -1345,13 +1343,15 @@ html.splash-off .splash {
   animation: splash-in 700ms var(--ease) both;
 }
 .splash-role {
-  /* The role is set as a label, not a sentence: Fixel, capitals, tracked and
-     a step down in size from the name — the same voice as every other
-     uppercase label on the site (nav, eyebrows, the mobile menu button).
-     text-indent matches letter-spacing to return the trailing space it adds,
-     so the centred line on a phone stays centred. */
+  /* The role is set as a label, not a sentence: Fixel, capitals, tracked —
+     the same voice as every other uppercase label on the site (nav,
+     eyebrows, the mobile menu button). Its cap-height is pitched close to
+     the name's own so the two read as one balanced pair rather than a
+     heading with a caption trailing off it. text-indent matches
+     letter-spacing to return the trailing space it adds, so the centred
+     line on a phone stays centred. */
   font-family: var(--font-body);
-  font-size: 0.62em;
+  font-size: 0.88em;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: var(--track-label);
