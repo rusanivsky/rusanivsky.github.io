@@ -1358,6 +1358,12 @@ html.splash-off .splash {
   text-indent: var(--track-label);
   animation: splash-fade 900ms var(--ease) 1000ms both;
 }
+/* On the phone the caps sit under the name rather than beside it, so they can
+   afford to read a third larger without competing with it the way they would
+   on one shared line. */
+@media (max-width: 60.99rem) {
+  .splash-role { font-size: 0.81em; }
+}
 @keyframes splash-in {
   from { opacity: 0; transform: translateY(0.25em); }
   to { opacity: 1; transform: none; }
