@@ -1055,6 +1055,14 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   .pair-left { grid-column: 1 / span 6; }
   .pair-right { grid-column: 7 / -1; }
 }
+/* Stacked, the right block stops being the other half of a pair and becomes
+   the next heading down the page, so it needs the distance a heading gets.
+   Without it «Selected clients» sat straight on the last line of the block
+   above and the two read as one run-on list. The same 3.4rem every section
+   takes, because that is exactly what it now is. */
+@media (max-width: 60.99rem) {
+  .pair-right { margin-top: 3.4rem; }
+}
 
 .spec-list { margin-top: 1rem; }
 .spec-list dt { margin-top: 1.05rem; font-size: var(--t-body); font-weight: var(--w-semi); }
