@@ -35,7 +35,9 @@ block is about 1 kB, which is 0.2% of the pictures on this site — the widest
 step barely notices it and the narrowest pays under two per cent.
 
 The signature is written from AUTHOR and SITE below, not copied, so it is the
-same on a picture whose original never carried it. Shooting data — camera,
+same on a picture whose original never carried it. It repeats the name in
+photoshop:Credit as well, which is the field a picture desk or an asset
+library reads when it wants the credit line rather than a description. Shooting data — camera,
 lens, exposure, the moment — is copied when the original has it, tag by tag
 through KEEP_ROOT and KEEP_EXIF. Nothing arrives that is not named there: an
 untouched original carries the camera's serial number, the lens's serial
@@ -126,13 +128,15 @@ def signature(path):
         '<rdf:Description rdf:about=""'
         ' xmlns:dc="http://purl.org/dc/elements/1.1/"'
         ' xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/"'
-        ' xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/">'
+        ' xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"'
+        ' xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/">'
         f'<dc:creator><rdf:Seq><rdf:li>{AUTHOR}</rdf:li></rdf:Seq></dc:creator>'
         f'<dc:description><rdf:Alt><rdf:li xml:lang="x-default">{CAPTION}'
         '</rdf:li></rdf:Alt></dc:description>'
         f'<dc:rights><rdf:Alt><rdf:li xml:lang="x-default">{RIGHTS}</rdf:li>'
         '</rdf:Alt></dc:rights>'
         f'<xmpRights:WebStatement>{SITE}</xmpRights:WebStatement>'
+        f'<photoshop:Credit>{AUTHOR}</photoshop:Credit>'
         '<Iptc4xmpCore:CreatorContactInfo><rdf:Description>'
         f'<Iptc4xmpCore:CiUrlWork>{SITE}</Iptc4xmpCore:CiUrlWork>'
         '</rdf:Description></Iptc4xmpCore:CreatorContactInfo>'
