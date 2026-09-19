@@ -1332,8 +1332,7 @@ html.splash-off .splash {
     text-align: center;
     font-size: min(calc(var(--t-meta) * 2.7), 4.68vw);
   }
-  .splash-name,
-  .splash-role { letter-spacing: 0.03em; text-indent: 0.03em; }
+  .splash-name { letter-spacing: 0.03em; text-indent: 0.03em; }
 }
 .splash-name {
   color: var(--ink);
@@ -1346,12 +1345,17 @@ html.splash-off .splash {
   animation: splash-in 700ms var(--ease) both;
 }
 .splash-role {
-  /* One size and one setting across the whole line — the role differs from the
-     name by colour alone. It appears during the second second and fades in
-     slowly, so it settles rather than arrives. */
+  /* The role is set as a label, not a sentence: Fixel, capitals, tracked and
+     a step down in size from the name — the same voice as every other
+     uppercase label on the site (nav, eyebrows, the mobile menu button).
+     text-indent matches letter-spacing to return the trailing space it adds,
+     so the centred line on a phone stays centred. */
+  font-family: var(--font-body);
+  font-size: 0.62em;
   color: var(--muted);
-  letter-spacing: 0.04em;
-  text-indent: 0.04em;
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  text-indent: var(--track-label);
   animation: splash-fade 900ms var(--ease) 1000ms both;
 }
 @keyframes splash-in {
