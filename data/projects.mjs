@@ -356,7 +356,9 @@ export const projects = [
       ua: 'Фотосесії — люди в студії й поза нею.',
     },
     credits: [],
-    cover: photoSequences.portraits[0].src,
+    /* Обкладинка — не перший кадр серії: портрет на шкіряному дивані
+       краще за інші пояснює, що таке фотосесія. */
+    cover: photoSequences.portraits.find((f) => f.src.endsWith('06-photo-sessions-017.webp')).src,
     media: series('portraits', 14),
     externalLinks: [],
     featured: true,
