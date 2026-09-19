@@ -17,6 +17,7 @@ export const UI = {
   rates: { en: 'Rates &amp; Terms', ua: 'Умови співпраці' },
 
   menu: { en: 'Menu', ua: 'Меню' },
+  menuHome: { en: 'Index', ua: 'Зміст' },
   close: { en: 'Close', ua: 'Закрити' },
   theme: { en: 'Theme', ua: 'Тема' },
   typeface: { en: 'Type', ua: 'Шрифт' },

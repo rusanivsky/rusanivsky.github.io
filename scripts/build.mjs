@@ -147,12 +147,14 @@ const rail = (here, path) => `
   </div>
 </nav>`;
 
-const mobile = (here, path) => `
+const mobile = (here, path) => {
+  const label = here === '/' ? ui('menuHome') : ui('menu');
+  return `
 <div class="bar">
   <a class="wordmark" href="${href('/')}">${ui('name')}</a>
-  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">${ui('menu')}</button>
+  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">${label}</button>
 </div>
-<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="${attr(ui('menu'))}" hidden>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="${attr(label)}" hidden>
   <div class="drawer-top">
     <span class="wordmark">${ui('name')}</span>
     <button type="button" id="menu-close">${ui('close')}</button>
@@ -165,6 +167,7 @@ const mobile = (here, path) => `
     ${langControl(path)}
   </div>
 </div>`;
+};
 
 const lightbox = () => `
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="${attr(ui('viewer'))}" hidden>
