@@ -26,6 +26,17 @@ enlarged file is a bigger download of the same softness. The file already in
 `media/` is left untouched and stays a step of the ladder — the top step when
 there is no original, a middle one when there is.
 
+What the top step carries
+-------------------------
+Only the widest step keeps the photograph's authorship, because that is the
+file someone saves when they save the picture; the smaller steps stay bare,
+where a tag block would weigh more than half the image. The block is built
+from scratch rather than copied: an untouched original carries the camera's
+serial number, the lens's serial number, the internal file name and, in a
+third of this archive, GPS to the metre with the hour of the shoot. None of
+that belongs on a public page, so KEEP_ROOT and KEEP_EXIF below name the tags
+that do — everything not named is dropped.
+
 Run from the repository root:  python3 scripts/build-image-ladder.py [--write]
 Without --write it only reports what it would do.
 """
@@ -33,6 +44,17 @@ import json, os, sys
 from PIL import Image
 
 STEPS = [480, 960, 1440, 2400]
+# Author, camera, and how the frame was taken. Named by their EXIF tag ids so
+# nothing else can arrive by accident: no GPS, no serial numbers, no software
+# or raw file name.
+KEEP_ROOT = {
+    0x010F: 'Make', 0x0110: 'Model', 0x0112: 'Orientation',
+    0x013B: 'Artist', 0x8298: 'Copyright',
+}
+KEEP_EXIF = {
+    0x829A: 'ExposureTime', 0x829D: 'FNumber', 0x8827: 'ISOSpeedRatings',
+    0x9003: 'DateTimeOriginal', 0x920A: 'FocalLength', 0xA434: 'LensModel',
+}
 QUALITY = 80
 CLOSE = 0.12          # a step within 12% of the source width is the source
 ORIGINALS = '_originals'
@@ -65,6 +87,27 @@ def media_files():
                 yield os.path.join(root, f)
 
 
+def authorship(path):
+    """The tags KEEP_ROOT and KEEP_EXIF name, as an EXIF block — about 300
+    bytes against the 12 kB an untouched original carries. Empty when the
+    source has no EXIF at all, which is every picture rebuilt from media/."""
+    try:
+        full = Image.open(path).getexif()
+    except Exception:
+        return None
+    if not full:
+        return None
+    out = Image.Exif()
+    for tag in KEEP_ROOT:
+        if tag in full:
+            out[tag] = full[tag]
+    sub = full.get_ifd(0x8769)
+    kept = {tag: sub[tag] for tag in KEEP_EXIF if tag in sub}
+    if kept:
+        out[0x8769] = kept
+    return out.tobytes() if len(out) else None
+
+
 def top_width(path):
     """The widest step this script writes for a picture: its source, capped."""
     src = original_for(path) or path
@@ -93,6 +136,20 @@ def main(write):
         sw = src.size[0]
         url = '/' + path
         steps = {bw: url}
+        # The widest step this picture gets, wherever it ends up being written:
+        # a source wider than about 2730px reaches 2400 through the loop below,
+        # a narrower one only through the branch after it. Authorship rides on
+        # that step alone, so both writers have to know which one it is.
+        top = min(sw, STEPS[-1]) if sw > bw else bw
+
+        def cut(width, out):
+            im = Image.open(src_path).convert('RGB')
+            h = round(im.size[1] * width / im.size[0])
+            tags = authorship(src_path) if width == top else None
+            kw = {'exif': tags} if tags else {}
+            im.resize((width, h), Image.LANCZOS).save(
+                out, 'WEBP', quality=QUALITY, method=6, **kw)
+
         for w in STEPS:
             if w >= sw * (1 - CLOSE):
                 continue
@@ -101,21 +158,16 @@ def main(write):
             out = f'{os.path.splitext(path)[0]}-{w}.webp'
             steps[w] = '/' + out
             if write and not os.path.exists(out):
-                im = Image.open(src_path).convert('RGB')
-                h = round(im.size[1] * w / im.size[0])
-                im.resize((w, h), Image.LANCZOS).save(out, 'WEBP', quality=QUALITY, method=6)
+                cut(w, out)
                 made += 1
             else:
                 kept += 1
         if sw > bw:
             # the original carries more than media/ holds: write the top step too
-            top = min(sw, STEPS[-1])
             out = f'{os.path.splitext(path)[0]}-{top}.webp'
             steps[top] = '/' + out
             if write and not os.path.exists(out):
-                im = Image.open(src_path).convert('RGB')
-                h = round(im.size[1] * top / im.size[0])
-                im.resize((top, h), Image.LANCZOS).save(out, 'WEBP', quality=QUALITY, method=6)
+                cut(top, out)
                 made += 1
         ladder[url] = [[w, steps[w]] for w in sorted(steps)]
     if write:
