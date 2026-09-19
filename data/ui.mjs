@@ -84,7 +84,7 @@ export const UI = {
   movedTo: { en: 'This page moved to', ua: 'Ця сторінка переїхала на' },
 
   name: { en: 'Kyrylo Rusanivsky', ua: 'Кирило Русанівський' },
-  splashRole: { en: 'Creative specialist', ua: 'креативний спеціаліст' },
+  splashRole: { en: 'creative specialist', ua: 'креативний спеціаліст' },
   play: { en: 'Play', ua: 'Відтворити' },
   showRest: { en: 'Show the remaining', ua: 'Показати решту' },
   frames: { en: 'frames', ua: 'кадрів' },

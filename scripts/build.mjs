@@ -187,7 +187,7 @@ const splash = () => `
 <div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">${ui('name')}</span><span class="splash-role">${ui('splashRole')}</span></p></div>`;
 
 /* Заставка не просто відлічує секунди — вона прикриває завантаження.
-   Іде, коли сторінка готова (подія load), але не раніше ніж через 2,2 с,
+   Іде, коли сторінка готова (подія load), але не раніше ніж через 2 с,
    щоб не блимнути, і не пізніше ніж через 6 с: одне неквапливе фото не
    має тримати екран замість того, щоб довантажитися вже під сторінкою. */
 const SPLASH_BOOT = `(function(){try{
@@ -199,7 +199,7 @@ var t0=Date.now(),done=false;
 function finish(){if(done)return;done=true;
 setTimeout(function(){r.className+=' splash-off';
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
-},Math.max(0,2200-(Date.now()-t0)));}
+},Math.max(0,2000-(Date.now()-t0)));}
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();`;
 
