@@ -120,15 +120,18 @@ export const projects = [
   {
     id: 'p-istoriya-ukrayini-2020',
     slug: 'istoriya-ukrayini-2020',
-    title: { en: 'Історія України. 2020', ua: 'Історія України. 2020' },
+    /* The slug keeps the year the cover was made for — it is the address the
+       old site published and nothing is gained by breaking it — but the
+       project is named for the series, not for one of its volumes. */
+    title: { en: 'Історія України', ua: 'Історія України' },
     year: null,
     client: 'National Historical Library of Ukraine',
     context: 'commissioned',
     disciplines: ['design'],
     roles: ['Cover design'],
     shortDescription: {
-      en: 'Cover design for the bibliographic index “Istoriia Ukrainy. 2020” for the National Historical Library of Ukraine. Built around a 1918 map of Ukraine found in the Ivan Franko Ukrainian Centre library in Richmond, Canada.',
-      ua: 'Дизайн обкладинки бібліографічного покажчика «Історія України. 2020» для Національної історичної бібліотеки України. Оформлення скомпоноване з карти України 1918 року, знайденої в бібліотеці Українського центру імені Івана Франка у Річмонді, Канада.',
+      en: '“Istoriia Ukrainy” is a series of annual bibliographic indexes published by the National Historical Library of Ukraine — one volume a year, each gathering the year’s writing on the country’s history. The cover for the 2020 volume is built around a 1918 map of Ukraine found in the Ivan Franko Ukrainian Centre library in Richmond, Canada.',
+      ua: '«Історія України» — серія щорічних бібліографічних покажчиків Національної історичної бібліотеки України: один том на рік, і кожен збирає написане за рік про історію країни. Обкладинка тому за 2020 рік скомпонована з карти України 1918 року, знайденої в бібліотеці Українського центру імені Івана Франка у Річмонді, Канада.',
     },
     credits: [],
     cover: '/media/design/istoriya-ukrayini-2020.webp',
