@@ -1317,20 +1317,18 @@ html.splash-off .splash {
   font-weight: var(--w-semi);
 }
 /* On the phone the line will not hold both parts, so it becomes two: the
-   name, then the role under it, centred on the same axis. Three times the old
-   size is still the ceiling, but a phone rarely reaches it — the longer of
-   the two lines is «КРЕАТИВНИЙ СПЕЦІАЛІСТ», and the size here is the largest
-   that keeps it inside a 320-pixel screen with air on both sides, less a
-   tenth: the two lines then sit in the middle of the screen with a margin
-   rather than against its edges. Anything larger would need a third line, and
-   two is the whole idea. */
+   name, then the role under it, centred on the same axis. The vw term keeps
+   the longer line — «КРЕАТИВНИЙ СПЕЦІАЛІСТ» — inside a 320-pixel screen with
+   air on both sides; the two lines then sit in the middle of the screen with
+   a margin rather than against its edges. Anything larger would need a third
+   line, and two is the whole idea. */
 @media (max-width: 60.99rem) {
   .splash-mark {
     flex-direction: column;
     align-items: center;
     gap: 0.5em;
     text-align: center;
-    font-size: min(calc(var(--t-meta) * 2.7), 4.68vw);
+    font-size: min(calc(var(--t-meta) * 3.51), 6.084vw);
   }
   .splash-name { letter-spacing: 0.03em; text-indent: 0.03em; }
 }
@@ -1357,12 +1355,6 @@ html.splash-off .splash {
   letter-spacing: var(--track-label);
   text-indent: var(--track-label);
   animation: splash-fade 900ms var(--ease) 1000ms both;
-}
-/* On the phone the caps sit under the name rather than beside it, so they can
-   afford to read a third larger without competing with it the way they would
-   on one shared line. */
-@media (max-width: 60.99rem) {
-  .splash-role { font-size: 0.81em; }
 }
 @keyframes splash-in {
   from { opacity: 0; transform: translateY(0.25em); }
