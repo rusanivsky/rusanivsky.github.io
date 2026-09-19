@@ -227,11 +227,11 @@ const SEO = {
     "d": "Коротка інформація про приватність і використання Google Analytics на сайті Кирила Русанівського."
   },
   "/": {
-    "t": "Kyrylo Rusanivsky — Video Editor / Photographer / Graphic Designer",
+    "t": "Kyrylo Rusanivsky — Visual Artist | Video, Photography, Design",
     "d": "Kyrylo Rusanivsky is a Kyiv-based video editor, photographer and graphic designer. Video editing, event photography, book and cover design, editorial layout."
   },
   "/ua/": {
-    "t": "Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер",
+    "t": "Кирило Русанівський — митець | Відео, фотографія, дизайн",
     "d": "Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка."
   },
   "/rates/": {

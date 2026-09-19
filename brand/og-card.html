@@ -44,12 +44,18 @@ body{position:relative;background:#f4f1e9;color:#111;font-family:Fixel,sans-seri
   font-size:74px;line-height:1.08;letter-spacing:-.005em;
   white-space:nowrap;
 }
-.rule{height:1px;margin:34px 0 30px;background:#d9d3c5}
+/* A hairline is the site's own measure, but the card is read at a quarter of
+   its size: one pixel here is a third of a pixel in a feed, which is nothing
+   at all. Four pixels of --faint survive the scaling and still read as the
+   site's rule rather than a new element. */
+.rule{height:4px;margin:32px 0 30px;background:#a09889}
 
 /* Ink, not the muted grey. At feed scale this line is the whole answer to
    "what does he do", and it has to survive JPEG and a phone screen: 16.7:1
-   against the paper, where the grey would give 5:1. */
-.jobs{font-size:40px;font-weight:500;letter-spacing:-.012em;line-height:1.38;white-space:nowrap}
+   against the paper, where the grey would give 5:1. Regular weight, like the
+   same list in the mobile drawer — at 40px the extra weight only thickened
+   it, it did not make it clearer. */
+.jobs{font-size:40px;font-weight:400;letter-spacing:-.012em;line-height:1.38;white-space:nowrap}
 .site{margin-top:auto;font-size:30px;font-weight:600;color:#6d675c}
 
 .shot{width:430px;height:486px;overflow:hidden;background:#ebe7db}
