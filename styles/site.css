@@ -1301,7 +1301,7 @@ html.splash-off .splash {
      дописує праворуч, інакше рядок стоїть не по центру. */
   letter-spacing: 0.04em;
   text-indent: 0.04em;
-  animation: splash-in 320ms var(--ease) both;
+  animation: splash-in 700ms var(--ease) both;
 }
 .splash-role {
   /* One size and one setting across the whole line — the role differs from the
