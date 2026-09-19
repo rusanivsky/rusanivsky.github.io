@@ -77,7 +77,8 @@ const NAV_MAIN = [['/', 'selected'], ['/photo/', 'photography'], ['/video/', 'vi
    leads to «the selection is not ready yet» promises work the page does not
    have. Put the two lines back — here and in PUBLIC — the day the frames
    land, and nothing else has to change. */
-const NAV_SECOND = [['/info/', 'info'], ['/enquiries/', 'enquiries']];
+const ABOUT_PATH = '/aboutme/';
+const NAV_SECOND = [[ABOUT_PATH, 'info'], ['/enquiries/', 'enquiries']];
 const NAV_MINOR = [['/rates/', 'rates']];
 /* The rail is the short list: the two places the work itself is published.
    The address and the full set of profiles live on Info, under «Elsewhere» —
@@ -922,7 +923,7 @@ function infoPage() {
   <div class="about-copy">
     <p class="eyebrow">${ui('info')}</p>
     <h1 class="page-title t-title">${ui('name')}</h1>
-    <div class="prose t-lead" style="margin-top:1.2rem">${ABOUT.map((p) => t(p, '', 'p')).join('')}</div>
+    <div class="prose t-lead about-prose">${ABOUT.map((p) => t(p, '', 'p')).join('')}</div>
   </div>
   <div class="about-figure">
     <figure class="portrait">
@@ -959,8 +960,8 @@ function infoPage() {
   <div class="col-full">${foot()}</div>
 </main>`;
   return page({
-    here: '/info/',
-    path: '/info/',
+    here: ABOUT_PATH,
+    path: ABOUT_PATH,
     title: `${ui('info')} — ${ui('name')}`,
     description: L(ABOUT[0]),
     body,
@@ -1184,7 +1185,7 @@ function build(lang) {
   out('video/index.html', practicePage({ here: '/video/', discipline: 'video', extra: catalogueBlock() }));
   out('design/index.html', practicePage({ here: '/design/', discipline: 'design' }));
   out('street/index.html', streetPage());
-  out('info/index.html', infoPage());
+  out('aboutme/index.html', infoPage());
   out('enquiries/index.html', enquiriesPage());
   out('rates/index.html', ratesPage());
   out('privacy/index.html', privacyPage());
@@ -1224,6 +1225,7 @@ function build(lang) {
     'design/covers/index.html': '/design/',
     'contacts/index.html': '/enquiries/',
     'terms/index.html': '/rates/',
+    'info/index.html': ABOUT_PATH,
   };
   for (const [from, to] of Object.entries(LEGACY)) out(from, redirect(other(lang, to)));
 }
@@ -1234,7 +1236,7 @@ LANGS.forEach(build);
    whole site and every page carries noindex; on the live host it opens and
    points at the sitemap. Both come out of the same switch, so the two can
    never disagree. */
-const PUBLIC = ['/', '/photo/', '/video/', '/design/', '/info/', '/enquiries/', '/rates/', '/privacy/',
+const PUBLIC = ['/', '/photo/', '/video/', '/design/', ABOUT_PATH, '/enquiries/', '/rates/', '/privacy/',
   ...projects.map((p) => `/work/${p.slug}/`)];
 const today = new Date().toISOString().slice(0, 10);
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
