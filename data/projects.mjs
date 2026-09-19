@@ -119,7 +119,7 @@ export const projects = [
 
   {
     id: 'p-istoriya-ukrayini-2020',
-    slug: 'istoriya-ukrayini-2020',
+    slug: 'history-of-ukraine-2020',
     /* The slug keeps the year the cover was made for — it is the address the
        old site published and nothing is gained by breaking it — but the
        project is named for the series, not for one of its volumes. */
@@ -321,7 +321,7 @@ export const projects = [
 
   {
     id: 'p-istorichna-shevchenkiana',
-    slug: 'istorichna-shevchenkiana',
+    slug: 'historical-shevchenkiana',
     title: { en: 'Historical Shevchenkiana', ua: 'Історична Шевченкіана' },
     year: '2016',
     client: 'National Historical Library of Ukraine',

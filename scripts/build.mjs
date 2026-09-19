@@ -1206,6 +1206,12 @@ function build(lang) {
     'photo/photo-sessions/index.html': '/work/portraits/',
     'photo/public-events/index.html': '/work/reportage/',
     'work/dyvochyv/index.html': '/work/reels/',
+    /* Two addresses were transliterated Ukrainian, which an English reader can
+       neither read nor recognise. The pages now answer to their translated
+       names; the old addresses stay as redirects, because a link already given
+       out is not mine to break. */
+    'work/istoriya-ukrayini-2020/index.html': '/work/history-of-ukraine-2020/',
+    'work/istorichna-shevchenkiana/index.html': '/work/historical-shevchenkiana/',
     'video/reels/index.html': '/video/',
     'video/short-form/index.html': '/video/',
     'video/interviewandvlogs/index.html': '/video/',
