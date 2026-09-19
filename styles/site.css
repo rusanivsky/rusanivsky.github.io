@@ -1075,7 +1075,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   .about-figure { grid-column: 9 / -1; width: 85%; margin-inline-start: auto; }
 }
 
-@media (min-width: 75rem) and (min-height: 52rem) {
+@media (min-width: 100rem) and (min-height: 52rem) {
   .about-prose { margin-top: auto; }
 }
 
