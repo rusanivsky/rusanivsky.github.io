@@ -649,6 +649,7 @@ function homePage() {
     <div class="index">
 ${rows}
     </div>
+    ${foot()}
   </div>
   <div class="stage" id="stage" aria-hidden="true">
     <div class="stage-frame">
