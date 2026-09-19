@@ -56,7 +56,7 @@ SITE = 'https://rusanivsky.com'
 RIGHTS = f'© {AUTHOR} · rusanivsky.com'
 RIGHTS_ASCII = f'(c) {AUTHOR} - rusanivsky.com'
 # What a phone shows in its caption field once the picture is saved.
-CAPTION = f'Photography by {AUTHOR}'
+CAPTION = f'Photo by {AUTHOR}'
 # Camera and frame. Named by their EXIF tag ids so nothing else can arrive by
 # accident: no GPS, no serial numbers, no software or raw file name. Artist
 # and Copyright are not here — they are written from AUTHOR and SITE, never
