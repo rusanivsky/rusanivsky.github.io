@@ -1186,8 +1186,9 @@ html.splash-off .splash {
    name, then the role under it, centred on the same axis. Three times the old
    size is still the ceiling, but a phone rarely reaches it — the longer of
    the two lines is «КРЕАТИВНИЙ СПЕЦІАЛІСТ», and the size here is the largest
-   that keeps it inside a 320-pixel screen with air on both sides, which comes
-   out around two and a half times. Anything more would need a third line, and
+   that keeps it inside a 320-pixel screen with air on both sides, less a
+   tenth: the two lines then sit in the middle of the screen with a margin
+   rather than against its edges. Anything larger would need a third line, and
    two is the whole idea. */
 @media (max-width: 60.99rem) {
   .splash-mark {
@@ -1195,7 +1196,7 @@ html.splash-off .splash {
     align-items: center;
     gap: 0.5em;
     text-align: center;
-    font-size: min(calc(var(--t-meta) * 3), 5.2vw);
+    font-size: min(calc(var(--t-meta) * 2.7), 4.68vw);
   }
   .splash-name,
   .splash-role { letter-spacing: 0.08em; text-indent: 0.08em; }
