@@ -1060,20 +1060,23 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .about-prose { margin-top: 1.2rem; }
 @media (min-width: 61rem) {
   /* Заголовок сторінки стоїть там само, де на будь-якій іншій сторінці:
-     загальне правило, а не виняток. Раніше текстова колонка висіла на
-     нижній лінії портрета (align-self: end) — через це «Про мене»
-     починалося на 42 px нижче, ніж «Фотографія» чи «Умови». */
+     загальне правило, а не виняток. Нижнє вирівнювання стосується лише
+     достатньо широкого й високого вікна; на проміжних розмірах текст іде
+     звичайним потоком, щоб не впиратися в стелю. */
   .about-copy {
     grid-column: 1 / span 7;
     display: flex;
     flex-direction: column;
   }
-  .about-prose { margin-top: auto; }
   /* The frame is set fifteen per cent narrower than its column and held to
      the page's right edge, so the portrait reads as a picture beside the
      text rather than a second column of equal weight. The column it sits in
      does not move; only the frame inside it. */
   .about-figure { grid-column: 9 / -1; width: 85%; margin-inline-start: auto; }
+}
+
+@media (min-width: 75rem) and (min-height: 52rem) {
+  .about-prose { margin-top: auto; }
 }
 
 /* On a tablet the stack is still one column, but the full width of it is far
