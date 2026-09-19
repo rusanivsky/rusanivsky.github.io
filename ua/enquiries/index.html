@@ -37,7 +37,7 @@
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=771436cb">
+<link rel="stylesheet" href="/styles/site.css?v=ae13e66f">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 if(sessionStorage.getItem('kr-seen'))return;
@@ -47,7 +47,7 @@ addEventListener('DOMContentLoaded',function(){
 setTimeout(function(){r.className+=' splash-off';},1400);
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
 });}catch(e){}})();</script>
-<script src="/scripts/site.js?v=f1c10d36" defer></script>
+<script src="/scripts/site.js?v=5d85f398" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
 </head>
@@ -108,7 +108,9 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">Або надішліть короткий бриф</h2>
     <p class="page-intro col-7">Форма відкриє ваш поштовий клієнт із заповненими відповідями — більше нікуди нічого не йде. <a href="/ua/rates/">Умови співпраці</a> охоплюють ціни, терміни, правки, оплату, передачу файлів і права.</p>
-    <form class="brief col-7" id="brief" data-mailto="info@rusanivsky.com" data-subject="Бриф">
+    <form class="brief col-7" id="brief" data-mailto="info@rusanivsky.com" data-subject="Бриф"
+          data-sending="Надсилаю…" data-sent="Надіслано. Відповім протягом робочого дня — на контакт, який ви лишили."
+          data-fallback="Форма до мене не достукалася. Зараз відкриється поштова програма з уже написаним брифом — лишиться натиснути «надіслати».">
       <label for="b-contact">Ваш контакт</label>
       <input id="b-contact" name="Contact" type="text" required
              aria-describedby="b-contact-note" autocomplete="email">
@@ -126,7 +128,12 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
       <input id="b-budget" name="Budget" type="text" autocomplete="off">
       <label for="b-msg">Повідомлення</label>
       <textarea id="b-msg" name="Message"></textarea>
+      <p class="hp" aria-hidden="true">
+        <label for="b-company">Company</label>
+        <input id="b-company" name="company" type="text" tabindex="-1" autocomplete="off">
+      </p>
       <button type="submit">Надіслати</button>
+      <p class="brief-state" id="brief-state" role="status" aria-live="polite"></p>
       <noscript><p class="field-note">Ця форма складає лист, і для цього потрібен JavaScript. Без нього напишіть на адресу вище.</p></noscript>
     </form>
   </section>

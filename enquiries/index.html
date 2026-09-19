@@ -36,7 +36,7 @@
 <link rel="manifest" href="/site.webmanifest?v=07ab25da">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=771436cb">
+<link rel="stylesheet" href="/styles/site.css?v=ae13e66f">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 if(sessionStorage.getItem('kr-seen'))return;
@@ -46,7 +46,7 @@ addEventListener('DOMContentLoaded',function(){
 setTimeout(function(){r.className+=' splash-off';},1400);
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
 });}catch(e){}})();</script>
-<script src="/scripts/site.js?v=f1c10d36" defer></script>
+<script src="/scripts/site.js?v=5d85f398" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
 </head>
@@ -107,7 +107,9 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">Or send a short brief</h2>
     <p class="page-intro col-7">This opens your mail client with the answers filled in — nothing is sent anywhere else. <a href="/rates/">Rates &amp; Terms</a> covers pricing, timelines, revisions, payment, delivery and rights.</p>
-    <form class="brief col-7" id="brief" data-mailto="info@rusanivsky.com" data-subject="Brief">
+    <form class="brief col-7" id="brief" data-mailto="info@rusanivsky.com" data-subject="Brief"
+          data-sending="Sending…" data-sent="Sent. I reply within a working day — to the contact you left."
+          data-fallback="The form could not reach me. Your mail app is opening with the brief already written — just press send.">
       <label for="b-contact">Your contact</label>
       <input id="b-contact" name="Contact" type="text" required
              aria-describedby="b-contact-note" autocomplete="email">
@@ -125,7 +127,12 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
       <input id="b-budget" name="Budget" type="text" autocomplete="off">
       <label for="b-msg">Message</label>
       <textarea id="b-msg" name="Message"></textarea>
+      <p class="hp" aria-hidden="true">
+        <label for="b-company">Company</label>
+        <input id="b-company" name="company" type="text" tabindex="-1" autocomplete="off">
+      </p>
       <button type="submit">Send</button>
+      <p class="brief-state" id="brief-state" role="status" aria-live="polite"></p>
       <noscript><p class="field-note">This form composes an email, which needs JavaScript. Without it, write to the address above.</p></noscript>
     </form>
   </section>

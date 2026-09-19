@@ -58,6 +58,15 @@ export const UI = {
   message: { en: 'Message', ua: 'Повідомлення' },
   send: { en: 'Send', ua: 'Надіслати' },
   briefSubject: { en: 'Brief', ua: 'Бриф' },
+  briefSending: { en: 'Sending…', ua: 'Надсилаю…' },
+  briefSent: {
+    en: 'Sent. I reply within a working day — to the contact you left.',
+    ua: 'Надіслано. Відповім протягом робочого дня — на контакт, який ви лишили.',
+  },
+  briefFallback: {
+    en: 'The form could not reach me. Your mail app is opening with the brief already written — just press send.',
+    ua: 'Форма до мене не достукалася. Зараз відкриється поштова програма з уже написаним брифом — лишиться натиснути «надіслати».',
+  },
   briefNoJs: {
     en: 'This form composes an email, which needs JavaScript. Without it, write to the address above.',
     ua: 'Ця форма складає лист, і для цього потрібен JavaScript. Без нього напишіть на адресу вище.',

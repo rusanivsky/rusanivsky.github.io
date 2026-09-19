@@ -1077,6 +1077,20 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
    a brief, so the field is required and says plainly what counts as an
    answer, rather than leaving it to a placeholder that disappears the moment
    anyone starts typing. */
+/* Пастка для ботів: поле мусить лишатися у потоці сторінки, щоб робот його
+   знайшов і заповнив, тому не display:none — його просто не видно й не
+   чути. Людина сюди не потрапить: воно поза порядком табуляції та сховане
+   від читача екрана. */
+.brief .hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.brief-state:empty { display: none; }
+.brief-state { margin-top: 0.8rem; font-size: var(--t-label); color: var(--muted); }
 .brief .field-note { margin-top: 0.4rem; font-size: var(--t-label); color: var(--faint); }
 /* Safari on iOS zooms the page when a focused field is set below 16px, and
    the zoom does not come back — the form ends up half off the screen. 16px

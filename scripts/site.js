@@ -191,24 +191,84 @@
      names, so the letter arrives in the language the form was filled in.
      Without JavaScript the form cannot compose anything, and a line inside
      <noscript> says to write to the address printed just above it. */
+  /* Бриф.
+     Сайт статичний — сама сторінка нічого відправити не може. Якщо в
+     data/brief.json лежить адреса приймача (Google Apps Script у власному
+     акаунті), форма шле бриф туди і клієнт нікуди не виходить. Якщо адреси
+     немає або приймач мовчить — лишається старий шлях: скласти лист і
+     віддати його поштовій програмі. Друге ніколи не прибирається: краще
+     зайвий клік, ніж мовчазно загублена заявка.
+
+     Content-Type навмисно text/plain: так запит лишається «простим» за
+     правилами CORS і браузер не робить preflight, якого Apps Script не
+     переживає. Тіло при цьому — звичайний JSON. */
   var brief = document.getElementById('brief');
   if (brief && brief.dataset.mailto) {
-    brief.addEventListener('submit', function (e) {
-      e.preventDefault();
+    var state = document.getElementById('brief-state');
+
+    function briefData() {
+      var data = {};
+      var fields = brief.querySelectorAll('input[name], select[name], textarea[name]');
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        var value = (f.value || '').trim();
+        if (value) data[f.name] = value;
+      }
+      return data;
+    }
+
+    function briefSubject(data) {
+      return brief.dataset.subject + (data.Discipline ? ' — ' + data.Discipline : '');
+    }
+
+    function toMail(data) {
       var lines = [];
       var fields = brief.querySelectorAll('input[name], select[name], textarea[name]');
       for (var i = 0; i < fields.length; i++) {
         var f = fields[i];
         var value = (f.value || '').trim();
-        if (!value) continue;
+        if (!value || f.name === 'company') continue;
         var label = brief.querySelector('label[for="' + f.id + '"]');
         lines.push((label ? label.textContent.trim() : f.name) + ': ' + value);
       }
-      var disc = brief.querySelector('select[name="Discipline"]');
-      var subject = brief.dataset.subject + (disc && disc.value ? ' — ' + disc.value : '');
       window.location.href = 'mailto:' + brief.dataset.mailto
-        + '?subject=' + encodeURIComponent(subject)
+        + '?subject=' + encodeURIComponent(briefSubject(data))
         + '&body=' + encodeURIComponent(lines.join('\n'));
+    }
+
+    function say(text) { if (state) state.textContent = text || ''; }
+
+    brief.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = briefData();
+      var endpoint = brief.dataset.endpoint;
+      if (!endpoint) { toMail(data); return; }
+
+      data.page = location.href;
+      var button = brief.querySelector('button[type="submit"]');
+      if (button) button.disabled = true;
+      say(brief.dataset.sending);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data),
+      }).then(function (r) {
+        return r.ok ? r.text() : Promise.reject(new Error(r.status));
+      }).then(function (text) {
+        /* Розбираємо відповідь, а не шукаємо в ній підрядок: зайвий пробіл
+           у JSON не має скидати заявку в запасний шлях. */
+        var answer;
+        try { answer = JSON.parse(text); } catch (err) { throw new Error(text); }
+        if (!answer || answer.ok !== true) throw new Error(text);
+        brief.reset();
+        say(brief.dataset.sent);
+      }).catch(function () {
+        say(brief.dataset.fallback);
+        toMail(data);
+      }).then(function () {
+        if (button) button.disabled = false;
+      });
     });
   }
 

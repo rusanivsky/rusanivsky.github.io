@@ -15,6 +15,7 @@ import { createHash } from 'node:crypto';
 import { projects, videoCatalogue, clients } from '../data/projects.mjs';
 import { UI, PRACTICE_INTRO, CAPABILITIES } from '../data/ui.mjs';
 import ladder from '../data/media-ladder.json' with { type: 'json' };
+import brief from '../data/brief.json' with { type: 'json' };
 
 const short = (file) =>
   createHash('sha1').update(readFileSync(new URL('../' + file, import.meta.url))).digest('hex').slice(0, 8);
@@ -985,7 +986,9 @@ function enquiriesPage() {
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">${ui('shortBrief')}</h2>
     <p class="page-intro col-7">${esc(L(ENQ_FORM_NOTE))} <a href="${href('/rates/')}">${ui('rates')}</a> ${ui('ratesCovers')}</p>
-    <form class="brief col-7" id="brief" data-mailto="${EMAIL}" data-subject="${attr(ui('briefSubject'))}">
+    <form class="brief col-7" id="brief" data-mailto="${EMAIL}" data-subject="${attr(ui('briefSubject'))}"${brief.endpoint ? ` data-endpoint="${attr(brief.endpoint)}"` : ''}
+          data-sending="${attr(ui('briefSending'))}" data-sent="${attr(ui('briefSent'))}"
+          data-fallback="${attr(ui('briefFallback'))}">
       <label for="b-contact">${ui('yourContact')}</label>
       <input id="b-contact" name="Contact" type="text" required
              aria-describedby="b-contact-note" autocomplete="email">
@@ -1003,7 +1006,12 @@ function enquiriesPage() {
       <input id="b-budget" name="Budget" type="text" autocomplete="off">
       <label for="b-msg">${ui('message')}</label>
       <textarea id="b-msg" name="Message"></textarea>
+      <p class="hp" aria-hidden="true">
+        <label for="b-company">Company</label>
+        <input id="b-company" name="company" type="text" tabindex="-1" autocomplete="off">
+      </p>
       <button type="submit">${ui('send')}</button>
+      <p class="brief-state" id="brief-state" role="status" aria-live="polite"></p>
       <noscript><p class="field-note">${ui('briefNoJs')}</p></noscript>
     </form>
   </section>
