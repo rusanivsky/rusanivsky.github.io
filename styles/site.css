@@ -428,6 +428,12 @@ body::before {
 /* The city and the copyright live here and nowhere else — the one place on
    the page that is always present, so the main column never has to carry a
    footer to repeat them. */
+/* The notice had no way in on the desktop at all: the foot of the main column
+   is hidden at this width, and the rail never carried it. It belongs with the
+   language switch rather than with the address links above — both are choices
+   about the site itself, not places the work continues. */
+.rail-legal { margin-top: 0.9rem; }
+
 .rail-meta {
   margin: 1.4rem 0 0;
   font-size: var(--t-label);
