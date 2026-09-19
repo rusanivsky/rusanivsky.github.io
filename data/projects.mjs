@@ -68,9 +68,9 @@ export const projects = [
   {
     id: 'p-kmbs-defence',
     slug: 'kmbs-defence-programmes',
-    title: { en: 'kmbs — Defence and Security Programmes', ua: 'kmbs — програми безпеки та оборони' },
+    title: { en: 'Strategic and Security Programmes', ua: 'Стратегічні та безпекові програми' },
     year: '2024–2025',
-    client: 'kmbs — Kyiv-Mohyla Business School',
+    client: 'Kyiv-Mohyla Business School',
     context: 'commissioned',
     disciplines: ['video'],
     roles: ['Camera', 'Editing'],
