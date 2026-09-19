@@ -215,10 +215,16 @@ const foot = () => `
 /* The production site spent years on these lines and Google has them
    indexed. The redesign moved the pages but not the words: where a new page
    answers for an old one, its description — and on the home page its title —
-   is the one the old page carried, copied across unchanged. Nothing here is
-   written for this file; every string is lifted verbatim from the site it
-   replaces. Pages with no single predecessor keep the description the build
-   derives from their own text. */
+   is the one the old page carried. Pages with no single predecessor keep the
+   description the build derives from their own text.
+
+   Two deliberate departures from the old wording, and no others. The home
+   title now opens with what the work is called rather than a list of trades,
+   and keeps the trades behind a rule so the search match is not thrown away.
+   And the three practices are named in the order the site itself uses —
+   photography, video, design, the order of the rail — instead of the order
+   the old site happened to settle on. Metadata that contradicts the page it
+   describes is worse than metadata that has aged. */
 const SEO = {
   "/privacy/": {
     "d": "A short privacy notice for rusanivsky.com and its use of Google Analytics."
@@ -227,18 +233,18 @@ const SEO = {
     "d": "Коротка інформація про приватність і використання Google Analytics на сайті Кирила Русанівського."
   },
   "/": {
-    "t": "Kyrylo Rusanivsky — Visual Artist | Video, Photography, Design",
-    "d": "Kyrylo Rusanivsky is a Kyiv-based video editor, photographer and graphic designer. Video editing, event photography, book and cover design, editorial layout."
+    "t": "Kyrylo Rusanivsky — Visual Artist | Photography, Video, Design",
+    "d": "Kyrylo Rusanivsky is a Kyiv-based photographer, video editor and graphic designer. Event photography, video editing, book and cover design, editorial layout."
   },
   "/ua/": {
-    "t": "Кирило Русанівський — митець | Відео, фотографія, дизайн",
-    "d": "Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер із Києва. Монтаж відео, репортажна фотографія, дизайн книжок і обкладинок, верстка."
+    "t": "Кирило Русанівський — митець | Фотографія, відео, дизайн",
+    "d": "Кирило Русанівський — фотограф, відеомонтажер і графічний дизайнер із Києва. Репортажна фотографія, монтаж відео, дизайн книжок і обкладинок, верстка."
   },
   "/rates/": {
-    "d": "Work terms, prices and payment for Kyrylo Rusanivsky — video editor, photographer and graphic designer in Kyiv. Rates, timelines, revisions and paperwork."
+    "d": "Work terms, prices and payment for Kyrylo Rusanivsky — photographer, video editor and graphic designer in Kyiv. Rates, timelines, revisions and paperwork."
   },
   "/ua/rates/": {
-    "d": "Умови роботи та контакти Кирила Русанівського — відеомонтажера, фотографа і графічного дизайнера з Києва."
+    "d": "Умови роботи та контакти Кирила Русанівського — фотографа, відеомонтажера і графічного дизайнера з Києва."
   },
   "/work/reportage/": {
     "d": "Reportage photographer in Kyiv. Kyrylo Rusanivsky documents public events, cultural programmes, celebrations, nightlife and audiences."
@@ -273,8 +279,8 @@ const SEO = {
 };
 
 const OG_ALT = {
-  en: 'Kyrylo Rusanivsky — video editor, photographer and graphic designer, Kyiv',
-  ua: 'Кирило Русанівський — відеомонтажер, фотограф і графічний дизайнер, Київ',
+  en: 'Kyrylo Rusanivsky — photographer, video editor and graphic designer, Kyiv',
+  ua: 'Кирило Русанівський — фотограф, відеомонтажер і графічний дизайнер, Київ',
 };
 
 function page({ here, path, title, description, body, ogImage = '/og-image.jpg' }) {
