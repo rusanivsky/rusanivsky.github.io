@@ -1,29 +1,325 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://rusanivsky.com/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://rusanivsky.com/ua/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://rusanivsky.com/rates/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/rates/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/privacy/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/privacy/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/video/reels/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/video/reels/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/video/interviewandvlogs/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/video/interviewandvlogs/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/video/music/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/video/music/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/video/documentary/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/video/documentary/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/video/short-form/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/video/short-form/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/photo/reportage/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/photo/reportage/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/photo/culture-art/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/photo/culture-art/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/photo/backstage/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/photo/backstage/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/photo/portraits/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/photo/portraits/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/design/covers/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rusanivsky.com/ua/design/covers/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://rusanivsky.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/photo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/photo/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/photo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/photo/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/photo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/photo/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/photo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/photo/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/video/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/video/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/video/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/video/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/video/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/video/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/video/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/video/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/design/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/design/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/design/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/design/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/design/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/design/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/info/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/info/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/info/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/info/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/info/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/info/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/info/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/enquiries/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/enquiries/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/enquiries/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/enquiries/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/enquiries/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/enquiries/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/enquiries/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/enquiries/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/rates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/rates/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/rates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/rates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/rates/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/rates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/rates/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/privacy/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/privacy/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/sounds-of-chornobyl/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/sounds-of-chornobyl/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/sounds-of-chornobyl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/sounds-of-chornobyl/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/sounds-of-chornobyl/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/sounds-of-chornobyl/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/sounds-of-chornobyl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/sounds-of-chornobyl/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/kmbs-defence-programmes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/kmbs-defence-programmes/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/kmbs-defence-programmes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/kmbs-defence-programmes/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/kmbs-defence-programmes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/kmbs-defence-programmes/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/kmbs-defence-programmes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/kmbs-defence-programmes/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/reportage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/reportage/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/reportage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/reportage/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/reportage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/reportage/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/reportage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/reportage/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/istoriya-ukrayini-2020/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/istoriya-ukrayini-2020/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/istoriya-ukrayini-2020/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/istoriya-ukrayini-2020/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/istoriya-ukrayini-2020/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/istoriya-ukrayini-2020/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/istoriya-ukrayini-2020/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/istoriya-ukrayini-2020/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/yd-interior-studio/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/yd-interior-studio/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/yd-interior-studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/yd-interior-studio/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/yd-interior-studio/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/yd-interior-studio/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/yd-interior-studio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/yd-interior-studio/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/culture-and-art/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/culture-and-art/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/culture-and-art/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/culture-and-art/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/culture-and-art/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/culture-and-art/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/culture-and-art/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/culture-and-art/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/reels/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/reels/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/reels/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/reels/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/reels/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/reels/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/reels/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/reels/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/shylero-utility-bag/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/shylero-utility-bag/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/shylero-utility-bag/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/shylero-utility-bag/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/shylero-utility-bag/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/shylero-utility-bag/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/shylero-utility-bag/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/shylero-utility-bag/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/ua-trance-family/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/ua-trance-family/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/ua-trance-family/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/ua-trance-family/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/ua-trance-family/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/ua-trance-family/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/ua-trance-family/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/ua-trance-family/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/word-and-music/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/word-and-music/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/word-and-music/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/word-and-music/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/word-and-music/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/word-and-music/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/word-and-music/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/word-and-music/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/istorichna-shevchenkiana/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/istorichna-shevchenkiana/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/istorichna-shevchenkiana/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/istorichna-shevchenkiana/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/istorichna-shevchenkiana/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/istorichna-shevchenkiana/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/istorichna-shevchenkiana/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/istorichna-shevchenkiana/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/portraits/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/portraits/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/portraits/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/portraits/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/portraits/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/portraits/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/portraits/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/portraits/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/chornobyl-35/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/chornobyl-35/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/chornobyl-35/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/chornobyl-35/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/chornobyl-35/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/chornobyl-35/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/chornobyl-35/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/chornobyl-35/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/backstage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/backstage/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/backstage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/backstage/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/backstage/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/backstage/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/backstage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/backstage/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/wooden-churches-of-verkhovyna/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/wooden-churches-of-verkhovyna/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/wooden-churches-of-verkhovyna/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/wooden-churches-of-verkhovyna/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/wooden-churches-of-verkhovyna/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/wooden-churches-of-verkhovyna/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/wooden-churches-of-verkhovyna/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/wooden-churches-of-verkhovyna/"/>
+    <lastmod>2026-09-19</lastmod>
+  </url>
 </urlset>

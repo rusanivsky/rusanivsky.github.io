@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" data-theme="green">
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,92 +10,136 @@
 <link rel="alternate" hreflang="en" href="https://rusanivsky.com/privacy/">
 <link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/privacy/">
 <link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/privacy/">
-<meta name="theme-color" content="#42563f">
-<link rel="icon" href="/favicon.ico?v=11" sizes="32x32"><link rel="icon" href="/favicon.svg?v=11" type="image/svg+xml"><link rel="icon" href="/favicon-dark.ico?v=11" sizes="32x32" media="(prefers-color-scheme: dark)"><link rel="icon" href="/favicon-dark.svg?v=11" type="image/svg+xml" media="(prefers-color-scheme: dark)">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11">
-<link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<script data-reveal-boot>document.documentElement.classList.add('rev')</script>
-<link rel="stylesheet" href="/styles/base.css?v=26">
-<link rel="stylesheet" href="/styles/section.css?v=9">
-<link rel="stylesheet" href="/photo/photo.css?v=118">
-<link rel="stylesheet" href="/styles/section-header.css?v=30">
-<link rel="stylesheet" href="/styles/text-page.css?v=9">
-<script src="/scripts/reveal.js?v=12" defer onerror="document.documentElement.classList.remove('rev')"></script>
-<script src="/scripts/plate-parallax.js?v=9" defer></script>
-<script src="/scripts/google-analytics.js?v=4" defer></script>
-<script src="/scripts/language-switcher.js?v=3" defer></script>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kyrylo Rusanivsky">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="uk_UA">
+<meta property="og:url" content="https://rusanivsky.com/privacy/">
+<meta property="og:title" content="Privacy — Kyrylo Rusanivsky">
+<meta property="og:description" content="A short privacy notice for rusanivsky.com and its use of Google Analytics.">
+<meta property="og:image" content="https://rusanivsky.com/og-image.jpg?v=554370e5">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kyrylo Rusanivsky — video editor, photographer and graphic designer, Kyiv">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy — Kyrylo Rusanivsky">
+<meta name="twitter:description" content="A short privacy notice for rusanivsky.com and its use of Google Analytics.">
+<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=554370e5">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="icon" href="/favicon.ico?v=07ab25da" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=07ab25da" type="image/svg+xml">
+<link rel="icon" href="/favicon-dark.ico?v=07ab25da" sizes="32x32" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon-dark.svg?v=07ab25da" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=07ab25da">
+<link rel="apple-touch-icon" href="/apple-touch-icon-dark.png?v=07ab25da" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="/site.webmanifest?v=07ab25da">
+<link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles/site.css?v=647a3d52">
+<script>(function(){try{
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+if(sessionStorage.getItem('kr-seen'))return;
+sessionStorage.setItem('kr-seen','1');
+var r=document.documentElement;r.className+=' splash-on';
+addEventListener('DOMContentLoaded',function(){
+setTimeout(function(){r.className+=' splash-off';},1400);
+setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
+});}catch(e){}})();</script>
+<script src="/scripts/site.js?v=257971b4" defer></script>
+<script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
+
 </head>
 <body>
-<div class="topbar">
-<header class="wrap meta">
-  <a class="back" href="/"><span class="back-arrow">←</span> <span class="back-label" data-en="Home" data-ua="На головну">Home</span></a>
-  <nav class="parts" aria-label="Sections">
-    <a class="part" href="/video/reels/" data-en="Video" data-ua="Відео">Video</a>
-    <a class="part" href="/photo/reportage/" data-en="Photo" data-ua="Фото">Photo</a>
-    <a class="part" href="/design/covers/" data-en="Design" data-ua="Дизайн">Design</a>
-  </nav>
-  <div class="switches">
-    <a class="order-cta" href="#order" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>
-    <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">Kyrylo Rusanivsky</span><span class="splash-role">Creative specialist</span></p></div>
+<div class="shell">
+
+<nav class="rail" aria-label="Menu">
+  <a class="wordmark" href="/">Kyrylo Rusanivsky</a>
+  <div class="rail-mid">
+    <div class="rail-nav"><a href="/">Selected</a><a href="/photo/">Photography</a><a href="/video/">Video</a><a href="/design/">Design</a></div>
+    <div class="rail-nav"><a href="/info/">About me</a><a href="/enquiries/">Enquiries</a></div>
   </div>
-</header>
-<hr class="rule">
+  <div class="rail-foot">
+    <a href="/rates/">Rates &amp; Terms</a>
+    <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener">Instagram</a><a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">Behance</a>
+    <div class="theme lang"><a href="/privacy/" hreflang="en" aria-current="true">EN</a><a href="/ua/privacy/" hreflang="uk">UA</a></div>
+    <p class="rail-meta"><span>© 2026 Kyrylo Rusanivsky</span><span>Kyiv, Ukraine</span></p>
+  </div>
+</nav>
+
+<div class="bar">
+  <a class="wordmark" href="/">Kyrylo Rusanivsky</a>
+  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">Menu</button>
+</div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="drawer-top">
+    <span class="wordmark">Kyrylo Rusanivsky</span>
+    <button type="button" id="menu-close">Close</button>
+  </div>
+  <div class="group"><a href="/">Selected</a><a href="/photo/">Photography</a><a href="/video/">Video</a><a href="/design/">Design</a></div>
+  <div class="group"><a href="/info/">About me</a><a href="/enquiries/">Enquiries</a></div>
+  <div class="group small">
+    <a href="/rates/">Rates &amp; Terms</a>
+    <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener">Instagram</a><a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">Behance</a>
+    <div class="theme lang"><a href="/privacy/" hreflang="en" aria-current="true">EN</a><a href="/ua/privacy/" hreflang="uk">UA</a></div>
+  </div>
 </div>
 
-<main class="wrap text-page-grid text-page-body">
-  <h1 class="page-title" data-en="Privacy" data-ua="Приватність">Privacy</h1>
-  <article class="text-page-copy">
-    <p class="text-page-lead" data-en="This short notice explains what happens when you visit rusanivsky.com. It was last updated on 12 September 2026." data-ua="Це коротке повідомлення пояснює, що відбувається, коли ви відвідуєте rusanivsky.com. Оновлено 12 вересня 2026 року.">This short notice explains what happens when you visit rusanivsky.com. It was last updated on 12 September 2026.</p>
-
-    <h2 data-en="Analytics" data-ua="Аналітика">Analytics</h2>
-    <p data-en="This site uses Google Analytics 4 to understand which pages are visited and how the site is used. Google Analytics may collect page views, session information, approximate location, browser and device information, and interactions such as scrolling and clicks on contact links." data-ua="Цей сайт використовує Google Analytics 4, щоб розуміти, які сторінки відвідують і як використовують сайт. Google Analytics може збирати перегляди сторінок, інформацію про сеанси, приблизне місцезнаходження, дані браузера й пристрою, а також взаємодії — наприклад прокручування та кліки на контактні посилання.">This site uses Google Analytics 4 to understand which pages are visited and how the site is used. Google Analytics may collect page views, session information, approximate location, browser and device information, and interactions such as scrolling and clicks on contact links.</p>
-    <p data-en="The site does not send the contents of your messages or contact details to Google Analytics. The Analytics tag uses the first-party _ga cookie to distinguish visitors and sessions." data-ua="Сайт не надсилає вміст ваших повідомлень або контактні дані до Google Analytics. Тег Analytics використовує власний cookie-файл _ga, щоб розрізняти відвідувачів і сеанси.">The site does not send the contents of your messages or contact details to Google Analytics. The Analytics tag uses the first-party _ga cookie to distinguish visitors and sessions.</p>
-
-    <h2 data-en="Your choices" data-ua="Ваш вибір">Your choices</h2>
-    <p data-en="You can delete or block cookies in your browser settings. You can also use browser tools that disable Google Analytics measurement. Some site functions, such as language preference, may use local browser storage." data-ua="Ви можете видалити або заблокувати cookie у налаштуваннях браузера. Також можна використовувати інструменти браузера, які вимикають вимірювання Google Analytics. Деякі функції сайту, наприклад вибір мови, можуть використовувати локальне сховище браузера.">You can delete or block cookies in your browser settings. You can also use browser tools that disable Google Analytics measurement. Some site functions, such as language preference, may use local browser storage.</p>
-    <p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" data-en="Read Google’s Privacy Policy" data-ua="Читайте Політику конфіденційності Google">Read Google’s Privacy Policy</a></p>
-
-    <h2 data-en="Contact" data-ua="Контакт">Contact</h2>
-    <p><span data-en="For questions about this notice or the site, write to " data-ua="Якщо у вас є запитання про це повідомлення або сайт, напишіть на ">For questions about this notice or the site, write to </span><a href="mailto:info@rusanivsky.com" data-en="info@rusanivsky.com" data-ua="info@rusanivsky.com">info@rusanivsky.com</a>.</p>
-  </article>
-</main>
-
-<section class="contact-slab" id="order" aria-labelledby="ft">
-  <div class="wrap foot-in">
-    <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
-    <div class="say">
-      <div class="asks">
-      <h2 class="ask-k" data-rev data-en="FAQ" data-ua="FAQ">FAQ</h2>
-      <details class="qa" data-rev><summary data-en="What does it cost?" data-ua="Скільки це коштує?">What does it cost?</summary><p data-en="An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p></details>
-      <details class="qa" data-rev><summary data-en="How long does it take?" data-ua="Скільки часу це займе?">How long does it take?</summary><p data-en="A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in." data-ua="Короткий ролик — від 2 робочих днів, інтерв’ю — від 3, обкладинка — від 4, верстка книжки — від 2 тижнів. Відлік іде від передоплати й усіх матеріалів.">A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in.</p></details>
-      <details class="qa" data-rev><summary data-en="How does payment work?" data-ua="Як відбувається оплата?">How does payment work?</summary><p data-en="A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included." data-ua="Передоплата 50% ставить задачу в графік, решта — до передачі файлів. Безготівково на рахунок ФОП; із-за кордону — SWIFT у доларах або Payoneer. Рахунок, акт і за потреби договір.">A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included.</p></details>
-      <details class="qa" data-rev><summary data-en="How many revisions are included?" data-ua="Скільки правок входить у ціну?">How many revisions are included?</summary><p data-en="Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work." data-ua="Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину роботи.">Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work.</p></details>
-      <details class="qa" data-rev><summary data-en="Who owns the finished work?" data-ua="Кому належать права на роботу?">Who owns the finished work?</summary><p data-en="You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA." data-ua="Вам — з моменту повної оплати. За собою лишаю право показувати роботу в портфоліо; якщо матеріал конфіденційний, скажіть на старті — узгодимо ембарго або NDA.">You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA.</p></details>
-      <details class="qa" data-rev><summary data-en="What do I get at the end?" data-ua="Що я отримую в кінці?">What do I get at the end?</summary><p data-en="Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge." data-ua="Через Google Drive: відео — MP4 H.264 у 1080p або 4K, дизайн — PDF/X-4 для друку плюс JPG чи PNG для мережі. Робочі файли проєкту — за запитом, без доплати.">Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge.</p></details>
-      <details class="qa" data-rev><summary data-en="What if something changes?" data-ua="А якщо щось зміниться?">What if something changes?</summary><p data-en="A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk." data-ua="Уже сплачена передоплата покриває виконану роботу й не повертається; затримка з вашого боку зсуває дедлайн на стільки ж днів. Я в Україні, тож тривалий блекаут теж може зсунути терміни — попереджаю одразу, щойно бачу ризик.">A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk.</p></details>
-      </div>
-      <p class="sub" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
-      <div class="lines">
-        <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
-        <a href="https://t.me/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:150ms">Telegram</a>
-        <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:210ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
-        <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener" data-rev style="--d:270ms">Instagram</a>
-        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:330ms">LinkedIn</a>
-        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:390ms">Facebook</a>
-        <a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:450ms">Behance</a>
-      </div>
-    </div>
+<main class="page g12" id="main">
+  <div class="page-head col-8">
+    <p class="eyebrow">Privacy</p>
+    <h1 class="page-title t-title">Privacy</h1>
+    <p class="page-intro t-lead col-7">This short notice explains what happens when you visit rusanivsky.com. It was last updated on 12 September 2026.</p>
   </div>
-</section>
-<footer class="site-foot">
-  <div class="wrap foot-bar"><div class="footer-left"><div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span class="kyiv-clock">—:—</span> <span class="kyiv-tz">EET</span></span></div>
-      <a class="tiny footer-terms" href="/rates/" data-en="Rates &amp; Terms" data-ua="Умови співпраці">Rates &amp; Terms</a>
-      <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>
+
+  <section class="section col-full g12" style="padding-inline:0">
+    <h2 class="section-label col-full">Analytics</h2>
+    <div class="prose col-7" style="margin-top:1.1rem">
+      <p>This site uses Google Analytics 4 to understand which pages are visited and how the site is used. Google Analytics may collect page views, session information, approximate location, browser and device information, and interactions such as scrolling and clicks on contact links.</p><p>The site does not send the contents of your messages or contact details to Google Analytics. The Analytics tag uses the first-party _ga cookie to distinguish visitors and sessions.</p>
+      
+      
     </div>
-    <div class="cols"><span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span></div></div></footer>
-<script>(function(){var r=document.documentElement;function L(v,s){r.lang=v==='ua'?'uk':'en';document.querySelectorAll('[data-en]').forEach(function(e){var t=e.getAttribute('data-'+v);if(t)e.textContent=t});document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===v))});if(s)try{localStorage.setItem('kr-lang',v)}catch(e){}}function D(){try{var q=new URLSearchParams(location.search).get('lang');if(q==='uk'||q==='ua')return'ua';if(q==='en')return'en'}catch(e){}try{var s=localStorage.getItem('kr-lang');if(s==='en'||s==='ua')return s}catch(e){}var l=(navigator.language||'').slice(0,2);return(l==='uk'||l==='ru')?'ua':'en'}document.querySelectorAll('#lang button').forEach(function(b){b.onclick=function(){L(b.dataset.lang,true)}});L(D(),false)})();</script>
-<script src="/scripts/chrome.js?v=10"></script>
-<script src="/scripts/kyiv-clock.js?v=1"></script>
+  </section>
+  <section class="section col-full g12" style="padding-inline:0">
+    <h2 class="section-label col-full">Your choices</h2>
+    <div class="prose col-7" style="margin-top:1.1rem">
+      <p>You can delete or block cookies in your browser settings. You can also use browser tools that disable Google Analytics measurement. Some site functions, such as language preference, may use local browser storage.</p>
+      <p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Read Google’s Privacy Policy</a></p>
+      
+    </div>
+  </section>
+  <section class="section col-full g12" style="padding-inline:0">
+    <h2 class="section-label col-full">Contact</h2>
+    <div class="prose col-7" style="margin-top:1.1rem">
+      
+      
+      <p>For questions about this notice or the site, write to <a href="mailto:info@rusanivsky.com">info@rusanivsky.com</a>.</p>
+    </div>
+  </section>
+  <div class="col-full">
+<div class="foot">
+  <a href="/rates/">Rates &amp; Terms</a>
+  <a href="/privacy/">Privacy</a>
+  <span>Kyiv, Ukraine</span>
+  <span>© 2026 Kyrylo Rusanivsky</span>
+</div></div>
+</main>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+  <button type="button" class="lb-close" aria-label="Close viewer">Close</button>
+  <div class="lb-stage"><img src="" alt="" width="1600" height="1067"></div>
+  <div class="lb-bar">
+    <span id="lb-cap"></span>
+    <span id="lb-count"></span>
+    <span class="lb-nav">
+      <button type="button" data-lb-prev aria-label="Previous image">← Prev</button>
+      <button type="button" data-lb-next aria-label="Next image">Next →</button>
+    </span>
+  </div>
+</div>
 </body>
 </html>

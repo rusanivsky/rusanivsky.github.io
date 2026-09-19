@@ -1,0 +1,1240 @@
+/* ============================================================
+   rusanivsky.com — V0.2 staging
+   Editorial Index + Stage.
+
+   Two rules this file exists to enforce:
+   1. The interface never gets louder than the work. Every UI size
+      here is small on purpose; the photographs are the only thing
+      allowed to be large.
+   2. A theme change repaints the page, never the picture. There is
+      no filter() anywhere near portfolio media, by design.
+   ============================================================ */
+
+/* ---------- Fixel ----------
+   Same two subsets the production site already licenses and ships.
+   Latin first so a Cyrillic-free page never downloads the Cyrillic file. */
+@font-face {
+  font-family: 'Fixel';
+  src: url('/fonts/fixel-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Fixel';
+  src: url('/fonts/fixel-cyrillic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* ---------- Prata ----------
+   The display serif: the name and the titles, nothing else. A Didone with
+   open, high-contrast forms — the magazine register the sans cannot give —
+   and, unlike most Didones on offer, it has a Cyrillic of its own, so the
+   Ukrainian name is set in the face and not in a substitute. One weight,
+   which is all a wordmark and a headline need. Cyreal, SIL Open Font
+   License 1.1, self-hosted in the same two subsets as Fixel. */
+@font-face {
+  font-family: 'Prata';
+  src: url('/fonts/prata-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Prata';
+  src: url('/fonts/prata-cyrillic.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* The third subset is here for one character: ₴ lives in cyrillic-ext, and
+   without it a hryvnia sign in a heading would drop to Georgia mid-word. */
+@font-face {
+  font-family: 'Prata';
+  src: url('/fonts/prata-cyrillic-ext.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+/* ---------- Tokens ----------
+   Two systems do the work on this site: a 12-column grid that every block
+   snaps to, and a six-step type scale where each step has one job. Nothing
+   is sized ad hoc; if a thing needs a size, it takes one of these steps. */
+:root {
+  --paper: #f4f1e9;
+  --ink: #111111;
+  --muted: #6d675c;
+  --faint: #a09889;
+  --line: #d9d3c5;
+  --line-soft: #e6e1d5;
+  --surface: #eeeade;
+  --stage-bg: #ebe7db;
+
+  --grain: 0.022;
+
+  /* --- Grid --- */
+  --cols: 12;
+  --col-gap: clamp(0.85rem, 1.1vw, 1.4rem);
+  /* The tallest a single frame in a project sequence may become. */
+  --frame-max: 70svh;
+  /* The longest a line of running text may become — see «Measure». */
+  --measure: 36rem;
+  /* Where the first line of a page starts. One token, so the index on the
+     home page and the eyebrow of every other page begin on the same line
+     instead of drifting apart by a couple of pixels each time one of them
+     is touched. */
+  --page-top: 2rem;
+  --pad: clamp(1.25rem, 2.6vw, 3rem);
+  --rail: 14.5rem;
+
+  /* --- Type scale ---
+     label   — section rules and eyebrows. Uppercase, tracked, never a sentence.
+     meta    — discipline, role, client, year, captions, counts.
+     body    — reading text and interface links.
+     lead    — standfirst and project dek. One step above body, never bold.
+     title   — page headings.
+     display — project titles, the largest type the site has. */
+  --font-body: 'Fixel', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Prata', Georgia, 'Times New Roman', serif;
+  --w-display: 400;
+
+  --t-label: 0.6875rem;
+  --t-meta: 0.75rem;
+  --t-body: 0.9375rem;
+  --t-lead: 1.0625rem;
+  --t-title: clamp(1.5rem, 1.05rem + 1.5vw, 2.25rem);
+  --t-display: clamp(1.875rem, 1.1rem + 2.6vw, 3.125rem);
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.28;
+  --lh-text: 1.55;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semi: 600;
+
+  --track-label: 0.14em;
+  --track-display: -0.024em;
+  --track-title: -0.016em;
+
+  --t: 160ms;
+  --ease: cubic-bezier(0.32, 0.08, 0.24, 1);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --paper: #141412;
+  --ink: #e8e5de;
+  --muted: #a7a39a;
+  --faint: #6f6b62;
+  --line: #2b2a26;
+  --line-soft: #232220;
+  --surface: #1b1b18;
+  --stage-bg: #1b1b18;
+  --grain: 0.03;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='auto'] {
+    --paper: #141412;
+    --ink: #e8e5de;
+    --muted: #a7a39a;
+    --faint: #6f6b62;
+    --line: #2b2a26;
+    --line-soft: #232220;
+    --surface: #1b1b18;
+    --stage-bg: #1b1b18;
+    --grain: 0.03;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- The grid ----------
+   One declaration, used by every page-level container. Below the desktop
+   breakpoint the twelve tracks stay in place but every child spans all of
+   them, so the same markup reflows without a second layout system. */
+.g12 {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  padding-inline: var(--pad);
+}
+.g12 > * { grid-column: 1 / -1; }
+
+@media (min-width: 61rem) {
+  .col-4 { grid-column: 1 / span 4; }
+  .col-5 { grid-column: 1 / span 5; }
+  .col-7 { grid-column: 1 / span 7; }
+  .col-8 { grid-column: 1 / span 8; }
+  .col-9 { grid-column: 1 / span 9; }
+  .col-full { grid-column: 1 / -1; }
+  .col-stage { grid-column: 5 / -1; }
+
+  /* The col-* classes pin a start line, which is what puts one thing on one
+     row. The span-* classes only claim a width, so frames of a sequence flow
+     and share a row whenever two of them fit — which is the whole point of
+     giving them a width derived from their shape. */
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+  .span-5 { grid-column: span 5; }
+  .span-6 { grid-column: span 6; }
+  .span-7 { grid-column: span 7; }
+  .span-8 { grid-column: span 8; }
+}
+
+/* A development aid, not shipped behaviour: /?grid draws the twelve tracks
+   so the alignment can be checked against the real page instead of by eye. */
+html[data-grid] .g12 {
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, red 12%, transparent) 0,
+    color-mix(in srgb, red 12%, transparent) calc((100% - 11 * var(--col-gap)) / 12),
+    transparent calc((100% - 11 * var(--col-gap)) / 12),
+    transparent calc((100% - 11 * var(--col-gap)) / 12 + var(--col-gap))
+  );
+  background-origin: content-box;
+  background-clip: content-box;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+/* The scrollbar's room is held open whether or not it is showing, so opening
+   the menu — which locks the page behind it — cannot widen the layout by the
+   width of the bar and shift every line under the header. */
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+
+/* Locking the page means fixing it where it stands, not just hiding its
+   overflow: overflow alone lets the page fall back to the top on some
+   browsers, and the scroll position has to be given back on close. */
+html.nav-lock, html.nav-lock body { overflow: hidden; }
+html.nav-lock body { position: fixed; inset-inline: 0; width: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-text);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+h1, h2, h3, h4, p, ul, ol, figure, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
+/* Procedural grain: page background only. It sits under the content layer and
+   is masked off anything that holds media — the brief is explicit that grain
+   must never land on a photograph. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-transparency: reduce) {
+  body::before { display: none; }
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--surface); padding: 0.6rem 1rem; font-size: var(--t-meta);
+}
+.skip:focus { left: 0.5rem; top: 0.5rem; }
+
+/* ============================================================
+   Typography — one role per step, applied by class, never ad hoc.
+   ============================================================ */
+.t-label {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--faint);
+}
+.t-meta {
+  font-size: var(--t-meta);
+  font-weight: var(--w-regular);
+  line-height: 1.45;
+  color: var(--muted);
+}
+.t-lead {
+  font-size: var(--t-lead);
+  font-weight: var(--w-regular);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* ---------- Measure ----------
+   The columns decide where a block of text sits and how much room it is
+   given. This decides how far a line may actually run inside that room, and
+   it applies everywhere: about sixty-five characters, past which the eye
+   loses the start of the next line on the way back and reading turns into
+   work. Nothing on this site is ever set wider than that, however wide the
+   column or the window.
+
+   What is not running text keeps its own width: a price opposite its label,
+   a caption under a frame, a list of clients' names. Those are read by
+   glance, not by line. */
+.prose p,
+.page-intro,
+.t-lead,
+.spec-list dd,
+.steps li > span:last-child,
+.bullets li {
+  max-width: var(--measure);
+}
+
+.t-title {
+  font-size: var(--t-title);
+  font-weight: var(--w-medium);
+  letter-spacing: var(--track-title);
+  line-height: var(--lh-snug);
+  text-wrap: balance;
+}
+.t-display {
+  font-size: var(--t-display);
+  font-weight: var(--w-medium);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+}
+
+/* ============================================================
+   Shell
+   ============================================================ */
+.shell { position: relative; z-index: 1; min-height: 100svh; }
+
+@media (min-width: 61rem) {
+  .shell { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); }
+}
+
+/* ---------- Sidebar ----------
+   Desktop only. Below the breakpoint the top bar and drawer carry exactly
+   the same links, so showing both would duplicate the whole navigation. */
+.rail { display: none; }
+@media (min-width: 61rem) {
+  .rail { display: flex; }
+  .rail {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    flex-direction: column;
+    border-right: 1px solid var(--line-soft);
+    padding: 1.9rem 1.4rem 1.6rem 2rem;
+  }
+}
+
+/* The name is set as a name, not as a label: mixed case, a step larger than
+   the interface around it, and tracked only enough to open it up. Tracked
+   caps at 12px were a sans habit — a serif has too fine a hairline to survive
+   at that size, and the full name needs room to read as a signature. */
+.wordmark {
+  display: block;
+  font-size: var(--t-lead);
+  letter-spacing: 0.015em;
+}
+/* In the sidebar the full name is set on two lines at every width. Left to
+   wrap on its own it would be one line on a wide screen and two on a narrow
+   one; min-content makes the break the same everywhere, and it can never
+   overrun a rail that is only four tracks wide. */
+.rail .wordmark { max-width: min-content; line-height: 1.3; }
+
+.rail-mid { margin-top: 2.6rem; }
+.rail-nav + .rail-nav { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
+.rail-nav a {
+  display: block;
+  font-size: var(--t-meta);
+  line-height: 2;
+  color: var(--muted);
+  transition: color var(--t) var(--ease);
+}
+.rail-nav a:hover { color: var(--ink); }
+.rail-nav a[aria-current='page'] { color: var(--ink); font-weight: var(--w-medium); }
+.rail-nav a[aria-current='page']::before {
+  content: '';
+  display: inline-block;
+  width: 0.55rem;
+  height: 1px;
+  margin-right: 0.45rem;
+  vertical-align: 0.28em;
+  background: var(--ink);
+}
+
+/* The rail is exactly one screen tall, so on a short window the links used to
+   push the footer off the bottom and out of reach. Now the middle scrolls and
+   the footer keeps its place at the foot of the column. */
+.rail-mid { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.rail-foot { flex: none; padding-top: 2rem; }
+.rail-foot a {
+  display: block;
+  font-size: var(--t-label);
+  letter-spacing: 0.02em;
+  line-height: 2;
+  /* Secondary is not the same as barely there: these are the address and
+     the places the work continues, and a returning contact comes for them.
+     They sit a step below the navigation, not a step below legibility. */
+  color: var(--muted);
+  transition: color var(--t) var(--ease);
+}
+.rail-foot a:hover { color: var(--ink); }
+
+/* The city and the copyright live here and nowhere else — the one place on
+   the page that is always present, so the main column never has to carry a
+   footer to repeat them. */
+.rail-meta {
+  margin: 1.4rem 0 0;
+  font-size: var(--t-label);
+  line-height: 1.7;
+  color: var(--faint);
+}
+.rail-meta span { display: block; }
+
+.theme {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: baseline;
+  font-size: var(--t-label);
+}
+.theme > span:first-child {
+  flex-basis: 100%;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.theme button, .theme a { color: var(--muted); transition: color var(--t) var(--ease); }
+.theme button:hover, .theme a:hover { color: var(--ink); }
+.theme button[aria-pressed='true'],
+.theme a[aria-current='true'] {
+  color: var(--ink);
+  font-weight: var(--w-semi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.theme .sep { color: var(--line); }
+/* The pair EN · UA needs no word over it: a rule of the same weight as the one
+   between the navigation groups says «another kind of control» without adding
+   a label to read. */
+.lang {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-soft);
+  gap: 0.7rem;
+}
+
+/* ---------- Mobile bar and drawer ---------- */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem var(--pad);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-soft);
+}
+.bar button {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+@media (min-width: 61rem) { .bar { display: none; } }
+
+.drawer[hidden] { display: none; }
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--paper);
+  /* The same top padding as the bar, so the name and the button the menu
+     opens from stay on exactly the same line when it opens and when it
+     closes. A tenth of a rem of difference is enough to see the header
+     twitch on every tap. */
+  padding: 0.9rem var(--pad) 3rem;
+  overflow-y: auto;
+}
+.drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+.drawer-top button {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+.drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
+.drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
+.drawer .group.small a { font-size: var(--t-meta); font-weight: var(--w-regular); line-height: 2.1; color: var(--muted); }
+
+/* ============================================================
+   Home — index on four columns, stage on eight
+   ============================================================ */
+.home { padding-inline: 0; }
+@media (min-width: 61rem) {
+  /* One screen, and only the list of projects moves inside it. The heading,
+     the standfirst, the foot line and the stage all hold still. */
+  .home {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    padding-inline: var(--pad);
+    height: 100svh;
+    overflow: hidden;
+  }
+}
+
+.index-col { padding: var(--page-top) var(--pad) 3rem; }
+@media (min-width: 61rem) {
+  .index-col {
+    grid-column: 1 / span 4;
+    /* The same bottom inset as the rail, so the list is cut on the line the
+       rail's meta ends on rather than somewhere of its own. */
+    padding: var(--page-top) 0 1.6rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
+
+.standfirst { margin-top: 1.2rem; }
+.index { margin-top: 2.2rem; border-top: 1px solid var(--line-soft); }
+@media (min-width: 61rem) {
+  .index {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
+.row {
+  display: block;
+  border-bottom: 1px solid var(--line-soft);
+  padding: 0.72rem 0 0.78rem;
+  transition: opacity var(--t) var(--ease);
+}
+.row-head { display: grid; grid-template-columns: 1.7rem 1fr; align-items: baseline; column-gap: 0.55rem; }
+.row-no {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--t) var(--ease);
+}
+/* The name of a work carries the list; it is set in Fixel a step above the
+   text around it, so it reads as a title and not as another line of meta.
+   The three places a work is named — the index, the grid, the film — carry
+   the same weight, or the same thing would look like three things. */
+.row-title {
+  font-size: var(--t-lead);
+  font-weight: var(--w-semi);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+.row-meta {
+  display: block;
+  grid-column: 2;
+  margin-top: 0.22rem;
+  margin-left: 2.25rem;
+  font-size: var(--t-label);
+  color: var(--muted);
+}
+.row-meta .dot { color: var(--line); margin: 0 0.4rem; }
+
+@media (hover: hover) and (min-width: 61rem) {
+  .index:hover .row { opacity: 0.42; }
+  .index:hover .row:hover,
+  .index .row:focus-within { opacity: 1; }
+  .row:hover .row-no, .row:focus-within .row-no { color: var(--ink); }
+}
+
+/* On a phone every preview holds the same 16:9 band, so the list reads as a
+   list and one standing cover cannot take over the screen. Where a taller
+   picture is cropped from is carried per project in --focus; the full frame
+   is untouched and opens on the project page. */
+/* This is a span, so without display:block its vertical margins were silently
+   dropped and the picture sat straight on the meta line. */
+.row-preview {
+  display: block;
+  margin-top: 1.15rem;
+  margin-bottom: 0.35rem;
+  background: var(--stage-bg);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+.row-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+}
+@media (min-width: 61rem) { .row-preview { display: none; } }
+
+/* ---------- Stage ---------- */
+.stage { display: none; }
+@media (min-width: 61rem) {
+  /* The panel runs to the right edge of the window. Stopping it at the page
+     padding left a dead strip of paper beside it that read as an extra
+     column. */
+  .stage {
+    display: block;
+    /* The caption below is absolute and belongs to this panel. Without a
+       position here it escaped to the page itself and printed the project
+       title across the bottom of the sidebar. */
+    position: relative;
+    height: 100svh;
+    grid-column: 5 / -1;
+    border-left: 1px solid var(--line-soft);
+    background: var(--stage-bg);
+    margin-left: calc(var(--col-gap) / -2);
+    margin-right: calc(var(--pad) * -1);
+    padding: 2.6rem 0 2.4rem;
+    transition: background-color var(--t) var(--ease);
+  }
+  .stage-frame { height: 100%; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--t) var(--ease), visibility 0s linear var(--t);
+  }
+  .slide.on { opacity: 1; visibility: visible; transition: opacity var(--t) var(--ease), visibility 0s; }
+  /* A wall of frames from the project, not one cover. Every cell is the same
+     size as every other, the grid fills the panel exactly, and nothing is
+     cropped: a frame that does not match its cell keeps a little air instead
+     of losing its edges. */
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(var(--mc), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--mr), minmax(0, 1fr));
+    gap: 0.7rem;
+    /* The wall carries the shape of its own frames (--wall, from the build),
+       so it grows to the biggest size the panel allows and stops there. The
+       air ends up around the wall, where it belongs, instead of being dealt
+       out between the rows and pulling the frames apart. */
+    aspect-ratio: var(--wall, 1);
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    justify-items: center;
+    align-items: center;
+  }
+  .tile { display: block; min-width: 0; min-height: 0; width: 100%; height: 100%; }
+  .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+
+  /* The rule for a wall that does not fill itself: a full wall takes the whole
+     panel, and the only frame that is held back is a lone one. It is held back
+     by area, not by width: --solo is computed from the frame's own proportions
+     in the build so that a wide still and a standing cover take up the same
+     share of the panel and carry the same weight — that of a cover, not of a
+     stamp in the middle of an empty panel. */
+  .mosaic.solo {
+    max-width: calc(100% * var(--solo, 0.6));
+    max-height: calc(100% * var(--solo, 0.6));
+  }
+
+  .stage-caption {
+    position: absolute;
+    left: 2.5rem;
+    right: 2.5rem;
+    bottom: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--t-label);
+    color: var(--faint);
+  }
+  .stage-caption span:first-child { font-weight: var(--w-semi); color: var(--muted); }
+}
+
+/* ============================================================
+   Inner pages — every block lands on the grid
+   ============================================================ */
+.page { padding-block: var(--page-top) 5rem; row-gap: 0; }
+@media (min-width: 61rem) {
+  :root { --page-top: 3.2rem; }
+  .page { padding-block: var(--page-top) 6rem; }
+}
+
+/* The eyebrow and the section rule are the same typographic role, so they
+   share one definition rather than drifting apart. */
+.eyebrow, .section-label {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--faint);
+}
+.page-title { margin-top: 0.9rem; }
+.page-intro { margin-top: 1rem; color: var(--muted); }
+
+.prose > * + * { margin-top: 1rem; }
+.prose p { line-height: var(--lh-text); text-wrap: pretty; }
+.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+.prose a:hover { text-decoration-color: currentColor; }
+
+.section { margin-top: 3.4rem; }
+.section-label { padding-bottom: 0.6rem; border-bottom: 1px solid var(--line-soft); }
+
+/* ---------- Work cards ----------
+   Rows, not columns. Column packing existed only because a standing cover
+   used to set its own height and open a hole; now every preview is the same
+   16:9 band, so a row grid lines every card up — covers on one line, titles
+   starting on the next, all the way across.
+
+   Four columns of three tracks each: the same bands as the collage and the
+   rest of the twelve. */
+.works {
+  margin-top: 1.6rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: 2.2rem;
+  align-items: start;
+}
+@media (min-width: 61rem) { .works { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 30rem) { .works { grid-template-columns: minmax(0, 1fr); } }
+
+.works > * { display: block; }
+
+/* A selected set of projects is composed, not tabulated. On the wide screen
+   the grid goes back to the page's own twelve columns and every card takes
+   the width its picture asks for: the lead one anchored at nine, the rest at
+   six, both rounded to the grid by the same equal-area rule as a project
+   sequence. The cover then keeps its real proportion instead of being cut to
+   a band — a square book cover stays square, a standing layout stays
+   standing. Below the breakpoint there is no room for a composition, so the
+   set falls back to the plain columns above. */
+@media (min-width: 61rem) {
+  .selection {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    row-gap: 3.2rem;
+  }
+  .selection .work { grid-column: span var(--span, 6); }
+  .selection .work-cover { aspect-ratio: var(--ar, 16 / 9); }
+}
+
+/* Two related projects at the foot of a page are a pair, not a four-column
+   spread with two empty columns after them. */
+.works-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 61rem) { .works-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Every preview in a selection is 16:9, whatever shape the cover itself is:
+   a standing frame is cropped to the band rather than allowed to set its own
+   height. The full-height original is untouched and still opens on the
+   project page. */
+.work-cover {
+  display: block;
+  background: var(--stage-bg);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+.work-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  transition: opacity var(--t) var(--ease);
+}
+.work:hover .work-cover img { opacity: 0.86; }
+.work-title {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: var(--t-body);
+  font-weight: var(--w-semi);
+  line-height: var(--lh-snug);
+}
+.work-meta { display: block; margin-top: 0.2rem; font-size: var(--t-label); color: var(--muted); }
+
+/* ---------- Project page ---------- */
+.project { padding-block: var(--page-top) 6rem; }
+@media (min-width: 61rem) { .project { padding-block: var(--page-top) 7rem; } }
+
+.project-title { margin-top: 0.85rem; }
+.project-dek { margin-top: 1.05rem; }
+
+.facts {
+  margin-top: 1.8rem;
+  display: grid;
+  gap: 0.55rem var(--col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, max-content));
+}
+.facts dt {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.facts dd { margin-top: 0.2rem; font-size: var(--t-meta); color: var(--ink); }
+
+.seq { margin-top: 3rem; row-gap: 2.6rem; }
+.seq > * { margin: 0; }
+
+/* The column a frame is given sets its width; this sets the other limit.
+   However wide the window, a frame in a sequence never grows taller than
+   most of the screen it is looked at on — otherwise a standing 9:16 on a
+   large monitor becomes a poster you scroll past instead of a shot you
+   look at, and the page has no rhythm because nothing shares a screen with
+   anything. The frame keeps its ratio and simply stops growing, centred in
+   the column it was given. */
+@media (min-width: 61rem) {
+  .seq .player { max-width: calc(var(--frame-max) * 16 / 9); margin-inline: auto; }
+  .seq .player.vertical { max-width: calc(var(--frame-max) * 9 / 16); }
+  .seq figure.shot { width: fit-content; margin-inline: auto; }
+  .seq figure.shot img { width: auto; max-width: 100%; max-height: var(--frame-max); }
+}
+
+.pair { display: grid; grid-template-columns: 1fr; gap: var(--col-gap); }
+@media (min-width: 46rem) { .pair { grid-template-columns: 1fr 1fr; } }
+
+figure.shot { background: var(--stage-bg); margin: 0; }
+figure.shot img { width: 100%; height: auto; }
+figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint); }
+
+.rest-toggle {
+  justify-self: start;
+  font-size: var(--t-meta);
+  font-weight: var(--w-medium);
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+.rest-toggle:hover { color: var(--ink); }
+.rest[hidden] { display: none; }
+.rest { margin-top: 2.6rem; }
+
+/* The sequence ends and the credits begin: the same distance the page keeps
+   between any two sections, so the last frame is not read as their heading. */
+.credits { margin-top: 3.4rem; }
+.credits ul { margin-top: 0.9rem; }
+.credits li { font-size: var(--t-meta); color: var(--muted); line-height: 1.9; }
+
+/* ---------- Video ---------- */
+.player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+.player.vertical { aspect-ratio: 9 / 16; }
+.player img { width: 100%; height: 100%; object-fit: cover; }
+.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.player-btn { position: absolute; inset: 0; width: 100%; }
+.player-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3.4rem; height: 3.4rem;
+  margin: -1.7rem 0 0 -1.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  transition: background-color var(--t) var(--ease);
+}
+.player-btn::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 1;
+  margin: -0.42rem 0 0 -0.26rem;
+  border-left: 0.75rem solid rgba(255, 255, 255, 0.95);
+  border-top: 0.42rem solid transparent;
+  border-bottom: 0.42rem solid transparent;
+}
+.player-btn:hover::after { background: rgba(0, 0, 0, 0.5); }
+
+.vid-title {
+  margin-top: 0.7rem;
+  font-size: var(--t-body);
+  font-weight: var(--w-semi);
+  line-height: var(--lh-snug);
+}
+.vid-meta { margin-top: 0.2rem; font-size: var(--t-label); color: var(--muted); }
+
+/* ---------- Lightbox ---------- */
+.lb[hidden] { display: none; }
+.lb { position: fixed; inset: 0; z-index: 60; background: var(--paper); display: flex; flex-direction: column; }
+.lb-stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 3.2rem var(--pad); min-height: 0; }
+.lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.lb-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem var(--pad) 1.1rem;
+  font-size: var(--t-label);
+  color: var(--faint);
+}
+.lb-bar button { color: var(--muted); padding: 0.35rem 0.5rem; font-size: var(--t-label); }
+.lb-bar button:hover { color: var(--ink); }
+.lb-nav { display: flex; gap: 0.3rem; }
+.lb-close { position: absolute; top: 0.7rem; right: 0.9rem; font-size: var(--t-label); color: var(--muted); padding: 0.4rem 0.6rem; }
+#lb-count { font-variant-numeric: tabular-nums; }
+
+/* ---------- Rates ---------- */
+.rate-group { margin-top: 2rem; }
+.rate-group h3 {
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.rate-list { margin-top: 0.7rem; border-top: 1px solid var(--line-soft); }
+.rate-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding: 0.72rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: var(--t-body);
+}
+.rate-list li > :first-child { flex: 1 1 auto; min-width: 0; }
+.rate-list .amount { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+/* A wrapped amount takes the full line, and a right-aligned block of running
+   text reads as a stray indent on its first line. So anything that wraps —
+   a long condition, or any amount on a narrow screen — aligns left instead. */
+.rate-list .amount-long { flex: 1 0 100%; text-align: left; }
+@media (max-width: 40rem) {
+  .rate-list li { flex-direction: column; align-items: stretch; }
+  .rate-list .amount { text-align: left; }
+}
+
+.steps { margin-top: 1rem; }
+.steps li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.6rem;
+  padding: 0.78rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: var(--t-body);
+}
+.steps .n { font-size: var(--t-label); font-weight: var(--w-semi); color: var(--faint); font-variant-numeric: tabular-nums; }
+.steps b { font-weight: var(--w-semi); display: block; }
+.steps span span { color: var(--muted); }
+
+.bullets { margin-top: 0.9rem; }
+.bullets li {
+  position: relative;
+  padding-left: 1.05rem;
+  margin-top: 0.55rem;
+  font-size: var(--t-body);
+  line-height: var(--lh-text);
+  color: var(--muted);
+}
+.bullets li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 0.4rem; height: 1px; background: var(--line); }
+
+/* ---------- Info / contact ---------- */
+/* ---------- About: the name and the words on the left, the face on the
+   right ----------
+   Two columns, the same rhythm the public site reads in: the text column
+   runs to the seventh of twelve, the portrait stands from the ninth to the
+   edge and holds the top of the page beside the name. */
+.about-copy { grid-column: 1 / -1; }
+.about-figure { grid-column: 1 / -1; }
+@media (min-width: 61rem) {
+  /* The words sit on the picture's bottom line, the way the public site sets
+     them: the name and the paragraph hang from the foot of the frame, so the
+     two columns end together instead of each stopping where it happens to. */
+  .about-copy { grid-column: 1 / span 7; align-self: end; }
+  /* The frame is set fifteen per cent narrower than its column and held to
+     the page's right edge, so the portrait reads as a picture beside the
+     text rather than a second column of equal weight. The column it sits in
+     does not move; only the frame inside it. */
+  .about-figure { grid-column: 9 / -1; width: 85%; margin-inline-start: auto; }
+}
+
+/* On a tablet the stack is still one column, but the full width of it is far
+   too much face. The frame keeps a print-like size and stays at the start of
+   the column; the phone, where 92vw is right, is left alone. */
+@media (min-width: 34rem) and (max-width: 60.99rem) {
+  .about-figure { max-width: 22.1rem; }
+}
+
+.portrait { margin: 2rem 0 0; background: var(--stage-bg); }
+.portrait picture { display: block; aspect-ratio: 4 / 5; overflow: hidden; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 61rem) { .portrait { margin-top: 0; } }
+
+/* Stacked, the frame turns on its side. A 4:5 portrait at the full width of
+   a phone grows to something like a page and a half tall and pushes
+   everything under it off the screen — so in the stack it is cropped to a
+   landscape 5:4 instead. The subject sits in the middle of the frame and the
+   crop is taken slightly above centre, which keeps both the face and the
+   camera. This is the rule the public site already uses; it is copied here
+   deliberately rather than invented again. */
+@media (max-width: 60.99rem) {
+  .portrait picture { aspect-ratio: 5 / 4; }
+  .portrait img { object-position: 50% 45%; }
+}
+
+/* Two blocks side by side rather than one block cut in half: what I do on
+   the left, who it was for on the right. They are different kinds of thing
+   and they read as a pair, not as one list that wrapped. Stacked below the
+   breakpoint, in the order they are written. */
+@media (min-width: 61rem) {
+  .pair-left { grid-column: 1 / span 6; }
+  .pair-right { grid-column: 7 / -1; }
+}
+
+.spec-list { margin-top: 1rem; }
+.spec-list dt { margin-top: 1.05rem; font-size: var(--t-body); font-weight: var(--w-semi); }
+.spec-list dd { margin: 0.15rem 0 0; font-size: var(--t-body); color: var(--muted); line-height: var(--lh-text); }
+
+.client-list { margin-top: 1rem; }
+.client-list li { font-size: var(--t-body); line-height: 2; color: var(--muted); }
+.client-list a:hover { color: var(--ink); }
+/* Six short links read faster in two short columns than in one long one;
+   below the breakpoint the width is not there, so they stay a single list. */
+@media (min-width: 61rem) {
+  .two-col { columns: 2; column-gap: var(--col-gap); }
+  .two-col li { break-inside: avoid; }
+}
+
+.channels { margin-top: 1.2rem; }
+.channels li { border-bottom: 1px solid var(--line-soft); }
+.channels a { display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; font-size: var(--t-lead); font-weight: var(--w-medium); }
+.channels .who { align-self: center; font-size: var(--t-label); font-weight: var(--w-regular); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--faint); }
+.channels a:hover .who { color: var(--muted); }
+
+.brief { margin-top: 1.2rem; }
+.brief label {
+  display: block;
+  margin-top: 1.05rem;
+  font-size: var(--t-label);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.brief input, .brief select, .brief textarea {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.62rem 0.7rem;
+  font: inherit;
+  font-size: var(--t-body);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+.brief textarea { min-height: 7rem; resize: vertical; }
+/* Safari on iOS zooms the page when a focused field is set below 16px, and
+   the zoom does not come back — the form ends up half off the screen. 16px
+   exactly is the threshold, so the phone gets it and nothing else changes. */
+@media (max-width: 60.99rem) {
+  .brief input, .brief select, .brief textarea { font-size: 1rem; }
+}
+.brief button[type='submit'] {
+  margin-top: 1.4rem;
+  padding: 0.65rem 1.4rem;
+  font-size: var(--t-meta);
+  font-weight: var(--w-medium);
+  border: 1px solid var(--ink);
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+.brief button[type='submit']:hover { background: var(--ink); color: var(--paper); }
+
+/* ---------- Page foot ---------- */
+.foot {
+  margin-top: 4.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  font-size: var(--t-label);
+  color: var(--faint);
+}
+.foot a:hover { color: var(--ink); }
+
+/* On the desktop the rail carries the address, the city and the copyright at
+   all times, so repeating them at the bottom of the main column says nothing
+   new. The foot stays for the stack, where there is no rail. */
+@media (min-width: 61rem) { .foot { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   Collage — galleries
+   ============================================================
+   CSS columns rather than a row grid, because a wall of photographs should
+   let frames of different heights settle at different levels; a row grid
+   lines every top edge up and the page reads as a contact sheet.
+
+   The arithmetic is not a coincidence: four columns sharing the grid's own
+   gutter are each exactly three grid tracks wide — (100% − 3g)/4 equals
+   3·((100% − 11g)/12) + 2g — and two columns are exactly six. The collage
+   therefore never leaves the twelve-column grid at any breakpoint.
+   ============================================================ */
+.collage {
+  column-count: 4;
+  column-gap: var(--col-gap);
+}
+@media (max-width: 60.99rem) { .collage { column-count: 2; } }
+@media (max-width: 45.99rem) { .collage { column-count: 1; } }
+
+.cell {
+  display: block;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+/* Vertical rhythm. Equal gaps would re-impose the metronome the columns were
+   meant to break, so the sequence cycles through four measures. */
+.gap-s { margin-bottom: 1.1rem; }
+.gap-m { margin-bottom: 2.2rem; }
+.gap-l { margin-bottom: 3.6rem; }
+.gap-xl { margin-bottom: 5.2rem; }
+
+/* Horizontal rhythm. Some frames sit short of the column edge, alternately
+   left and right, so the columns do not read as four hard rails. */
+.is-full { width: 100%; }
+.is-inset { width: 84%; }
+.is-inset-right { width: 84%; margin-left: 16%; }
+
+/* On one column an inset frame is just a small picture with no neighbour to
+   play against, so every frame runs full width. */
+@media (max-width: 45.99rem) {
+  .collage .cell { width: 100%; margin-left: 0; }
+  .collage .gap-xl { margin-bottom: 3rem; }
+  .collage .gap-l { margin-bottom: 2.4rem; }
+}
+
+.collage .shot { margin: 0; background: var(--stage-bg); }
+.collage img { width: 100%; height: auto; transition: opacity var(--t) var(--ease); }
+.cell:hover img { opacity: 0.88; }
+
+/* ============================================================
+   Splash — a title card, not a loader
+   ============================================================
+   The page renders behind it, it lasts under a second, it shows once per
+   browsing session, and prefers-reduced-motion skips it entirely. The boot
+   script in <head> decides all of that before first paint, so a returning
+   visitor never sees a flash of it.
+   ============================================================ */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+}
+html.splash-on { overflow: hidden; }
+html.splash-on .splash { display: flex; }
+html.splash-off .splash {
+  opacity: 0;
+  transition: opacity 220ms var(--ease);
+}
+.splash-mark {
+  /* One line: the full name, then the role to its right. The clamp keeps
+     both on that line down to the narrowest phone instead of wrapping. */
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5em;
+  white-space: nowrap;
+  font-size: clamp(0.5rem, 2.2vw, var(--t-meta));
+  font-weight: var(--w-semi);
+  text-transform: uppercase;
+}
+.splash-name {
+  color: var(--ink);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  animation: splash-in 320ms var(--ease) both;
+}
+.splash-role {
+  /* One size and one setting across the whole line — the role differs from the
+     name by colour alone. It lands half a second behind, and only fades, so it
+     settles rather than arrives. */
+  color: var(--muted);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  animation: splash-fade 460ms var(--ease) 460ms both;
+}
+@keyframes splash-in {
+  from { opacity: 0; transform: translateY(0.25em); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes splash-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.splash-on { overflow: auto; }
+  html.splash-on .splash { display: none; }
+}
+
+/* ============================================================
+   Display face — last, so it wins over the component rules
+   ============================================================ */
+
+/* The serif carries the name and the headings of the pages and nothing else:
+   navigation, labels, meta and running text stay in Fixel, so the page keeps
+   one voice for what it says and another for what it is. Prata has a single
+   weight, so everything set in it asks for 400 and never for a bold that
+   would be synthesised.
+
+   A project's own page is a page, and its heading is the heading of that
+   page — it takes the serif. The lists that choose between projects are not
+   headings: the index, the gallery grid and the line under a film all name
+   a work in Fixel, a step above the text around them. */
+.wordmark,
+.splash-mark,
+.t-title,
+.t-display {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+}
+
+/* Prata ships one weight and nothing heavier exists, so a step up cannot be
+   asked for by number. The browser's own answer — synthetic bold — smears a
+   high-contrast serif and is switched off everywhere else in this file. What
+   is done instead is a measured stroke on the glyph in its own colour: a
+   hairline thicker, the same shapes, under our control and not the
+   renderer's. It is a small step on purpose; past ~0.02em the thins close up
+   and the face stops being Prata. */
+.wordmark {
+  -webkit-text-stroke: 0.013em currentColor;
+}
+
+/* The display tracking was drawn tight for Fixel. A serif at 45px is already
+   tightly fitted, and the same negative tracking pinches the joins, so the
+   serif gets a gentler one. */
+.t-display { letter-spacing: -0.008em; }

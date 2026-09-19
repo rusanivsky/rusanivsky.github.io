@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://rusanivsky.com/">
 <meta property="og:title" content="Kyrylo Rusanivsky — Video Editor / Photographer / Graphic Designer">
 <meta property="og:description" content="Kyrylo Rusanivsky is a Kyiv-based video editor, photographer and graphic designer. Video editing, event photography, book and cover design, editorial layout.">
-<meta property="og:image" content="https://rusanivsky.com/og-image.jpg?v=7">
+<meta property="og:image" content="https://rusanivsky.com/og-image.jpg?v=554370e5">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -25,334 +25,158 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kyrylo Rusanivsky — Video Editor / Photographer / Graphic Designer">
 <meta name="twitter:description" content="Kyrylo Rusanivsky is a Kyiv-based video editor, photographer and graphic designer. Video editing, event photography, book and cover design, editorial layout.">
-<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=7">
-<meta name="theme-color" content="#42563f">
-<link rel="icon" href="/favicon.ico?v=11" sizes="32x32"><link rel="icon" href="/favicon.svg?v=11" type="image/svg+xml"><link rel="icon" href="/favicon-dark.ico?v=11" sizes="32x32" media="(prefers-color-scheme: dark)"><link rel="icon" href="/favicon-dark.svg?v=11" type="image/svg+xml" media="(prefers-color-scheme: dark)">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11">
-<link rel="preload" href="/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<script data-reveal-boot>document.documentElement.classList.add('rev')</script>
-<link rel="stylesheet" href="/styles/home.bundle.min.css?v=16">
-<!-- Короткий inline-boot ставить .rev ще до CSS і не дає контенту спершу
-     з'явитися, а потім згаснути. Повний reveal.js іде з defer та при помилці
-     знімає .rev, щоб сторінка не лишилася прихованою. Решта трьох скриптів
-     до першого малювання не потрібні:
-     параллакс лише пише --plate-shift і --plate-brightness (у CSS вони мають
-     фолбеки рівно на значення спокою), перемикач мови міняє підпис кнопки
-     вже на DOMContentLoaded, аналітика тягне googletagmanager. -->
-<script src="/scripts/reveal.js?v=12" defer onerror="document.documentElement.classList.remove('rev')"></script>
-<script src="/scripts/plate-parallax.js?v=9" defer></script>
-<script src="/scripts/language-switcher.js?v=3" defer></script>
+<meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=554370e5">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="icon" href="/favicon.ico?v=07ab25da" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=07ab25da" type="image/svg+xml">
+<link rel="icon" href="/favicon-dark.ico?v=07ab25da" sizes="32x32" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon-dark.svg?v=07ab25da" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=07ab25da">
+<link rel="apple-touch-icon" href="/apple-touch-icon-dark.png?v=07ab25da" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="/site.webmanifest?v=07ab25da">
+<link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles/site.css?v=647a3d52">
+<script>(function(){try{
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+if(sessionStorage.getItem('kr-seen'))return;
+sessionStorage.setItem('kr-seen','1');
+var r=document.documentElement;r.className+=' splash-on';
+addEventListener('DOMContentLoaded',function(){
+setTimeout(function(){r.className+=' splash-off';},1400);
+setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
+});}catch(e){}})();</script>
+<script src="/scripts/site.js?v=257971b4" defer></script>
+<script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
-<script src="/scripts/google-analytics.js?v=4" defer></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="wrap meta home-meta">
-  <div class="switches">
-    <a class="order-cta" href="#order" data-en="Order a service" data-ua="Замовити послугу">Order a service</a>
-    <div class="tgl" id="lang" role="group" aria-label="Language"><button type="button" data-lang="ua" aria-pressed="false" aria-label="Switch to Ukrainian">UA</button></div>
+<div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">Kyrylo Rusanivsky</span><span class="splash-role">Creative specialist</span></p></div>
+<div class="shell">
+
+<nav class="rail" aria-label="Menu">
+  <a class="wordmark" href="/">Kyrylo Rusanivsky</a>
+  <div class="rail-mid">
+    <div class="rail-nav"><a href="/" aria-current="page">Selected</a><a href="/photo/">Photography</a><a href="/video/">Video</a><a href="/design/">Design</a></div>
+    <div class="rail-nav"><a href="/info/">About me</a><a href="/enquiries/">Enquiries</a></div>
   </div>
-</header>
-<hr class="rule">
+  <div class="rail-foot">
+    <a href="/rates/">Rates &amp; Terms</a>
+    <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener">Instagram</a><a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">Behance</a>
+    <div class="theme lang"><a href="/" hreflang="en" aria-current="true">EN</a><a href="/ua/" hreflang="uk">UA</a></div>
+    <p class="rail-meta"><span>© 2026 Kyrylo Rusanivsky</span><span>Kyiv, Ukraine</span></p>
+  </div>
+</nav>
 
-<main>
-  <section class="wrap hero" id="hero" aria-labelledby="nm">
-    <h1 class="name" id="nm" data-rev>
-      <span data-en="Kyrylo" data-ua="Кирило">Kyrylo</span>
-      <span data-en="Rusanivsky" data-ua="Русанівський">Rusanivsky</span>
-    </h1>
-    <div class="figwrap">
-      <!-- Портрет поза reveal: він і є LCP сторінки, а показ першого екрана
-           reveal.js робить аж на DOMContentLoaded плюс два кадри. Знімок
-           приходив за 31 мс і чекав невидимим до 836 — з ним LCP дорівнює
-           FCP (240 мс). Анімація нижчих блоків лишається. -->
-      <figure>
-        <div class="shot">
-          <!-- Портрет — найбільший елемент першого екрана, тож він і задає LCP.
-               На телефоні знімок стоїть приблизно на 380px, а з подвійною
-               щільністю дисплея браузеру потрібен кандидат близько 760px.
-               Проміжні 768px не змушують його стрибати одразу на 1280.
-               JPEG лишається запасним шляхом для браузерів без webp і avif;
-               сьогодні ним не ходить майже ніхто -->
-          <picture>
-            <source type="image/avif"
-                    srcset="/photo-640.avif 640w, /photo-768.avif 768w, /photo.avif 1280w"
-                    sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
-            <source type="image/webp"
-                    srcset="/photo-640.webp 640w, /photo-768.webp 768w, /photo.webp 1280w"
-                    sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px">
-            <img src="/photo.jpg" srcset="/photo-768.jpg 768w, /photo.jpg 1280w" sizes="(max-width:500px) 92vw, (max-width:820px) 460px, (max-width:1100px) 30vw, 310px" alt="Kyrylo Rusanivsky with a camera at a cafe table in Kyiv" width="1280" height="1600" fetchpriority="high" decoding="async">
-          </picture>
-        </div>
-      </figure>
-    </div>
-    <div class="hero-copy">
-      <p class="lede" data-rev style="--d:160ms" data-en="I edit videos. I design and typeset books. I photograph people and events. I work on interviews, YouTube series and social-media videos; I create publications and printed materials. I also keep a street-photography series about the city, spontaneous scenes and landscapes. I work remotely." data-ua="Монтую відео. Проєктую й верстаю книжки. Знімаю людей і події. Працюю з інтерв'ю, YouTube-серіями й роликами для соцмереж; створюю видання та поліграфічну продукцію. Також веду серію вуличних світлин — про місто, випадкові сцени і краєвиди. Працюю дистанційно.">I edit videos. I design and typeset books. I photograph people and events. I work on interviews, YouTube series and social-media videos; I create publications and printed materials. I also keep a street-photography series about the city, spontaneous scenes and landscapes. I work remotely.</p>
-    </div>
-  </section>
+<div class="bar">
+  <a class="wordmark" href="/">Kyrylo Rusanivsky</a>
+  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">Menu</button>
+</div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="drawer-top">
+    <span class="wordmark">Kyrylo Rusanivsky</span>
+    <button type="button" id="menu-close">Close</button>
+  </div>
+  <div class="group"><a href="/" aria-current="page">Selected</a><a href="/photo/">Photography</a><a href="/video/">Video</a><a href="/design/">Design</a></div>
+  <div class="group"><a href="/info/">About me</a><a href="/enquiries/">Enquiries</a></div>
+  <div class="group small">
+    <a href="/rates/">Rates &amp; Terms</a>
+    <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener">Instagram</a><a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener">Behance</a>
+    <div class="theme lang"><a href="/" hreflang="en" aria-current="true">EN</a><a href="/ua/" hreflang="uk">UA</a></div>
+  </div>
+</div>
 
-  <section class="wrap work" id="work" aria-labelledby="wk">
-      <h2 class="tiny" id="wk" data-rev data-en="What I do" data-ua="Чим займаюсь">What I do</h2>
-      <ol class="specs">
-        <li class="spec" data-rev style="--d:80ms">
-          <span class="no" aria-hidden="true">01</span>
-          <h3><a class="sect" href="/video/reels/" data-en="Video editing" data-ua="Відеомонтаж">Video editing</a></h3>
-          <ul>
-            <li><a class="it" href="/video/reels/" data-en="Reels" data-ua="Reels">Reels</a></li>
-            <li><a class="it" href="/video/short-form/" data-en="Short-form video" data-ua="Короткі відео">Short-form video</a></li>
-            <li><a class="it" href="/video/interviewandvlogs/" data-en="Interviews &amp; vlogs" data-ua="Інтерв'ю і влоги">Interviews &amp; vlogs</a></li>
-            <li><a class="it" href="/video/music/" data-en="Music videos" data-ua="Музичні відео">Music videos</a></li>
-            <li><a class="it" href="/video/documentary/" data-en="Documentary" data-ua="Документальні">Documentary</a></li>
-          </ul>
-        </li>
-        <li class="spec" data-rev style="--d:150ms">
-          <span class="no" aria-hidden="true">02</span>
-          <h3><a class="sect" href="/photo/reportage/" data-en="Photography" data-ua="Фотографія">Photography</a></h3>
-          <ul>
-            <li><a class="it" href="/photo/reportage/" data-en="Reportage" data-ua="Репортаж">Reportage</a></li>
-            <li><a class="it" href="/photo/culture-art/" data-en="Culture &amp; art" data-ua="Культура та мистецтво">Culture &amp; art</a></li>
-            <li><a class="it" href="/photo/backstage/" data-en="Backstage" data-ua="Бекстейдж">Backstage</a></li>
-            <li><a class="it" href="/photo/portraits/" data-en="Portraits" data-ua="Портрети">Portraits</a></li>
-          </ul>
-        </li>
-        <li class="spec design-spec" data-rev style="--d:220ms">
-          <span class="no" aria-hidden="true">03</span>
-          <h3><a class="sect" href="/design/covers/" data-en="Graphic design" data-ua="Графічний дизайн">Graphic design</a></h3>
-          <ul>
-            <li><a class="it" href="/design/covers/" data-en="Typesetting &amp; layout for book editions" data-ua="Верстка книжкових видань">Typesetting &amp; layout for book editions</a></li>
-            <li><a class="it" href="/design/covers/" data-en="Cover design" data-ua="Дизайн обкладинок">Cover design</a></li>
-            <li><a class="it" href="/design/covers/" data-en="Printed matter" data-ua="Друкована продукція">Printed matter</a></li>
-          </ul>
-        </li>
-        <li class="spec under" data-rev style="--d:290ms">
-          <span class="no" aria-hidden="true">04</span>
-          <h3><a class="sect" href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener"><span data-en="Street" data-ua="Вулична">Street</span> <span data-en="photography" data-ua="фотографія">photography</span></a></h3>
-          <ul>
-            <li data-en="Photo series on Instagram" data-ua="Серія світлин в Instagram">Photo series on Instagram</li>
-          </ul>
-        </li>
-      </ol>
-  </section>
-  <section class="wrap clients" aria-labelledby="cl">
-    <h2 class="tiny" id="cl" data-rev data-en="Clients" data-ua="Клієнти">Clients</h2>
-    <ul class="logos">
-      <li data-rev style="--d:80ms"><a href="https://kmbs.ua/ua" target="_blank" rel="noopener"><span class="lg kmbs"></span><span class="sr">kmbs — Kyiv-Mohyla Business School</span></a></li>
-      <li data-rev style="--d:140ms"><a href="https://www.kooperativ.cc" target="_blank" rel="noopener"><span class="lg kooperativ"></span><span class="sr">Kooperativ</span></a></li>
-      <li data-rev style="--d:200ms"><a href="https://ydinterior.studio/" target="_blank" rel="noopener"><span class="lg yd"></span><span class="sr">YD Interior Studio</span></a></li>
-      <li data-rev style="--d:260ms"><a href="https://www.ukma.edu.ua/" target="_blank" rel="noopener"><span class="lg naukma"></span><span class="sr">National University of Kyiv-Mohyla Academy</span></a></li>
-      <li data-rev style="--d:320ms"><a href="https://www.instagram.com/defenders.ukma" target="_blank" rel="noopener"><span class="lg defenders"></span><span class="sr">Defenders of Ukraine Center</span></a></li>
-      <li data-rev style="--d:380ms"><a href="https://www.instagram.com/tsyronian.publishing" target="_blank" rel="noopener"><span class="lg tsyronian"></span><span class="sr">Tsyronian Publishing</span></a></li>
-      <li data-rev style="--d:440ms"><a href="https://shylero.com/" target="_blank" rel="noopener"><span class="lg shylero"></span><span class="sr">ShyLero</span></a></li>
-    </ul>
-  </section>
+<main class="home" id="main">
+  <div class="index-col">
+    <h1 class="eyebrow">Selected work<span class="sr"> — Kyrylo Rusanivsky</span></h1>
+    <p class="standfirst t-lead">Kyrylo Rusanivsky works in Kyiv across three practices — photography, video and graphic design — and keeps a street-photography series of his own. Selected projects below.</p>
+    <div class="index">
+<a class="row" href="/work/reportage/">
+  <span class="row-head">
+    <span class="row-no">01</span>
+    <span class="row-title">Reportage</span>
+  </span>
+  <span class="row-meta">Photography</span>
+  <span class="row-preview"><img src="/media/photo/public-events/01-public-events-006.webp" alt="Reportage" width="1400" height="933" loading="eager" decoding="async"></span>
+</a>
+<a class="row" href="/work/kmbs-defence-programmes/">
+  <span class="row-head">
+    <span class="row-no">02</span>
+    <span class="row-title">kmbs — Defence and Security Programmes</span>
+  </span>
+  <span class="row-meta">Video<span class="dot">·</span>Camera, Editing<span class="dot">·</span>kmbs — Kyiv-Mohyla Business School<span class="dot">·</span>2024–2025</span>
+  <span class="row-preview"><img src="/media/video/posters/das-graduation-episode-3-poster.jpg" alt="kmbs — Defence and Security Programmes" width="1280" height="720" loading="lazy" decoding="async"></span>
+</a>
+<a class="row" href="/work/culture-and-art/">
+  <span class="row-head">
+    <span class="row-no">03</span>
+    <span class="row-title">Culture &amp; art</span>
+  </span>
+  <span class="row-meta">Photography</span>
+  <span class="row-preview"><img src="/media/photo/art-events/02-art-events-001.webp" alt="Culture &amp; art" width="1400" height="934" loading="lazy" decoding="async"></span>
+</a>
+<a class="row" href="/work/yd-interior-studio/">
+  <span class="row-head">
+    <span class="row-no">04</span>
+    <span class="row-title">YD Interior Studio</span>
+  </span>
+  <span class="row-meta">Video<span class="dot">·</span>Camera, Editing<span class="dot">·</span>YD interior studio</span>
+  <span class="row-preview"><img src="/media/video/thumbs/yt-3ityvlL8js4.jpg" alt="YD Interior Studio" width="1280" height="720" loading="lazy" decoding="async"></span>
+</a>
+<a class="row" href="/work/reels/">
+  <span class="row-head">
+    <span class="row-no">05</span>
+    <span class="row-title">Reels</span>
+  </span>
+  <span class="row-meta">Video<span class="dot">·</span>Camera, Editing<span class="dot">·</span>Tsyronian Agency</span>
+  <span class="row-preview" style="--focus:50% 40%"><img src="/media/video/posters/dyvoshyv-poster.jpg" alt="Reels" width="540" height="960" loading="lazy" decoding="async"></span>
+</a>
+<a class="row" href="/work/istoriya-ukrayini-2020/">
+  <span class="row-head">
+    <span class="row-no">06</span>
+    <span class="row-title">Історія України. 2020</span>
+  </span>
+  <span class="row-meta">Design<span class="dot">·</span>Cover design<span class="dot">·</span>National Historical Library of Ukraine</span>
+  <span class="row-preview"><img src="/media/design/istoriya-ukrayini-2020.webp" alt="Історія України. 2020" width="1400" height="1400" loading="lazy" decoding="async"></span>
+</a>
+<a class="row" href="/work/portraits/">
+  <span class="row-head">
+    <span class="row-no">07</span>
+    <span class="row-title">Portraits</span>
+  </span>
+  <span class="row-meta">Photography</span>
+  <span class="row-preview"><img src="/media/photo/photo-sessions/06-photo-sessions-001.webp" alt="Portraits" width="1400" height="933" loading="lazy" decoding="async"></span>
+</a>
+    </div>
+  </div>
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="stage-frame">
+<div class="slide on" data-title="Reportage" data-meta="Photography" aria-hidden="false"><span class="mosaic" style="--mc:1;--mr:5;--wall:0.300"><span class="tile"><img src="/media/photo/public-events/01-public-events-006.webp" alt="Reportage" width="1400" height="933" fetchpriority="high" loading="eager" decoding="async"></span><span class="tile"><img src="/media/photo/public-events/01-public-events-033.webp" alt="Reportage" width="1400" height="934" fetchpriority="high" loading="eager" decoding="async"></span><span class="tile"><img src="/media/photo/parties/05-parties-022.webp" alt="Reportage" width="1396" height="933" fetchpriority="high" loading="eager" decoding="async"></span><span class="tile"><img src="/media/photo/public-events/01-public-events-020.webp" alt="Reportage" width="1400" height="934" fetchpriority="high" loading="eager" decoding="async"></span><span class="tile"><img src="/media/photo/public-events/01-public-events-044.webp" alt="Reportage" width="1396" height="933" fetchpriority="high" loading="eager" decoding="async"></span></span></div>
+<div class="slide" data-title="kmbs — Defence and Security Programmes" data-meta="Video · Camera, Editing · kmbs — Kyiv-Mohyla Business School · 2024–2025" aria-hidden="true"><span class="mosaic" style="--mc:1;--mr:5;--wall:0.356"><span class="tile"><img src="/media/video/posters/das-graduation-episode-3-poster.jpg" alt="Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation 2025" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/slp-episode-5-poster.jpg" alt="Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2025" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/slp-graduation-2024-poster.jpg" alt="Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2024" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/ssa-start-2024-poster.jpg" alt="School of Strategic Architect — Start 2024" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/das-graduation-2024-poster.jpg" alt="Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation Ceremony 2024" width="1280" height="720" loading="lazy" decoding="async"></span></span></div>
+<div class="slide" data-title="Culture &amp; art" data-meta="Photography" aria-hidden="true"><span class="mosaic" style="--mc:1;--mr:5;--wall:0.300"><span class="tile"><img src="/media/photo/art-events/02-art-events-001.webp" alt="Culture and art" width="1400" height="934" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/concerts-theatre/04-concerts-theatre-031.webp" alt="Culture and art" width="1396" height="933" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/concerts-theatre/04-concerts-theatre-028.webp" alt="Culture and art" width="1400" height="933" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/concerts-theatre/04-concerts-theatre-002.webp" alt="Culture and art" width="1400" height="933" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/art-events/02-art-events-011.webp" alt="Culture and art" width="1397" height="934" loading="lazy" decoding="async"></span></span></div>
+<div class="slide" data-title="YD Interior Studio" data-meta="Video · Camera, Editing · YD interior studio" aria-hidden="true"><span class="mosaic" style="--mc:1;--mr:5;--wall:0.356"><span class="tile"><img src="/media/video/thumbs/yt-3ityvlL8js4.jpg" alt="Interview with photographer Yevhenii Avramenko" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/thumbs/yt-wM2vY2mxudY.jpg" alt="INTERIOR DESIGN PROJECT. 8 stages of interior design." width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/thumbs/yt-cFCwHnrfB2w.jpg" alt="How I got on television" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/thumbs/yt-8Bc_-qWoE88.jpg" alt="APARTMENT AT THE GOLDEN GATES! Golden Gates Apartment" width="1280" height="720" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/thumbs/yt-IPUMbGi5hEM.jpg" alt="Apartment at the Golden Gates by YD interior studio" width="1280" height="720" loading="lazy" decoding="async"></span></span></div>
+<div class="slide" data-title="Reels" data-meta="Video · Camera, Editing · Tsyronian Agency" aria-hidden="true"><span class="mosaic" style="--mc:3;--mr:1;--wall:1.688"><span class="tile"><img src="/media/video/posters/dyvoshyv-poster.jpg" alt="Dyvochyv" width="540" height="960" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/the-coat-poster.jpg" alt="Dyvochyv" width="540" height="960" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/video/posters/tsyronian-publishing-poster.jpg" alt="Alisa Levchenko — “A Very Cozy Book”" width="1080" height="1920" loading="lazy" decoding="async"></span></span></div>
+<div class="slide" data-title="Історія України. 2020" data-meta="Design · Cover design · National Historical Library of Ukraine" aria-hidden="true"><span class="mosaic solo" style="--mc:1;--mr:1;--wall:1.000;--solo:0.583"><span class="tile"><img src="/media/design/istoriya-ukrayini-2020.webp" alt="History of Ukraine. 2020 cover" width="1400" height="1400" loading="lazy" decoding="async"></span></span></div>
+<div class="slide" data-title="Portraits" data-meta="Photography" aria-hidden="true"><span class="mosaic" style="--mc:1;--mr:5;--wall:0.300"><span class="tile"><img src="/media/photo/photo-sessions/06-photo-sessions-001.webp" alt="Portrait" width="1400" height="933" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/photo-sessions/06-photo-sessions-010.webp" alt="Portrait" width="933" height="623" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/photo-sessions/06-photo-sessions-016.webp" alt="Portrait" width="1396" height="933" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/photo-sessions/06-photo-sessions-019.webp" alt="Portrait" width="933" height="623" loading="lazy" decoding="async"></span><span class="tile"><img src="/media/photo/photo-sessions/06-photo-sessions-004.webp" alt="Portrait" width="1396" height="933" loading="lazy" decoding="async"></span></span></div>
+    </div>
+    <p class="stage-caption"><span id="stage-title"></span><span id="stage-meta"></span></p>
+  </div>
 </main>
+</div>
 
-<section class="contact-slab" id="order" aria-labelledby="ft">
-  <div class="wrap foot-in">
-    <p class="k" id="ft" data-rev data-en="Enquiries" data-ua="Замовлення">Enquiries</p>
-    <div class="say">
-      <div class="asks">
-      <h2 class="ask-k" data-rev data-en="FAQ" data-ua="FAQ">FAQ</h2>
-      <details class="qa" data-rev><summary data-en="What does it cost?" data-ua="Скільки це коштує?">What does it cost?</summary><p data-en="An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief." data-ua="Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу.">An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.</p></details>
-      <details class="qa" data-rev><summary data-en="How long does it take?" data-ua="Скільки часу це займе?">How long does it take?</summary><p data-en="A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in." data-ua="Короткий ролик — від 2 робочих днів, інтерв’ю — від 3, обкладинка — від 4, верстка книжки — від 2 тижнів. Відлік іде від передоплати й усіх матеріалів.">A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in.</p></details>
-      <details class="qa" data-rev><summary data-en="How does payment work?" data-ua="Як відбувається оплата?">How does payment work?</summary><p data-en="A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included." data-ua="Передоплата 50% ставить задачу в графік, решта — до передачі файлів. Безготівково на рахунок ФОП; із-за кордону — SWIFT у доларах або Payoneer. Рахунок, акт і за потреби договір.">A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included.</p></details>
-      <details class="qa" data-rev><summary data-en="How many revisions are included?" data-ua="Скільки правок входить у ціну?">How many revisions are included?</summary><p data-en="Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work." data-ua="Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину роботи.">Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work.</p></details>
-      <details class="qa" data-rev><summary data-en="Who owns the finished work?" data-ua="Кому належать права на роботу?">Who owns the finished work?</summary><p data-en="You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA." data-ua="Вам — з моменту повної оплати. За собою лишаю право показувати роботу в портфоліо; якщо матеріал конфіденційний, скажіть на старті — узгодимо ембарго або NDA.">You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA.</p></details>
-      <details class="qa" data-rev><summary data-en="What do I get at the end?" data-ua="Що я отримую в кінці?">What do I get at the end?</summary><p data-en="Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge." data-ua="Через Google Drive: відео — MP4 H.264 у 1080p або 4K, дизайн — PDF/X-4 для друку плюс JPG чи PNG для мережі. Робочі файли проєкту — за запитом, без доплати.">Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge.</p></details>
-      <details class="qa" data-rev><summary data-en="What if something changes?" data-ua="А якщо щось зміниться?">What if something changes?</summary><p data-en="A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk." data-ua="Уже сплачена передоплата покриває виконану роботу й не повертається; затримка з вашого боку зсуває дедлайн на стільки ж днів. Я в Україні, тож тривалий блекаут теж може зсунути терміни — попереджаю одразу, щойно бачу ризик.">A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk.</p></details>
-      </div>
-      <p class="sub" data-rev style="--d:160ms" data-en="Tell me the format, the deadline and the budget." data-ua="Напишіть формат, дедлайн і бюджет.">Tell me the format, the deadline and the budget.</p>
-      <div class="lines">
-        <a href="mailto:info@rusanivsky.com" data-rev style="--d:90ms">Email</a>
-        <a href="https://t.me/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:150ms">Telegram</a>
-        <a href="https://wa.me/380938676581" target="_blank" rel="noopener" data-rev style="--d:210ms" aria-label="WhatsApp +38 093 867 65 81">WhatsApp</a>
-        <a href="https://www.instagram.com/rusanivsky.photography/" target="_blank" rel="noopener" data-rev style="--d:270ms">Instagram</a>
-        <a href="https://www.linkedin.com/in/rusanivsky/" target="_blank" rel="noopener" data-rev style="--d:330ms">LinkedIn</a>
-        <a href="https://www.facebook.com/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:390ms">Facebook</a>
-        <a href="https://www.behance.net/rusanivsky" target="_blank" rel="noopener" data-rev style="--d:450ms">Behance</a>
-      </div>
-    </div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+  <button type="button" class="lb-close" aria-label="Close viewer">Close</button>
+  <div class="lb-stage"><img src="" alt="" width="1600" height="1067"></div>
+  <div class="lb-bar">
+    <span id="lb-cap"></span>
+    <span id="lb-count"></span>
+    <span class="lb-nav">
+      <button type="button" data-lb-prev aria-label="Previous image">← Prev</button>
+      <button type="button" data-lb-next aria-label="Next image">Next →</button>
+    </span>
   </div>
-</section>
-<footer class="site-foot">
-  <div class="wrap foot-bar">
-    <div class="footer-left">
-      <div class="foot-meta" aria-label="Location and local time"><span class="tiny"><span class="city-name" data-en="Kyiv" data-ua="Київ">Kyiv</span><span class="city-country" data-en=", Ukraine" data-ua=", Україна">, Ukraine</span></span><span class="tiny local-time"><span data-en="Local time" data-ua="Місцевий час">Local time</span> <span id="clock" class="kyiv-clock">—:—</span> <span id="tz" class="kyiv-tz">EET</span></span></div>
-      <a class="tiny footer-terms" href="/rates/" data-en="Rates &amp; Terms" data-ua="Умови співпраці">Rates &amp; Terms</a>
-      <a class="tiny footer-privacy" href="/privacy/" data-en="Privacy" data-ua="Приватність">Privacy</a>
-    </div>
-    <div class="cols">
-<span class="tiny" data-en="© 2013–2026 Kyrylo Rusanivsky" data-ua="© 2013–2026 Кирило Русанівський">© 2013–2026 Kyrylo Rusanivsky</span>
-    </div>
-  </div>
-</footer>
-
-<script>
-(function(){
-  /* language toggle */
-  var root = document.documentElement;
-  function setLang(v, save){
-    root.setAttribute('lang', v === 'ua' ? 'uk' : 'en');
-    document.querySelectorAll('[data-en]').forEach(function(el){
-      var t = el.getAttribute('data-' + v);
-      if(t !== null) el.textContent = t;
-    });
-    if(save){
-      try{ localStorage.setItem('kr-lang', v); }catch(e){}
-      try{
-        var u = new URL(location.href);
-        if(v === 'ua'){ u.searchParams.set('lang','uk'); } else { u.searchParams.delete('lang'); }
-        history.replaceState(null, '', u);
-      }catch(e){}
-    }
-    document.querySelectorAll('#lang button').forEach(function(b){
-      b.setAttribute('aria-pressed', String(b.dataset.lang === v));
-    });
-  }
-  document.querySelectorAll('#lang button').forEach(function(b){
-    b.addEventListener('click', function(){ setLang(b.dataset.lang, true); });
-  });
-  function detectLang(){
-    try{
-      var qp = new URLSearchParams(location.search).get('lang');
-      if(qp === 'uk' || qp === 'ua') return 'ua';
-      if(qp === 'en') return 'en';
-    }catch(e){}
-    try{
-      var saved = localStorage.getItem('kr-lang');
-      if(saved === 'en' || saved === 'ua') return saved;
-    }catch(e){}
-    var l = String((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase();
-    return(l.indexOf('uk')===0||l.indexOf('ru')===0)?'ua':'en';
-  }
-  try{ setLang(detectLang(), false); }catch(e){ setLang('en', false); }
-
-
-  /* плавний перехід між сторінками там, де немає @view-transition */
-  (function(){
-    var native = ('startViewTransition' in document) && CSS.supports && CSS.supports('selector(::view-transition)');
-    if(native) return;
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var root = document.documentElement;
-    root.classList.add('pt-js');
-    document.addEventListener('click', function(e){
-      if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      var a = e.target.closest && e.target.closest('a');
-      if(!a || a.hasAttribute('download')) return;
-      if(a.target && a.target !== '_self') return;
-      var href = a.getAttribute('href') || '';
-      if(/^(mailto:|tel:|#)/.test(href)) return;
-      var u; try{ u = new URL(a.href); }catch(err){ return; }
-      if(u.origin !== location.origin) return;
-      if(u.pathname === location.pathname && u.search === location.search) return;
-      e.preventDefault();
-      root.classList.add('pt-leave');
-      setTimeout(function(){ location.href = a.href; }, 210);
-    });
-    addEventListener('pageshow', function(ev){ if(ev.persisted) root.classList.remove('pt-leave'); });
-  })();
-
-  /* Kyiv clock */
-  var KYIV = (function(){
-    var names = ['Europe/Kyiv', 'Europe/Kiev'];
-    for(var i = 0; i < names.length; i++){
-      try{ new Intl.DateTimeFormat('en-GB', {timeZone: names[i]}).format(new Date()); return names[i]; }catch(e){}
-    }
-    return null;
-  })();
-  function tick(){
-    var c = document.querySelector('.kyiv-clock'), z = document.querySelector('.kyiv-tz');
-    if(!c) return;
-    try{
-      var now = new Date();
-      c.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KYIV}).format(now);
-      if(z){
-        var parts = new Intl.DateTimeFormat('en-GB',{timeZone:KYIV,timeZoneName:'short'}).formatToParts(now);
-        for(var i=0;i<parts.length;i++){
-          if(parts[i].type==='timeZoneName'){
-            z.textContent = parts[i].value.replace('GMT+3','EEST').replace('GMT+2','EET');
-          }
-        }
-      }
-    }catch(e){ c.textContent = ''; }
-  }
-  var clockTimer;
-  function scheduleTick(){
-    clearTimeout(clockTimer);
-    // у прихованій вкладці не крутимо щосекунди — час оновиться при поверненні
-    if(document.hidden) return;
-    // секунд на екрані нема — прокидаємось точно на межі хвилини
-    clockTimer = setTimeout(function(){ tick(); scheduleTick(); }, 60000 - (Date.now() % 60000) + 20);
-  }
-  function resyncClock(){ tick(); scheduleTick(); }
-  tick(); scheduleTick();
-  // вкладку розгорнули, повернули фокус, або сторінку дістали з кешу —
-  // час міг застаріти, поки таймери були пригальмовані чи заморожені
-  document.addEventListener('visibilitychange', function(){ if(!document.hidden) resyncClock(); });
-  addEventListener('pageshow', resyncClock);
-  addEventListener('focus', resyncClock);
-})();
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  "url": "https://rusanivsky.com/",
-  "inLanguage": [
-    "en",
-    "uk"
-  ],
-  "mainEntity": {
-    "@type": "Person",
-    "name": "Kyrylo Rusanivsky",
-    "alternateName": "Кирило Русанівський",
-    "url": "https://rusanivsky.com/",
-    "image": "https://rusanivsky.com/photo.jpg",
-    "email": "info@rusanivsky.com",
-    "jobTitle": [
-      "Video Editor",
-      "Photographer",
-      "Graphic Designer"
-    ],
-    "description": "Kyiv-based video editor, photographer and graphic designer specialising in video editing, event and portrait photography, book design and editorial layout.",
-    "knowsAbout": [
-      "Video editing",
-      "Interview video production",
-      "Music video production",
-      "Documentary film",
-      "Vlog editing",
-      "Event photography",
-      "Concert photography",
-      "Theatre photography",
-      "Backstage photography",
-      "Portrait photography",
-      "Graphic design",
-      "Book design",
-      "Book cover design",
-      "Editorial design",
-      "Typesetting",
-      "Print design"
-    ],
-    "knowsLanguage": [
-      "en",
-      "uk"
-    ],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Kyiv",
-      "addressCountry": "UA"
-    },
-    "sameAs": [
-      "https://www.behance.net/rusanivsky",
-      "https://www.instagram.com/rusanivsky/",
-      "https://www.linkedin.com/in/rusanivsky/",
-      "https://www.facebook.com/rusanivsky",
-      "https://t.me/rusanivsky"
-    ]
-  }
-}
-</script>
-<script src="/scripts/chrome.js?v=10"></script>
+</div>
 </body>
 </html>

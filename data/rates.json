@@ -1,0 +1,611 @@
+{
+ "intro": [
+  {
+   "en": "I work remotely, as a freelancer. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.",
+   "ua": "Працюю дистанційно, на фрилансі. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок."
+  },
+  {
+   "en": "The price and timeline are agreed before work begins and depend on the scope, complexity, source material and current schedule. I send an estimate after the brief; once the scope is confirmed, the price and deadline stay fixed unless the task changes.",
+   "ua": "Вартість і терміни погоджуємо до початку роботи: вони залежать від обсягу, складності, вихідних матеріалів і поточного графіка. Після брифу надсилаю оцінку; коли обсяг затверджено, ціна й дедлайн не змінюються, якщо не змінюється сама задача."
+  },
+  {
+   "en": "As a guide, my current rates start at $25 per hour of work, from $250 for an interview or short social media video, from $400 for book typesetting and from $150 for a cover. The full list below shows the baseline prices.",
+   "ua": "Для орієнтиру: моя поточна ставка — від 600 грн за годину роботи, інтерв’ю чи короткий ролик для соцмереж — від 6 000 грн, верстка книжки — від 10 000 грн, обкладинка — від 3 500 грн. Нижче — повний перелік базових цін."
+  }
+ ],
+ "sections": [
+  {
+   "id": "s-price",
+   "title": {
+    "en": "Pricing",
+    "ua": "Ціни"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "Price depends on scope, complexity and deadline. The figures below are baselines — I quote the exact amount after the brief. Dollar figures are the amounts I invoice clients outside Ukraine; they already cover currency conversion and the bank charges on my side.",
+     "ua": "Ціна залежить від обсягу, складності та термінів. Нижче — базові орієнтири; точну суму називаю після брифу. Ціни встановлені в гривні."
+    },
+    {
+     "kind": "group",
+     "en": "Video editing",
+     "ua": "Відеомонтаж"
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Rate per hour of work",
+      "ua": "Ставка за годину роботи"
+     },
+     "amount": {
+      "en": "$25",
+      "ua": "600 грн"
+     }
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Interview or talking-head video, up to 60 min of finished material",
+      "ua": "Інтерв’ю, розмовне відео — до 60 хв готового матеріалу"
+     },
+     "amount": {
+      "en": "from $250",
+      "ua": "від 6 000 грн"
+     }
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Social media video, vertical format, up to 60 s",
+      "ua": "Ролик для соцмереж, вертикальний формат — до 60 с"
+     },
+     "amount": {
+      "en": "from $250",
+      "ua": "від 6 000 грн"
+     }
+    },
+    {
+     "kind": "group",
+     "en": "Design and typesetting",
+     "ua": "Дизайн і верстка"
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Book typesetting",
+      "ua": "Верстка книжки"
+     },
+     "amount": {
+      "en": "from $400 per project, or $5–12 per page depending on genre and layout complexity",
+      "ua": "від 10 000 грн за проєкт або 100–250 грн за сторінку залежно від жанру і складності макету"
+     }
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Cover design",
+      "ua": "Обкладинка"
+     },
+     "amount": {
+      "en": "from $150",
+      "ua": "від 3 500 грн"
+     }
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Print work — booklet, poster, letterhead",
+      "ua": "Поліграфія — буклет, афіша, бланк"
+     },
+     "amount": {
+      "en": "from $50",
+      "ua": "від 1 200 грн"
+     }
+    },
+    {
+     "kind": "price",
+     "label": {
+      "en": "Small edits and ongoing support",
+      "ua": "Дрібні правки та супровід"
+     },
+     "amount": {
+      "en": "from $25 per hour of work",
+      "ua": "500–700 грн за годину роботи"
+     }
+    },
+    {
+     "kind": "group",
+     "en": "What moves the price",
+     "ua": "Що впливає на ціну"
+    },
+    {
+     "kind": "bullet",
+     "en": "Urgency. Weekend work or a same-day start adds 40%.",
+     "ua": "Терміновість. Робота у вихідні або старт у день звернення — плюс 40%."
+    },
+    {
+     "kind": "bullet",
+     "en": "Volume of source material: two hours of footage and twenty hours are different jobs.",
+     "ua": "Обсяг вихідного матеріалу: 2 години зйомки і 20 годин — це різні задачі."
+    },
+    {
+     "kind": "bullet",
+     "en": "Number of final versions and formats. Horizontal, vertical and square are three separate edits, not one.",
+     "ua": "Кількість фінальних версій і форматів. Горизонталь, вертикаль і квадрат — три різні монтажі, не один."
+    },
+    {
+     "kind": "bullet",
+     "en": "Whether a brief, a script or a brand book already exists.",
+     "ua": "Наявність готового ТЗ, сценарію, бренд-буку."
+    }
+   ]
+  },
+  {
+   "id": "s-flow",
+   "title": {
+    "en": "Work stages",
+    "ua": "Етапи роботи"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "From the first message to the handover of the final files — six clear steps.",
+     "ua": "Від першого повідомлення до передачі фінальних файлів — шість зрозумілих кроків."
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Brief",
+      "ua": "Бриф"
+     },
+     "text": {
+      "en": "You describe the task, the deadline, and show me the material.",
+      "ua": "Ви описуєте задачу, терміни й показуєте матеріал."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Estimate",
+      "ua": "Оцінка"
+     },
+     "text": {
+      "en": "Within 1–2 business days I send you the price, the timeline and the scope of work.",
+      "ua": "Протягом 1–2 робочих днів надсилаю вартість, терміни та обсяг робіт."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Start",
+      "ua": "Старт"
+     },
+     "text": {
+      "en": "Invoice and a 50% deposit. Once it is paid, the task goes into the schedule.",
+      "ua": "Рахунок і передоплата 50%. Після оплати задача стає в графік."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Work",
+      "ua": "Робота"
+     },
+     "text": {
+      "en": "Work-in-progress versions come to you for approval at the key stages.",
+      "ua": "Проміжні версії на погодження — на ключових етапах."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Revisions",
+      "ua": "Правки"
+     },
+     "text": {
+      "en": "Two rounds are included in the price.",
+      "ua": "Два раунди входять у вартість."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Delivery",
+      "ua": "Фінал"
+     },
+     "text": {
+      "en": "After full payment I hand over the final files.",
+      "ua": "Після повної оплати передаю фінальні файли й акт наданих послуг."
+     }
+    },
+    {
+     "kind": "note",
+     "en": "Everything we agree on is put in writing — in correspondence or in the contract.",
+     "ua": "Домовленості фіксуються письмово — у листуванні або в договорі."
+    }
+   ]
+  },
+  {
+   "id": "s-time",
+   "title": {
+    "en": "Timelines",
+    "ua": "Терміни"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "I give the timeline after looking at the material — a lot depends on the current workload. Roughly:",
+     "ua": "Терміни називаю після оцінки матеріалу — багато залежить від поточної завантаженості. Орієнтовно:"
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Short social media video",
+      "ua": "Короткий ролик для соцмереж"
+     },
+     "text": {
+      "en": "from 2 business days.",
+      "ua": "від 2 робочих днів."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Interview or talking-head video",
+      "ua": "Інтерв’ю або розмовне відео"
+     },
+     "text": {
+      "en": "from 3 business days.",
+      "ua": "від 3 робочих днів."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Cover",
+      "ua": "Обкладинка"
+     },
+     "text": {
+      "en": "from 4 business days.",
+      "ua": "від 4 робочих днів."
+     }
+    },
+    {
+     "kind": "step",
+     "title": {
+      "en": "Book typesetting",
+      "ua": "Верстка книжки"
+     },
+     "text": {
+      "en": "from 2 weeks.",
+      "ua": "від 2 тижнів."
+     }
+    },
+    {
+     "kind": "note",
+     "en": "The clock starts the moment all the materials and the deposit are in. A delay on your side — material not sent, a long approval — moves the deadline by the same number of days.",
+     "ua": "Відлік починається з моменту, коли отримано всі матеріали й передоплату. Затримка з вашого боку (не надіслані матеріали, довге погодження) зсуває дедлайн на відповідну кількість днів."
+    }
+   ]
+  },
+  {
+   "id": "s-rev",
+   "title": {
+    "en": "Revisions",
+    "ua": "Правки"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "Two rounds of revisions are included in the price. A round is one consolidated list of comments, not ten separate messages over the course of a day.",
+     "ua": "У вартість входить два раунди правок. Раунд — це один зведений список коментарів, а не десять окремих повідомлень протягом дня."
+    },
+    {
+     "kind": "group",
+     "en": "Billed separately",
+     "ua": "Окремо оплачуються"
+    },
+    {
+     "kind": "bullet",
+     "en": "The third and any further rounds — $15 per hour of work.",
+     "ua": "Третій і наступні раунди — 400 грн за годину роботи."
+    },
+    {
+     "kind": "bullet",
+     "en": "Changes after a stage has been approved: re-editing a structure already signed off, a new cover concept.",
+     "ua": "Зміни після затвердження етапу: перемонтаж уже погодженої структури, нова концепція обкладинки."
+    },
+    {
+     "kind": "bullet",
+     "en": "New inputs that were not there at the start: extra material, a changed script, a different running time.",
+     "ua": "Нові вхідні дані, яких не було на старті: додатковий матеріал, змінений сценарій, інший хронометраж."
+    }
+   ]
+  },
+  {
+   "id": "s-need",
+   "title": {
+    "en": "From you",
+    "ua": "Від вас"
+   },
+   "rows": [
+    {
+     "kind": "bullet",
+     "en": "One person in charge who makes the decisions. When revisions come from three people and contradict each other, the work stops.",
+     "ua": "Один відповідальний контакт, який ухвалює рішення. Коли правки приходять від трьох людей і суперечать одна одній, робота зупиняється."
+    },
+    {
+     "kind": "bullet",
+     "en": "Material in the agreed form: source video not compressed by messengers, text in an editable format, logo in vector.",
+     "ua": "Матеріали в узгодженому вигляді: вихідне відео без стиснення месенджерами, тексти в редагованому форматі, лого у векторі."
+    },
+    {
+     "kind": "bullet",
+     "en": "Billing details — at the invoice stage.",
+     "ua": "Реквізити для документів — на етапі рахунку."
+    }
+   ]
+  },
+  {
+   "id": "s-pay",
+   "title": {
+    "en": "Payment",
+    "ua": "Оплата"
+   },
+   "rows": [
+    {
+     "kind": "bullet",
+     "en": "Registered sole proprietor in Ukraine, single-tax group III, not registered for VAT. All prices exclude VAT.",
+     "ua": "ФОП Таранюк-Русанівський Кирило Геннадійович, ІІІ група єдиного податку, не платник ПДВ. Усі ціни — без ПДВ."
+    },
+    {
+     "kind": "bullet",
+     "en": "Payment by bank transfer. Clients in Ukraine — to my hryvnia business account; clients abroad — SWIFT in US dollars to my business currency account.",
+     "ua": "Оплата безготівкова. Українським замовникам — на розрахунковий рахунок у гривні; закордонним — SWIFT у доларах на валютний рахунок."
+    },
+    {
+     "kind": "bullet",
+     "en": "Payoneer, if that is easier on your side.",
+     "ua": "Payoneer — якщо так зручніше на вашому боці."
+    },
+    {
+     "kind": "bullet",
+     "en": "Intermediary bank fees on an international transfer are on the sender’s side.",
+     "ua": "Комісії банків-посередників за міжнародним переказом — на боці відправника."
+    },
+    {
+     "kind": "bullet",
+     "en": "Documents: an invoice, and a service agreement if you need one.",
+     "ua": "Документи: рахунок-фактура, акт наданих послуг, за потреби — договір про надання послуг."
+    },
+    {
+     "kind": "bullet",
+     "en": "No withholding is required on your side — I pay my own taxes in Ukraine.",
+     "ua": "Для юридичних осіб і ФОП: податки з виплати утримувати не потрібно, я сплачую їх самостійно."
+    },
+    {
+     "kind": "bullet",
+     "en": "A Ukrainian tax residency certificate on request, for double taxation treaty purposes.",
+     "ua": "Довідка про податкове резидентство України — за запитом, для угод про уникнення подвійного оподаткування."
+    },
+    {
+     "kind": "bullet",
+     "en": "A 50% deposit, the balance after the final version is approved and before the files are handed over. With new clients I do not start without a deposit.",
+     "ua": "Передоплата 50%, решта — після затвердження фінальної версії, до передачі файлів. З новими замовниками без передоплати не працюю."
+    },
+    {
+     "kind": "bullet",
+     "en": "For ongoing clients, invoicing at the end of the month is possible.",
+     "ua": "Для постійних клієнтів можлива післяплата за підсумками місяця."
+    },
+    {
+     "kind": "bullet",
+     "en": "Full payment details come with the invoice.",
+     "ua": "Повні реквізити для оплати надаю в рахунку."
+    }
+   ]
+  },
+  {
+   "id": "s-files",
+   "title": {
+    "en": "Delivery",
+    "ua": "Файли"
+   },
+   "rows": [
+    {
+     "kind": "bullet",
+     "en": "Final files are delivered through Google Drive.",
+     "ua": "Фінальні файли передаю через Google Drive."
+    },
+    {
+     "kind": "bullet",
+     "en": "Video formats: MP4 H.264, 1080p or 4K. Others on request.",
+     "ua": "Формати відео: MP4 H.264, 1080p / 4K, за запитом — інші."
+    },
+    {
+     "kind": "bullet",
+     "en": "Design: print-ready PDF/X-4 with bleeds and marks, plus JPG or PNG for screen.",
+     "ua": "Дизайн: PDF для друку — PDF/X-4, з вильотами й мітками, плюс JPG/PNG для мережі."
+    },
+    {
+     "kind": "bullet",
+     "en": "Working project files — the edit project, the layout — on request, at no extra charge.",
+     "ua": "Робочі файли проєкту — монтажний проєкт, макет — надаю за запитом без додаткової оплати."
+    },
+    {
+     "kind": "bullet",
+     "en": "Approved final files I keep indefinitely.",
+     "ua": "Фінальні затверджені файли зберігаю безстроково."
+    },
+    {
+     "kind": "bullet",
+     "en": "Your source material — footage, photos — I keep for 90 days after delivery, then delete. This is not a backup: keep your own copy. If you need it held longer, say so up front.",
+     "ua": "Ваші вихідні матеріали — відзняте відео, фото — тримаю 90 днів після здачі, далі видаляю. Це не бекап: копію залишайте собі. Якщо потрібне довше зберігання, скажіть заздалегідь."
+    }
+   ]
+  },
+  {
+   "id": "s-rights",
+   "title": {
+    "en": "Rights",
+    "ua": "Права"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "Ownership of the finished work passes to the client after full payment. Until then the files remain mine.",
+     "ua": "Майнові права на готову роботу переходять до замовника після повної оплати. До того моменту файли залишаються моїми."
+    },
+    {
+     "kind": "text",
+     "en": "I reserve the right to show completed work in my portfolio, on social media and on this site. If the material is confidential or has to be released later, tell me at the start and we will agree an embargo or an NDA.",
+     "ua": "Я залишаю за собою право показувати виконану роботу в портфоліо, соцмережах і на цьому сайті. Якщо матеріал конфіденційний або має вийти пізніше — попередьте на старті, узгодимо ембарго або NDA."
+    },
+    {
+     "kind": "text",
+     "en": "Licences for third-party material — fonts, music, stock footage and photos — are paid for by the client unless we agree otherwise. I do not use such material without a licence.",
+     "ua": "Ліцензії на сторонні матеріали — шрифти, музика, стокові кадри й фото — оплачує замовник, якщо не домовились інакше. Без ліцензії такі матеріали не використовую."
+    },
+    {
+     "kind": "text",
+     "en": "Factual accuracy of text, names, dates and figures in the layouts is the client’s responsibility. A final proofread before printing is a required step on your side; once the layout is approved, printing errors are not mine to answer for.",
+     "ua": "Відповідальність за фактичну точність текстів, імен, дат і цифр у макетах — на замовнику. Фінальна вичитка перед друком — обов’язковий етап з вашого боку; після затвердження макета помилки в друці не є моєю зоною відповідальності."
+    }
+   ]
+  },
+  {
+   "id": "s-risk",
+   "title": {
+    "en": "Risks",
+    "ua": "Ризики"
+   },
+   "rows": [
+    {
+     "kind": "bullet",
+     "en": "Cancellation after the start: the deposit covers the work already done and is not refunded. If more has been done than the deposit covers, the actual volume is billed.",
+     "ua": "Скасування після старту: передоплата покриває вже виконану роботу й не повертається. Якщо зроблено більше, ніж покриває передоплата, — оплачується фактичний обсяг."
+    },
+    {
+     "kind": "bullet",
+     "en": "Rescheduling a project is discussed separately.",
+     "ua": "Перенесення термінів проєкту обговорюється окремо."
+    },
+    {
+     "kind": "bullet",
+     "en": "I am in Ukraine. Air raid alerts, blackouts and connection outages happen. I have backup power and internet, so most days this changes nothing — but during long outages or shelling the timeline can shift. I flag it as soon as I see the risk.",
+     "ua": "Я в Україні. Тривоги, блекаути й перебої зі зв’язком трапляються. У мене є резервне живлення й інтернет, тож більшість днів це ні на що не впливає — але за тривалих відключень або обстрілів терміни можуть зсунутися. Попереджаю одразу, щойно бачу ризик."
+    }
+   ]
+  },
+  {
+   "id": "s-no",
+   "title": {
+    "en": "Out of scope",
+    "ua": "Не беруся"
+   },
+   "rows": [
+    {
+     "kind": "bullet",
+     "en": "I do not take projects for exposure, for a percentage, or for views.",
+     "ua": "Не беруся за проєкт «за портфоліо», за відсоток або за перегляди."
+    },
+    {
+     "kind": "bullet",
+     "en": "I do not do unpaid test assignments.",
+     "ua": "Не роблю тестові завдання безкоштовно."
+    },
+    {
+     "kind": "bullet",
+     "en": "I do not guarantee reach, sales or any other result that does not depend on the edit.",
+     "ua": "Не гарантую охоплення, продажі чи інші результати, які залежать не від монтажу."
+    }
+   ]
+  },
+  {
+   "id": "s-note",
+   "title": {
+    "en": "Note",
+    "ua": "Примітка"
+   },
+   "rows": [
+    {
+     "kind": "text",
+     "en": "Paying the invoice means you accept these terms. Revised 6 September 2026. The current version is always on this page; prices and terms may change, but orders already paid for are governed by the terms in force on the date of payment.",
+     "ua": "Оплата рахунку означає згоду з цими умовами. Редакція від 6 вересня 2026 року. Актуальна версія завжди на цій сторінці; ціни й умови можуть змінюватися, але для вже оплачених замовлень діють умови на дату оплати."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": {
+    "en": "What does it cost?",
+    "ua": "Скільки це коштує?"
+   },
+   "a": {
+    "en": "An interview or a short social video — from $250, a cover — from $150, book typesetting — from $400. The exact figure comes after the brief.",
+    "ua": "Інтерв’ю чи короткий ролик — від 6 000 грн, обкладинка — від 3 500 грн, верстка книжки — від 10 000 грн. Точну суму називаю після брифу."
+   }
+  },
+  {
+   "q": {
+    "en": "How long does it take?",
+    "ua": "Скільки часу це займе?"
+   },
+   "a": {
+    "en": "A short video from 2 business days, an interview from 3, a cover from 4, book typesetting from 2 weeks. The clock starts when the deposit and all the material are in.",
+    "ua": "Короткий ролик — від 2 робочих днів, інтерв’ю — від 3, обкладинка — від 4, верстка книжки — від 2 тижнів. Відлік іде від передоплати й усіх матеріалів."
+   }
+  },
+  {
+   "q": {
+    "en": "How does payment work?",
+    "ua": "Як відбувається оплата?"
+   },
+   "a": {
+    "en": "A 50% deposit puts the task in the schedule, the balance is due before the files are handed over. Bank transfer to my sole proprietor account; from abroad — SWIFT in dollars or Payoneer. Invoice and contract included.",
+    "ua": "Передоплата 50% ставить задачу в графік, решта — до передачі файлів. Безготівково на рахунок ФОП; із-за кордону — SWIFT у доларах або Payoneer. Рахунок, акт і за потреби договір."
+   }
+  },
+  {
+   "q": {
+    "en": "How many revisions are included?",
+    "ua": "Скільки правок входить у ціну?"
+   },
+   "a": {
+    "en": "Two rounds. A round is one consolidated list of comments, not ten messages over a day; the third round and beyond is $15 per hour of work.",
+    "ua": "Два раунди. Раунд — це один зведений список коментарів, а не десять повідомлень за день; третій і наступні — 400 грн за годину роботи."
+   }
+  },
+  {
+   "q": {
+    "en": "Who owns the finished work?",
+    "ua": "Кому належать права на роботу?"
+   },
+   "a": {
+    "en": "You do, from the moment of full payment. I keep the right to show the work in my portfolio — if the material is confidential, say so at the start and we agree an embargo or an NDA.",
+    "ua": "Вам — з моменту повної оплати. За собою лишаю право показувати роботу в портфоліо; якщо матеріал конфіденційний, скажіть на старті — узгодимо ембарго або NDA."
+   }
+  },
+  {
+   "q": {
+    "en": "What do I get at the end?",
+    "ua": "Що я отримую в кінці?"
+   },
+   "a": {
+    "en": "Through Google Drive: video as MP4 H.264 in 1080p or 4K, design as print-ready PDF/X-4 plus JPG or PNG for screen. Project files on request, at no extra charge.",
+    "ua": "Через Google Drive: відео — MP4 H.264 у 1080p або 4K, дизайн — PDF/X-4 для друку плюс JPG чи PNG для мережі. Робочі файли проєкту — за запитом, без доплати."
+   }
+  },
+  {
+   "q": {
+    "en": "What if something changes?",
+    "ua": "А якщо щось зміниться?"
+   },
+   "a": {
+    "en": "A deposit already paid covers the work done and is not refunded; a delay on your side moves the deadline by the same number of days. I am in Ukraine, so a long blackout can shift it too — I flag that as soon as I see the risk.",
+    "ua": "Уже сплачена передоплата покриває виконану роботу й не повертається; затримка з вашого боку зсуває дедлайн на стільки ж днів. Я в Україні, тож тривалий блекаут теж може зсунути терміни — попереджаю одразу, щойно бачу ризик."
+   }
+  }
+ ]
+}
