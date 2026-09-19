@@ -123,7 +123,7 @@ export const projects = [
     /* The slug keeps the year the cover was made for — it is the address the
        old site published and nothing is gained by breaking it — but the
        project is named for the series, not for one of its volumes. */
-    title: { en: 'Історія України', ua: 'Історія України' },
+    title: { en: '“Istoriia Ukrainy” History of Ukraine', ua: 'Історія України' },
     year: null,
     client: 'National Historical Library of Ukraine',
     context: 'commissioned',
