@@ -48,12 +48,28 @@ def media_files():
                 # A step written by an earlier run, not a picture of its own.
                 # The width alone does not prove it — 06-photo-sessions-480
                 # could be a photograph — so the picture it was cut from must
-                # be there too, under any of the extensions media/ holds.
-                if tail.isdigit() and int(tail) in STEPS and any(
-                        os.path.exists(os.path.join(root, head + e))
-                        for e in ('.webp', '.jpg', '.jpeg', '.png')):
+                # be there too, under any of the extensions media/ holds, and
+                # the width must be one this script would have written for it:
+                # a STEP, or that picture's top step. The top is min(source
+                # width, 2400), so an original narrower than 2400 leaves a
+                # file like -2048 or -1620 that is a step all the same.
+                # Matching STEPS alone mistook those for photographs and gave
+                # each a nested ladder; skipping every -<digits> file instead
+                # swallowed real pictures such as the portrait's photo-768.
+                if tail.isdigit() and any(
+                        int(tail) in (STEPS + [top_width(base)])
+                        for base in (os.path.join(root, head + e)
+                                     for e in ('.webp', '.jpg', '.jpeg', '.png'))
+                        if os.path.exists(base)):
                     continue
                 yield os.path.join(root, f)
+
+
+def top_width(path):
+    """The widest step this script writes for a picture: its source, capped."""
+    src = original_for(path) or path
+    with Image.open(src) as im:
+        return min(im.size[0], STEPS[-1])
 
 
 def original_for(path):
