@@ -21,9 +21,6 @@ const short = (file) =>
 const sizes = JSON.parse(readFileSync(new URL('../data/media-sizes.json', import.meta.url), 'utf8'));
 const rates = JSON.parse(readFileSync(new URL('../data/rates.json', import.meta.url), 'utf8'));
 
-/* Одна гарнітура на обидві абетки, тож прелоуд не залежить від мови.
-   Версія в імені файлу — щоб оновлення беты не впиралося в кеш. */
-const DISPLAY_FONT = '/fonts/word-music-display-0.8.0.2.woff2';
 const CSS_V = short('styles/site.css');
 const JS_V = short('scripts/site.js');
 // Social networks cache a card by URL and never re-fetch it, so the OG image
@@ -316,7 +313,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="apple-touch-icon" href="/apple-touch-icon-dark.png?v=${ICON_V}" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="/site.webmanifest?v=${ICON_V}">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
 ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/styles/site.css?v=${CSS_V}">
 <script>${SPLASH_BOOT}</script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
