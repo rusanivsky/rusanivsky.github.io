@@ -649,6 +649,10 @@ body::before {
     align-items: center;
   }
   .tile { display: block; min-width: 0; min-height: 0; width: 100%; height: 100%; }
+  /* An odd frame at the foot of a pair does not hang on the left with a hole
+     beside it. It spans the row and keeps a single cell's width, centred, so
+     the wall ends on its axis instead of on its left edge. */
+  .tile.orphan { grid-column: 1 / -1; width: calc(50% - 0.35rem); justify-self: center; }
   .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 
   /* The rule for a wall that does not fill itself: a full wall takes the whole
@@ -1169,14 +1173,41 @@ html.splash-off .splash {
   align-items: baseline;
   gap: 1.5em;
   white-space: nowrap;
-  font-size: clamp(0.5rem, 2.2vw, var(--t-meta));
+  /* Three times what it was. The splash holds the screen for a second and a
+     half and nothing else is on it, so the name is the picture, not a label
+     in the middle of a dark field. Three times is the ceiling, not a promise:
+     on a narrow desktop the line would run past both edges, so the second
+     term hands the size back to the width and the setting stays whole. */
+  font-size: min(calc(var(--t-meta) * 3), 2.5vw);
   font-weight: var(--w-semi);
   text-transform: uppercase;
 }
+/* On the phone the line will not hold both parts, so it becomes two: the
+   name, then the role under it, centred on the same axis. Three times the old
+   size is still the ceiling, but a phone rarely reaches it — the longer of
+   the two lines is «КРЕАТИВНИЙ СПЕЦІАЛІСТ», and the size here is the largest
+   that keeps it inside a 320-pixel screen with air on both sides, which comes
+   out around two and a half times. Anything more would need a third line, and
+   two is the whole idea. */
+@media (max-width: 60.99rem) {
+  .splash-mark {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    text-align: center;
+    font-size: min(calc(var(--t-meta) * 3), 5.2vw);
+  }
+  .splash-name,
+  .splash-role { letter-spacing: 0.08em; text-indent: 0.08em; }
+}
 .splash-name {
   color: var(--ink);
-  letter-spacing: 0.3em;
-  text-indent: 0.3em;
+  /* Tracking is measured in the type's own size, so the value that opened a
+     twelve-pixel line to a whisper closes a thirty-six-pixel one into a
+     fence. At three times the size it is set to roughly a third of what it
+     was, which reads the same and leaves the line inside the page. */
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
   animation: splash-in 320ms var(--ease) both;
 }
 .splash-role {
@@ -1184,8 +1215,8 @@ html.splash-off .splash {
      name by colour alone. It lands half a second behind, and only fades, so it
      settles rather than arrives. */
   color: var(--muted);
-  letter-spacing: 0.3em;
-  text-indent: 0.3em;
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
   animation: splash-fade 460ms var(--ease) 460ms both;
 }
 @keyframes splash-in {

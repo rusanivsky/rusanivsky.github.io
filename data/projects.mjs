@@ -452,17 +452,14 @@ export const videoCatalogue = [
       { ...video('yt', '69HzVdLELGg', 'Getting to know the ukulele', `${THUMB}yt-69HzVdLELGg.jpg`), client: null, role: 'DOP & Editor' },
     ],
   },
+  /* Weddings sit here rather than under a heading of their own: a wedding is
+     an event, and two films do not make a category. The group keeps the
+     events title. */
   {
     key: 'events-and-aftermovies',
     title: { en: 'Events and aftermovies', ua: 'Події та афтермуві' },
     items: [
       { ...video('yt', 'BFX3B9sv5-Y', 'Musheh Tsyronian’s book presentation — “A Life That Never Stopped”', `${POSTER}altns-main-edit-poster.jpg`), client: null, role: 'Editing' },
-    ],
-  },
-  {
-    key: 'weddings',
-    title: { en: 'Weddings', ua: 'Весілля' },
-    items: [
       { ...video('yt', 'C_eK5i5dvuU', 'Oleksandr & Anna. Wedding Day. Highlights (03.07.2021)', `${THUMB}yt-C_eK5i5dvuU.jpg`), client: null, role: 'Camera & Editor' },
       { ...video('yt', 'nHrFbu5yLBg', 'Oleksandr & Olha. Wedding Day. Highlights (05.09.2020)', `${THUMB}yt-nHrFbu5yLBg.jpg`), client: null, role: 'Camera & Editor' },
     ],

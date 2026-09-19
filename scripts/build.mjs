@@ -406,10 +406,10 @@ function player(item, eager = false) {
    time. Real randomness would change the HTML on every run.
 
    The panel is about eight hundred pixels across, so the cap is what stays
-   legible in it rather than what exists: past five frames each one is a
-   thumbnail and the wall stops being a look at the work. Design shows what
-   it has, which is one or two. */
-const STAGE_MAX = { photography: 5, video: 5, design: 4 };
+   legible in it rather than what exists: at four frames in two rows of two
+   each one is still a picture, and past that the wall becomes a contact
+   sheet. Design shows what it has, which is one or two. */
+const STAGE_MAX = { photography: 4, video: 4, design: 4 };
 
 function seeded(slug) {
   let h = 2166136261;
@@ -482,12 +482,14 @@ function stagePick(p) {
    stand side by side. */
 const STAGE_ASPECT = 0.94;
 
+/* One or two across, never three. Three columns inside a panel eight hundred
+   pixels wide turns every frame into a thumbnail, and a count that no column
+   number divides — five, say — used to fall back to a single tall column,
+   which is the worst of both. Rows are rounded up instead of required to come
+   out even, and an odd last frame is centred under the pair above it. */
 function arrangements(n) {
   const out = [];
-  for (let c = 1; c <= 3; c++) {
-    if (n % c) continue;
-    out.push({ n, c, rows: n / c });
-  }
+  for (let c = 1; c <= 2; c++) out.push({ n, c, rows: Math.ceil(n / c) });
   return out;
 }
 
@@ -501,7 +503,15 @@ function compose(cells, cap) {
   /* A project with only a handful of frames shows all of them — three
      screenshots are three screenshots, not two. Trimming is only ever a way of
      keeping a long photographic series to a sensible number. */
-  const floor = Math.min(cells.length, 6);
+  /* Two is the smallest wall worth calling one, so the search may go all the
+     way down to a pair. Whether it does is settled by the frames themselves:
+     four photographs in two rows of two fill the panel well, while four wide
+     sixteen-by-nines in the same arrangement are half the size they could be —
+     stacked as a pair each one spans the panel. The penalty below is what
+     makes showing more worth a little imperfection, and it is a fifth of a
+     step per dropped frame: enough to keep a series a series, not enough to
+     keep a shape nobody would choose. */
+  const floor = Math.min(cells.length, 2);
   let best = null;
   for (let n = Math.min(cap, cells.length); n >= floor; n--) {
     for (const a of arrangements(n)) {
@@ -512,7 +522,7 @@ function compose(cells, cap) {
       /* Showing more of the project is worth a little imperfection — a
          photography series is meant to read as a series — but not a cell so
          badly shaped that the picture floats in it. */
-      const score = fit + (cells.length - n) * 0.1;
+      const score = fit + (cells.length - n) * 0.2;
       if (!best || score < best.score) best = { ...a, score };
     }
   }
@@ -546,8 +556,9 @@ function mosaic(p, eager) {
   const a = compose(picked, Math.min(cap, 9));
   const cells = picked.slice(0, a.n);
 
-  const tiles = cells.map((x) =>
-    `<span class="tile">${img(x.src, x.alt, { lazy: !eager, eager })}</span>`).join('');
+  const odd = a.c === 2 && a.n % 2 === 1;
+  const tiles = cells.map((x, i) =>
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}">${img(x.src, x.alt, { lazy: !eager, eager })}</span>`).join('');
 
   /* The wall is given the shape of the frames it holds — columns and rows
      multiplied by the frames' own proportions — so it grows to the largest
