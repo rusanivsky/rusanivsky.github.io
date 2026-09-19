@@ -1,12 +1,17 @@
 """
 Pulls real glyph outlines out of the very woff2 the site serves.
 
-The mark has to be Fixel letters, not a drawing that resembles them — so the
-contours come from fonts/fixel-latin.woff2, instantiated at the weight the
-wordmark is set in, and are composed using the font's own advance widths and
-kerning rather than by eye.
+The mark has to be real letters, not a drawing that resembles them — so the
+contours come out of a woff2 the site itself serves, instantiated at the
+weight the mark is set in, and are composed using the font's own advance
+widths and kerning rather than by eye.
 
-    python3 scripts/extract-glyph.py KR 600
+    python3 scripts/extract-glyph.py KR 400 fonts/prata-latin.woff2
+    python3 scripts/extract-glyph.py KR 600 fonts/fixel-latin.woff2
+
+The third argument is optional and defaults to Fixel. A font with no weight
+axis ignores the weight: Prata ships one cut, and asking a static font to
+instantiate would fail rather than give a heavier one.
 
 Writes brand/glyph-KR.json, which is committed, so rebuilding the icons
 afterwards needs nothing but Node.
@@ -25,9 +30,10 @@ from fontTools.misc.transform import Transform
 
 text = sys.argv[1] if len(sys.argv) > 1 else "KR"
 weight = float(sys.argv[2]) if len(sys.argv) > 2 else 600.0
+source = sys.argv[3] if len(sys.argv) > 3 else "fonts/fixel-latin.woff2"
 
 root = Path(__file__).resolve().parent.parent
-font = TTFont(root / "fonts" / "fixel-latin.woff2")
+font = TTFont(root / source)
 
 # A variable font has no single outline: pin the weight axis first, or what
 # you export is whatever the default instance happens to be.
@@ -102,7 +108,7 @@ x_min, y_min, x_max, y_max = bounds.bounds
 out = {
     "text": text,
     "weight": weight,
-    "source": "fonts/fixel-latin.woff2",
+    "source": source,
     "family": str(next(r for r in font["name"].names if r.nameID == 1 and r.platformID == 3)),
     "unitsPerEm": font["head"].unitsPerEm,
     "capHeight": getattr(font["OS/2"], "sCapHeight", None),

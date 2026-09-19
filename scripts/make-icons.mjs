@@ -1,7 +1,8 @@
 /*
-  Builds every icon from one source: the real Fixel KR contour in
-  brand/glyph-KR.json, extracted from the woff2 the site itself serves and
-  composed with the font's own advance widths and kerning.
+  Builds every icon from one source: the real KR contour in
+  brand/glyph-KR.json, extracted from a woff2 the site itself serves and
+  composed with the font's own advance widths and kerning. The mark is set
+  in Prata — the same face as the name on every page heading.
 
     node scripts/make-icons.mjs
 
@@ -35,9 +36,11 @@ const LIGHT_INK = '#e8e5de';
 const glyph = JSON.parse(readFileSync(path.join(root, 'brand/glyph-KR.json'), 'utf8'));
 
 const BOX = 32;
-/* Roughly a tenth of the box on each side. iOS rounds the corners of a home
-   screen icon, so the letters must not run to the edge. */
-const PAD = 3;
+/* Поле по краях. iOS заокруглює кути іконки на домашньому екрані, тож
+   літери не мають доходити до краю; крім того, Prata — високонтрастна
+   антиква, і її тонким штрихам потрібне повітря більше, ніж гротеску.
+   Чверть пункту на око — це на 8% менші літери, ніж було. */
+const PAD = 4;
 
 const gw = glyph.bounds.xMax - glyph.bounds.xMin;
 const gh = glyph.bounds.yMax - glyph.bounds.yMin;
