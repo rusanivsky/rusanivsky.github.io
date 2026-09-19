@@ -123,14 +123,14 @@ export const projects = [
     /* The slug keeps the year the cover was made for — it is the address the
        old site published and nothing is gained by breaking it — but the
        project is named for the series, not for one of its volumes. */
-    title: { en: '“Istoriia Ukrainy” History of Ukraine', ua: 'Історія України' },
+    title: { en: 'History of Ukraine', ua: 'Історія України' },
     year: null,
     client: 'National Historical Library of Ukraine',
     context: 'commissioned',
     disciplines: ['design'],
     roles: ['Cover design'],
     shortDescription: {
-      en: '“Istoriia Ukrainy” is a series of annual bibliographic indexes published by the National Historical Library of Ukraine — one volume a year, each gathering the year’s writing on the country’s history. The cover for the 2020 volume is built around a 1918 map of Ukraine found in the Ivan Franko Ukrainian Centre library in Richmond, Canada.',
+      en: '“History of Ukraine” is a series of annual bibliographic indexes published by the National Historical Library of Ukraine — one volume a year, each gathering the year’s writing on the country’s history. The cover for the 2020 volume is built around a 1918 map of Ukraine found in the Ivan Franko Ukrainian Centre library in Richmond, Canada.',
       ua: '«Історія України» — серія щорічних бібліографічних покажчиків Національної історичної бібліотеки України: один том на рік, і кожен збирає написане за рік про історію країни. Обкладинка тому за 2020 рік скомпонована з карти України 1918 року, знайденої в бібліотеці Українського центру імені Івана Франка у Річмонді, Канада.',
     },
     credits: [],
@@ -322,14 +322,14 @@ export const projects = [
   {
     id: 'p-istorichna-shevchenkiana',
     slug: 'istorichna-shevchenkiana',
-    title: { en: '“Istorychna Shevchenkiana” Historical Shevchenkiana', ua: 'Історична Шевченкіана' },
+    title: { en: 'Historical Shevchenkiana', ua: 'Історична Шевченкіана' },
     year: '2016',
     client: 'National Historical Library of Ukraine',
     context: 'commissioned',
     disciplines: ['design'],
     roles: ['Cover design'],
     shortDescription: {
-      en: 'Cover design for the bibliographic index “Istorychna Shevchenkiana” for the Historical Library, 2016. A classical treatment in soft colours, as befits an academic reference edition. The front carries a portrait of Taras Shevchenko and a sample of his handwriting; the back, his painting of the Exaltation Monastery in Poltava.',
+      en: 'Cover design for the bibliographic index “Historical Shevchenkiana” for the Historical Library, 2016. A classical treatment in soft colours, as befits an academic reference edition. The front carries a portrait of Taras Shevchenko and a sample of his handwriting; the back, his painting of the Exaltation Monastery in Poltava.',
       ua: 'Дизайн обкладинки бібліографічного покажчика «Історична Шевченкіана» для Історичної бібліотеки, 2016. Класичне оформлення з мʼякими кольорами, як і належить науково-довідковому виданню. Передня сторона — портрет Тараса Шевченка і взірець його почерку; задня — його картина «Воздвиженський монастир у Полтаві».',
     },
     credits: [],
