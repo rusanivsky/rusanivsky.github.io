@@ -47,6 +47,11 @@ export const UI = {
   direct: { en: 'Direct', ua: 'Напряму' },
   shortBrief: { en: 'Or send a short brief', ua: 'Або надішліть короткий бриф' },
   beforeYouWrite: { en: 'Before you write', ua: 'Перш ніж писати' },
+  yourContact: { en: 'Your contact', ua: 'Ваш контакт' },
+  contactHint: {
+    en: 'Email, Telegram or a phone number — somewhere to reply to',
+    ua: 'Пошта, Телеграм або номер телефону — щоб було куди відповісти',
+  },
   discipline: { en: 'Discipline', ua: 'Напрямок' },
   deadline: { en: 'Deadline', ua: 'Дедлайн' },
   budget: { en: 'Budget', ua: 'Бюджет' },

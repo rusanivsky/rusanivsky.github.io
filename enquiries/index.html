@@ -36,7 +36,7 @@
 <link rel="manifest" href="/site.webmanifest?v=07ab25da">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=b7047a1b">
+<link rel="stylesheet" href="/styles/site.css?v=5b683005">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 if(sessionStorage.getItem('kr-seen'))return;
@@ -46,7 +46,7 @@ addEventListener('DOMContentLoaded',function(){
 setTimeout(function(){r.className+=' splash-off';},1400);
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1660);
 });}catch(e){}})();</script>
-<script src="/scripts/site.js?v=257971b4" defer></script>
+<script src="/scripts/site.js?v=74215f28" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
 </head>
@@ -108,6 +108,10 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},1
     <h2 class="section-label col-full">Or send a short brief</h2>
     <p class="page-intro col-7">This opens your mail client with the answers filled in — nothing is sent anywhere else. <a href="/rates/">Rates &amp; Terms</a> covers pricing, timelines, revisions, payment, delivery and rights.</p>
     <form class="brief col-7" id="brief" action="mailto:info@rusanivsky.com" method="post" enctype="text/plain">
+      <label for="b-contact">Your contact</label>
+      <input id="b-contact" name="Contact" type="text" required
+             aria-describedby="b-contact-note" autocomplete="email">
+      <p class="field-note" id="b-contact-note">Email, Telegram or a phone number — somewhere to reply to</p>
       <label for="b-disc">Discipline</label>
       <select id="b-disc" name="Discipline">
         <option>Video</option>

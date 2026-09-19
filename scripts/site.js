@@ -66,11 +66,17 @@
     paint(mode);
   });
 
-  /* ---------- Typeface: serif | sans ----------
-     The name and the headlines are set in Prata by default; the switch puts
-     them back in Fixel so the two can be compared on the real pages rather
-     than in a specimen. Stored like the theme, and read before first paint by
-     a small inline script so nothing jumps. */
+  /* ---------- Holding the page still ----------
+     Two things cover the page — the drawer and the viewer — and neither is
+     any use if the page keeps scrolling behind it. Both called these two
+     names; neither name existed, so opening either one threw before it got
+     as far as showing anything, and the viewer came up empty until the next
+     arrow key rebuilt it. They are counted rather than toggled: if the two
+     ever overlap, the page is only released when the last of them closes. */
+  var locks = 0;
+  function lockScroll() { if (++locks === 1) root.classList.add('no-scroll'); }
+  function unlockScroll() { if (locks > 0 && --locks === 0) root.classList.remove('no-scroll'); }
+
   /* ---------- Mobile drawer ---------- */
   var drawer = document.getElementById('drawer');
   if (drawer) {
@@ -187,8 +193,7 @@
       var item = group[at];
       lbImg.src = item.src;
       lbImg.alt = item.alt;
-      lbImg.width = item.w;
-      lbImg.height = item.h;
+      if (item.w && item.h) { lbImg.width = item.w; lbImg.height = item.h; }
       if (lbCount) lbCount.textContent = (at + 1) + ' / ' + group.length;
       if (lbCap) lbCap.textContent = item.alt || '';
     }
@@ -226,7 +231,15 @@
           .filter(function (el) { return el.closest('[data-lb-group]') === scope; });
         var items = all.map(function (el) {
           var im = el.querySelector('img');
-          return { src: im.currentSrc || im.src, alt: im.alt, w: im.width, h: im.height };
+          /* im.width is the RENDERED width, and a frame that has not been
+             scrolled to yet has not rendered: it answers 0. Writing that 0
+             onto the viewer's own image gave it an intrinsic size of nothing
+             and the first picture opened blank. The markup carries the real
+             dimensions as attributes, so they are read from there, with the
+             decoded size as the fallback and never a zero. */
+          var aw = parseInt(im.getAttribute('width'), 10) || im.naturalWidth || 0;
+          var ah = parseInt(im.getAttribute('height'), 10) || im.naturalHeight || 0;
+          return { src: im.currentSrc || im.src, alt: im.alt, w: aw, h: ah };
         });
         open(items, all.indexOf(trigger), trigger);
         return;
@@ -234,6 +247,25 @@
       if (e.target.closest('.lb-close')) close();
       if (e.target.closest('[data-lb-prev]')) step(-1);
       if (e.target.closest('[data-lb-next]')) step(1);
+      /* The cursor over the picture is a pair of arrows, so the picture has
+         to answer to a click the way the arrows promise: the half you are
+         standing in is the way you go. */
+      var stage = e.target.closest('.lb-stage');
+      if (stage && !lb.hidden) {
+        var b = stage.getBoundingClientRect();
+        var back = e.clientX < b.left + b.width / 2;
+        lb.setAttribute('data-side', back ? 'prev' : 'next');
+        step(back ? -1 : 1);
+      }
+    });
+
+    /* Which of the two arrows is lit follows the pointer, not the picture:
+       the side of the stage the cursor is in is the side it would turn. */
+    lb.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var stage = lb.querySelector('.lb-stage');
+      var b = stage.getBoundingClientRect();
+      lb.setAttribute('data-side', e.clientX < b.left + b.width / 2 ? 'prev' : 'next');
     });
 
     document.addEventListener('keydown', function (e) {

@@ -955,6 +955,10 @@ function enquiriesPage() {
     <h2 class="section-label col-full">${ui('shortBrief')}</h2>
     <p class="page-intro col-7">${esc(L(ENQ_FORM_NOTE))} <a href="${href('/rates/')}">${ui('rates')}</a> ${ui('ratesCovers')}</p>
     <form class="brief col-7" id="brief" action="mailto:${EMAIL}" method="post" enctype="text/plain">
+      <label for="b-contact">${ui('yourContact')}</label>
+      <input id="b-contact" name="Contact" type="text" required
+             aria-describedby="b-contact-note" autocomplete="email">
+      <p class="field-note" id="b-contact-note">${ui('contactHint')}</p>
       <label for="b-disc">${ui('discipline')}</label>
       <select id="b-disc" name="Discipline">
         <option>${ui('video')}</option>
