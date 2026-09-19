@@ -75,8 +75,8 @@ export const projects = [
     disciplines: ['video'],
     roles: ['Camera', 'Editing'],
     shortDescription: {
-      en: 'Films for the business school for leaders in business, government and defence: graduations, programme starts and the signing of a memorandum.',
-      ua: 'Фільми для бізнес-школи для лідерів бізнесу, держави та сектору безпеки й оборони: випуски, старти програм і підписання меморандуму.',
+      en: 'Videos for the business school for leaders in business, government and defence: graduations, programme starts and the signing of a memorandum.',
+      ua: 'Відео для бізнес-школи для лідерів бізнесу, держави та сектору безпеки й оборони: випуски, старти програм і підписання меморандуму.',
     },
     credits: [
       { en: 'Camera Operator & Editor — Kyrylo Rusanivsky', ua: 'Оператор і режисер монтажу — Кирило Русанівський' },
@@ -234,15 +234,15 @@ export const projects = [
     slug: 'shylero-utility-bag',
     /* The slug keeps the singular the first file was named with; the project
        is the series, so the title does not. */
-    title: { en: 'Utility Bags by SHYLERO', ua: 'Utility Bags by SHYLERO' },
+    title: { en: 'Bags by SHYLERO', ua: 'Bags by SHYLERO' },
     year: null,
     client: 'SHYLERO',
     context: 'commissioned',
     disciplines: ['video'],
     roles: ['Camera', 'Editing'],
     shortDescription: {
-      en: 'A short product film for SHYLERO, a Ukrainian maker of bags — the series of utility bags and backpacks the company builds, filmed and cut as one piece.',
-      ua: 'Короткий продуктовий ролик для SHYLERO, українського виробника сумок, — про серію утилітарних сумок і рюкзаків, які робить компанія, зняту і змонтовану одним фільмом.',
+      en: 'A short product video for SHYLERO, a Ukrainian maker of bags — the series of utility bags and backpacks the company builds, filmed and cut as one piece.',
+      ua: 'Короткий продуктовий ролик для SHYLERO, українського виробника сумок, — про серію утилітарних сумок і рюкзаків, які робить компанія, зняту і змонтовану в одне відео.',
     },
     credits: [
       { en: 'Camera Operator & Editor — Kyrylo Rusanivsky', ua: 'Оператор і монтажер — Кирило Русанівський' },
@@ -301,7 +301,7 @@ export const projects = [
     disciplines: ['video'],
     roles: ['Producing', 'Camera', 'Editing'],
     shortDescription: {
-      en: 'Concert films for Sadyba na Kudriavtsi and the National Scientific Medical Library of Ukraine: evenings of classical music and Christmas programmes — produced, filmed and edited.',
+      en: 'Concert videos for Sadyba na Kudriavtsi and the National Scientific Medical Library of Ukraine: evenings of classical music and Christmas programmes — produced, filmed and edited.',
       ua: 'Концертні зйомки для «Садиби на Кудрявці» та Національної наукової медичної бібліотеки України: вечори класичної музики та різдвяні програми — продюсування, зйомка, монтаж.',
     },
     credits: [

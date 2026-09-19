@@ -100,8 +100,8 @@ export const PRACTICE_INTRO = {
     ua: 'Репортаж, культура й мистецтво, бекстейдж і портрети — замовна робота, зібрана в серії, а не викладена всіма кадрами поспіль.',
   },
   video: {
-    en: 'Camera, editing and colour: documentary, interviews and YouTube series, brand films and short-form work.',
-    ua: 'Камера, монтаж і колір: документалістика, інтерв’ю та YouTube-серії, брендові фільми й короткий метр.',
+    en: 'Camera, editing and colour: documentary, interviews and YouTube series, brand videos and short-form work.',
+    ua: 'Камера, монтаж і колір: документалістика, інтерв’ю та YouTube-серії, брендові відео й короткий метр.',
   },
   design: {
     en: 'Book typesetting and layout, cover design, printed matter and prepress for publishers and libraries.',
