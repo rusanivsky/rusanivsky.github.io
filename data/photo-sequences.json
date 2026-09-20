@@ -129,10 +129,6 @@
    "alt": "Reportage"
   },
   {
-   "src": "/media/photo/public-events/01-public-events-048.webp",
-   "alt": "Reportage"
-  },
-  {
    "src": "/media/photo/public-events/01-public-events-049.webp",
    "alt": "Reportage"
   },
@@ -165,10 +161,6 @@
    "alt": "Reportage"
   },
   {
-   "src": "/media/photo/parties/05-parties-005.webp",
-   "alt": "Reportage"
-  },
-  {
    "src": "/media/photo/parties/05-parties-006.webp",
    "alt": "Reportage"
   },
@@ -185,10 +177,6 @@
    "alt": "Reportage"
   },
   {
-   "src": "/media/photo/parties/05-parties-010.webp",
-   "alt": "Reportage"
-  },
-  {
    "src": "/media/photo/parties/05-parties-011.webp",
    "alt": "Reportage"
   },
@@ -202,10 +190,6 @@
   },
   {
    "src": "/media/photo/parties/05-parties-014.webp",
-   "alt": "Reportage"
-  },
-  {
-   "src": "/media/photo/parties/05-parties-015.webp",
    "alt": "Reportage"
   },
   {
@@ -254,6 +238,18 @@
   },
   {
    "src": "/media/photo/parties/05-parties-027.webp",
+   "alt": "Reportage"
+  },
+  {
+   "src": "/media/photo/parties/05-parties-028.webp",
+   "alt": "Reportage"
+  },
+  {
+   "src": "/media/photo/parties/05-parties-029.webp",
+   "alt": "Reportage"
+  },
+  {
+   "src": "/media/photo/parties/05-parties-030.webp",
    "alt": "Reportage"
   }
  ],
@@ -543,10 +539,6 @@
    "alt": "Portrait"
   },
   {
-   "src": "/media/photo/photo-sessions/06-photo-sessions-011.webp",
-   "alt": "Portrait"
-  },
-  {
    "src": "/media/photo/photo-sessions/06-photo-sessions-012.webp",
    "alt": "Portrait"
   },
@@ -592,6 +584,14 @@
   },
   {
    "src": "/media/photo/photo-sessions/06-photo-sessions-024.webp",
+   "alt": "Portrait"
+  },
+  {
+   "src": "/media/photo/photo-sessions/06-photo-sessions-025.webp",
+   "alt": "Portrait"
+  },
+  {
+   "src": "/media/photo/photo-sessions/06-photo-sessions-026.webp",
    "alt": "Portrait"
   }
  ]
