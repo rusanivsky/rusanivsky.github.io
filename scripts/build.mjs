@@ -808,12 +808,11 @@ function projectPage(p, index) {
     <p class="eyebrow">${esc(meta[0])}${p.context === 'personal' ? ' · ' + ui('personal') : ''}</p>
     <h1 class="project-title t-display">${esc(L(p.title))}</h1>
     ${t(p.shortDescription, 'project-dek t-lead col-7', 'p')}
-    <dl class="facts">
+    ${p.client || roles.length || p.year ? `<dl class="facts">
       ${p.client ? `<div><dt>${ui('client')}</dt><dd>${esc(p.client)}</dd></div>` : ''}
       ${roles.length ? `<div><dt>${ui('role')}</dt><dd>${esc(roles.join(', '))}</dd></div>` : ''}
       ${p.year ? `<div><dt>${ui('year')}</dt><dd>${esc(p.year)}</dd></div>` : ''}
-      <div><dt>${ui('practice')}</dt><dd>${esc(meta[0])}</dd></div>
-    </dl>
+    </dl>` : ''}
   </div>
 
   <div class="seq col-full g12" style="padding-inline:0"${isVideo || p.disciplines.includes('photography') ? '' : ` data-lb-group="${attr(p.slug)}"`}>
