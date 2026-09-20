@@ -358,7 +358,7 @@ export const projects = [
     credits: [],
     /* Обкладинка — не перший кадр серії: портрет на шкіряному дивані
        краще за інші пояснює, що таке фотосесія. */
-    cover: photoSequences.portraits.find((f) => f.src.endsWith('06-photo-sessions-017.webp')).src,
+    cover: photoSequences.portraits.find((f) => f.src.endsWith('20190712_145623_A.webp')).src,
     media: series('portraits', 14),
     externalLinks: [],
     featured: true,
