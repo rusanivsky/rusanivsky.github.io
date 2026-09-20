@@ -1805,16 +1805,6 @@
    "/media/photo/parties/20191213_231852_B-2400.webp"
   ]
  ],
- "/media/photo/photo-sessions/06-photo-sessions-010.webp": [
-  [
-   480,
-   "/media/photo/photo-sessions/06-photo-sessions-010-480.webp"
-  ],
-  [
-   933,
-   "/media/photo/photo-sessions/06-photo-sessions-010.webp"
-  ]
- ],
  "/media/photo/photo-sessions/06-photo-sessions-011.webp": [
   [
    480,
@@ -1917,6 +1907,24 @@
   [
    2400,
    "/media/photo/photo-sessions/20181225_141441_A-2400.webp"
+  ]
+ ],
+ "/media/photo/photo-sessions/20190602_190655_A.webp": [
+  [
+   480,
+   "/media/photo/photo-sessions/20190602_190655_A-480.webp"
+  ],
+  [
+   933,
+   "/media/photo/photo-sessions/20190602_190655_A.webp"
+  ],
+  [
+   1440,
+   "/media/photo/photo-sessions/20190602_190655_A-1440.webp"
+  ],
+  [
+   2048,
+   "/media/photo/photo-sessions/20190602_190655_A-2048.webp"
   ]
  ],
  "/media/photo/photo-sessions/20190712_145623_A.webp": [
