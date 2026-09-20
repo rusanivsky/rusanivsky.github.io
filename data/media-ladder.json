@@ -1607,6 +1607,68 @@
   [
    933,
    "/media/photo/parties/05-parties-027.webp"
+  ],
+  [
+   1440,
+   "/media/photo/parties/05-parties-027-1440.webp"
+  ],
+  [
+   2400,
+   "/media/photo/parties/05-parties-027-2400.webp"
+  ]
+ ],
+ "/media/photo/parties/05-parties-028.webp": [
+  [
+   480,
+   "/media/photo/parties/05-parties-028-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/parties/05-parties-028-960.webp"
+  ],
+  [
+   1400,
+   "/media/photo/parties/05-parties-028.webp"
+  ],
+  [
+   2400,
+   "/media/photo/parties/05-parties-028-2400.webp"
+  ]
+ ],
+ "/media/photo/parties/05-parties-029.webp": [
+  [
+   480,
+   "/media/photo/parties/05-parties-029-480.webp"
+  ],
+  [
+   933,
+   "/media/photo/parties/05-parties-029.webp"
+  ],
+  [
+   1440,
+   "/media/photo/parties/05-parties-029-1440.webp"
+  ],
+  [
+   2400,
+   "/media/photo/parties/05-parties-029-2400.webp"
+  ]
+ ],
+ "/media/photo/parties/05-parties-030.webp": [
+  [
+   480,
+   "/media/photo/parties/05-parties-030-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/parties/05-parties-030-960.webp"
+  ],
+  [
+   1400,
+   "/media/photo/parties/05-parties-030.webp"
+  ],
+  [
+   2400,
+   "/media/photo/parties/05-parties-030-2400.webp"
   ]
  ],
  "/media/photo/photo-sessions/06-photo-sessions-001.webp": [
@@ -1689,6 +1751,14 @@
   [
    933,
    "/media/photo/photo-sessions/06-photo-sessions-005.webp"
+  ],
+  [
+   1440,
+   "/media/photo/photo-sessions/06-photo-sessions-005-1440.webp"
+  ],
+  [
+   2400,
+   "/media/photo/photo-sessions/06-photo-sessions-005-2400.webp"
   ]
  ],
  "/media/photo/photo-sessions/06-photo-sessions-006.webp": [
@@ -2001,6 +2071,42 @@
   [
    2400,
    "/media/photo/photo-sessions/06-photo-sessions-024-2400.webp"
+  ]
+ ],
+ "/media/photo/photo-sessions/06-photo-sessions-025.webp": [
+  [
+   480,
+   "/media/photo/photo-sessions/06-photo-sessions-025-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/photo-sessions/06-photo-sessions-025-960.webp"
+  ],
+  [
+   1400,
+   "/media/photo/photo-sessions/06-photo-sessions-025.webp"
+  ],
+  [
+   2400,
+   "/media/photo/photo-sessions/06-photo-sessions-025-2400.webp"
+  ]
+ ],
+ "/media/photo/photo-sessions/06-photo-sessions-026.webp": [
+  [
+   480,
+   "/media/photo/photo-sessions/06-photo-sessions-026-480.webp"
+  ],
+  [
+   933,
+   "/media/photo/photo-sessions/06-photo-sessions-026.webp"
+  ],
+  [
+   1440,
+   "/media/photo/photo-sessions/06-photo-sessions-026-1440.webp"
+  ],
+  [
+   2400,
+   "/media/photo/photo-sessions/06-photo-sessions-026-2400.webp"
   ]
  ],
  "/media/photo/public-events/01-public-events-006.webp": [
