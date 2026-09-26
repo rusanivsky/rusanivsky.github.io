@@ -126,9 +126,13 @@
   /* The entrance ease: fast out of the gate, a long quiet landing. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* The green of the old site. It stays behind the header of every page but
-     the home page: in the dark it is the old plate itself, in the light a
-     pale wash of the same hue, so the header text keeps its contrast. */
+  /* The tempo of every entrance: the durations below were drawn at 1 and
+     are divided by this. scripts/site.js carries the same number. */
+  --pace: 1.35;
+
+  /* The green of the old site. Every page but the home page carries it as a
+     wide glow in the empty top right of the page: in the dark it is the old
+     plate itself, in the light a pale wash of the same hue. */
   --green: #2b3e2d;
   --head-tint: #dbe8d8;
 
@@ -563,14 +567,27 @@ body::before {
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 
-/* The header of a subpage stands on the old site's green: the colour runs
-   down from the top edge and gives way to the paper within the first third,
-   so it frames the name and the navigation and never reaches the work. The
-   bar holds it whole — it is only as tall as the name — and the menu opens
-   on the same wash, so the name does not change ground when it opens. */
-html.sub .bar { background: var(--head-tint); }
-html.sub .drawer,
-html.sub .rail { background: linear-gradient(to bottom, var(--head-tint), var(--paper) 30%); }
+/* The old site's green on a subpage. It is not a header colour: the rail and
+   the bar stay paper, and the green lies as a wide glow in the top right of
+   the page, where the heading leaves the most air. It belongs to the top of
+   the page and scrolls away with it — nothing is fixed to the window. It sits
+   under the content inside the shell's stacking context, so the grain and
+   the work stay above it. */
+html.sub main { position: relative; }
+html.sub main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: min(72%, 70rem);
+  height: min(100svh, 56rem);
+  pointer-events: none;
+  background: radial-gradient(ellipse 100% 100% at 100% 0%, var(--head-tint) 0%, color-mix(in srgb, var(--head-tint) 45%, transparent) 42%, transparent 72%);
+}
+@media (max-width: 60.99rem) {
+  html.sub main::before { width: 100%; height: 70svh; }
+}
 
 /* ============================================================
    Home — index on four columns, stage on eight
@@ -742,7 +759,7 @@ html.sub .rail { background: linear-gradient(to bottom, var(--head-tint), var(--
      own cell, which holds the edges still. The home page only — the stage is
      a preview, and the pages behind it keep their pictures untouched. */
   .tile { overflow: hidden; }
-  .tile img { transition: transform 1s var(--ease-out); }
+  .tile img { transition: transform calc(1s / var(--pace)) var(--ease-out); }
   @media (hover: hover) {
     .tile:hover img { transform: scale(1.05); }
   }
@@ -1371,7 +1388,7 @@ html.splash-off .splash {
      дописує праворуч, інакше рядок стоїть не по центру. */
   letter-spacing: 0.04em;
   text-indent: 0.04em;
-  animation: splash-in 700ms var(--ease) both;
+  animation: splash-in calc(700ms / var(--pace)) var(--ease) both;
 }
 .splash-role {
   /* The role is set as a label, not a sentence: Fixel, capitals, tracked —
@@ -1388,7 +1405,7 @@ html.splash-off .splash {
   text-transform: uppercase;
   letter-spacing: var(--track-label);
   text-indent: var(--track-label);
-  animation: splash-fade 900ms var(--ease) 1000ms both;
+  animation: splash-fade calc(900ms / var(--pace)) var(--ease) calc(1000ms / var(--pace)) both;
 }
 @media (max-width: 60.99rem) {
   .splash-role { font-size: 0.5em; }
@@ -1418,12 +1435,12 @@ html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
 .rv {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.9s ease, transform 1s var(--ease-out);
+  transition: opacity calc(0.9s / var(--pace)) ease, transform calc(1s / var(--pace)) var(--ease-out);
   transition-delay: var(--d, 0s);
 }
 .rv-fade {
   opacity: 0;
-  transition: opacity 0.9s ease;
+  transition: opacity calc(0.9s / var(--pace)) ease;
   transition-delay: var(--d, 0s);
 }
 .rv.rv-in, .rv-fade.rv-in { opacity: 1; transform: none; }
@@ -1436,17 +1453,18 @@ html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
   main .rv { transform: none; }
 }
 
-.lf .w { opacity: 0; transition: opacity 0.6s ease; }
+.lf .w { opacity: 0; transition: opacity calc(0.6s / var(--pace)) ease; }
 .lf.lf-in .w { opacity: 1; }
 
 /* The card's exit: the paper goes, the name stays and is moved by site.js. */
 .splash.splash-clear {
   background-color: transparent;
   pointer-events: none;
-  transition: background-color 700ms var(--ease-out) 120ms;
+  transition: background-color calc(700ms / var(--pace)) var(--ease-out) calc(120ms / var(--pace));
 }
-.splash.splash-clear::before { opacity: 0; transition: opacity 500ms ease; }
-.splash-name { will-change: transform; }
+.splash.splash-clear::before { opacity: 0; transition: opacity calc(500ms / var(--pace)) ease; }
+/* The words of the name travel one by one (site.js); a transform needs a box. */
+.splash-name .fw { display: inline-block; }
 
 @media (prefers-reduced-motion: reduce) {
   .rv, .rv-fade, .lf .w { opacity: 1; transform: none; }
@@ -1481,7 +1499,8 @@ html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
    hairline thicker, the same shapes, under our control and not the
    renderer's. It is a small step on purpose; past ~0.02em the thins close up
    and the face stops being Prata. */
-.wordmark {
+.wordmark,
+.splash-name {
   -webkit-text-stroke: 0.013em currentColor;
 }
 
