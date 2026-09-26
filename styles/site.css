@@ -64,20 +64,18 @@
    snaps to, and a six-step type scale where each step has one job. Nothing
    is sized ad hoc; if a thing needs a size, it takes one of these steps. */
 :root {
-  /* The site ships in the dark only. Every colour below is solid: a rule
-     or a line of small text has to be the same colour over the green as it
-     is over bare paper, and anything thinned with transparency takes the
-     green up through it. */
+  /* The site ships in the dark only. */
   --paper: #141412;
   --ink: #e8e5de;
   --muted: #a7a39a;
   --faint: #8a857c;
-  /* The rules keep the colours they always had on the paper — the ink at
-     14% and at 8% — only laid down solid, never see-through: a thinned
-     rule takes on the colour of whatever it crosses and changed along its
-     length over the green. Solid, they are the same colour on any ground. */
-  --line: #32312f;
-  --line-soft: #252523;
+  /* The rules are the ink itself, thinned: 14% and 8% of it over whatever
+     lies beneath. On the paper that is a quiet grey; over the green it is a
+     line a little lighter than the green, never a dark stripe across it. A
+     solid colour cannot do both — a grey quiet enough for the paper is
+     darker than the green and reads black over it. */
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
   --rule-w: 1px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
