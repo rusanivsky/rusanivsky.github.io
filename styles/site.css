@@ -72,14 +72,12 @@
   --ink: #e8e5de;
   --muted: #a7a39a;
   --faint: #8a857c;
-  /* One rule for the whole site: every line — the rail's edge, the header,
-     section rules, lists, fields, the foot — is this one solid colour at
-     this one weight, whatever lies under it. Solid, never thinned with
-     transparency: a see-through rule takes on the colour of what it
-     crosses and changes along its length over the green. Its tone is the
-     green's own: quiet on the paper, and over the glow it all but melts
-     in instead of lying on it as a dark stripe. */
-  --line: #3f4a3c;
+  /* The rules keep the colours they always had on the paper — the ink at
+     14% and at 8% — only laid down solid, never see-through: a thinned
+     rule takes on the colour of whatever it crosses and changed along its
+     length over the green. Solid, they are the same colour on any ground. */
+  --line: #32312f;
+  --line-soft: #252523;
   --rule-w: 1px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
@@ -387,7 +385,7 @@ ul, ol { list-style: none; }
     top: 0;
     height: 100svh;
     flex-direction: column;
-    border-right: var(--rule-w) solid var(--line);
+    border-right: var(--rule-w) solid var(--line-soft);
     padding: 1.9rem 1.4rem 1.6rem 2rem;
   }
 }
@@ -408,7 +406,7 @@ ul, ol { list-style: none; }
 .rail .wordmark { max-width: min-content; line-height: 1.3; }
 
 .rail-mid { margin-top: 2.6rem; }
-.rail-nav + .rail-nav { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line); }
+.rail-nav + .rail-nav { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line-soft); }
 .rail-nav a {
   display: block;
   font-size: var(--t-meta);
@@ -496,7 +494,7 @@ ul, ol { list-style: none; }
 .lang {
   margin-top: 1.1rem;
   padding-top: 1.1rem;
-  border-top: var(--rule-w) solid var(--line);
+  border-top: var(--rule-w) solid var(--line-soft);
   gap: 0.7rem;
 }
 
@@ -510,7 +508,7 @@ ul, ol { list-style: none; }
   justify-content: space-between;
   padding: 0.9rem var(--pad);
   background: var(--paper);
-  border-bottom: var(--rule-w) solid var(--line);
+  border-bottom: var(--rule-w) solid var(--line-soft);
 }
 .bar button {
   font-size: var(--t-label);
@@ -541,7 +539,7 @@ ul, ol { list-style: none; }
   text-transform: uppercase;
 }
 .drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
-.drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line); }
+.drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line-soft); }
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 
@@ -662,7 +660,7 @@ html.glow-baked.sub main::before { display: none; }
 }
 
 .standfirst { margin-top: 1.2rem; }
-.index { margin-top: 2.2rem; border-top: var(--rule-w) solid var(--line); }
+.index { margin-top: 2.2rem; border-top: var(--rule-w) solid var(--line-soft); }
 @media (min-width: 61rem) {
   .index {
     flex: 1 1 auto;
@@ -675,7 +673,7 @@ html.glow-baked.sub main::before { display: none; }
 
 .row {
   display: block;
-  border-bottom: var(--rule-w) solid var(--line);
+  border-bottom: var(--rule-w) solid var(--line-soft);
   padding: 0.72rem 0 0.78rem;
   transition: opacity var(--t) var(--ease);
 }
@@ -756,7 +754,7 @@ html.glow-baked.sub main::before { display: none; }
     position: relative;
     height: 100svh;
     grid-column: 5 / -1;
-    border-left: var(--rule-w) solid var(--line);
+    border-left: var(--rule-w) solid var(--line-soft);
     background: var(--stage-bg);
     margin-left: calc(var(--col-gap) / -2);
     margin-right: calc(var(--pad) * -1);
@@ -881,7 +879,7 @@ html.glow-baked.sub main::before { display: none; }
 .prose a:hover { text-decoration-color: currentColor; }
 
 .section { margin-top: 3.4rem; }
-.section-label { padding-bottom: 0.6rem; border-bottom: var(--rule-w) solid var(--line); }
+.section-label { padding-bottom: 0.6rem; border-bottom: var(--rule-w) solid var(--line-soft); }
 
 /* ---------- Work cards ----------
    Rows, not columns. Column packing existed only because a standing cover
@@ -1082,7 +1080,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   text-transform: uppercase;
   color: var(--faint);
 }
-.rate-list { margin-top: 0.7rem; border-top: var(--rule-w) solid var(--line); }
+.rate-list { margin-top: 0.7rem; border-top: var(--rule-w) solid var(--line-soft); }
 .rate-list li {
   display: flex;
   flex-wrap: wrap;
@@ -1090,7 +1088,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   justify-content: space-between;
   gap: 0.25rem 1.5rem;
   padding: 0.72rem 0;
-  border-bottom: var(--rule-w) solid var(--line);
+  border-bottom: var(--rule-w) solid var(--line-soft);
   font-size: var(--t-body);
 }
 .rate-list li > :first-child { flex: 1 1 auto; min-width: 0; }
@@ -1111,7 +1109,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   grid-template-columns: 2rem 1fr;
   gap: 0.6rem;
   padding: 0.78rem 0;
-  border-bottom: var(--rule-w) solid var(--line);
+  border-bottom: var(--rule-w) solid var(--line-soft);
   font-size: var(--t-body);
 }
 .steps .n { font-size: var(--t-label); font-weight: var(--w-semi); color: var(--faint); font-variant-numeric: tabular-nums; }
@@ -1215,7 +1213,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 }
 
 .channels { margin-top: 1.2rem; }
-.channels li { border-bottom: var(--rule-w) solid var(--line); }
+.channels li { border-bottom: var(--rule-w) solid var(--line-soft); }
 .channels a { display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; font-size: var(--t-lead); font-weight: var(--w-medium); }
 .channels .who { align-self: center; font-size: var(--t-label); font-weight: var(--w-regular); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--faint); }
 .channels a:hover .who { color: var(--muted); }
@@ -1284,7 +1282,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .foot {
   margin-top: 4.5rem;
   padding-top: 1.1rem;
-  border-top: var(--rule-w) solid var(--line);
+  border-top: var(--rule-w) solid var(--line-soft);
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1.4rem;
