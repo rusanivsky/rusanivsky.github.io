@@ -473,12 +473,10 @@ const spanFor = (d) => spanAt(6, d, 3, 8);
 function player(item, eager = false) {
   const d = dim(item.poster);
   const vertical = d && d.h > d.w;
-  /* A YouTube film is a link to the film on YouTube, opened in a new tab —
-     or, on a phone with the app, in the app, which claims youtube.com links
-     for itself. Only Vimeo still plays on the page. */
-  const btn = item.platform === 'yt'
-    ? `<a class="player-btn" href="https://www.youtube.com/watch?v=${attr(item.videoId)}" target="_blank" rel="noopener" aria-label="${attr(ui('watchYt') + ' — ' + item.title)}"></a>`
-    : `<button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>`;
+  /* Every film plays right here, in its own frame, from one tap on the
+     poster: YouTube and Vimeo alike. The player itself is only fetched then
+     (site.js), so a page of twenty films loads no third-party code. */
+  const btn = `<button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>`;
   return `<div class="player${vertical ? ' vertical' : ''}">
   ${img(item.poster, '', { eager, sizes: sizesFor(12) })}
   ${btn}

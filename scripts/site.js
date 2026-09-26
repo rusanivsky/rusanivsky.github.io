@@ -155,46 +155,116 @@
   }
 
   /* ---------- Video facade ----------
-     The poster is a real image and the iframe only exists after a click, so
-     a page with twenty videos loads no third-party player at all. */
-  document.addEventListener('click', function (e) {
-    // YouTube posters are plain links to youtube.com; only a button plays here.
-    var btn = e.target.closest('button.player-btn');
-    if (!btn) return;
-    var wrap = btn.closest('.player');
-    var platform = btn.dataset.platform;
-    var id = btn.dataset.videoId;
+     The poster is a real image and the player only exists after a tap, so
+     a page with twenty videos loads no third-party player at all.
+
+     One tap has to be enough. A desktop browser lets a frame built inside
+     the click start with sound. A phone does not: an embed with autoplay=1
+     stops on YouTube's own poster and asks for a second tap. There the frame
+     is made through YouTube's IFrame API instead and told to play the moment
+     it is ready, which the phone accepts as part of the same tap. The API is
+     fetched when a finger first lands on a poster, so it is usually there by
+     the time the tap completes. */
+  var YT_HOST = 'https://www.youtube-nocookie.com';
+  var needsApi = /Mobi|Android|iPhone|iPad/.test(navigator.userAgent) ||
+    (navigator.vendor || '').indexOf('Apple') > -1 ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  var ytApi = null;
+  function loadYtApi() {
+    if (ytApi) return ytApi;
+    ytApi = new Promise(function (resolve, reject) {
+      if (window.YT && window.YT.Player) { resolve(window.YT); return; }
+      var prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (prev) try { prev(); } catch (e) { /* not ours */ }
+        resolve(window.YT);
+      };
+      var s = document.createElement('script');
+      s.src = 'https://www.youtube.com/iframe_api';
+      s.async = true;
+      s.onerror = function () { ytApi = null; reject(); };
+      document.head.appendChild(s);
+    });
+    return ytApi;
+  }
+  if (needsApi) {
+    document.addEventListener('touchstart', function (e) {
+      var b = e.target.closest && e.target.closest('button.player-btn[data-platform="yt"]');
+      if (b) loadYtApi().catch(function () {});
+    }, { passive: true });
+  }
+
+  function teardown() {
+    // One player at a time: any frame already running is torn back down to
+    // its poster before this one starts.
+    document.querySelectorAll('.player iframe, .player .yt-slot').forEach(function (f) {
+      var p = f.closest('.player');
+      f.remove();
+      if (p) { var b = p.querySelector('.player-btn'); if (b) b.hidden = false; }
+    });
+  }
+
+  function plainFrame(wrap, btn, platform, id) {
     // playsinline so a phone plays the film in the page instead of demanding
     // a second tap to go fullscreen; enablejsapi so the player can be told to
     // play once more after it loads, in case the first attempt was refused.
     var src = platform === 'vm'
       ? 'https://player.vimeo.com/video/' + id + '?autoplay=1&playsinline=1'
-      : 'https://www.youtube-nocookie.com/embed/' + id +
-        '?autoplay=1&rel=0&playsinline=1&enablejsapi=1';
+      : YT_HOST + '/embed/' + id + '?autoplay=1&rel=0&playsinline=1&enablejsapi=1';
     var frame = document.createElement('iframe');
     frame.src = src;
     frame.title = btn.getAttribute('aria-label') || 'Video';
     frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen';
     frame.setAttribute('allowfullscreen', '');
-    // One player at a time: any frame already running is torn back down to
-    // its poster before this one starts.
-    document.querySelectorAll('.player iframe').forEach(function (f) {
-      var p = f.closest('.player');
-      f.remove();
-      if (p) { var b = p.querySelector('.player-btn'); if (b) b.hidden = false; }
-    });
     // The click itself is what permits the sound, and the permission is
     // granted for a moment only — so the frame is built and attached inside
     // the handler, with nothing deferred and no lazy loading in between.
     wrap.appendChild(frame);
     btn.hidden = true;
     frame.addEventListener('load', function () {
-      var target = platform === 'vm' ? '*' : 'https://www.youtube-nocookie.com';
+      var target = platform === 'vm' ? '*' : YT_HOST;
       var msg = platform === 'vm'
         ? '{"method":"play"}'
         : '{"event":"command","func":"playVideo","args":[]}';
       try { frame.contentWindow.postMessage(msg, target); } catch (err) { /* blocked */ }
     });
+  }
+
+  function apiFrame(wrap, btn, id) {
+    // The slot is what the API replaces with its iframe.
+    var slot = document.createElement('div');
+    slot.className = 'yt-slot';
+    wrap.appendChild(slot);
+    btn.hidden = true;
+    loadYtApi().then(function (YT) {
+      if (!slot.isConnected) return;
+      var player = new YT.Player(slot, {
+        host: YT_HOST,
+        videoId: id,
+        width: '100%',
+        height: '100%',
+        playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
+        events: { onReady: function (ev) { ev.target.playVideo(); } },
+      });
+      var f = player.getIframe && player.getIframe();
+      if (f) f.title = btn.getAttribute('aria-label') || 'Video';
+    }).catch(function () {
+      // No API (blocked, offline): the plain embed still plays, if on a
+      // second tap.
+      slot.remove();
+      plainFrame(wrap, btn, 'yt', id);
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('button.player-btn');
+    if (!btn) return;
+    var wrap = btn.closest('.player');
+    var platform = btn.dataset.platform;
+    var id = btn.dataset.videoId;
+    teardown();
+    if (platform === 'yt' && needsApi) apiFrame(wrap, btn, id);
+    else plainFrame(wrap, btn, platform, id);
   });
 
   /* ---------- Brief ----------
