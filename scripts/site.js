@@ -67,10 +67,12 @@
         var cs = getComputedStyle(host);
         var off = parseFloat(cs.getPropertyValue('--glow-off')) || 0;
         var offPx = /vw/.test(cs.getPropertyValue('--glow-off')) ? off * document.documentElement.clientWidth / 100 : off;
+        var rise = parseFloat(cs.getPropertyValue('--glow-rise')) || 0;
+        var risePx = /vw/.test(cs.getPropertyValue('--glow-rise')) ? rise * document.documentElement.clientWidth / 100 : rise;
         var core = (parseFloat(cs.getPropertyValue('--glow-core')) || 0) / 100;
         var tint = hex(getComputedStyle(root).getPropertyValue('--head-tint'));
         var paper = hex(cs.getPropertyValue('--glow-base'));
-        var key = [side, offPx, core, tint, paper].join();
+        var key = [side, offPx, risePx, core, tint, paper].join();
         if (!side || key === glowKey) return;
         glowKey = key;
 
@@ -84,7 +86,7 @@
         // xorshift: Math.random for five million pixels is the slow part.
         var seed = 2463534242;
         for (var y = 0, i = 0; y < side; y++) {
-          var dy = y + 0.5;
+          var dy = y + 0.5 + risePx * dpr;
           for (var x = 0; x < side; x++, i += 4) {
             var dx = cx - x - 0.5;
             var t = (Math.sqrt(dx * dx + dy * dy) / R - core) / (1 - core);
