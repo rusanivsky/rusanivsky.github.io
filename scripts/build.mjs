@@ -829,12 +829,12 @@ function projectPage(p, index) {
       <p class="vid-title">${esc(v.title)}</p>
     </div>`).join('\n');
   } else if (p.disciplines.includes('photography')) {
-    sequence = `<div class="col-full">${collage(leadItems.length ? leadItems : p.media, p.slug, true)}</div>`;
-    if (restItems.length) {
-      sequence += `
-      <button type="button" class="rest-toggle col-full" aria-controls="rest-${p.slug}">${ui('showRest')} ${restItems.length} ${ui('frames')}</button>
-      <div class="rest col-full" id="rest-${p.slug}" hidden>${collage(restItems, p.slug + '-rest')}</div>`;
-    }
+    // The whole series, on the page: the chosen frames lead and the rest
+    // follow in the same collage. Nothing waits behind a button — a series
+    // cut short reads as all there is. The frames past the first screen are
+    // lazy, so the page still costs only what is scrolled to.
+    const series = leadItems.length ? leadItems.concat(restItems) : p.media;
+    sequence = `<div class="col-full">${collage(series, p.slug, true)}</div>`;
   } else {
     // Design projects are one or two deliberate objects; a collage of two
     // items is not a collage, it is two pictures with an excuse.
