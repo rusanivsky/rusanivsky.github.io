@@ -76,8 +76,10 @@
      section rules, lists, fields, the foot — is this one solid colour at
      this one weight, whatever lies under it. Solid, never thinned with
      transparency: a see-through rule takes on the colour of what it
-     crosses and changes along its length over the green. */
-  --line: #2b2a26;
+     crosses and changes along its length over the green. Light, and
+     lighter than the brightest green: a dark rule reads as a dark stripe
+     over the glow. */
+  --line: #6a6862;
   --rule-w: 1px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
