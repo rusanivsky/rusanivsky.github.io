@@ -1,0 +1,10 @@
+# Serves the site's films from R2 — the Cloudflare test that replaces YouTube.
+# Deploy: npx wrangler deploy (from this folder).
+name = "rusanivsky-video"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[[r2_buckets]]
+binding = "VIDEO"
+bucket_name = "rusanivsky-video"
