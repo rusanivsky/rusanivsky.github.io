@@ -134,7 +134,7 @@
      wide glow in the empty top right of the page: in the dark it is the old
      plate itself, in the light a pale wash of the same hue. */
   --green: #2b3e2d;
-  --head-tint: #dbe8d8;
+  --head-tint: #c3d8be;
 
   color-scheme: light;
 }
@@ -575,10 +575,9 @@ body::before {
    the work stay above it. */
 html.sub main { position: relative; }
 html.sub main::before {
-  /* A circle centred on the top right corner of the page, so exactly one
-     quarter of it falls on the page. Its radius is a whole screen high
-     (never more than most of the page's width), so the quarter is large. */
-  --glow-r: min(100svh, 75vw);
+  /* On a phone: a circle centred on the top right corner, so one quarter of
+     it falls on the page. */
+  --glow-r: 105vw;
   content: '';
   position: absolute;
   top: 0;
@@ -590,13 +589,27 @@ html.sub main::before {
   background: radial-gradient(
     circle var(--glow-r) at 100% 0%,
     var(--head-tint) 0%,
-    color-mix(in srgb, var(--head-tint) 55%, transparent) 40%,
-    color-mix(in srgb, var(--head-tint) 18%, transparent) 72%,
+    color-mix(in srgb, var(--head-tint) 60%, transparent) 40%,
+    color-mix(in srgb, var(--head-tint) 22%, transparent) 72%,
     transparent 100%
   );
 }
-@media (max-width: 60.99rem) {
-  html.sub main::before { --glow-r: 105vw; }
+/* On the desktop: the centre moves left along the top edge until the whole
+   lower half of the circle lies on the page. The radius is half the width
+   of the column beside the rail (and never taller than the screen), so the
+   half-circle spans the page without reaching under the rail. */
+@media (min-width: 61rem) {
+  html.sub main::before {
+    --glow-r: min(100svh, calc((100vw - var(--rail)) / 2));
+    width: calc(var(--glow-r) * 2);
+    background: radial-gradient(
+      circle var(--glow-r) at 50% 0%,
+      var(--head-tint) 0%,
+      color-mix(in srgb, var(--head-tint) 60%, transparent) 40%,
+      color-mix(in srgb, var(--head-tint) 22%, transparent) 72%,
+      transparent 100%
+    );
+  }
 }
 
 /* ============================================================
