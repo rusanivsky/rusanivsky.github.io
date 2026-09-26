@@ -575,18 +575,28 @@ body::before {
    the work stay above it. */
 html.sub main { position: relative; }
 html.sub main::before {
+  /* A circle centred on the top right corner of the page, so exactly one
+     quarter of it falls on the page. Its radius is a whole screen high
+     (never more than most of the page's width), so the quarter is large. */
+  --glow-r: min(100svh, 75vw);
   content: '';
   position: absolute;
   top: 0;
   right: 0;
   z-index: -1;
-  width: min(72%, 70rem);
-  height: min(100svh, 56rem);
+  width: var(--glow-r);
+  height: var(--glow-r);
   pointer-events: none;
-  background: radial-gradient(ellipse 100% 100% at 100% 0%, var(--head-tint) 0%, color-mix(in srgb, var(--head-tint) 45%, transparent) 42%, transparent 72%);
+  background: radial-gradient(
+    circle var(--glow-r) at 100% 0%,
+    var(--head-tint) 0%,
+    color-mix(in srgb, var(--head-tint) 55%, transparent) 40%,
+    color-mix(in srgb, var(--head-tint) 18%, transparent) 72%,
+    transparent 100%
+  );
 }
 @media (max-width: 60.99rem) {
-  html.sub main::before { width: 100%; height: 70svh; }
+  html.sub main::before { --glow-r: 105vw; }
 }
 
 /* ============================================================
