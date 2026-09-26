@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en" data-theme="auto" class="sub">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -26,7 +26,7 @@
 <meta name="twitter:title" content="Video — Kyrylo Rusanivsky">
 <meta name="twitter:description" content="Camera, editing and colour: documentary, interviews and YouTube series, brand videos and short-form work.">
 <meta name="twitter:image" content="https://rusanivsky.com/og-image.jpg?v=57611f4f">
-<meta name="theme-color" content="#f8f8f8">
+<meta name="theme-color" content="#dbe8d8">
 <link rel="icon" href="/favicon.ico?v=ecfd5eb9" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=ecfd5eb9" type="image/svg+xml">
 <link rel="icon" href="/favicon-dark.ico?v=ecfd5eb9" sizes="32x32" media="(prefers-color-scheme: dark)">
@@ -36,20 +36,23 @@
 <link rel="manifest" href="/site.webmanifest?v=ecfd5eb9">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=2eb12a2c">
+<link rel="stylesheet" href="/styles/site.css?v=f260bf91">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var r=document.documentElement;r.className+=' fx';
+setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');
-var r=document.documentElement;r.className+=' splash-on';
+r.className+=' splash-on';
 var t0=Date.now(),done=false;
 function finish(){if(done)return;done=true;
-setTimeout(function(){r.className+=' splash-off';
+setTimeout(function(){if(window.krSplashExit){window.krSplashExit();return;}
+r.className+=' splash-off';
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
 },Math.max(0,2000-(Date.now()-t0)));}
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();</script>
-<script src="/scripts/site.js?v=38f78cde" defer></script>
+<script src="/scripts/site.js?v=6196fe63" defer></script>
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
 </head>

@@ -199,15 +199,27 @@ const splash = () => `
 /* Заставка не просто відлічує секунди — вона прикриває завантаження.
    Іде, коли сторінка готова (подія load), але не раніше ніж через 2 с,
    щоб не блимнути, і не пізніше ніж через 6 с: одне неквапливе фото не
-   має тримати екран замість того, щоб довантажитися вже під сторінкою. */
+   має тримати екран замість того, щоб довантажитися вже під сторінкою.
+
+   Сама заставка не гасне, а передає імʼя шапці: цим займається
+   krSplashExit у site.js. Якщо скрипт так і не прийшов — старе згасання.
+
+   Клас fx вмикає появу сторінки (рядки, блоки, прев'ю). Він ставиться тут,
+   до першого малювання, щоб текст не блимнув видимим і не сховався знову;
+   fx-ready через 3 с — страховка: якщо site.js не завантажився, сторінка
+   однаково показується. */
+const HEAD_TINT = '#dbe8d8';
 const SPLASH_BOOT = `(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var r=document.documentElement;r.className+=' fx';
+setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');
-var r=document.documentElement;r.className+=' splash-on';
+r.className+=' splash-on';
 var t0=Date.now(),done=false;
 function finish(){if(done)return;done=true;
-setTimeout(function(){r.className+=' splash-off';
+setTimeout(function(){if(window.krSplashExit){window.krSplashExit();return;}
+r.className+=' splash-off';
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
 },Math.max(0,2000-(Date.now()-t0)));}
 addEventListener('load',finish);
@@ -301,9 +313,13 @@ function page({ here, path, title, description, body, ogImage = '/og-image.jpg' 
     if (seo.t) title = seo.t;
     if (seo.d) description = seo.d;
   }
+  /* Every page but the home page wears the green of the old site behind its
+     header; the home page keeps the neutral paper and gives the colour to the
+     work alone. */
+  const sub = !body.includes('<main class="home"');
   const ogUrl = `${SITE}${ogImage}${ogImage.startsWith('/og-image') ? `?v=${OG_V}` : ''}`;
   return `<!DOCTYPE html>
-<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="auto">
+<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="auto"${sub ? ' class="sub"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -330,7 +346,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <meta name="twitter:title" content="${attr(title)}">
 <meta name="twitter:description" content="${attr(description)}">
 <meta name="twitter:image" content="${ogUrl}">
-<meta name="theme-color" content="#f8f8f8">
+<meta name="theme-color" content="${sub ? HEAD_TINT : '#f8f8f8'}">
 <link rel="icon" href="/favicon.ico?v=${ICON_V}" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=${ICON_V}" type="image/svg+xml">
 <link rel="icon" href="/favicon-dark.ico?v=${ICON_V}" sizes="32x32" media="(prefers-color-scheme: dark)">

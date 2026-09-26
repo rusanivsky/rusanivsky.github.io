@@ -123,6 +123,14 @@
 
   --t: 160ms;
   --ease: cubic-bezier(0.32, 0.08, 0.24, 1);
+  /* The entrance ease: fast out of the gate, a long quiet landing. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* The green of the old site. It stays behind the header of every page but
+     the home page: in the dark it is the old plate itself, in the light a
+     pale wash of the same hue, so the header text keeps its contrast. */
+  --green: #2b3e2d;
+  --head-tint: #dbe8d8;
 
   color-scheme: light;
 }
@@ -137,6 +145,7 @@
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
   --grain: 0.03;
+  --head-tint: var(--green);
   color-scheme: dark;
 }
 
@@ -151,6 +160,7 @@
     --surface: #1b1b18;
     --stage-bg: #1b1b18;
     --grain: 0.03;
+    --head-tint: var(--green);
     color-scheme: dark;
   }
 }
@@ -553,6 +563,15 @@ body::before {
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 
+/* The header of a subpage stands on the old site's green: the colour runs
+   down from the top edge and gives way to the paper within the first third,
+   so it frames the name and the navigation and never reaches the work. The
+   bar holds it whole — it is only as tall as the name — and the menu opens
+   on the same wash, so the name does not change ground when it opens. */
+html.sub .bar { background: var(--head-tint); }
+html.sub .drawer,
+html.sub .rail { background: linear-gradient(to bottom, var(--head-tint), var(--paper) 30%); }
+
 /* ============================================================
    Home — index on four columns, stage on eight
    ============================================================ */
@@ -719,6 +738,14 @@ body::before {
      the wall ends on its axis instead of on its left edge. */
   .tile.orphan { grid-column: 1 / -1; width: calc(50% - 0.35rem); justify-self: center; }
   .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+  /* Under the pointer a frame leans in: a slow five-percent push inside its
+     own cell, which holds the edges still. The home page only — the stage is
+     a preview, and the pages behind it keep their pictures untouched. */
+  .tile { overflow: hidden; }
+  .tile img { transition: transform 1s var(--ease-out); }
+  @media (hover: hover) {
+    .tile:hover img { transform: scale(1.05); }
+  }
 
   /* The rule for a wall that does not fill itself: a full wall takes the whole
      panel, and the only frame that is held back is a lone one. It is held back
@@ -1377,6 +1404,52 @@ html.splash-off .splash {
 @media (prefers-reduced-motion: reduce) {
   html.splash-on { overflow: auto; }
   html.splash-on .splash { display: none; }
+}
+
+/* ============================================================
+   Entrances
+   ============================================================
+   All of this hangs off .fx, which the boot script raises only when motion
+   is welcome; site.js explains who is marked and when. Until the script has
+   marked the page, the page waits unseen — for three seconds at most, after
+   which the boot script shows it regardless. */
+html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
+
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s ease, transform 1s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.rv-fade {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  transition-delay: var(--d, 0s);
+}
+.rv.rv-in, .rv-fade.rv-in { opacity: 1; transform: none; }
+/* The header is small type: a rise of 28px would read as a jump there. */
+:is(.rail, .bar) .rv { transform: translateY(8px); }
+:is(.rail, .bar) .rv.rv-in { transform: none; }
+/* On a phone blocks only fade: a column that slides under the thumb reads
+   as the page moving, not arriving. */
+@media (max-width: 60.99rem) {
+  main .rv { transform: none; }
+}
+
+.lf .w { opacity: 0; transition: opacity 0.6s ease; }
+.lf.lf-in .w { opacity: 1; }
+
+/* The card's exit: the paper goes, the name stays and is moved by site.js. */
+.splash.splash-clear {
+  background-color: transparent;
+  pointer-events: none;
+  transition: background-color 700ms var(--ease-out) 120ms;
+}
+.splash.splash-clear::before { opacity: 0; transition: opacity 500ms ease; }
+.splash-name { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv-fade, .lf .w { opacity: 1; transform: none; }
 }
 
 /* ============================================================
