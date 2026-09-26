@@ -67,19 +67,17 @@
   /* The site ships in the dark only. Every colour below is solid: a rule
      or a line of small text has to be the same colour over the green as it
      is over bare paper, and anything thinned with transparency takes the
-     green up through it. The rules are also lighter than the brightest
-     green they cross: a grey that falls between the paper and the green
-     reads light on one and as a dark stripe on the other, which is two
-     colours to the eye however equal the pixels are. */
+     green up through it. */
   --paper: #141412;
   --ink: #e8e5de;
   --muted: #a7a39a;
   --faint: #8a857c;
   /* One rule for the whole site: every line — the rail's edge, the header,
-     section rules, lists, fields, the foot — is this one light grey at this
-     one weight. Lighter than the brightest green it can cross, so it never
-     turns into a dark stripe over the glow. */
-  --line: #6a6862;
+     section rules, lists, fields, the foot — is this one solid colour at
+     this one weight, whatever lies under it. Solid, never thinned with
+     transparency: a see-through rule takes on the colour of what it
+     crosses and changes along its length over the green. */
+  --line: #2b2a26;
   --rule-w: 1px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
