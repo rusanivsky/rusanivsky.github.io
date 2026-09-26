@@ -21,9 +21,10 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const run = promisify(execFile);
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const CHROME = process.env.CHROME
   ?? ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => existsSync(p));
@@ -65,16 +66,37 @@ console.log('favicon.svg, favicon-dark.svg');
 const work = path.join(tmpdir(), 'kr-icons');
 mkdirSync(work, { recursive: true });
 
+/* The SVG is drawn into a canvas of the exact size and read back as a data
+   URL, not screenshotted. A --screenshot is only as tall as the viewport, and
+   headless Chrome 153 takes ~87px of --window-size for its own chrome: the
+   16/32px icons came out blank and the 180px one lost its lower half. */
 async function shoot(svgText, size, out) {
   const page = path.join(work, `p${size}-${Math.random().toString(36).slice(2, 7)}.html`);
-  writeFileSync(page, `<!doctype html><meta charset=utf-8>
-<style>html,body{margin:0;padding:0}svg{display:block;width:${size}px;height:${size}px}</style>
-${svgText}`);
-  await run(CHROME, [
-    '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
-    `--window-size=${size},${size}`, `--screenshot=${out}`, `file://${page}`,
-  ]);
-  return readFileSync(out);
+  const src = `data:image/svg+xml;base64,${Buffer.from(svgText).toString('base64')}`;
+  writeFileSync(page, `<!doctype html><meta charset=utf-8><pre id=out></pre>
+<script>
+const img = new Image();
+img.onload = () => {
+  const c = document.createElement('canvas');
+  c.width = c.height = ${size};
+  const g = c.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, 0, 0, ${size}, ${size});
+  document.getElementById('out').textContent = c.toDataURL('image/png');
+};
+img.src = ${JSON.stringify(src)};
+</script>`);
+  const { stdout } = await run(CHROME, [
+    '--headless=new', '--disable-gpu', '--force-device-scale-factor=1',
+    '--virtual-time-budget=5000', '--dump-dom', `file://${page}`,
+  ], { maxBuffer: 64 << 20 });
+  const m = stdout.match(/data:image\/png;base64,([A-Za-z0-9+/=]+)/);
+  if (!m) throw new Error(`no raster for ${size}px`);
+  const buf = Buffer.from(m[1], 'base64');
+  const { w, h } = pngSize(buf);
+  if (w !== size || h !== size) throw new Error(`${size}px raster came out ${w}x${h}`);
+  writeFileSync(out, buf);
+  return buf;
 }
 
 const pngSize = (buf) => ({ w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) });

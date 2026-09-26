@@ -28,7 +28,13 @@ const JS_V = short('scripts/site.js');
 // Social networks cache a card by URL and never re-fetch it, so the OG image
 // carries a content hash too.
 const OG_V = short('og-image.jpg');
-const ICON_V = short('favicon.svg');
+// One version for the whole icon set: the rasters can change while the SVG
+// stays put (a broken render once shipped under an unchanged ?v=).
+const ICON_V = createHash('sha1')
+  .update(['favicon.svg', 'favicon-dark.svg', 'favicon.ico', 'favicon-dark.ico',
+    'apple-touch-icon.png', 'apple-touch-icon-dark.png', 'site.webmanifest']
+    .map(short).join(''))
+  .digest('hex').slice(0, 8);
 const GA_V = short('scripts/google-analytics.js');
 
 /* One switch separates the staging copy from the live site. Everything that
