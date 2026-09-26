@@ -594,21 +594,14 @@ html.sub main::before {
     transparent 100%
   );
 }
-/* On the desktop: the centre moves left along the top edge until the whole
-   lower half of the circle lies on the page. The radius is half the width
-   of the column beside the rail (and never taller than the screen), so the
-   half-circle spans the page without reaching under the rail. */
+/* On the desktop the circle keeps its centre on the top right corner, so
+   again one quarter of it falls on the page, only larger: its radius is the
+   whole width of the column beside the rail (up to a screen and a third
+   high), so the quarter reaches across the page without going under the
+   rail. */
 @media (min-width: 61rem) {
   html.sub main::before {
-    --glow-r: min(100svh, calc((100vw - var(--rail)) / 2));
-    width: calc(var(--glow-r) * 2);
-    background: radial-gradient(
-      circle var(--glow-r) at 50% 0%,
-      var(--head-tint) 0%,
-      color-mix(in srgb, var(--head-tint) 60%, transparent) 40%,
-      color-mix(in srgb, var(--head-tint) 22%, transparent) 72%,
-      transparent 100%
-    );
+    --glow-r: min(135svh, calc(100vw - var(--rail)));
   }
 }
 
