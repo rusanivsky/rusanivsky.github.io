@@ -88,8 +88,6 @@ export const UI = {
   splashRole: { en: 'creative specialist', ua: 'креативний спеціаліст' },
   play: { en: 'Play', ua: 'Відтворити' },
   watchYt: { en: 'Watch on YouTube', ua: 'Дивитися на YouTube' },
-  showRest: { en: 'Show the remaining', ua: 'Показати решту' },
-  frames: { en: 'frames', ua: 'кадрів' },
   ratesCovers: {
     en: 'covers pricing, timelines, revisions, payment, delivery and rights.',
     ua: 'охоплюють ціни, терміни, правки, оплату, передачу файлів і права.',

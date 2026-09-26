@@ -611,16 +611,6 @@
     }, { passive: true });
   }
 
-  /* ---------- Reveal the rest of a long photographic series ---------- */
-  document.addEventListener('click', function (e) {
-    var t = e.target.closest('.rest-toggle');
-    if (!t) return;
-    var rest = document.getElementById(t.getAttribute('aria-controls'));
-    if (!rest) return;
-    rest.hidden = false;
-    t.hidden = true;
-  });
-
   /* ---------- How a page arrives ----------
      The boot script in <head> raises .fx before the first paint whenever the
      visitor has not asked for less motion; nothing below runs without it.
