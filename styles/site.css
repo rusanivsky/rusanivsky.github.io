@@ -453,6 +453,9 @@ body::before {
   transition: color var(--t) var(--ease);
 }
 .rail-foot a:hover { color: var(--ink); }
+/* Rates and the two profiles are read at the same size as the navigation
+   above them; only the colour keeps them a step back. */
+.rail-foot > a:not(.rail-legal) { font-size: var(--t-meta); letter-spacing: 0; }
 
 /* The city and the copyright live here and nowhere else — the one place on
    the page that is always present, so the main column never has to carry a
@@ -547,7 +550,8 @@ body::before {
 }
 .drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
 .drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
-.drawer .group.small a { font-size: var(--t-meta); font-weight: var(--w-regular); line-height: 2.1; color: var(--muted); }
+.drawer .group.small a { color: var(--muted); }
+.drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 
 /* ============================================================
    Home — index on four columns, stage on eight
