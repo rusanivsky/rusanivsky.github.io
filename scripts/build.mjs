@@ -687,7 +687,7 @@ function homePage() {
 </a>`).join('\n');
 
   const slides = featured.map((p, i) =>
-    `<div class="slide${i === 0 ? ' on' : ''}" data-title="${attr(L(p.title))}" data-meta="${attr(projectMeta(p).join(' · '))}" aria-hidden="${i === 0 ? 'false' : 'true'}">${mosaic(p, i === 0)}</div>`).join('\n');
+    `<div class="slide${i === 0 ? ' on' : ''}" aria-hidden="${i === 0 ? 'false' : 'true'}">${mosaic(p, i === 0)}</div>`).join('\n');
 
   const body = `
 <main class="home" id="main">
@@ -703,7 +703,6 @@ ${rows}
     <div class="stage-frame">
 ${slides}
     </div>
-    <p class="stage-caption"><span id="stage-title"></span><span id="stage-meta"></span></p>
   </div>
 </main>`;
 

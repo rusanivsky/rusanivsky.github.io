@@ -554,6 +554,7 @@ html.sub main {
   --glow-r: 105vw;
   --glow-off: 30vw;
   --glow-core: 28%;
+  --glow-base: var(--paper);
 }
 html.sub main::before {
   /* On a phone: a circle centred beyond the right edge, level with the top,
@@ -626,6 +627,15 @@ html.sub main > canvas.glow {
   pointer-events: none;
 }
 html.glow-baked.sub main::before { display: none; }
+.stage > canvas.glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: var(--glow-r);
+  height: var(--glow-r);
+  pointer-events: none;
+}
 
 /* ============================================================
    Home — index on four columns, stage on eight
@@ -746,17 +756,39 @@ html.glow-baked.sub main::before { display: none; }
      column. */
   .stage {
     display: block;
-    /* The caption below is absolute and belongs to this panel. Without a
-       position here it escaped to the page itself and printed the project
-       title across the bottom of the sidebar. */
     position: relative;
     height: 100svh;
     grid-column: 5 / -1;
     border-left: var(--rule-w) solid var(--line-soft);
-    background: var(--stage-bg);
+    /* The same green as on a subpage, and the same circle: its centre on the
+       window's top right corner, which is also the panel's, so the glow sits
+       exactly where it sits on every other page. It fades into the panel's
+       own grey, on the same eased curve, and scripts/site.js redraws it
+       dithered onto a canvas just as it does on a subpage. */
+    --glow-r: min(135svh, calc(100vw - var(--rail)));
+    --glow-off: 0px;
+    --glow-core: 0%;
+    --glow-base: var(--stage-bg);
+    overflow: hidden;
+    background: radial-gradient(
+      circle var(--glow-r) at 100% 0%,
+      var(--head-tint),
+      color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) 8.33%,
+      color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) 16.67%,
+      color-mix(in srgb, var(--head-tint) 85.4%, var(--stage-bg)) 25%,
+      color-mix(in srgb, var(--head-tint) 75%, var(--stage-bg)) 33.33%,
+      color-mix(in srgb, var(--head-tint) 62.9%, var(--stage-bg)) 41.67%,
+      color-mix(in srgb, var(--head-tint) 50%, var(--stage-bg)) 50%,
+      color-mix(in srgb, var(--head-tint) 37.1%, var(--stage-bg)) 58.33%,
+      color-mix(in srgb, var(--head-tint) 25%, var(--stage-bg)) 66.67%,
+      color-mix(in srgb, var(--head-tint) 14.6%, var(--stage-bg)) 75%,
+      color-mix(in srgb, var(--head-tint) 6.7%, var(--stage-bg)) 83.33%,
+      color-mix(in srgb, var(--head-tint) 1.7%, var(--stage-bg)) 91.67%,
+      var(--stage-bg) 100%
+    );
     margin-left: calc(var(--col-gap) / -2);
     margin-right: calc(var(--pad) * -1);
-    padding: 2.6rem 0 2.4rem;
+    padding: 2.6rem 0;
     transition: background-color var(--t) var(--ease);
   }
   .stage-frame { height: 100%; position: relative; }
@@ -822,19 +854,6 @@ html.glow-baked.sub main::before { display: none; }
   .mosaic.solo {
     width: calc(min(100cqw, 100cqh * var(--wall, 1)) * var(--solo, 0.6));
   }
-
-  .stage-caption {
-    position: absolute;
-    left: 2.5rem;
-    right: 2.5rem;
-    bottom: 0.9rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    font-size: var(--t-label);
-    color: var(--faint);
-  }
-  .stage-caption span:first-child { font-weight: var(--w-semi); color: var(--muted); }
 }
 
 /* ============================================================
