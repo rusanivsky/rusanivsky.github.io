@@ -64,17 +64,28 @@
    snaps to, and a six-step type scale where each step has one job. Nothing
    is sized ad hoc; if a thing needs a size, it takes one of these steps. */
 :root {
-  --paper: #f8f8f8;
-  --ink: #111111;
-  --muted: #6b6b6b;
-  --faint: #717171;
-  --line: #dddddd;
-  --line-soft: #ebebeb;
-  --surface: #f1f1f1;
-  --stage-bg: #eeeeee;
+  /* The site ships in the dark only. Every colour below is solid: a rule,
+     a field or a line of small text has to be the same colour over the
+     green as it is over bare paper, and anything thinned with transparency
+     takes the green up through it. */
+  --paper: #141412;
+  --ink: #e8e5de;
+  --muted: #a7a39a;
+  --faint: #8a857c;
+  --line: #2b2a26;
+  --line-soft: #232220;
+  --surface: #1b1b18;
+  --stage-bg: #1b1b18;
 
-  --grain: 0.022;
-  --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* The grain of the old site, as it was: a raster tile laid in overlay.
+     A raster and not an feTurbulence filter, because every engine
+     rasterises the filter its own way; overlay, because it moves lightness
+     and never hue. It is what keeps the green glow from banding — eight
+     bits a channel across a dark gradient show as steps to the naked eye,
+     and the grain dithers them away. */
+  --grain: 0.18;
+  --grain-image: url("grain.webp");
+  --grain-size: 160px;
 
   /* --- Grid --- */
   --cols: 12;
@@ -131,43 +142,19 @@
   --pace: 1.6;
 
   /* The green of the old site. Every page but the home page carries it as a
-     wide glow in the empty top right of the page: in the dark it is the old
-     plate itself, in the light a pale wash of the same hue. */
-  --green: #2b3e2d;
-  --head-tint: #a9c5a2;
-
-  color-scheme: light;
-}
-
-:root[data-theme='dark'] {
-  --paper: #141412;
-  --ink: #e8e5de;
-  --muted: #a7a39a;
-  --faint: #8a857c;
-  --line: #2b2a26;
-  --line-soft: #232220;
-  --surface: #1b1b18;
-  --stage-bg: #1b1b18;
-  --grain: 0.03;
+     wide glow in the empty top right of the page. It is the top of the old
+     plate (#42563f, where it met the header) rather than its middle
+     (#2b3e2d): the middle sank into the dark paper. */
+  --green: #42563f;
   --head-tint: var(--green);
+
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root[data-theme='auto'] {
-    --paper: #141412;
-    --ink: #e8e5de;
-    --muted: #a7a39a;
-    --faint: #8a857c;
-    --line: #2b2a26;
-    --line-soft: #232220;
-    --surface: #1b1b18;
-    --stage-bg: #1b1b18;
-    --grain: 0.03;
-    --head-tint: var(--green);
-    color-scheme: dark;
-  }
-}
+/* The tile lies pixel for pixel on the screen's density, or each engine
+   stretches it with its own smoothing and the grain drifts apart again. */
+@media (min-resolution: 1.5dppx) { :root { --grain-size: 80px; } }
+@media (min-resolution: 2.5dppx) { :root { --grain-size: 53.334px; } }
 
 /* ---------- The grid ----------
    One declaration, used by every page-level container. Below the desktop
@@ -239,48 +226,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---------- Why the theme fade lives behind an attribute ----------
-   Chromium will not restart a colour transition when the new value arrives
-   from a media query alone: nothing on the element changed, so the element
-   keeps the colour it was already showing. The page therefore stayed in the
-   old theme after the system flipped, although --paper and --ink had both
-   already moved — the automatic theme looked broken, and looked broken with
-   JavaScript off too, where nothing could paper over it.
-
-   So the fade now belongs to the manual switch only, where a script is by
-   definition present to ask for it. The automatic change is instant, which
-   is what it should always have been: the system fades its own windows, and
-   a second fade on top of that is a page arguing with the machine. */
-:root[data-theming] body {
-  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
-}
-
-/* The same bug in miniature: the small transitions that exist for hover hold
-   their old colour after an automatic change until something hovers them.
-   Dropping every transition for a single frame is the only thing that lets
-   them go — the script raises this flag around the change and lowers it
-   again before anything is painted. */
-:root[data-theme-settle] * {
-  transition: none !important;
-}
-
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 h1, h2, h3, h4, p, ul, ol, figure, dl, dd { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
 
-/* Procedural grain: page background only. It sits under the content layer and
-   is masked off anything that holds media — the brief is explicit that grain
-   must never land on a photograph. */
-body::before {
+/* The page grain lies under the content and over the green: it is the last
+   thing drawn at the back of the shell, after the glow, so it dithers the
+   glow as well as the paper, and every picture sits on top of it — the brief
+   is explicit that grain must never land on a photograph. The shell carries
+   the paper itself because overlay needs something to blend with inside the
+   shell's own stacking context; over nothing it would lie as plain grey. */
+.shell { background: var(--paper); }
+.shell::after {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   opacity: var(--grain);
   background-image: var(--grain-image);
+  background-size: var(--grain-size) var(--grain-size);
+  mix-blend-mode: overlay;
 }
 
 /* The paper grain is a surface treatment, not a page-only treatment. Repeat
@@ -299,6 +267,8 @@ body::before {
   pointer-events: none;
   opacity: var(--grain);
   background-image: var(--grain-image);
+  background-size: var(--grain-size) var(--grain-size);
+  mix-blend-mode: overlay;
 }
 :where(.bar, .drawer, .stage, .lb, .splash) > *,
 :where(.row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot) img,
@@ -308,8 +278,8 @@ body::before {
   position: relative;
   z-index: 1;
 }
-@media (prefers-reduced-transparency: reduce) {
-  body::before,
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .shell::after,
   :where(.bar, .drawer, .stage, .row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot, .lb, .splash)::before {
     display: none;
   }
@@ -575,15 +545,6 @@ body::before {
    under the content inside the shell's stacking context, so the grain and
    the work stay above it. */
 html.sub main { position: relative; }
-/* Over the green, fixed light greys read as white stripes. On a subpage the
-   rules and the light fields are drawn in the ink itself, thinned — on bare
-   paper they come out the same greys as before, over the green they darken
-   with it. */
-html.sub {
-  --line: color-mix(in srgb, var(--ink) 14%, transparent);
-  --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
-  --surface: color-mix(in srgb, var(--ink) 5%, transparent);
-}
 html.sub main::before {
   /* On a phone: a circle centred beyond the right edge, level with the top,
      so less than a quarter of it falls on the page and the green stays to

@@ -3,7 +3,7 @@
 
   Everything here degrades: with JavaScript off you still get a readable
   index, working links to every project, real posters, and a page that
-  follows the system theme through CSS alone.
+  keeps its one dark theme, which is CSS alone.
 */
 (function () {
   'use strict';
@@ -23,65 +23,12 @@
     root.toggleAttribute('data-grid');
   });
 
-  /* ---------- Theme: auto | light | dark ----------
-     Auto is the default and is plain prefers-color-scheme in CSS. A manual
-     choice is stored and wins until the visitor picks Auto again. The clock
-     is never consulted — the brief rules that out explicitly. */
-  var THEME_KEY = 'kr-theme';
-  var fadeOut = 0;
-  var LIGHT = '#f8f8f8';
-  var DARK = '#141412';
-
-  function stored() {
-    try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
-  }
-
-  function effective(mode) {
-    if (mode === 'light' || mode === 'dark') return mode;
-    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  function paint(mode) {
-    root.setAttribute('data-theme', mode);
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', effective(mode) === 'dark' ? DARK : LIGHT);
-    document.querySelectorAll('.theme button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.theme === mode));
-    });
-  }
-
-  paint(stored() || 'auto');
-
-  /* An automatic change needs no repainting from here — the media query in
-     the stylesheet has already moved every token. What it does need is one
-     frame with the transitions switched off, or the colours that were mid-
-     transition stay where they were; styles/site.css explains the bug this
-     works around. Both forced reads are the point: they flush the styles
-     while the flag is up, so nothing is ever painted in between. */
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-    if (root.getAttribute('data-theme') !== 'auto') return;
-    root.setAttribute('data-theme-settle', '');
-    void root.offsetHeight;
-    paint('auto');
-    void root.offsetHeight;
-    root.removeAttribute('data-theme-settle');
-  });
-
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.theme button');
-    if (!btn) return;
-    var mode = btn.dataset.theme;
-    try {
-      if (mode === 'auto') localStorage.removeItem(THEME_KEY);
-      else localStorage.setItem(THEME_KEY, mode);
-    } catch (err) { /* private mode — the choice just will not persist */ }
-    /* The fade is for this moment only: a deliberate switch deserves one,
-       and here the attribute change restarts the transition properly. */
-    root.setAttribute('data-theming', '');
-    paint(mode);
-    clearTimeout(fadeOut);
-    fadeOut = setTimeout(function () { root.removeAttribute('data-theming'); }, 400);
-  });
+  /* ---------- Theme ----------
+     The site ships in the dark only, so there is nothing to choose and
+     nothing to follow: data-theme="dark" is written into every page by the
+     build. A light choice stored by an earlier version is cleared, so it
+     cannot come back if a switch ever returns. */
+  try { localStorage.removeItem('kr-theme'); } catch (e) { /* private mode */ }
 
   /* ---------- Holding the page still ----------
      Two things cover the page — the drawer and the viewer — and neither is

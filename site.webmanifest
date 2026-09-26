@@ -3,8 +3,8 @@
   "short_name": "Rusanivsky",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8f8f8",
-  "theme_color": "#f8f8f8",
+  "background_color": "#141412",
+  "theme_color": "#141412",
   "icons": [
     {
       "src": "/icon-192.png",

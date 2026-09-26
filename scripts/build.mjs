@@ -119,15 +119,6 @@ const navLinks = (list, here) =>
   list.map(([path, key]) =>
     `<a href="${href(path)}"${path === here ? ' aria-current="page"' : ''}>${ui(key)}</a>`).join('');
 
-/* The theme control is kept but not rendered: Auto still follows the system
-   and a stored manual choice still applies, only the switch is out of the
-   way. Putting it back is one line in the rail. */
-const themeControl = () =>
-  `<div class="theme"><span>${ui('theme')}</span>` +
-  `<button type="button" data-theme="auto" aria-pressed="true">Auto</button><span class="sep">/</span>` +
-  `<button type="button" data-theme="light" aria-pressed="false">Light</button><span class="sep">/</span>` +
-  `<button type="button" data-theme="dark" aria-pressed="false">Dark</button></div>`;
-
 /* Two faces for the name and the headlines, side by side, so the choice can
    be made by looking rather than by argument. The switch sits with the theme
    because it is the same kind of control: a preference, stored, undoable. */
@@ -318,7 +309,7 @@ function page({ here, path, title, description, body, ogImage = '/og-image.jpg' 
   const sub = !body.includes('<main class="home"');
   const ogUrl = `${SITE}${ogImage}${ogImage.startsWith('/og-image') ? `?v=${OG_V}` : ''}`;
   return `<!DOCTYPE html>
-<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="auto"${sub ? ' class="sub"' : ''}>
+<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="dark"${sub ? ' class="sub"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -345,7 +336,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <meta name="twitter:title" content="${attr(title)}">
 <meta name="twitter:description" content="${attr(description)}">
 <meta name="twitter:image" content="${ogUrl}">
-<meta name="theme-color" content="#f8f8f8">
+<meta name="theme-color" content="#141412">
 <link rel="icon" href="/favicon.ico?v=${ICON_V}" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=${ICON_V}" type="image/svg+xml">
 <link rel="icon" href="/favicon-dark.ico?v=${ICON_V}" sizes="32x32" media="(prefers-color-scheme: dark)">
