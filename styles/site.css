@@ -134,7 +134,7 @@
      wide glow in the empty top right of the page: in the dark it is the old
      plate itself, in the light a pale wash of the same hue. */
   --green: #2b3e2d;
-  --head-tint: #c3d8be;
+  --head-tint: #a9c5a2;
 
   color-scheme: light;
 }
@@ -574,6 +574,15 @@ body::before {
    under the content inside the shell's stacking context, so the grain and
    the work stay above it. */
 html.sub main { position: relative; }
+/* Over the green, fixed light greys read as white stripes. On a subpage the
+   rules and the light fields are drawn in the ink itself, thinned — on bare
+   paper they come out the same greys as before, over the green they darken
+   with it. */
+html.sub {
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
+  --surface: color-mix(in srgb, var(--ink) 5%, transparent);
+}
 html.sub main::before {
   /* On a phone: a circle centred on the top right corner, so one quarter of
      it falls on the page. */
