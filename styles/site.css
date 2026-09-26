@@ -637,7 +637,7 @@ html.glow-baked.sub main::before { display: none; }
   top: 0;
   right: 0;
   z-index: -1;
-  width: calc(100% + var(--glow-off));
+  width: calc(100% * var(--glow-reach) + var(--glow-off));
   aspect-ratio: 1;
   pointer-events: none;
 }
@@ -649,23 +649,23 @@ html.glow-baked.sub main::before { display: none; }
   top: calc(var(--glow-rise) * -1);
   right: calc(var(--glow-off) * -1);
   z-index: -1;
-  width: calc(100% + var(--glow-off));
+  width: calc(100% * var(--glow-reach) + var(--glow-off));
   aspect-ratio: 1;
   pointer-events: none;
   background: radial-gradient(
     circle farthest-side at 100% 0%,
-    var(--head-tint),
-    color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) 8.33%,
-    color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) 16.67%,
-    color-mix(in srgb, var(--head-tint) 85.4%, var(--stage-bg)) 25%,
-    color-mix(in srgb, var(--head-tint) 75%, var(--stage-bg)) 33.33%,
-    color-mix(in srgb, var(--head-tint) 62.9%, var(--stage-bg)) 41.67%,
-    color-mix(in srgb, var(--head-tint) 50%, var(--stage-bg)) 50%,
-    color-mix(in srgb, var(--head-tint) 37.1%, var(--stage-bg)) 58.33%,
-    color-mix(in srgb, var(--head-tint) 25%, var(--stage-bg)) 66.67%,
-    color-mix(in srgb, var(--head-tint) 14.6%, var(--stage-bg)) 75%,
-    color-mix(in srgb, var(--head-tint) 6.7%, var(--stage-bg)) 83.33%,
-    color-mix(in srgb, var(--head-tint) 1.7%, var(--stage-bg)) 91.67%,
+    var(--head-tint) var(--glow-core),
+    color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.0833),
+    color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.1667),
+    color-mix(in srgb, var(--head-tint) 85.4%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.2500),
+    color-mix(in srgb, var(--head-tint) 75%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.3333),
+    color-mix(in srgb, var(--head-tint) 62.9%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.4167),
+    color-mix(in srgb, var(--head-tint) 50%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5000),
+    color-mix(in srgb, var(--head-tint) 37.1%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5833),
+    color-mix(in srgb, var(--head-tint) 25%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.6667),
+    color-mix(in srgb, var(--head-tint) 14.6%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.7500),
+    color-mix(in srgb, var(--head-tint) 6.7%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.8333),
+    color-mix(in srgb, var(--head-tint) 1.7%, var(--stage-bg)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.9167),
     var(--stage-bg) 100%
   );
 }
@@ -795,14 +795,16 @@ html.glow-baked .stage::after { display: none; }
     grid-column: 5 / -1;
     border-left: var(--rule-w) solid var(--line-soft);
     /* The same green as on a subpage, its centre beyond the window's top
-       right corner. The radius is the panel's width plus the offset to the
-       right, so however far out the centre goes, the green has faded to the
-       panel's own grey exactly at its left edge. The glow is the ::after
+       right corner. The radius is a share of the panel's width (--glow-reach)
+       plus the offset to the right, so the green has faded to the panel's
+       own grey well before its left edge, however far out the centre goes. The glow is the ::after
        below, redrawn dithered onto a canvas by scripts/site.js from the same
        numbers. */
-    --glow-off: 45vw;
-    --glow-rise: 20vw;
-    --glow-core: 0%;
+    --glow-off: 8vw;
+    --glow-rise: 6vw;
+    /* The share of the panel's width the green reaches across. */
+    --glow-reach: 0.55;
+    --glow-core: 22%;
     --glow-base: var(--stage-bg);
     overflow: hidden;
     background: var(--stage-bg);
