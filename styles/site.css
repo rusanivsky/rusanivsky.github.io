@@ -64,16 +64,23 @@
    snaps to, and a six-step type scale where each step has one job. Nothing
    is sized ad hoc; if a thing needs a size, it takes one of these steps. */
 :root {
-  /* The site ships in the dark only. Every colour below is solid: a rule,
-     a field or a line of small text has to be the same colour over the
-     green as it is over bare paper, and anything thinned with transparency
-     takes the green up through it. */
+  /* The site ships in the dark only. Every colour below is solid: a rule
+     or a line of small text has to be the same colour over the green as it
+     is over bare paper, and anything thinned with transparency takes the
+     green up through it. The rules are also lighter than the brightest
+     green they cross: a grey that falls between the paper and the green
+     reads light on one and as a dark stripe on the other, which is two
+     colours to the eye however equal the pixels are. */
   --paper: #141412;
   --ink: #e8e5de;
   --muted: #a7a39a;
   --faint: #8a857c;
-  --line: #2b2a26;
-  --line-soft: #232220;
+  /* One rule for the whole site: every line — the rail's edge, the header,
+     section rules, lists, fields, the foot — is this one light grey at this
+     one weight. Lighter than the brightest green it can cross, so it never
+     turns into a dark stripe over the glow. */
+  --line: #6a6862;
+  --rule-w: 2px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
 
@@ -380,7 +387,7 @@ ul, ol { list-style: none; }
     top: 0;
     height: 100svh;
     flex-direction: column;
-    border-right: 1px solid var(--line-soft);
+    border-right: var(--rule-w) solid var(--line);
     padding: 1.9rem 1.4rem 1.6rem 2rem;
   }
 }
@@ -401,7 +408,7 @@ ul, ol { list-style: none; }
 .rail .wordmark { max-width: min-content; line-height: 1.3; }
 
 .rail-mid { margin-top: 2.6rem; }
-.rail-nav + .rail-nav { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
+.rail-nav + .rail-nav { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line); }
 .rail-nav a {
   display: block;
   font-size: var(--t-meta);
@@ -415,7 +422,7 @@ ul, ol { list-style: none; }
   content: '';
   display: inline-block;
   width: 0.55rem;
-  height: 1px;
+  height: var(--rule-w);
   margin-right: 0.45rem;
   vertical-align: 0.28em;
   background: var(--ink);
@@ -489,7 +496,7 @@ ul, ol { list-style: none; }
 .lang {
   margin-top: 1.1rem;
   padding-top: 1.1rem;
-  border-top: 1px solid var(--line-soft);
+  border-top: var(--rule-w) solid var(--line);
   gap: 0.7rem;
 }
 
@@ -503,7 +510,7 @@ ul, ol { list-style: none; }
   justify-content: space-between;
   padding: 0.9rem var(--pad);
   background: var(--paper);
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: var(--rule-w) solid var(--line);
 }
 .bar button {
   font-size: var(--t-label);
@@ -534,7 +541,7 @@ ul, ol { list-style: none; }
   text-transform: uppercase;
 }
 .drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
-.drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
+.drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line); }
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 
@@ -544,7 +551,14 @@ ul, ol { list-style: none; }
    the page and scrolls away with it — nothing is fixed to the window. It sits
    under the content inside the shell's stacking context, so the grain and
    the work stay above it. */
-html.sub main { position: relative; }
+html.sub main {
+  position: relative;
+  /* The glow's geometry lives on main, not on its ::before, so the canvas
+     that redraws it (below) reads the same numbers. */
+  --glow-r: 105vw;
+  --glow-off: 30vw;
+  --glow-core: 28%;
+}
 html.sub main::before {
   /* On a phone: a circle centred beyond the right edge, level with the top,
      so less than a quarter of it falls on the page and the green stays to
@@ -552,9 +566,7 @@ html.sub main::before {
      runs out to the page's corner (--glow-core, the share of the radius that
      lies off the page), so the corner stays as green as before and only the
      reach to the left is shorter. */
-  --glow-r: 105vw;
-  --glow-x: calc(100% + 30vw);
-  --glow-core: 28%;
+  --glow-x: calc(100% + var(--glow-off));
   content: '';
   position: absolute;
   top: 0;
@@ -563,12 +575,27 @@ html.sub main::before {
   width: var(--glow-r);
   height: var(--glow-r);
   pointer-events: none;
+  /* Opaque from end to end — it fades to the paper, not to transparent —
+     and one layer: WebKit dithers a gradient only while it paints it
+     alone and opaque, and anything with alpha in it goes in hard steps
+     in Safari (Chromium dithers the composite and never shows them). The
+     fall-off is an eased curve over thirteen stops rather than four
+     straight segments: every kink between segments reads as a band. */
   background: radial-gradient(
     circle var(--glow-r) at var(--glow-x) 0%,
     var(--head-tint) var(--glow-core),
-    color-mix(in srgb, var(--head-tint) 60%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.4),
-    color-mix(in srgb, var(--head-tint) 22%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.72),
-    transparent 100%
+    color-mix(in srgb, var(--head-tint) 98.3%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.0833),
+    color-mix(in srgb, var(--head-tint) 93.3%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.1667),
+    color-mix(in srgb, var(--head-tint) 85.4%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.2500),
+    color-mix(in srgb, var(--head-tint) 75%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.3333),
+    color-mix(in srgb, var(--head-tint) 62.9%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.4167),
+    color-mix(in srgb, var(--head-tint) 50%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5000),
+    color-mix(in srgb, var(--head-tint) 37.1%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5833),
+    color-mix(in srgb, var(--head-tint) 25%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.6667),
+    color-mix(in srgb, var(--head-tint) 14.6%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.7500),
+    color-mix(in srgb, var(--head-tint) 6.7%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.8333),
+    color-mix(in srgb, var(--head-tint) 1.7%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.9167),
+    var(--paper) 100%
   );
 }
 /* On the desktop the circle keeps its centre on the top right corner, so
@@ -577,12 +604,32 @@ html.sub main::before {
    high), so the quarter reaches across the page without going under the
    rail. */
 @media (min-width: 61rem) {
-  html.sub main::before {
+  html.sub main {
     --glow-r: min(135svh, calc(100vw - var(--rail)));
-    --glow-x: 100%;
+    --glow-off: 0px;
     --glow-core: 0%;
   }
 }
+/* The same glow, drawn by scripts/site.js onto a canvas with the dither
+   baked into its pixels. Safari barely dithers a radial gradient — it came
+   out in hard concentric steps that no grain on top could hide, because
+   grain added after the rounding cannot undo the rounding. The canvas takes
+   the place of the CSS gradient once it is drawn; without JavaScript the
+   gradient stays. */
+html.sub main > canvas.glow {
+  /* main is a grid: a placed child would take its grid area, inside the
+     page padding, as its box. Unplaced, it measures from main's own edge,
+     the same edge the ::before measures from. */
+  grid-area: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: var(--glow-r);
+  height: var(--glow-r);
+  pointer-events: none;
+}
+html.glow-baked.sub main::before { display: none; }
 
 /* ============================================================
    Home — index on four columns, stage on eight
@@ -615,7 +662,7 @@ html.sub main::before {
 }
 
 .standfirst { margin-top: 1.2rem; }
-.index { margin-top: 2.2rem; border-top: 1px solid var(--line-soft); }
+.index { margin-top: 2.2rem; border-top: var(--rule-w) solid var(--line); }
 @media (min-width: 61rem) {
   .index {
     flex: 1 1 auto;
@@ -628,7 +675,7 @@ html.sub main::before {
 
 .row {
   display: block;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: var(--rule-w) solid var(--line);
   padding: 0.72rem 0 0.78rem;
   transition: opacity var(--t) var(--ease);
 }
@@ -709,7 +756,7 @@ html.sub main::before {
     position: relative;
     height: 100svh;
     grid-column: 5 / -1;
-    border-left: 1px solid var(--line-soft);
+    border-left: var(--rule-w) solid var(--line);
     background: var(--stage-bg);
     margin-left: calc(var(--col-gap) / -2);
     margin-right: calc(var(--pad) * -1);
@@ -830,11 +877,11 @@ html.sub main::before {
 
 .prose > * + * { margin-top: 1rem; }
 .prose p { line-height: var(--lh-text); text-wrap: pretty; }
-.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); text-decoration-thickness: var(--rule-w); }
 .prose a:hover { text-decoration-color: currentColor; }
 
 .section { margin-top: 3.4rem; }
-.section-label { padding-bottom: 0.6rem; border-bottom: 1px solid var(--line-soft); }
+.section-label { padding-bottom: 0.6rem; border-bottom: var(--rule-w) solid var(--line); }
 
 /* ---------- Work cards ----------
    Rows, not columns. Column packing existed only because a standing cover
@@ -954,7 +1001,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   font-size: var(--t-meta);
   font-weight: var(--w-medium);
   color: var(--muted);
-  border-bottom: 1px solid var(--line);
+  border-bottom: var(--rule-w) solid var(--line);
   padding-bottom: 2px;
 }
 .rest-toggle:hover { color: var(--ink); }
@@ -1047,7 +1094,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   text-transform: uppercase;
   color: var(--faint);
 }
-.rate-list { margin-top: 0.7rem; border-top: 1px solid var(--line-soft); }
+.rate-list { margin-top: 0.7rem; border-top: var(--rule-w) solid var(--line); }
 .rate-list li {
   display: flex;
   flex-wrap: wrap;
@@ -1055,7 +1102,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   justify-content: space-between;
   gap: 0.25rem 1.5rem;
   padding: 0.72rem 0;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: var(--rule-w) solid var(--line);
   font-size: var(--t-body);
 }
 .rate-list li > :first-child { flex: 1 1 auto; min-width: 0; }
@@ -1076,7 +1123,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   grid-template-columns: 2rem 1fr;
   gap: 0.6rem;
   padding: 0.78rem 0;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: var(--rule-w) solid var(--line);
   font-size: var(--t-body);
 }
 .steps .n { font-size: var(--t-label); font-weight: var(--w-semi); color: var(--faint); font-variant-numeric: tabular-nums; }
@@ -1092,7 +1139,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   line-height: var(--lh-text);
   color: var(--muted);
 }
-.bullets li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 0.4rem; height: 1px; background: var(--line); }
+.bullets li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 0.4rem; height: var(--rule-w); background: var(--line); }
 
 /* ---------- Info / contact ---------- */
 /* ---------- About: the name and the words on the left, the face on the
@@ -1180,7 +1227,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 }
 
 .channels { margin-top: 1.2rem; }
-.channels li { border-bottom: 1px solid var(--line-soft); }
+.channels li { border-bottom: var(--rule-w) solid var(--line); }
 .channels a { display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; font-size: var(--t-lead); font-weight: var(--w-medium); }
 .channels .who { align-self: center; font-size: var(--t-label); font-weight: var(--w-regular); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--faint); }
 .channels a:hover .who { color: var(--muted); }
@@ -1202,10 +1249,13 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   font: inherit;
   font-size: var(--t-body);
   color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  /* No fill: a field is its outline. Any fill is a second colour that
+     changes meaning between the paper and the green. */
+  background: transparent;
+  border: var(--rule-w) solid var(--line);
   border-radius: 0;
 }
+.brief option { background: var(--paper); }
 .brief textarea { min-height: 7rem; resize: vertical; }
 /* The one line under the first field. A brief with nowhere to reply to is not
    a brief, so the field is required and says plainly what counts as an
@@ -1237,7 +1287,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   padding: 0.65rem 1.4rem;
   font-size: var(--t-meta);
   font-weight: var(--w-medium);
-  border: 1px solid var(--ink);
+  border: var(--rule-w) solid var(--ink);
   transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
 }
 .brief button[type='submit']:hover { background: var(--ink); color: var(--paper); }
@@ -1246,7 +1296,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .foot {
   margin-top: 4.5rem;
   padding-top: 1.1rem;
-  border-top: 1px solid var(--line-soft);
+  border-top: var(--rule-w) solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1.4rem;
