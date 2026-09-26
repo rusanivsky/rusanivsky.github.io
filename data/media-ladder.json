@@ -2959,16 +2959,6 @@
    "/media/portrait/photo-640.webp"
   ]
  ],
- "/media/portrait/photo-768.jpg": [
-  [
-   480,
-   "/media/portrait/photo-768-480.webp"
-  ],
-  [
-   768,
-   "/media/portrait/photo-768.jpg"
-  ]
- ],
  "/media/portrait/photo-768.webp": [
   [
    480,
@@ -2977,20 +2967,6 @@
   [
    768,
    "/media/portrait/photo-768.webp"
-  ]
- ],
- "/media/portrait/photo.jpg": [
-  [
-   480,
-   "/media/portrait/photo-480.webp"
-  ],
-  [
-   960,
-   "/media/portrait/photo-960.webp"
-  ],
-  [
-   1280,
-   "/media/portrait/photo.jpg"
   ]
  ],
  "/media/portrait/photo.webp": [
@@ -3007,7 +2983,7 @@
    "/media/portrait/photo.webp"
   ]
  ],
- "/media/video/posters/altns-main-edit-poster.jpg": [
+ "/media/video/posters/altns-main-edit-poster.webp": [
   [
    480,
    "/media/video/posters/altns-main-edit-poster-480.webp"
@@ -3022,10 +2998,10 @@
   ],
   [
    1672,
-   "/media/video/posters/altns-main-edit-poster.jpg"
+   "/media/video/posters/altns-main-edit-poster.webp"
   ]
  ],
- "/media/video/posters/das-graduation-2024-poster.jpg": [
+ "/media/video/posters/das-graduation-2024-poster.webp": [
   [
    480,
    "/media/video/posters/das-graduation-2024-poster-480.webp"
@@ -3036,10 +3012,10 @@
   ],
   [
    1280,
-   "/media/video/posters/das-graduation-2024-poster.jpg"
+   "/media/video/posters/das-graduation-2024-poster.webp"
   ]
  ],
- "/media/video/posters/das-graduation-episode-3-poster.jpg": [
+ "/media/video/posters/das-graduation-episode-3-poster.webp": [
   [
    480,
    "/media/video/posters/das-graduation-episode-3-poster-480.webp"
@@ -3050,7 +3026,7 @@
   ],
   [
    1280,
-   "/media/video/posters/das-graduation-episode-3-poster.jpg"
+   "/media/video/posters/das-graduation-episode-3-poster.webp"
   ]
  ],
  "/media/video/posters/dyvoshyv-poster.webp": [
@@ -3059,17 +3035,17 @@
    "/media/video/posters/dyvoshyv-poster.webp"
   ]
  ],
- "/media/video/posters/signing-the-memorandum-poster.jpg": [
+ "/media/video/posters/signing-the-memorandum-poster.webp": [
   [
    480,
    "/media/video/posters/signing-the-memorandum-poster-480.webp"
   ],
   [
    941,
-   "/media/video/posters/signing-the-memorandum-poster.jpg"
+   "/media/video/posters/signing-the-memorandum-poster.webp"
   ]
  ],
- "/media/video/posters/slp-episode-5-poster.jpg": [
+ "/media/video/posters/slp-episode-5-poster.webp": [
   [
    480,
    "/media/video/posters/slp-episode-5-poster-480.webp"
@@ -3080,10 +3056,10 @@
   ],
   [
    1280,
-   "/media/video/posters/slp-episode-5-poster.jpg"
+   "/media/video/posters/slp-episode-5-poster.webp"
   ]
  ],
- "/media/video/posters/slp-graduation-2024-poster.jpg": [
+ "/media/video/posters/slp-graduation-2024-poster.webp": [
   [
    480,
    "/media/video/posters/slp-graduation-2024-poster-480.webp"
@@ -3094,10 +3070,10 @@
   ],
   [
    1280,
-   "/media/video/posters/slp-graduation-2024-poster.jpg"
+   "/media/video/posters/slp-graduation-2024-poster.webp"
   ]
  ],
- "/media/video/posters/ssa-start-2024-poster.jpg": [
+ "/media/video/posters/ssa-start-2024-poster.webp": [
   [
    480,
    "/media/video/posters/ssa-start-2024-poster-480.webp"
@@ -3108,10 +3084,10 @@
   ],
   [
    1280,
-   "/media/video/posters/ssa-start-2024-poster.jpg"
+   "/media/video/posters/ssa-start-2024-poster.webp"
   ]
  ],
- "/media/video/posters/ssa-start-2025-poster.jpg": [
+ "/media/video/posters/ssa-start-2025-poster.webp": [
   [
    480,
    "/media/video/posters/ssa-start-2025-poster-480.webp"
@@ -3130,26 +3106,26 @@
   ],
   [
    2953,
-   "/media/video/posters/ssa-start-2025-poster.jpg"
+   "/media/video/posters/ssa-start-2025-poster.webp"
   ]
  ],
- "/media/video/posters/the-coat-poster.jpg": [
+ "/media/video/posters/the-coat-poster.webp": [
   [
    540,
-   "/media/video/posters/the-coat-poster.jpg"
+   "/media/video/posters/the-coat-poster.webp"
   ]
  ],
- "/media/video/posters/tsyronian-publishing-poster.jpg": [
+ "/media/video/posters/tsyronian-publishing-poster.webp": [
   [
    480,
    "/media/video/posters/tsyronian-publishing-poster-480.webp"
   ],
   [
    1080,
-   "/media/video/posters/tsyronian-publishing-poster.jpg"
+   "/media/video/posters/tsyronian-publishing-poster.webp"
   ]
  ],
- "/media/video/posters/utility-bag-poster.jpg": [
+ "/media/video/posters/utility-bag-poster.webp": [
   [
    480,
    "/media/video/posters/utility-bag-poster-480.webp"
@@ -3160,40 +3136,40 @@
   ],
   [
    1280,
-   "/media/video/posters/utility-bag-poster.jpg"
+   "/media/video/posters/utility-bag-poster.webp"
   ]
  ],
- "/media/video/thumbs/vimeo-596334168.jpg": [
+ "/media/video/thumbs/vimeo-596334168.webp": [
   [
    480,
    "/media/video/thumbs/vimeo-596334168-480.webp"
   ],
   [
    640,
-   "/media/video/thumbs/vimeo-596334168.jpg"
+   "/media/video/thumbs/vimeo-596334168.webp"
   ]
  ],
- "/media/video/thumbs/vimeo-761480308.jpg": [
+ "/media/video/thumbs/vimeo-761480308.webp": [
   [
    480,
    "/media/video/thumbs/vimeo-761480308-480.webp"
   ],
   [
    640,
-   "/media/video/thumbs/vimeo-761480308.jpg"
+   "/media/video/thumbs/vimeo-761480308.webp"
   ]
  ],
- "/media/video/thumbs/vimeo-761508323.jpg": [
+ "/media/video/thumbs/vimeo-761508323.webp": [
   [
    480,
    "/media/video/thumbs/vimeo-761508323-480.webp"
   ],
   [
    640,
-   "/media/video/thumbs/vimeo-761508323.jpg"
+   "/media/video/thumbs/vimeo-761508323.webp"
   ]
  ],
- "/media/video/thumbs/yt-3ityvlL8js4.jpg": [
+ "/media/video/thumbs/yt-3ityvlL8js4.webp": [
   [
    480,
    "/media/video/thumbs/yt-3ityvlL8js4-480.webp"
@@ -3204,10 +3180,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-3ityvlL8js4.jpg"
+   "/media/video/thumbs/yt-3ityvlL8js4.webp"
   ]
  ],
- "/media/video/thumbs/yt-474f5Yrp5-o.jpg": [
+ "/media/video/thumbs/yt-474f5Yrp5-o.webp": [
   [
    480,
    "/media/video/thumbs/yt-474f5Yrp5-o-480.webp"
@@ -3218,10 +3194,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-474f5Yrp5-o.jpg"
+   "/media/video/thumbs/yt-474f5Yrp5-o.webp"
   ]
  ],
- "/media/video/thumbs/yt-4Ai9QeqAmCU.jpg": [
+ "/media/video/thumbs/yt-4Ai9QeqAmCU.webp": [
   [
    480,
    "/media/video/thumbs/yt-4Ai9QeqAmCU-480.webp"
@@ -3232,10 +3208,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-4Ai9QeqAmCU.jpg"
+   "/media/video/thumbs/yt-4Ai9QeqAmCU.webp"
   ]
  ],
- "/media/video/thumbs/yt-5Fm88FAd9Ng.jpg": [
+ "/media/video/thumbs/yt-5Fm88FAd9Ng.webp": [
   [
    480,
    "/media/video/thumbs/yt-5Fm88FAd9Ng-480.webp"
@@ -3246,10 +3222,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-5Fm88FAd9Ng.jpg"
+   "/media/video/thumbs/yt-5Fm88FAd9Ng.webp"
   ]
  ],
- "/media/video/thumbs/yt-69HzVdLELGg.jpg": [
+ "/media/video/thumbs/yt-69HzVdLELGg.webp": [
   [
    480,
    "/media/video/thumbs/yt-69HzVdLELGg-480.webp"
@@ -3260,10 +3236,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-69HzVdLELGg.jpg"
+   "/media/video/thumbs/yt-69HzVdLELGg.webp"
   ]
  ],
- "/media/video/thumbs/yt-7ojQd4XWNOI.jpg": [
+ "/media/video/thumbs/yt-7ojQd4XWNOI.webp": [
   [
    480,
    "/media/video/thumbs/yt-7ojQd4XWNOI-480.webp"
@@ -3274,10 +3250,10 @@
   ],
   [
    1258,
-   "/media/video/thumbs/yt-7ojQd4XWNOI.jpg"
+   "/media/video/thumbs/yt-7ojQd4XWNOI.webp"
   ]
  ],
- "/media/video/thumbs/yt-8Bc_-qWoE88.jpg": [
+ "/media/video/thumbs/yt-8Bc_-qWoE88.webp": [
   [
    480,
    "/media/video/thumbs/yt-8Bc_-qWoE88-480.webp"
@@ -3288,10 +3264,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-8Bc_-qWoE88.jpg"
+   "/media/video/thumbs/yt-8Bc_-qWoE88.webp"
   ]
  ],
- "/media/video/thumbs/yt-AMliGSWBDbI.jpg": [
+ "/media/video/thumbs/yt-AMliGSWBDbI.webp": [
   [
    480,
    "/media/video/thumbs/yt-AMliGSWBDbI-480.webp"
@@ -3302,10 +3278,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-AMliGSWBDbI.jpg"
+   "/media/video/thumbs/yt-AMliGSWBDbI.webp"
   ]
  ],
- "/media/video/thumbs/yt-BP80RxWWHa4.jpg": [
+ "/media/video/thumbs/yt-BP80RxWWHa4.webp": [
   [
    480,
    "/media/video/thumbs/yt-BP80RxWWHa4-480.webp"
@@ -3316,10 +3292,10 @@
   ],
   [
    1242,
-   "/media/video/thumbs/yt-BP80RxWWHa4.jpg"
+   "/media/video/thumbs/yt-BP80RxWWHa4.webp"
   ]
  ],
- "/media/video/thumbs/yt-C_eK5i5dvuU.jpg": [
+ "/media/video/thumbs/yt-C_eK5i5dvuU.webp": [
   [
    480,
    "/media/video/thumbs/yt-C_eK5i5dvuU-480.webp"
@@ -3330,10 +3306,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-C_eK5i5dvuU.jpg"
+   "/media/video/thumbs/yt-C_eK5i5dvuU.webp"
   ]
  ],
- "/media/video/thumbs/yt-DyyB1bUKIyc.jpg": [
+ "/media/video/thumbs/yt-DyyB1bUKIyc.webp": [
   [
    480,
    "/media/video/thumbs/yt-DyyB1bUKIyc-480.webp"
@@ -3344,10 +3320,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-DyyB1bUKIyc.jpg"
+   "/media/video/thumbs/yt-DyyB1bUKIyc.webp"
   ]
  ],
- "/media/video/thumbs/yt-EgGRvAtmZ2M.jpg": [
+ "/media/video/thumbs/yt-EgGRvAtmZ2M.webp": [
   [
    480,
    "/media/video/thumbs/yt-EgGRvAtmZ2M-480.webp"
@@ -3358,20 +3334,20 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-EgGRvAtmZ2M.jpg"
+   "/media/video/thumbs/yt-EgGRvAtmZ2M.webp"
   ]
  ],
- "/media/video/thumbs/yt-GAhVfJsmKyM.jpg": [
+ "/media/video/thumbs/yt-GAhVfJsmKyM.webp": [
   [
    480,
    "/media/video/thumbs/yt-GAhVfJsmKyM-480.webp"
   ],
   [
    1080,
-   "/media/video/thumbs/yt-GAhVfJsmKyM.jpg"
+   "/media/video/thumbs/yt-GAhVfJsmKyM.webp"
   ]
  ],
- "/media/video/thumbs/yt-IPUMbGi5hEM.jpg": [
+ "/media/video/thumbs/yt-IPUMbGi5hEM.webp": [
   [
    480,
    "/media/video/thumbs/yt-IPUMbGi5hEM-480.webp"
@@ -3382,10 +3358,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-IPUMbGi5hEM.jpg"
+   "/media/video/thumbs/yt-IPUMbGi5hEM.webp"
   ]
  ],
- "/media/video/thumbs/yt-JAMDscAMvQA.jpg": [
+ "/media/video/thumbs/yt-JAMDscAMvQA.webp": [
   [
    480,
    "/media/video/thumbs/yt-JAMDscAMvQA-480.webp"
@@ -3396,10 +3372,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-JAMDscAMvQA.jpg"
+   "/media/video/thumbs/yt-JAMDscAMvQA.webp"
   ]
  ],
- "/media/video/thumbs/yt-KfntGEmXXbU.jpg": [
+ "/media/video/thumbs/yt-KfntGEmXXbU.webp": [
   [
    480,
    "/media/video/thumbs/yt-KfntGEmXXbU-480.webp"
@@ -3410,10 +3386,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-KfntGEmXXbU.jpg"
+   "/media/video/thumbs/yt-KfntGEmXXbU.webp"
   ]
  ],
- "/media/video/thumbs/yt-M9JZIY9FnP0.jpg": [
+ "/media/video/thumbs/yt-M9JZIY9FnP0.webp": [
   [
    480,
    "/media/video/thumbs/yt-M9JZIY9FnP0-480.webp"
@@ -3424,10 +3400,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-M9JZIY9FnP0.jpg"
+   "/media/video/thumbs/yt-M9JZIY9FnP0.webp"
   ]
  ],
- "/media/video/thumbs/yt-OEj3qL3pQXU.jpg": [
+ "/media/video/thumbs/yt-OEj3qL3pQXU.webp": [
   [
    480,
    "/media/video/thumbs/yt-OEj3qL3pQXU-480.webp"
@@ -3438,10 +3414,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-OEj3qL3pQXU.jpg"
+   "/media/video/thumbs/yt-OEj3qL3pQXU.webp"
   ]
  ],
- "/media/video/thumbs/yt-PBx9BUSl1H4.jpg": [
+ "/media/video/thumbs/yt-PBx9BUSl1H4.webp": [
   [
    480,
    "/media/video/thumbs/yt-PBx9BUSl1H4-480.webp"
@@ -3452,10 +3428,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-PBx9BUSl1H4.jpg"
+   "/media/video/thumbs/yt-PBx9BUSl1H4.webp"
   ]
  ],
- "/media/video/thumbs/yt-UaWqVU8fUw4.jpg": [
+ "/media/video/thumbs/yt-UaWqVU8fUw4.webp": [
   [
    480,
    "/media/video/thumbs/yt-UaWqVU8fUw4-480.webp"
@@ -3466,10 +3442,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-UaWqVU8fUw4.jpg"
+   "/media/video/thumbs/yt-UaWqVU8fUw4.webp"
   ]
  ],
- "/media/video/thumbs/yt-UpHo4w54qLI.jpg": [
+ "/media/video/thumbs/yt-UpHo4w54qLI.webp": [
   [
    480,
    "/media/video/thumbs/yt-UpHo4w54qLI-480.webp"
@@ -3480,10 +3456,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-UpHo4w54qLI.jpg"
+   "/media/video/thumbs/yt-UpHo4w54qLI.webp"
   ]
  ],
- "/media/video/thumbs/yt-V59QT_ofjtk.jpg": [
+ "/media/video/thumbs/yt-V59QT_ofjtk.webp": [
   [
    480,
    "/media/video/thumbs/yt-V59QT_ofjtk-480.webp"
@@ -3494,10 +3470,10 @@
   ],
   [
    1272,
-   "/media/video/thumbs/yt-V59QT_ofjtk.jpg"
+   "/media/video/thumbs/yt-V59QT_ofjtk.webp"
   ]
  ],
- "/media/video/thumbs/yt-WwS5h3ceuX0.jpg": [
+ "/media/video/thumbs/yt-WwS5h3ceuX0.webp": [
   [
    480,
    "/media/video/thumbs/yt-WwS5h3ceuX0-480.webp"
@@ -3508,10 +3484,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-WwS5h3ceuX0.jpg"
+   "/media/video/thumbs/yt-WwS5h3ceuX0.webp"
   ]
  ],
- "/media/video/thumbs/yt-_JHtw89_Sqs.jpg": [
+ "/media/video/thumbs/yt-_JHtw89_Sqs.webp": [
   [
    480,
    "/media/video/thumbs/yt-_JHtw89_Sqs-480.webp"
@@ -3522,10 +3498,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-_JHtw89_Sqs.jpg"
+   "/media/video/thumbs/yt-_JHtw89_Sqs.webp"
   ]
  ],
- "/media/video/thumbs/yt-bpz1jSrtFMA.jpg": [
+ "/media/video/thumbs/yt-bpz1jSrtFMA.webp": [
   [
    480,
    "/media/video/thumbs/yt-bpz1jSrtFMA-480.webp"
@@ -3536,10 +3512,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-bpz1jSrtFMA.jpg"
+   "/media/video/thumbs/yt-bpz1jSrtFMA.webp"
   ]
  ],
- "/media/video/thumbs/yt-cFCwHnrfB2w.jpg": [
+ "/media/video/thumbs/yt-cFCwHnrfB2w.webp": [
   [
    480,
    "/media/video/thumbs/yt-cFCwHnrfB2w-480.webp"
@@ -3550,10 +3526,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-cFCwHnrfB2w.jpg"
+   "/media/video/thumbs/yt-cFCwHnrfB2w.webp"
   ]
  ],
- "/media/video/thumbs/yt-e1sokpvI3vI.jpg": [
+ "/media/video/thumbs/yt-e1sokpvI3vI.webp": [
   [
    480,
    "/media/video/thumbs/yt-e1sokpvI3vI-480.webp"
@@ -3564,20 +3540,20 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-e1sokpvI3vI.jpg"
+   "/media/video/thumbs/yt-e1sokpvI3vI.webp"
   ]
  ],
- "/media/video/thumbs/yt-fxpXDw9TSi4.jpg": [
+ "/media/video/thumbs/yt-fxpXDw9TSi4.webp": [
   [
    480,
    "/media/video/thumbs/yt-fxpXDw9TSi4-480.webp"
   ],
   [
    1080,
-   "/media/video/thumbs/yt-fxpXDw9TSi4.jpg"
+   "/media/video/thumbs/yt-fxpXDw9TSi4.webp"
   ]
  ],
- "/media/video/thumbs/yt-k1IiVSWgBh0.jpg": [
+ "/media/video/thumbs/yt-k1IiVSWgBh0.webp": [
   [
    480,
    "/media/video/thumbs/yt-k1IiVSWgBh0-480.webp"
@@ -3588,10 +3564,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-k1IiVSWgBh0.jpg"
+   "/media/video/thumbs/yt-k1IiVSWgBh0.webp"
   ]
  ],
- "/media/video/thumbs/yt-m3JY9PaAo9s.jpg": [
+ "/media/video/thumbs/yt-m3JY9PaAo9s.webp": [
   [
    480,
    "/media/video/thumbs/yt-m3JY9PaAo9s-480.webp"
@@ -3602,10 +3578,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-m3JY9PaAo9s.jpg"
+   "/media/video/thumbs/yt-m3JY9PaAo9s.webp"
   ]
  ],
- "/media/video/thumbs/yt-nHrFbu5yLBg.jpg": [
+ "/media/video/thumbs/yt-nHrFbu5yLBg.webp": [
   [
    480,
    "/media/video/thumbs/yt-nHrFbu5yLBg-480.webp"
@@ -3616,10 +3592,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-nHrFbu5yLBg.jpg"
+   "/media/video/thumbs/yt-nHrFbu5yLBg.webp"
   ]
  ],
- "/media/video/thumbs/yt-nMCrhktcs0E.jpg": [
+ "/media/video/thumbs/yt-nMCrhktcs0E.webp": [
   [
    480,
    "/media/video/thumbs/yt-nMCrhktcs0E-480.webp"
@@ -3630,10 +3606,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-nMCrhktcs0E.jpg"
+   "/media/video/thumbs/yt-nMCrhktcs0E.webp"
   ]
  ],
- "/media/video/thumbs/yt-qU1Jl_9ZuGQ.jpg": [
+ "/media/video/thumbs/yt-qU1Jl_9ZuGQ.webp": [
   [
    480,
    "/media/video/thumbs/yt-qU1Jl_9ZuGQ-480.webp"
@@ -3644,10 +3620,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-qU1Jl_9ZuGQ.jpg"
+   "/media/video/thumbs/yt-qU1Jl_9ZuGQ.webp"
   ]
  ],
- "/media/video/thumbs/yt-tQj7MmXobBE.jpg": [
+ "/media/video/thumbs/yt-tQj7MmXobBE.webp": [
   [
    480,
    "/media/video/thumbs/yt-tQj7MmXobBE-480.webp"
@@ -3658,10 +3634,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-tQj7MmXobBE.jpg"
+   "/media/video/thumbs/yt-tQj7MmXobBE.webp"
   ]
  ],
- "/media/video/thumbs/yt-wM2vY2mxudY.jpg": [
+ "/media/video/thumbs/yt-wM2vY2mxudY.webp": [
   [
    480,
    "/media/video/thumbs/yt-wM2vY2mxudY-480.webp"
@@ -3672,10 +3648,10 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-wM2vY2mxudY.jpg"
+   "/media/video/thumbs/yt-wM2vY2mxudY.webp"
   ]
  ],
- "/media/video/thumbs/yt-xBjOFI02JTE.jpg": [
+ "/media/video/thumbs/yt-xBjOFI02JTE.webp": [
   [
    480,
    "/media/video/thumbs/yt-xBjOFI02JTE-480.webp"
@@ -3686,20 +3662,20 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-xBjOFI02JTE.jpg"
+   "/media/video/thumbs/yt-xBjOFI02JTE.webp"
   ]
  ],
- "/media/video/thumbs/yt-xohvEn-YaP4.jpg": [
+ "/media/video/thumbs/yt-xohvEn-YaP4.webp": [
   [
    480,
    "/media/video/thumbs/yt-xohvEn-YaP4-480.webp"
   ],
   [
    640,
-   "/media/video/thumbs/yt-xohvEn-YaP4.jpg"
+   "/media/video/thumbs/yt-xohvEn-YaP4.webp"
   ]
  ],
- "/media/video/thumbs/yt-zracF8DRdUg.jpg": [
+ "/media/video/thumbs/yt-zracF8DRdUg.webp": [
   [
    480,
    "/media/video/thumbs/yt-zracF8DRdUg-480.webp"
@@ -3710,7 +3686,7 @@
   ],
   [
    1280,
-   "/media/video/thumbs/yt-zracF8DRdUg.jpg"
+   "/media/video/thumbs/yt-zracF8DRdUg.webp"
   ]
  ]
 }

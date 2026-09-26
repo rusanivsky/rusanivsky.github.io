@@ -976,7 +976,7 @@ function infoPage() {
       <picture>
         <source type="image/avif" srcset="/media/portrait/photo-640.avif 640w, /media/portrait/photo-768.avif 768w" sizes="(min-width: 61rem) 20.4rem, (min-width: 34rem) 22.1rem, 92vw">
         <source type="image/webp" srcset="/media/portrait/photo-640.webp 640w, /media/portrait/photo-768.webp 768w" sizes="(min-width: 61rem) 20.4rem, (min-width: 34rem) 22.1rem, 92vw">
-        <img src="/media/portrait/photo-768.jpg" width="768" height="960" alt="${attr(L(PORTRAIT_ALT))}" loading="lazy" decoding="async">
+        <img src="/media/portrait/photo-768.webp" width="768" height="960" alt="${attr(L(PORTRAIT_ALT))}" loading="lazy" decoding="async">
       </picture>
     </figure>
   </div>
