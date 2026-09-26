@@ -17,9 +17,10 @@ import photoSequences from './photo-sequences.json' with { type: 'json' };
 
 const POSTER = '/media/video/posters/';
 const THUMB = '/media/video/thumbs/';
-/* Cloudflare test: films served from R2 through the rusanivsky-video Worker
-   (workers/video) instead of YouTube. A `cf` item plays in our own <video>.
-   To go back, swap the item for its YouTube id noted beside it. */
+/* Our own films are served from Cloudflare R2 through the rusanivsky-video
+   Worker (workers/video) instead of YouTube; a `cf` item plays in our own
+   <video>. The YouTube id beside each one is kept on purpose — it is the way
+   back, not dead code. Do not remove it in a clean-up. */
 const CF_VIDEO = 'https://rusanivsky-video.rusanivsky-f9d.workers.dev/';
 
 /* Photography series reuse the production running order, which is already an
@@ -87,13 +88,13 @@ export const projects = [
     ],
     cover: `${POSTER}das-graduation-episode-3-poster.webp`,
     media: [
-      video('yt', 'HP4ujuCuX2I', 'Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation 2025', `${POSTER}das-graduation-episode-3-poster.webp`),
-      video('yt', 'I822C4jGDY4', 'Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2025', `${POSTER}slp-episode-5-poster.webp`),
-      video('yt', 'rmt8Y3PYLXw', 'School of Strategic Architect — Start 2025', `${POSTER}ssa-start-2025-poster.webp`),
-      video('yt', '2UqVxbKSs18', 'Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation Ceremony 2024', `${POSTER}das-graduation-2024-poster.webp`),
-      video('yt', 'QweaFhMj4tw', 'Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2024', `${POSTER}slp-graduation-2024-poster.webp`),
-      video('yt', 'GAxQnmNF2pU', 'School of Strategic Architect — Start 2024', `${POSTER}ssa-start-2024-poster.webp`),
-      video('yt', '6SaVeSP4txE', 'Signing a memorandum during the Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System', `${POSTER}signing-the-memorandum-poster.webp`),
+      { ...video('cf', 'das-graduation-episode-3', 'Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation 2025', `${POSTER}das-graduation-episode-3-poster.webp`), src: `${CF_VIDEO}short-form/das-graduation-episode-3-1080.mp4` }, // YouTube HP4ujuCuX2I — не видаляти, відкат
+      { ...video('cf', 'slp-episode-5', 'Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2025', `${POSTER}slp-episode-5-poster.webp`), src: `${CF_VIDEO}short-form/slp-episode-5-1080.mp4` }, // YouTube I822C4jGDY4 — не видаляти, відкат
+      { ...video('cf', 'ssa-start-2025', 'School of Strategic Architect — Start 2025', `${POSTER}ssa-start-2025-poster.webp`), src: `${CF_VIDEO}short-form/ssa-start-2025-1080.mp4` }, // YouTube rmt8Y3PYLXw — не видаляти, відкат
+      { ...video('cf', 'das-graduation-2024', 'Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System — Graduation Ceremony 2024', `${POSTER}das-graduation-2024-poster.webp`), src: `${CF_VIDEO}short-form/das-graduation-2024-1080.mp4` }, // YouTube 2UqVxbKSs18 — не видаляти, відкат
+      { ...video('cf', 'slp-graduation-2024', 'Strategic Leadership Program in Security and Defense of Ukraine — Graduation 2024', `${POSTER}slp-graduation-2024-poster.webp`), src: `${CF_VIDEO}short-form/slp-graduation-2024-1080.mp4` }, // YouTube QweaFhMj4tw — не видаляти, відкат
+      { ...video('cf', 'ssa-start-2024', 'School of Strategic Architect — Start 2024', `${POSTER}ssa-start-2024-poster.webp`), src: `${CF_VIDEO}short-form/ssa-start-2024-1080.mp4` }, // YouTube GAxQnmNF2pU — не видаляти, відкат
+      { ...video('cf', 'signing-the-memorandum', 'Signing a memorandum during the Strategic Program for the Development of the Defense Forces of Ukraine’s Armament System', `${POSTER}signing-the-memorandum-poster.webp`), src: `${CF_VIDEO}reels/signing-the-memorandum-1080.mp4` }, // YouTube 6SaVeSP4txE — не видаляти, відкат
     ],
     externalLinks: [],
     featured: true,
@@ -224,9 +225,9 @@ export const projects = [
        A standing frame: the embroidered motif is in the upper half. */
     coverFocus: '50% 40%',
     media: [
-      video('yt', 'w9t-SHkLML0', 'Dyvochyv', `${POSTER}dyvoshyv-poster.webp`),
-      video('yt', 'iJCBQgwv9ew', 'Dyvochyv', `${POSTER}the-coat-poster.webp`),
-      video('yt', 'hvrDWsMeXh8', 'Alisa Levchenko — “A Very Cozy Book”', `${POSTER}tsyronian-publishing-poster.webp`),
+      { ...video('cf', 'dyvoshyv', 'Dyvochyv', `${POSTER}dyvoshyv-poster.webp`), src: `${CF_VIDEO}reels/dyvoshyv-1080.mp4` }, // YouTube w9t-SHkLML0 — не видаляти, відкат
+      { ...video('cf', 'the-coat', 'Dyvochyv', `${POSTER}the-coat-poster.webp`), src: `${CF_VIDEO}reels/the-coat-1080.mp4` }, // YouTube iJCBQgwv9ew — не видаляти, відкат
+      { ...video('cf', 'tsyronian-publishing', 'Alisa Levchenko — “A Very Cozy Book”', `${POSTER}tsyronian-publishing-poster.webp`), src: `${CF_VIDEO}reels/tsyronian-publishing-1080.mp4` }, // YouTube hvrDWsMeXh8 — не видаляти, відкат
     ],
     externalLinks: [],
     featured: true,
@@ -253,7 +254,7 @@ export const projects = [
     ],
     cover: `${POSTER}utility-bag-poster.webp`,
     media: [
-      video('yt', 'EfoTXc5AVkk', 'Utility Bags by SHYLERO', `${POSTER}utility-bag-poster.webp`),
+      { ...video('cf', 'utility-bag', 'Utility Bags by SHYLERO', `${POSTER}utility-bag-poster.webp`), src: `${CF_VIDEO}short-form/utility-bag-1080.mp4` }, // YouTube EfoTXc5AVkk — не видаляти, відкат
     ],
     externalLinks: [],
     featured: false,
@@ -470,8 +471,7 @@ export const videoCatalogue = [
     key: 'events-and-aftermovies',
     title: { en: 'Events and aftermovies', ua: 'Події та афтермуві' },
     items: [
-      // Cloudflare test; on YouTube it is BFX3B9sv5-Y.
-      { ...video('cf', 'altns-main-edit', 'Musheh Tsyronian’s book presentation — “A Life That Never Stopped”', `${POSTER}altns-main-edit-poster.webp`), src: `${CF_VIDEO}short-form/altns-main-edit-1080.mp4`, client: null, role: 'Editing' },
+      { ...video('cf', 'altns-main-edit', 'Musheh Tsyronian’s book presentation — “A Life That Never Stopped”', `${POSTER}altns-main-edit-poster.webp`), src: `${CF_VIDEO}short-form/altns-main-edit-1080.mp4`, client: null, role: 'Editing' }, // YouTube BFX3B9sv5-Y — не видаляти, відкат
       { ...video('yt', 'C_eK5i5dvuU', 'Oleksandr & Anna. Wedding Day. Highlights (03.07.2021)', `${THUMB}yt-C_eK5i5dvuU.webp`), client: null, role: 'Camera & Editor' },
       { ...video('yt', 'nHrFbu5yLBg', 'Oleksandr & Olha. Wedding Day. Highlights (05.09.2020)', `${THUMB}yt-nHrFbu5yLBg.webp`), client: null, role: 'Camera & Editor' },
     ],
