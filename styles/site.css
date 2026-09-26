@@ -80,7 +80,7 @@
      one weight. Lighter than the brightest green it can cross, so it never
      turns into a dark stripe over the glow. */
   --line: #6a6862;
-  --rule-w: 2px;
+  --rule-w: 1px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
 
@@ -877,7 +877,7 @@ html.glow-baked.sub main::before { display: none; }
 
 .prose > * + * { margin-top: 1rem; }
 .prose p { line-height: var(--lh-text); text-wrap: pretty; }
-.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); text-decoration-thickness: var(--rule-w); }
+.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
 .prose a:hover { text-decoration-color: currentColor; }
 
 .section { margin-top: 3.4rem; }
