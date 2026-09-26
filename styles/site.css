@@ -584,9 +584,15 @@ html.sub {
   --surface: color-mix(in srgb, var(--ink) 5%, transparent);
 }
 html.sub main::before {
-  /* On a phone: a circle centred on the top right corner, so one quarter of
-     it falls on the page. */
+  /* On a phone: a circle centred beyond the right edge, level with the top,
+     so less than a quarter of it falls on the page and the green stays to
+     the right instead of reaching under the heading. Its full-strength core
+     runs out to the page's corner (--glow-core, the share of the radius that
+     lies off the page), so the corner stays as green as before and only the
+     reach to the left is shorter. */
   --glow-r: 105vw;
+  --glow-x: calc(100% + 30vw);
+  --glow-core: 28%;
   content: '';
   position: absolute;
   top: 0;
@@ -596,10 +602,10 @@ html.sub main::before {
   height: var(--glow-r);
   pointer-events: none;
   background: radial-gradient(
-    circle var(--glow-r) at 100% 0%,
-    var(--head-tint) 0%,
-    color-mix(in srgb, var(--head-tint) 60%, transparent) 40%,
-    color-mix(in srgb, var(--head-tint) 22%, transparent) 72%,
+    circle var(--glow-r) at var(--glow-x) 0%,
+    var(--head-tint) var(--glow-core),
+    color-mix(in srgb, var(--head-tint) 60%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.4),
+    color-mix(in srgb, var(--head-tint) 22%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.72),
     transparent 100%
   );
 }
@@ -611,6 +617,8 @@ html.sub main::before {
 @media (min-width: 61rem) {
   html.sub main::before {
     --glow-r: min(135svh, calc(100vw - var(--rail)));
+    --glow-x: 100%;
+    --glow-core: 0%;
   }
 }
 
@@ -713,6 +721,10 @@ html.sub main::before {
   overflow: hidden;
   aspect-ratio: 16 / 9;
 }
+/* The first preview and the first wall are wrapped in <picture> only to be
+   skipped on the screen that hides them (see img() in build.mjs); the wrapper
+   itself takes no box. */
+:is(.row-preview, .tile-in) > picture { display: contents; }
 .row-preview img {
   width: 100%;
   height: 100%;
