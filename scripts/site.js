@@ -40,73 +40,81 @@
      and colours are read from the stylesheet (--glow-r, --glow-off,
      --glow-core, --head-tint, --paper); the fall-off is the same eased curve
      the gradient's thirteen stops sample. */
-  var glowMain = root.classList.contains('sub') && document.querySelector('main');
-  if (glowMain && window.HTMLCanvasElement) {
-    var glowCanvas = document.createElement('canvas');
-    glowCanvas.className = 'glow';
-    glowCanvas.setAttribute('aria-hidden', 'true');
-    var glowKey = '';
-
+  var glowHosts = [];
+  if (root.classList.contains('sub') && document.querySelector('main')) glowHosts.push(document.querySelector('main'));
+  if (document.getElementById('stage')) glowHosts.push(document.getElementById('stage'));
+  if (glowHosts.length && window.HTMLCanvasElement) {
     var hex = function (v) {
       v = v.trim().replace('#', '');
       if (v.length === 3) v = v.replace(/./g, '$&$&');
       return [0, 2, 4].map(function (i) { return parseInt(v.substr(i, 2), 16); });
     };
 
-    var drawGlow = function () {
-      var box = glowCanvas.getBoundingClientRect();
-      var dpr = Math.min(window.devicePixelRatio || 1, 3);
-      var side = Math.round(box.width * dpr);
-      var cs = getComputedStyle(glowMain);
-      var off = parseFloat(cs.getPropertyValue('--glow-off')) || 0;
-      var offPx = /vw/.test(cs.getPropertyValue('--glow-off')) ? off * document.documentElement.clientWidth / 100 : off;
-      var core = (parseFloat(cs.getPropertyValue('--glow-core')) || 0) / 100;
-      var rootCs = getComputedStyle(root);
-      var tint = hex(rootCs.getPropertyValue('--head-tint'));
-      var paper = hex(rootCs.getPropertyValue('--paper'));
-      var key = [side, offPx, core, tint, paper].join();
-      if (!side || key === glowKey) return;
-      glowKey = key;
+    // The same glow lies on a subpage's main and on the home page's stage;
+    // each host carries its own geometry and the colour it fades into
+    // (--glow-base: the paper under main, the stage's own grey under the
+    // stage).
+    var bakeGlow = function (host) {
+      var glowCanvas = document.createElement('canvas');
+      glowCanvas.className = 'glow';
+      glowCanvas.setAttribute('aria-hidden', 'true');
+      var glowKey = '';
 
-      glowCanvas.width = glowCanvas.height = side;
-      var ctx = glowCanvas.getContext('2d');
-      var img = ctx.createImageData(side, side);
-      var px = img.data;
-      var cx = side + offPx * dpr;
-      var R = side;
-      var dr = tint[0] - paper[0], dg = tint[1] - paper[1], db = tint[2] - paper[2];
-      // xorshift: Math.random for five million pixels is the slow part.
-      var seed = 2463534242;
-      for (var y = 0, i = 0; y < side; y++) {
-        var dy = y + 0.5;
-        for (var x = 0; x < side; x++, i += 4) {
-          var dx = cx - x - 0.5;
-          var t = (Math.sqrt(dx * dx + dy * dy) / R - core) / (1 - core);
-          var w = t <= 0 ? 1 : t >= 1 ? 0 : (1 + Math.cos(Math.PI * t)) / 2;
-          seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
-          var n1 = (seed >>> 0) / 4294967296;
-          seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
-          // Triangular noise of ±1 level: breaks the steps without moving
-          // the average tone.
-          var n = n1 + (seed >>> 0) / 4294967296 - 1;
-          px[i] = paper[0] + dr * w + n;
-          px[i + 1] = paper[1] + dg * w + n;
-          px[i + 2] = paper[2] + db * w + n;
-          px[i + 3] = 255;
+      var drawGlow = function () {
+        var box = glowCanvas.getBoundingClientRect();
+        var dpr = Math.min(window.devicePixelRatio || 1, 3);
+        var side = Math.round(box.width * dpr);
+        var cs = getComputedStyle(host);
+        var off = parseFloat(cs.getPropertyValue('--glow-off')) || 0;
+        var offPx = /vw/.test(cs.getPropertyValue('--glow-off')) ? off * document.documentElement.clientWidth / 100 : off;
+        var core = (parseFloat(cs.getPropertyValue('--glow-core')) || 0) / 100;
+        var tint = hex(getComputedStyle(root).getPropertyValue('--head-tint'));
+        var paper = hex(cs.getPropertyValue('--glow-base'));
+        var key = [side, offPx, core, tint, paper].join();
+        if (!side || key === glowKey) return;
+        glowKey = key;
+
+        glowCanvas.width = glowCanvas.height = side;
+        var ctx = glowCanvas.getContext('2d');
+        var img = ctx.createImageData(side, side);
+        var px = img.data;
+        var cx = side + offPx * dpr;
+        var R = side;
+        var dr = tint[0] - paper[0], dg = tint[1] - paper[1], db = tint[2] - paper[2];
+        // xorshift: Math.random for five million pixels is the slow part.
+        var seed = 2463534242;
+        for (var y = 0, i = 0; y < side; y++) {
+          var dy = y + 0.5;
+          for (var x = 0; x < side; x++, i += 4) {
+            var dx = cx - x - 0.5;
+            var t = (Math.sqrt(dx * dx + dy * dy) / R - core) / (1 - core);
+            var w = t <= 0 ? 1 : t >= 1 ? 0 : (1 + Math.cos(Math.PI * t)) / 2;
+            seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+            var n1 = (seed >>> 0) / 4294967296;
+            seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+            // Triangular noise of ±1 level: breaks the steps without moving
+            // the average tone.
+            var n = n1 + (seed >>> 0) / 4294967296 - 1;
+            px[i] = paper[0] + dr * w + n;
+            px[i + 1] = paper[1] + dg * w + n;
+            px[i + 2] = paper[2] + db * w + n;
+            px[i + 3] = 255;
+          }
         }
-      }
-      ctx.putImageData(img, 0, 0);
-      root.classList.add('glow-baked');
-    };
+        ctx.putImageData(img, 0, 0);
+        root.classList.add('glow-baked');
+      };
 
-    glowMain.insertBefore(glowCanvas, glowMain.firstChild);
-    var glowLater = window.requestIdleCallback || function (f) { return setTimeout(f, 200); };
-    glowLater(drawGlow);
-    var glowResize = 0;
-    window.addEventListener('resize', function () {
-      clearTimeout(glowResize);
-      glowResize = setTimeout(drawGlow, 250);
-    });
+      host.insertBefore(glowCanvas, host.firstChild);
+      var glowLater = window.requestIdleCallback || function (f) { return setTimeout(f, 200); };
+      glowLater(drawGlow);
+      var glowResize = 0;
+      window.addEventListener('resize', function () {
+        clearTimeout(glowResize);
+        glowResize = setTimeout(drawGlow, 250);
+      });
+    };
+    glowHosts.forEach(bakeGlow);
   }
 
   /* ---------- Holding the page still ----------
@@ -149,8 +157,6 @@
   var stage = document.getElementById('stage');
   if (stage) {
     var slides = stage.querySelectorAll('.slide');
-    var capTitle = document.getElementById('stage-title');
-    var capMeta = document.getElementById('stage-meta');
     var current = null;
 
     function show(idx) {
@@ -162,9 +168,6 @@
         // beside it already carries the same titles.
         s.setAttribute('aria-hidden', String(i !== idx));
       });
-      var slide = slides[idx];
-      if (slide && capTitle) capTitle.textContent = slide.dataset.title || '';
-      if (slide && capMeta) capMeta.textContent = slide.dataset.meta || '';
     }
 
     document.querySelectorAll('.row').forEach(function (row, i) {
@@ -707,7 +710,7 @@
     // Rules are part of the entrance too: a divider that is already drawn
     // while the words around it are still to come reads as a leftover. Each
     // one comes in with the first item after it.
-    var rules = Array.prototype.slice.call(document.querySelectorAll('.rail-nav + .rail-nav, .index, .stage-caption'));
+    var rules = Array.prototype.slice.call(document.querySelectorAll('.rail-nav + .rail-nav, .index'));
 
     // Blocks: walk down from <main> and stop at the first element that fits
     // on a screen, so a whole section is not moved as one slab and a single
@@ -744,7 +747,7 @@
       if (el.classList.contains('rv')) return;
       var next = el.querySelector('.rv');
       var d = next ? parseFloat(next.style.getPropertyValue('--d')) || 0 : sec(0.3);
-      mark(el, el.matches('.stage-caption') ? 'rv-fade' : 'rv-rule', d);
+      mark(el, 'rv-rule', d);
     });
     heads.forEach(wrap);
     void root.offsetHeight;
