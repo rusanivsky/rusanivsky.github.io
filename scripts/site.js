@@ -29,8 +29,11 @@
      is never consulted — the brief rules that out explicitly. */
   var THEME_KEY = 'kr-theme';
   var fadeOut = 0;
-  var LIGHT = '#f8f8f8';
-  var DARK = '#141412';
+  // The subpages wear the old site's green behind the header, so the
+  // browser's own bar takes the same colour there.
+  var SUB = root.classList.contains('sub');
+  var LIGHT = SUB ? '#dbe8d8' : '#f8f8f8';
+  var DARK = SUB ? '#2b3e2d' : '#141412';
 
   function stored() {
     try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
@@ -462,4 +465,219 @@
     rest.hidden = false;
     t.hidden = true;
   });
+
+  /* ---------- How a page arrives ----------
+     The boot script in <head> raises .fx before the first paint whenever the
+     visitor has not asked for less motion; nothing below runs without it.
+     Three kinds of entrance, all on one ease:
+     - the headings of the page come in line by line, each line swept in word
+       by word from the left;
+     - the rail and the bar come in link by link;
+     - every other block rises 28px as it scrolls into view, and blocks that
+       arrive together are staggered, so a row of pictures lands left to right.
+     Everything marked here is unmarked again once it has arrived, so the
+     hover transitions the rest of this file relies on come back untouched. */
+  if (root.classList.contains('fx')) {
+    var DONE = 1300;
+    var marked = [];
+
+    function mark(el, cls, delay) {
+      el.classList.add(cls);
+      el.style.setProperty('--d', delay + 's');
+      marked.push(el);
+    }
+    function settle(el, delay) {
+      setTimeout(function () {
+        el.classList.remove('rv', 'rv-fade', 'rv-in');
+        el.style.removeProperty('--d');
+      }, delay * 1000 + DONE);
+    }
+    function arrive(el) {
+      el.classList.add('rv-in');
+      settle(el, parseFloat(el.style.getPropertyValue('--d')) || 0);
+    }
+
+    // Headings: each word in a span, hidden from the start so nothing shows
+    // before its turn. The lines are counted only when the entrance begins,
+    // by which time the display face has arrived and the breaks are final.
+    function wrap(sec) {
+      var tw = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (tw.nextNode()) {
+        var n = tw.currentNode;
+        if (n.textContent.trim() && !n.parentNode.closest('.sr')) nodes.push(n);
+      }
+      nodes.forEach(function (n) {
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function (tok) {
+          if (!tok) return;
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+          var w = document.createElement('span');
+          w.className = 'w';
+          w.textContent = tok;
+          frag.appendChild(w);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+      sec.classList.add('lf');
+    }
+    function lines(sec, base) {
+      var line = -1, top = null, k = 0;
+      sec.querySelectorAll('.w').forEach(function (w) {
+        var t = w.getBoundingClientRect().top;
+        if (top === null || t - top > 3) { line++; top = t; k = 0; }
+        w.style.transitionDelay = (base + line * 0.14 + k++ * 0.022) + 's';
+      });
+      return base + (line + 1) * 0.14;
+    }
+
+    var heads = document.querySelectorAll(
+      'main .eyebrow, main .t-title, main .t-display, main .standfirst, main .page-intro, main .project-dek'
+    );
+    var splashEl = document.querySelector('.splash');
+    var waiting = root.classList.contains('splash-on') && !root.classList.contains('splash-off');
+    // Without the card the name fades in with the rest of the header; with
+    // it, the name is brought in by the card itself (below).
+    var chrome = Array.prototype.slice.call(document.querySelectorAll(
+      (waiting ? '' : '.rail .wordmark, .bar .wordmark, ') + '.rail-nav a, .rail-foot > *, .bar > :not(.wordmark)'
+    ));
+    var tiles = document.querySelectorAll('.slide.on .tile');
+
+    // Blocks: walk down from <main> and stop at the first element that fits
+    // on a screen, so a whole section is not moved as one slab and a single
+    // picture is not split into pieces.
+    var blocks = [];
+    var skip = 'script, style, .stage, .splash, [hidden]';
+    function collect(el) {
+      Array.prototype.forEach.call(el.children, function (c) {
+        if (c.matches(skip)) return;
+        if (c.matches('.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek')) return;
+        if (c.querySelector('.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek') ||
+            (c.children.length && c.getBoundingClientRect().height > innerHeight * 0.8)) {
+          collect(c);
+          return;
+        }
+        blocks.push(c);
+      });
+    }
+    var main = document.getElementById('main');
+    if (main) collect(main);
+
+    blocks.forEach(function (b) { mark(b, 'rv', 0); });
+    chrome.forEach(function (el, i) { mark(el, 'rv', 0.1 + i * 0.045); });
+    tiles.forEach(function (el) { mark(el, 'rv-fade', 0); });
+    heads.forEach(wrap);
+    root.classList.add('fx-ready');
+
+    function start() {
+      var t = 0.05;
+      heads.forEach(function (h) { t = lines(h, t) - 0.05; });
+      requestAnimationFrame(function () {
+        heads.forEach(function (h) { h.classList.add('lf-in'); });
+        chrome.forEach(arrive);
+      });
+
+      // The first wall on the stage waits for its pictures, then comes in
+      // frame by frame from the left — a slow picture never pops in out of
+      // turn.
+      var imgs = Array.prototype.map.call(tiles, function (x) { return x.querySelector('img'); });
+      var ready = Promise.all(imgs.map(function (im) {
+        return !im || im.complete ? null : new Promise(function (r) {
+          im.addEventListener('load', r, { once: true });
+          im.addEventListener('error', r, { once: true });
+        });
+      }));
+      Promise.race([ready, new Promise(function (r) { setTimeout(r, 2500); })]).then(function () {
+        tiles.forEach(function (el, i) {
+          el.style.setProperty('--d', (0.15 + i * 0.14) + 's');
+          arrive(el);
+        });
+      });
+
+      var batch = 0, batchAt = 0;
+      var io = new IntersectionObserver(function (entries) {
+        var now = Date.now();
+        if (now - batchAt > 120) batch = 0;
+        batchAt = now;
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          e.target.style.setProperty('--d', Math.min(batch++ * 0.09, 0.72) + 's');
+          arrive(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+      blocks.forEach(function (b) { io.observe(b); });
+    }
+
+    /* ---------- From the title card to the page ----------
+       The name on the card does not fade with it. It travels to the place the
+       name holds in the header — the rail on a wide screen, the bar on a
+       narrow one — and shrinks to its size on the way, while the card's paper
+       dissolves and the page comes up beneath it. Once it lands, the real
+       name takes over. */
+    var EXPO = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+    function clearSplash() {
+      root.className = root.className.replace(/ ?splash-(on|off|clear)/g, '');
+      if (splashEl) splashEl.classList.remove('splash-clear');
+    }
+
+    window.krSplashExit = function () {
+      window.krSplashExit = null;
+      var nm = splashEl && splashEl.querySelector('.splash-name');
+      var role = splashEl && splashEl.querySelector('.splash-role');
+      var target = Array.prototype.find.call(
+        document.querySelectorAll('.rail .wordmark, .bar .wordmark'),
+        function (el) { return el.getClientRects().length > 0; }
+      );
+      if (!nm || !target || !nm.animate) {
+        root.className += ' splash-off';
+        setTimeout(clearSplash, 260);
+        start();
+        return;
+      }
+      var a = nm.getBoundingClientRect();
+      var b = target.getBoundingClientRect();
+      var ca = getComputedStyle(nm), cb = getComputedStyle(target);
+      var fa = parseFloat(ca.fontSize), fb = parseFloat(cb.fontSize);
+      var indent = parseFloat(ca.textIndent) || 0;
+      var lh = parseFloat(cb.lineHeight) || fb * 1.3;
+      var s = fb / fa;
+      var dx = b.left - (a.left + indent);
+      var dy = (b.top + lh / 2) - (a.top + a.height / 2);
+      var FLY = 1150;
+
+      nm.style.transformOrigin = indent + 'px 50%';
+      target.style.opacity = '0';
+      nm.animate(
+        [{ transform: 'none' }, { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')' }],
+        { duration: FLY, easing: EXPO, fill: 'forwards' }
+      );
+      if (role) {
+        role.animate(
+          [{ opacity: getComputedStyle(role).opacity, transform: 'none' }, { opacity: 0, transform: 'translateY(-0.6em)' }],
+          { duration: 380, easing: 'ease-out', fill: 'forwards' }
+        );
+      }
+      splashEl.classList.add('splash-clear');
+      setTimeout(start, 260);
+
+      setTimeout(function () {
+        nm.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: 'ease', fill: 'forwards' });
+        target.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: 'ease' });
+        target.style.opacity = '';
+        setTimeout(clearSplash, 340);
+      }, FLY - 120);
+    };
+
+    if (!waiting) {
+      window.krSplashExit = null;
+      // Lines are counted in the face they will be read in, but a slow font
+      // never holds the page back by more than a moment.
+      var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+      Promise.race([fonts, new Promise(function (r) { setTimeout(r, 600); })]).then(function () {
+        requestAnimationFrame(start);
+      });
+    }
+  }
 })();
