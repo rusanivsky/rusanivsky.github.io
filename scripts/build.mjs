@@ -324,7 +324,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <meta name="twitter:title" content="${attr(title)}">
 <meta name="twitter:description" content="${attr(description)}">
 <meta name="twitter:image" content="${ogUrl}">
-<meta name="theme-color" content="#f4f1e9">
+<meta name="theme-color" content="#f8f8f8">
 <link rel="icon" href="/favicon.ico?v=${ICON_V}" sizes="32x32">
 <link rel="icon" href="/favicon.svg?v=${ICON_V}" type="image/svg+xml">
 <link rel="icon" href="/favicon-dark.ico?v=${ICON_V}" sizes="32x32" media="(prefers-color-scheme: dark)">

@@ -28,7 +28,7 @@ const CHROME = process.env.CHROME
   ?? ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => existsSync(p));
 
-const PAPER = '#f4f1e9';
+const PAPER = '#f8f8f8';
 const INK = '#111111';
 const CHARCOAL = '#141412';
 const LIGHT_INK = '#e8e5de';
