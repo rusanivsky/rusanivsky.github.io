@@ -197,7 +197,7 @@ const splash = () => `
 <div class="splash" aria-hidden="true"><p class="splash-mark"><span class="splash-name">${ui('name')}</span><span class="splash-role">${ui('splashRole')}</span></p></div>`;
 
 /* Заставка не просто відлічує секунди — вона прикриває завантаження.
-   Іде, коли сторінка готова (подія load), але не раніше ніж через 1,5 с,
+   Іде, коли сторінка готова (подія load), але не раніше ніж через 1,25 с,
    щоб не блимнути, і не пізніше ніж через 6 с: одне неквапливе фото не
    має тримати екран замість того, щоб довантажитися вже під сторінкою.
 
@@ -220,7 +220,7 @@ function finish(){if(done)return;done=true;
 setTimeout(function(){if(window.krSplashExit){window.krSplashExit();return;}
 r.className+=' splash-off';
 setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},260);
-},Math.max(0,1480-(Date.now()-t0)));}
+},Math.max(0,1250-(Date.now()-t0)));}
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();`;
 
@@ -462,9 +462,15 @@ const spanFor = (d) => spanAt(6, d, 3, 8);
 function player(item, eager = false) {
   const d = dim(item.poster);
   const vertical = d && d.h > d.w;
+  /* A YouTube film is a link to the film on YouTube, opened in a new tab —
+     or, on a phone with the app, in the app, which claims youtube.com links
+     for itself. Only Vimeo still plays on the page. */
+  const btn = item.platform === 'yt'
+    ? `<a class="player-btn" href="https://www.youtube.com/watch?v=${attr(item.videoId)}" target="_blank" rel="noopener" aria-label="${attr(ui('watchYt') + ' — ' + item.title)}"></a>`
+    : `<button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>`;
   return `<div class="player${vertical ? ' vertical' : ''}">
   ${img(item.poster, '', { eager, sizes: sizesFor(12) })}
-  <button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>
+  ${btn}
 </div>`;
 }
 

@@ -158,7 +158,8 @@
      The poster is a real image and the iframe only exists after a click, so
      a page with twenty videos loads no third-party player at all. */
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.player-btn');
+    // YouTube posters are plain links to youtube.com; only a button plays here.
+    var btn = e.target.closest('button.player-btn');
     if (!btn) return;
     var wrap = btn.closest('.player');
     var platform = btn.dataset.platform;
@@ -481,7 +482,7 @@
     /* One tempo for every entrance. The timings below were drawn at 1 and are
        all divided by PACE, so the whole sequence can be quickened or slowed
        in one place; styles/site.css reads the same number as --pace. */
-    var PACE = 1.35;
+    var PACE = 1.6;
     function sec(x) { return x / PACE; }
     function ms(x) { return Math.round(x / PACE); }
     var DONE = ms(1300);
@@ -492,7 +493,7 @@
     }
     function settle(el, delay) {
       setTimeout(function () {
-        el.classList.remove('rv', 'rv-fade', 'rv-in');
+        el.classList.remove('rv', 'rv-fade', 'rv-rule', 'rv-in');
         el.style.removeProperty('--d');
       }, delay * 1000 + DONE);
     }
@@ -531,13 +532,17 @@
       split(h, 'w');
       h.classList.add('lf');
     }
+    // All positions are read first and all delays written after, so the
+    // browser lays the page out once rather than once per word.
     function lines(h, base) {
-      var line = -1, top = null, k = 0;
-      h.querySelectorAll('.w').forEach(function (w) {
-        var t = w.getBoundingClientRect().top;
+      var ws = h.querySelectorAll('.w');
+      var tops = Array.prototype.map.call(ws, function (w) { return w.getBoundingClientRect().top; });
+      var line = -1, top = null, k = 0, delays = [];
+      tops.forEach(function (t) {
         if (top === null || t - top > 3) { line++; top = t; k = 0; }
-        w.style.transitionDelay = (base + sec(line * 0.14 + k++ * 0.022)) + 's';
+        delays.push(base + sec(line * 0.14 + k++ * 0.022));
       });
+      ws.forEach(function (w, i) { w.style.transitionDelay = delays[i] + 's'; });
       return base + sec((line + 1) * 0.14);
     }
 
@@ -552,6 +557,10 @@
       (waiting ? '' : '.rail .wordmark, .bar .wordmark, ') + '.rail-nav a, .rail-foot > *, .bar > :not(.wordmark)'
     ));
     var tiles = document.querySelectorAll('.slide.on .tile');
+    // Rules are part of the entrance too: a divider that is already drawn
+    // while the words around it are still to come reads as a leftover. Each
+    // one comes in with the first item after it.
+    var rules = Array.prototype.slice.call(document.querySelectorAll('.rail-nav + .rail-nav, .index, .stage-caption'));
 
     // Blocks: walk down from <main> and stop at the first element that fits
     // on a screen, so a whole section is not moved as one slab and a single
@@ -573,10 +582,26 @@
     var main = document.getElementById('main');
     if (main) collect(main);
 
+    // The marks hide things that the browser may already have painted. Were
+    // the transitions live at that moment, each element would start fading
+    // *out* and the entrance would fade it back in from wherever that got to
+    // — which looks like no entrance at all. So the marks go on with
+    // transitions switched off, the styles are flushed, and only then are the
+    // transitions given back.
+    root.classList.add('fx-mark');
     blocks.forEach(function (b) { mark(b, 'rv', 0); });
     chrome.forEach(function (el, i) { mark(el, 'rv', sec(0.1 + i * 0.045)); });
     tiles.forEach(function (el) { mark(el, 'rv-fade', 0); });
+    rules.forEach(function (el) {
+      // A block that rises as a whole brings its own border with it.
+      if (el.classList.contains('rv')) return;
+      var next = el.querySelector('.rv');
+      var d = next ? parseFloat(next.style.getPropertyValue('--d')) || 0 : sec(0.3);
+      mark(el, el.matches('.stage-caption') ? 'rv-fade' : 'rv-rule', d);
+    });
     heads.forEach(wrap);
+    void root.offsetHeight;
+    root.classList.remove('fx-mark');
     root.classList.add('fx-ready');
 
     function start() {
@@ -585,6 +610,7 @@
       requestAnimationFrame(function () {
         heads.forEach(function (h) { h.classList.add('lf-in'); });
         chrome.forEach(arrive);
+        rules.forEach(function (el) { if (!el.classList.contains('rv')) arrive(el); });
       });
 
       // The first wall on the stage waits for its pictures, then comes in

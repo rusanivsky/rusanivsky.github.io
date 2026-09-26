@@ -87,6 +87,7 @@ export const UI = {
   name: { en: 'Kyrylo Rusanivsky', ua: 'Кирило Русанівський' },
   splashRole: { en: 'creative specialist', ua: 'креативний спеціаліст' },
   play: { en: 'Play', ua: 'Відтворити' },
+  watchYt: { en: 'Watch on YouTube', ua: 'Дивитися на YouTube' },
   showRest: { en: 'Show the remaining', ua: 'Показати решту' },
   frames: { en: 'frames', ua: 'кадрів' },
   ratesCovers: {

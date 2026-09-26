@@ -128,7 +128,7 @@
 
   /* The tempo of every entrance: the durations below were drawn at 1 and
      are divided by this. scripts/site.js carries the same number. */
-  --pace: 1.35;
+  --pace: 1.6;
 
   /* The green of the old site. Every page but the home page carries it as a
      wide glow in the empty top right of the page: in the dark it is the old
@@ -771,14 +771,7 @@ html.sub main::before {
      the wall ends on its axis instead of on its left edge. */
   .tile.orphan { grid-column: 1 / -1; width: calc(50% - 0.35rem); justify-self: center; }
   .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-  /* Under the pointer a frame leans in: a slow five-percent push inside its
-     own cell, which holds the edges still. The home page only — the stage is
-     a preview, and the pages behind it keep their pictures untouched. */
   .tile { overflow: hidden; }
-  .tile img { transition: transform calc(1s / var(--pace)) var(--ease-out); }
-  @media (hover: hover) {
-    .tile:hover img { transform: scale(1.05); }
-  }
 
   /* The rule for a wall that does not fill itself: a full wall takes the whole
      panel, and the only frame that is held back is a lone one. It is held back
@@ -904,9 +897,7 @@ html.sub main::before {
   height: 100%;
   object-fit: cover;
   object-position: var(--focus, 50% 50%);
-  transition: opacity var(--t) var(--ease);
 }
-.work:hover .work-cover img { opacity: 0.86; }
 .work-title {
   display: block;
   margin-top: 0.85rem;
@@ -1336,9 +1327,8 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   .collage .gap-l { margin-bottom: 2.4rem; }
 }
 
-.collage .shot { margin: 0; background: var(--stage-bg); }
-.collage img { width: 100%; height: auto; transition: opacity var(--t) var(--ease); }
-.cell:hover img { opacity: 0.88; }
+.collage .shot { margin: 0; background: var(--stage-bg); overflow: hidden; }
+.collage img { width: 100%; height: auto; }
 
 /* ============================================================
    Splash — a title card, not a loader
@@ -1439,6 +1429,22 @@ html.splash-off .splash {
   html.splash-on .splash { display: none; }
 }
 
+/* ---------- Previews lean in ----------
+   Every picture that stands for something further — a frame on the home
+   stage, a project cover, a gallery frame, a film poster — answers the
+   pointer the same way: a slow five-percent push inside its own frame, which
+   holds the edges still. Only the picture moves; captions, the play mark
+   and the frame itself stay put. */
+:is(.tile, .work-cover, .collage .shot, .player) img {
+  transition: transform calc(1s / var(--pace)) var(--ease-out);
+}
+@media (hover: hover) {
+  .tile:hover img,
+  .work:hover .work-cover img,
+  .cell:hover .shot img,
+  .player:hover > img { transform: scale(1.05); }
+}
+
 /* ============================================================
    Entrances
    ============================================================
@@ -1447,30 +1453,41 @@ html.splash-off .splash {
    marked the page, the page waits unseen — for three seconds at most, after
    which the boot script shows it regardless. */
 html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
+/* Raised by site.js for the instant it puts the marks on; see there. */
+html.fx.fx-mark :is(.rv, .rv-fade, .rv-rule, .lf .w) { transition: none !important; }
 
-.rv {
+/* Scoped under html.fx so these outrank a component's own transition (the
+   rail links carry one for hover colour, which would otherwise win and make
+   them appear at once). */
+html.fx .rv {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity calc(0.9s / var(--pace)) ease, transform calc(1s / var(--pace)) var(--ease-out);
   transition-delay: var(--d, 0s);
 }
-.rv-fade {
+html.fx .rv-fade {
   opacity: 0;
   transition: opacity calc(0.9s / var(--pace)) ease;
   transition-delay: var(--d, 0s);
 }
-.rv.rv-in, .rv-fade.rv-in { opacity: 1; transform: none; }
+html.fx .rv.rv-in, html.fx .rv-fade.rv-in { opacity: 1; transform: none; }
+/* A divider fades its line in; the element it belongs to stays where it is. */
+html.fx .rv-rule {
+  transition: border-color calc(0.9s / var(--pace)) ease;
+  transition-delay: var(--d, 0s);
+}
+html.fx .rv-rule:not(.rv-in) { border-color: transparent; }
 /* The header is small type: a rise of 28px would read as a jump there. */
-:is(.rail, .bar) .rv { transform: translateY(8px); }
-:is(.rail, .bar) .rv.rv-in { transform: none; }
+html.fx :is(.rail, .bar) .rv { transform: translateY(8px); }
+html.fx :is(.rail, .bar) .rv.rv-in { transform: none; }
 /* On a phone blocks only fade: a column that slides under the thumb reads
    as the page moving, not arriving. */
 @media (max-width: 60.99rem) {
-  main .rv { transform: none; }
+  html.fx main .rv { transform: none; }
 }
 
-.lf .w { opacity: 0; transition: opacity calc(0.6s / var(--pace)) ease; }
-.lf.lf-in .w { opacity: 1; }
+html.fx .lf .w { opacity: 0; transition: opacity calc(0.6s / var(--pace)) ease; }
+html.fx .lf.lf-in .w { opacity: 1; }
 
 /* The card's exit: the paper goes, the name stays and is moved by site.js. */
 .splash.splash-clear {
@@ -1483,7 +1500,7 @@ html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
 .splash-name .fw { display: inline-block; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rv, .rv-fade, .lf .w { opacity: 1; transform: none; }
+  html.fx :is(.rv, .rv-fade, .lf .w) { opacity: 1; transform: none; }
 }
 
 /* ============================================================
