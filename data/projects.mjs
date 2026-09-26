@@ -215,12 +215,12 @@ export const projects = [
       { en: 'Director — Musheh Tsyronian', ua: 'Режисер — Мушег Циронян' },
       { en: 'Camera Operator & Editor — Kyrylo Rusanivsky', ua: 'Оператор і монтажер — Кирило Русанівський' },
     ],
-    cover: `${POSTER}dyvoshyv-poster.jpg`,
+    cover: `${POSTER}dyvoshyv-poster.webp`,
     /* Where the 16:9 preview crop sits on a cover that is not 16:9.
        A standing frame: the embroidered motif is in the upper half. */
     coverFocus: '50% 40%',
     media: [
-      video('yt', 'w9t-SHkLML0', 'Dyvochyv', `${POSTER}dyvoshyv-poster.jpg`),
+      video('yt', 'w9t-SHkLML0', 'Dyvochyv', `${POSTER}dyvoshyv-poster.webp`),
       video('yt', 'iJCBQgwv9ew', 'Dyvochyv', `${POSTER}the-coat-poster.jpg`),
       video('yt', 'hvrDWsMeXh8', 'Alisa Levchenko — “A Very Cozy Book”', `${POSTER}tsyronian-publishing-poster.jpg`),
     ],
