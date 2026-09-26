@@ -303,6 +303,7 @@ body::before {
 :where(.bar, .drawer, .stage, .lb, .splash) > *,
 :where(.row-preview, .work-cover, .player, figure.shot, .portrait, .collage .shot) img,
 :where(.player) iframe,
+:where(.player) video,
 :where(.player) button {
   position: relative;
   z-index: 1;
@@ -1011,6 +1012,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .player img { width: 100%; height: 100%; object-fit: cover; }
 .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .player .yt-slot { position: absolute; inset: 0; }
+.player video.cf-video { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; background: #000; object-fit: contain; }
 /* An armed YouTube film (site.js): its player lies under the poster, and the
    poster lets every tap through to it. Once the film runs the poster goes. */
 .player.armed iframe { z-index: 0; }

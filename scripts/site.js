@@ -196,6 +196,9 @@
         try { a.player.pauseVideo(); } catch (e) { /* not ready */ }
       }
     });
+    document.querySelectorAll('.player video.cf-video').forEach(function (v) {
+      if (v.closest('.player') !== except) v.pause();
+    });
     document.querySelectorAll('.player iframe.vm-frame').forEach(function (f) {
       var p = f.closest('.player');
       if (p === except) return;
@@ -268,6 +271,35 @@
     btn.hidden = true;
   }
 
+  /* A film of our own (Cloudflare R2, platform cf): a plain <video>, made
+     and started inside the tap, so the phone lets it play with sound. The
+     poster stays as the video's own poster until the first frame arrives. */
+  function ownVideo(wrap, btn) {
+    var v = wrap.querySelector('video.cf-video');
+    if (!v) {
+      v = document.createElement('video');
+      v.className = 'cf-video';
+      v.src = btn.dataset.src;
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = 'auto';
+      v.setAttribute('playsinline', '');
+      v.setAttribute('controlslist', 'nodownload');
+      var img = wrap.querySelector('img');
+      if (img) v.poster = img.currentSrc || img.src;
+      v.title = btn.getAttribute('aria-label') || 'Video';
+      v.addEventListener('playing', function () {
+        wrap.classList.add('playing');
+        quietOthers(wrap);
+      });
+      wrap.appendChild(v);
+    }
+    quietOthers(wrap);
+    btn.hidden = true;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () { /* the controls are there */ });
+  }
+
   var ytWraps = Array.prototype.map.call(
     document.querySelectorAll('button.player-btn[data-platform="yt"]'),
     function (b) { return b.closest('.player'); });
@@ -292,6 +324,7 @@
     if (!btn) return;
     var wrap = btn.closest('.player');
     if (btn.dataset.platform === 'yt') { quietOthers(wrap); arm(wrap, true); }
+    else if (btn.dataset.platform === 'cf') ownVideo(wrap, btn);
     else plainFrame(wrap, btn, btn.dataset.platform, btn.dataset.videoId);
   });
 

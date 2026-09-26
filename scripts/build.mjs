@@ -476,7 +476,7 @@ function player(item, eager = false) {
   /* Every film plays right here, in its own frame, from one tap on the
      poster: YouTube and Vimeo alike. The player itself is only fetched then
      (site.js), so a page of twenty films loads no third-party code. */
-  const btn = `<button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}" aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>`;
+  const btn = `<button type="button" class="player-btn" data-platform="${item.platform}" data-video-id="${item.videoId}"${item.src ? ` data-src="${attr(item.src)}"` : ''} aria-label="${attr(ui('play') + ' — ' + item.title)}"></button>`;
   return `<div class="player${vertical ? ' vertical' : ''}">
   ${img(item.poster, '', { eager, sizes: sizesFor(12) })}
   ${btn}
