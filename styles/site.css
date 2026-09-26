@@ -203,11 +203,16 @@ html[data-grid] .g12 {
     transparent calc((100% - 11 * var(--col-gap)) / 12 + var(--col-gap))
   );
   background-origin: content-box;
-  background-clip: content-box;
+  background-clip: content-box !important;
 }
 
 /* ---------- Reset ---------- */
-*, *::before, *::after { box-sizing: border-box; }
+/* A rule is thinned ink, so it takes the colour of whatever lies under it.
+   By default an element's own fill runs under its border, and the rule on
+   the green stage came out as a solid green-grey. Fills stop at the border
+   everywhere, so every rule lies on the paper. It is !important because any
+   `background:` shorthand would otherwise reset the clip to border-box. */
+*, *::before, *::after { box-sizing: border-box; background-clip: padding-box !important; }
 /* The scrollbar's room is held open whether or not it is showing, so opening
    the menu — which locks the page behind it — cannot widen the layout by the
    width of the bar and shift every line under the header. */
@@ -766,12 +771,14 @@ html.glow-baked.sub main::before { display: none; }
        own grey, on the same eased curve, and scripts/site.js redraws it
        dithered onto a canvas just as it does on a subpage. */
     --glow-r: min(135svh, calc(100vw - var(--rail)));
-    --glow-off: 0px;
+    /* The centre sits beyond the window's right edge, so the green lies
+       deeper to the right than on a subpage. */
+    --glow-off: 30vw;
     --glow-core: 0%;
     --glow-base: var(--stage-bg);
     overflow: hidden;
     background: radial-gradient(
-      circle var(--glow-r) at 100% 0%,
+      circle var(--glow-r) at calc(100% + var(--glow-off)) 0%,
       var(--head-tint),
       color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) 8.33%,
       color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) 16.67%,
