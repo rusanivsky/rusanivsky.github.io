@@ -477,6 +477,7 @@ export const clients = [
   { name: 'Kyiv-Mohyla Business School', href: 'https://kmbs.ua/ua' },
   { name: 'Kooperativ', href: 'https://www.kooperativ.cc' },
   { name: 'YD Interior Studio', href: 'https://ydinterior.studio/' },
+  { name: 'Word & Music', href: 'https://wordandmusic.art/' },
   { name: 'National University of Kyiv-Mohyla Academy', href: 'https://www.ukma.edu.ua/' },
   { name: 'Defenders of Ukraine Center', href: 'https://www.instagram.com/defenders.ukma' },
   { name: 'Tsyronian Publishing', href: 'https://www.instagram.com/tsyronian.publishing' },
