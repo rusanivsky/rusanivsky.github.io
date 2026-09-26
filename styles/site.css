@@ -637,10 +637,39 @@ html.glow-baked.sub main::before { display: none; }
   top: 0;
   right: 0;
   z-index: -1;
-  width: var(--glow-r);
-  height: var(--glow-r);
+  width: calc(100% + var(--glow-off));
+  aspect-ratio: 1;
   pointer-events: none;
 }
+/* Without JavaScript: the same circle as a gradient. Its box is a square
+   whose top right corner is the centre, so `farthest-side` is the radius. */
+.stage::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--glow-rise) * -1);
+  right: calc(var(--glow-off) * -1);
+  z-index: -1;
+  width: calc(100% + var(--glow-off));
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle farthest-side at 100% 0%,
+    var(--head-tint),
+    color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) 8.33%,
+    color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) 16.67%,
+    color-mix(in srgb, var(--head-tint) 85.4%, var(--stage-bg)) 25%,
+    color-mix(in srgb, var(--head-tint) 75%, var(--stage-bg)) 33.33%,
+    color-mix(in srgb, var(--head-tint) 62.9%, var(--stage-bg)) 41.67%,
+    color-mix(in srgb, var(--head-tint) 50%, var(--stage-bg)) 50%,
+    color-mix(in srgb, var(--head-tint) 37.1%, var(--stage-bg)) 58.33%,
+    color-mix(in srgb, var(--head-tint) 25%, var(--stage-bg)) 66.67%,
+    color-mix(in srgb, var(--head-tint) 14.6%, var(--stage-bg)) 75%,
+    color-mix(in srgb, var(--head-tint) 6.7%, var(--stage-bg)) 83.33%,
+    color-mix(in srgb, var(--head-tint) 1.7%, var(--stage-bg)) 91.67%,
+    var(--stage-bg) 100%
+  );
+}
+html.glow-baked .stage::after { display: none; }
 
 /* ============================================================
    Home — index on four columns, stage on eight
@@ -765,34 +794,18 @@ html.glow-baked.sub main::before { display: none; }
     height: 100svh;
     grid-column: 5 / -1;
     border-left: var(--rule-w) solid var(--line-soft);
-    /* The same green as on a subpage, and the same circle: its centre on the
-       window's top right corner, which is also the panel's, so the glow sits
-       exactly where it sits on every other page. It fades into the panel's
-       own grey, on the same eased curve, and scripts/site.js redraws it
-       dithered onto a canvas just as it does on a subpage. */
-    --glow-r: min(135svh, calc(100vw - var(--rail)));
-    /* The centre sits beyond the window's right edge, so the green lies
-       deeper to the right than on a subpage. */
-    --glow-off: 30vw;
+    /* The same green as on a subpage, its centre beyond the window's top
+       right corner. The radius is the panel's width plus the offset to the
+       right, so however far out the centre goes, the green has faded to the
+       panel's own grey exactly at its left edge. The glow is the ::after
+       below, redrawn dithered onto a canvas by scripts/site.js from the same
+       numbers. */
+    --glow-off: 45vw;
+    --glow-rise: 20vw;
     --glow-core: 0%;
     --glow-base: var(--stage-bg);
     overflow: hidden;
-    background: radial-gradient(
-      circle var(--glow-r) at calc(100% + var(--glow-off)) 0%,
-      var(--head-tint),
-      color-mix(in srgb, var(--head-tint) 98.3%, var(--stage-bg)) 8.33%,
-      color-mix(in srgb, var(--head-tint) 93.3%, var(--stage-bg)) 16.67%,
-      color-mix(in srgb, var(--head-tint) 85.4%, var(--stage-bg)) 25%,
-      color-mix(in srgb, var(--head-tint) 75%, var(--stage-bg)) 33.33%,
-      color-mix(in srgb, var(--head-tint) 62.9%, var(--stage-bg)) 41.67%,
-      color-mix(in srgb, var(--head-tint) 50%, var(--stage-bg)) 50%,
-      color-mix(in srgb, var(--head-tint) 37.1%, var(--stage-bg)) 58.33%,
-      color-mix(in srgb, var(--head-tint) 25%, var(--stage-bg)) 66.67%,
-      color-mix(in srgb, var(--head-tint) 14.6%, var(--stage-bg)) 75%,
-      color-mix(in srgb, var(--head-tint) 6.7%, var(--stage-bg)) 83.33%,
-      color-mix(in srgb, var(--head-tint) 1.7%, var(--stage-bg)) 91.67%,
-      var(--stage-bg) 100%
-    );
+    background: var(--stage-bg);
     margin-left: calc(var(--col-gap) / -2);
     margin-right: calc(var(--pad) * -1);
     padding: 2.6rem 0;
