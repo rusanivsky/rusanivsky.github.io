@@ -154,21 +154,19 @@
     show(0);
   }
 
-  /* ---------- Video facade ----------
-     The poster is a real image and the player only exists after a tap, so
-     a page with twenty videos loads no third-party player at all.
-
-     One tap has to be enough. A desktop browser lets a frame built inside
-     the click start with sound. A phone does not: an embed with autoplay=1
-     stops on YouTube's own poster and asks for a second tap. There the frame
-     is made through YouTube's IFrame API instead and told to play the moment
-     it is ready, which the phone accepts as part of the same tap. The API is
-     fetched when a finger first lands on a poster, so it is usually there by
-     the time the tap completes. */
+  /* ---------- Video ----------
+     One tap on the poster has to start the film, with sound, on a phone as
+     much as on a desk. A phone only allows sound when the tap lands on the
+     player itself; a frame built after the tap stops on YouTube's own poster
+     and asks for a second one. So a YouTube film arms itself before anyone
+     taps: once the page has loaded and the film comes near the screen, its
+     player is made silently underneath our poster, and the poster stops
+     catching taps — the tap goes straight through to YouTube and plays. The
+     moment the film starts, our poster fades and YouTube's frame is seen.
+     Nothing third-party loads before the page itself has; a poster tapped
+     before its player is ready asks it to play as soon as it is. Vimeo still
+     builds its frame on the tap, which desktop and phone both accept. */
   var YT_HOST = 'https://www.youtube-nocookie.com';
-  var needsApi = /Mobi|Android|iPhone|iPad/.test(navigator.userAgent) ||
-    (navigator.vendor || '').indexOf('Apple') > -1 ||
-    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
   var ytApi = null;
   function loadYtApi() {
     if (ytApi) return ytApi;
@@ -187,84 +185,114 @@
     });
     return ytApi;
   }
-  if (needsApi) {
-    document.addEventListener('touchstart', function (e) {
-      var b = e.target.closest && e.target.closest('button.player-btn[data-platform="yt"]');
-      if (b) loadYtApi().catch(function () {});
-    }, { passive: true });
-  }
 
-  function teardown() {
-    // One player at a time: any frame already running is torn back down to
-    // its poster before this one starts.
-    document.querySelectorAll('.player iframe, .player .yt-slot').forEach(function (f) {
+  var armed = [];   // { wrap, player } for every YouTube film made so far
+
+  // One film at a time: the others pause, and a Vimeo frame is taken down to
+  // its poster.
+  function quietOthers(except) {
+    armed.forEach(function (a) {
+      if (a.wrap !== except && a.player && a.player.pauseVideo) {
+        try { a.player.pauseVideo(); } catch (e) { /* not ready */ }
+      }
+    });
+    document.querySelectorAll('.player iframe.vm-frame').forEach(function (f) {
       var p = f.closest('.player');
+      if (p === except) return;
       f.remove();
       if (p) { var b = p.querySelector('.player-btn'); if (b) b.hidden = false; }
     });
   }
 
+  function arm(wrap, playNow) {
+    if (wrap.dataset.armed) {
+      if (playNow) wrap.dataset.want = '1';
+      return;
+    }
+    wrap.dataset.armed = '1';
+    if (playNow) wrap.dataset.want = '1';
+    var btn = wrap.querySelector('.player-btn');
+    loadYtApi().then(function (YT) {
+      var slot = document.createElement('div');
+      slot.className = 'yt-slot';
+      wrap.insertBefore(slot, wrap.firstChild);
+      var entry = { wrap: wrap, player: null };
+      armed.push(entry);
+      entry.player = new YT.Player(slot, {
+        host: YT_HOST,
+        videoId: btn.dataset.videoId,
+        width: '100%',
+        height: '100%',
+        playerVars: { playsinline: 1, rel: 0 },
+        events: {
+          onReady: function (ev) {
+            var f = ev.target.getIframe && ev.target.getIframe();
+            if (f) f.title = btn.getAttribute('aria-label') || 'Video';
+            // From here the tap belongs to YouTube.
+            wrap.classList.add('armed');
+            btn.hidden = true;
+            if (wrap.dataset.want) { quietOthers(wrap); ev.target.playVideo(); }
+          },
+          onStateChange: function (ev) {
+            if (ev.data === 1 || ev.data === 3) {
+              wrap.classList.add('playing');
+              quietOthers(wrap);
+            }
+          },
+        },
+      });
+    }).catch(function () {
+      // No API (blocked, offline): the plain embed, built on the tap.
+      delete wrap.dataset.armed;
+      if (wrap.dataset.want) plainFrame(wrap, btn, 'yt', btn.dataset.videoId);
+    });
+  }
+
   function plainFrame(wrap, btn, platform, id) {
     // playsinline so a phone plays the film in the page instead of demanding
-    // a second tap to go fullscreen; enablejsapi so the player can be told to
-    // play once more after it loads, in case the first attempt was refused.
+    // a second tap to go fullscreen.
     var src = platform === 'vm'
       ? 'https://player.vimeo.com/video/' + id + '?autoplay=1&playsinline=1'
-      : YT_HOST + '/embed/' + id + '?autoplay=1&rel=0&playsinline=1&enablejsapi=1';
+      : YT_HOST + '/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
     var frame = document.createElement('iframe');
+    frame.className = 'vm-frame';
     frame.src = src;
     frame.title = btn.getAttribute('aria-label') || 'Video';
     frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen';
     frame.setAttribute('allowfullscreen', '');
     // The click itself is what permits the sound, and the permission is
     // granted for a moment only — so the frame is built and attached inside
-    // the handler, with nothing deferred and no lazy loading in between.
+    // the handler, with nothing deferred in between.
+    quietOthers(wrap);
     wrap.appendChild(frame);
     btn.hidden = true;
-    frame.addEventListener('load', function () {
-      var target = platform === 'vm' ? '*' : YT_HOST;
-      var msg = platform === 'vm'
-        ? '{"method":"play"}'
-        : '{"event":"command","func":"playVideo","args":[]}';
-      try { frame.contentWindow.postMessage(msg, target); } catch (err) { /* blocked */ }
-    });
   }
 
-  function apiFrame(wrap, btn, id) {
-    // The slot is what the API replaces with its iframe.
-    var slot = document.createElement('div');
-    slot.className = 'yt-slot';
-    wrap.appendChild(slot);
-    btn.hidden = true;
-    loadYtApi().then(function (YT) {
-      if (!slot.isConnected) return;
-      var player = new YT.Player(slot, {
-        host: YT_HOST,
-        videoId: id,
-        width: '100%',
-        height: '100%',
-        playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
-        events: { onReady: function (ev) { ev.target.playVideo(); } },
-      });
-      var f = player.getIframe && player.getIframe();
-      if (f) f.title = btn.getAttribute('aria-label') || 'Video';
-    }).catch(function () {
-      // No API (blocked, offline): the plain embed still plays, if on a
-      // second tap.
-      slot.remove();
-      plainFrame(wrap, btn, 'yt', id);
-    });
+  var ytWraps = Array.prototype.map.call(
+    document.querySelectorAll('button.player-btn[data-platform="yt"]'),
+    function (b) { return b.closest('.player'); });
+  if (ytWraps.length) {
+    var startArming = function () {
+      if (!('IntersectionObserver' in window)) { ytWraps.forEach(function (w) { arm(w); }); return; }
+      var near = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          near.unobserve(e.target);
+          arm(e.target);
+        });
+      }, { rootMargin: '600px 0px' });
+      ytWraps.forEach(function (w) { near.observe(w); });
+    };
+    if (document.readyState === 'complete') startArming();
+    else window.addEventListener('load', startArming, { once: true });
   }
 
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('button.player-btn');
     if (!btn) return;
     var wrap = btn.closest('.player');
-    var platform = btn.dataset.platform;
-    var id = btn.dataset.videoId;
-    teardown();
-    if (platform === 'yt' && needsApi) apiFrame(wrap, btn, id);
-    else plainFrame(wrap, btn, platform, id);
+    if (btn.dataset.platform === 'yt') { quietOthers(wrap); arm(wrap, true); }
+    else plainFrame(wrap, btn, btn.dataset.platform, btn.dataset.videoId);
   });
 
   /* ---------- Brief ----------
