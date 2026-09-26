@@ -17,6 +17,10 @@ import photoSequences from './photo-sequences.json' with { type: 'json' };
 
 const POSTER = '/media/video/posters/';
 const THUMB = '/media/video/thumbs/';
+/* Cloudflare test: films served from R2 through the rusanivsky-video Worker
+   (workers/video) instead of YouTube. A `cf` item plays in our own <video>.
+   To go back, swap the item for its YouTube id noted beside it. */
+const CF_VIDEO = 'https://rusanivsky-video.rusanivsky-f9d.workers.dev/';
 
 /* Photography series reuse the production running order, which is already an
    edit rather than a dump. `lead` is how many frames open the project page;
@@ -466,7 +470,8 @@ export const videoCatalogue = [
     key: 'events-and-aftermovies',
     title: { en: 'Events and aftermovies', ua: 'Події та афтермуві' },
     items: [
-      { ...video('yt', 'BFX3B9sv5-Y', 'Musheh Tsyronian’s book presentation — “A Life That Never Stopped”', `${POSTER}altns-main-edit-poster.webp`), client: null, role: 'Editing' },
+      // Cloudflare test; on YouTube it is BFX3B9sv5-Y.
+      { ...video('cf', 'altns-main-edit', 'Musheh Tsyronian’s book presentation — “A Life That Never Stopped”', `${POSTER}altns-main-edit-poster.webp`), src: `${CF_VIDEO}short-form/altns-main-edit-1080.mp4`, client: null, role: 'Editing' },
       { ...video('yt', 'C_eK5i5dvuU', 'Oleksandr & Anna. Wedding Day. Highlights (03.07.2021)', `${THUMB}yt-C_eK5i5dvuU.webp`), client: null, role: 'Camera & Editor' },
       { ...video('yt', 'nHrFbu5yLBg', 'Oleksandr & Olha. Wedding Day. Highlights (05.09.2020)', `${THUMB}yt-nHrFbu5yLBg.webp`), client: null, role: 'Camera & Editor' },
     ],
