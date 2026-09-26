@@ -635,7 +635,10 @@ function mosaic(p, eager) {
 
   const odd = a.c === 2 && a.n % 2 === 1;
   const tiles = cells.map((x, i) =>
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c) })}</span>`).join('');
+    /* The inner frame takes the picture's own shape inside its cell, so the
+       hover push is clipped at the picture's edge and not at the cell's —
+       a frame that is narrower than its cell does not grow into the air. */
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c) })}</span></span>`).join('');
 
   /* The wall is given the shape of the frames it holds — columns and rows
      multiplied by the frames' own proportions — so it grows to the largest
@@ -644,7 +647,10 @@ function mosaic(p, eager) {
      between the rows instead, and the wall read as torn apart. */
   const wall = (a.c / a.rows) * median(cells.map((x) => x.ratio));
   const solo = a.n === 1 ? `;--solo:${soloScale(wall)}` : '';
-  return `<span class="mosaic${a.n === 1 ? ' solo' : ''}" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</span>`;
+  /* The wall is a link to the project, the same place its row leads. It is
+     out of the tab order: the stage is aria-hidden, and the row beside it is
+     already the way in for a keyboard or a screen reader. */
+  return `<a class="mosaic${a.n === 1 ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</a>`;
 }
 
 /* Seven is the whole selection on the home page: the list is a door, not an

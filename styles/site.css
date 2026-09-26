@@ -735,6 +735,7 @@ html.sub main::before {
   }
   .stage-frame { height: 100%; position: relative; }
   .slide {
+    container-type: size;
     position: absolute;
     inset: 0 2.5rem;
     display: flex;
@@ -759,8 +760,10 @@ html.sub main::before {
        air ends up around the wall, where it belongs, instead of being dealt
        out between the rows and pulling the frames apart. */
     aspect-ratio: var(--wall, 1);
-    max-width: 100%;
-    max-height: 100%;
+    /* The largest wall of this shape that fits the slide, from the slide's
+       own size — the tiles below measure themselves against their cells, so
+       they cannot lend the wall a width of their own. */
+    width: min(100cqw, 100cqh * var(--wall, 1));
     margin: auto;
     justify-items: center;
     align-items: center;
@@ -771,7 +774,18 @@ html.sub main::before {
      the wall ends on its axis instead of on its left edge. */
   .tile.orphan { grid-column: 1 / -1; width: calc(50% - 0.35rem); justify-self: center; }
   .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-  .tile { overflow: hidden; }
+  .tile {
+    container-type: size;
+    display: grid;
+    place-items: center;
+  }
+  .tile-in {
+    display: block;
+    width: min(100cqw, 100cqh * var(--r, 1.5));
+    aspect-ratio: var(--r, 1.5);
+    overflow: hidden;
+  }
+  .tile-in img { object-fit: cover; }
 
   /* The rule for a wall that does not fill itself: a full wall takes the whole
      panel, and the only frame that is held back is a lone one. It is held back
@@ -780,8 +794,7 @@ html.sub main::before {
      share of the panel and carry the same weight — that of a cover, not of a
      stamp in the middle of an empty panel. */
   .mosaic.solo {
-    max-width: calc(100% * var(--solo, 0.6));
-    max-height: calc(100% * var(--solo, 0.6));
+    width: calc(min(100cqw, 100cqh * var(--wall, 1)) * var(--solo, 0.6));
   }
 
   .stage-caption {
@@ -976,29 +989,10 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .player.vertical { aspect-ratio: 9 / 16; }
 .player img { width: 100%; height: 100%; object-fit: cover; }
 .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.player-btn { position: absolute; inset: 0; width: 100%; }
-.player-btn::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 3.4rem; height: 3.4rem;
-  margin: -1.7rem 0 0 -1.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.25);
-  transition: background-color var(--t) var(--ease);
-}
-.player-btn::before {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  z-index: 1;
-  margin: -0.42rem 0 0 -0.26rem;
-  border-left: 0.75rem solid rgba(255, 255, 255, 0.95);
-  border-top: 0.42rem solid transparent;
-  border-bottom: 0.42rem solid transparent;
-}
-.player-btn:hover::after { background: rgba(0, 0, 0, 0.5); }
+/* The whole poster is the control, with no play mark over it: it lies above
+   the picture (which the grain layer lifts to z-index 1), so a click anywhere
+   on the frame lands on it. */
+.player-btn { position: absolute; inset: 0; z-index: 2; width: 100%; }
 
 .vid-title {
   margin-top: 0.7rem;
