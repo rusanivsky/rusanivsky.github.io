@@ -773,7 +773,7 @@ html.glow-baked.sub main::before { display: none; }
     --glow-r: min(135svh, calc(100vw - var(--rail)));
     /* The centre sits beyond the window's right edge, so the green lies
        deeper to the right than on a subpage. */
-    --glow-off: 14vw;
+    --glow-off: 30vw;
     --glow-core: 0%;
     --glow-base: var(--stage-bg);
     overflow: hidden;
