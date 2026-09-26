@@ -291,7 +291,7 @@ export const projects = [
   {
     id: 'p-word-and-music',
     slug: 'word-and-music',
-    title: { en: 'Word & Music', ua: 'Word & Music' },
+    title: { en: 'word&music', ua: 'word&music' },
     /* Three of the five films name 2023 in their own titles; the two
        Christmas programmes name no year at all, so the project does not
        claim one for them. */
@@ -477,7 +477,7 @@ export const clients = [
   { name: 'Kyiv-Mohyla Business School', href: 'https://kmbs.ua/ua' },
   { name: 'Kooperativ', href: 'https://www.kooperativ.cc' },
   { name: 'YD Interior Studio', href: 'https://ydinterior.studio/' },
-  { name: 'Word & Music', href: 'https://wordandmusic.art/' },
+  { name: 'word&music', href: 'https://wordandmusic.art/' },
   { name: 'National University of Kyiv-Mohyla Academy', href: 'https://www.ukma.edu.ua/' },
   { name: 'Defenders of Ukraine Center', href: 'https://www.instagram.com/defenders.ukma' },
   { name: 'Tsyronian Publishing', href: 'https://www.instagram.com/tsyronian.publishing' },
