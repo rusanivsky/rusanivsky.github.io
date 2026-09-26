@@ -29,7 +29,7 @@
      is never consulted — the brief rules that out explicitly. */
   var THEME_KEY = 'kr-theme';
   var fadeOut = 0;
-  var LIGHT = '#f4f1e9';
+  var LIGHT = '#f6f6f3';
   var DARK = '#141412';
 
   function stored() {

@@ -64,14 +64,14 @@
    snaps to, and a six-step type scale where each step has one job. Nothing
    is sized ad hoc; if a thing needs a size, it takes one of these steps. */
 :root {
-  --paper: #f4f1e9;
+  --paper: #f6f6f3;
   --ink: #111111;
   --muted: #6d675c;
   --faint: #a09889;
-  --line: #d9d3c5;
-  --line-soft: #e6e1d5;
-  --surface: #eeeade;
-  --stage-bg: #ebe7db;
+  --line: #dbd9d4;
+  --line-soft: #e8e7e3;
+  --surface: #efeeea;
+  --stage-bg: #ecebe7;
 
   --grain: 0.022;
   --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
