@@ -420,6 +420,16 @@ const sizesFor = (n) => `(min-width: 61rem) calc((${GRID}) * ${n} / 12), 100vw`;
 /* Стіна кадрів — це колонки, а не дванадцята сітка: чотири колонки на
    великому екрані, дві до 61rem, одна до 46rem. Вузький кадр займає 84%
    своєї колонки (.is-inset), і це теж має бути в розрахунку. */
+/* Плитка на сцені головної — не частка сітки. Сцена займає 8 колонок із
+   12 (плюс пів проміжку й поле праворуч, мінус 2.5rem відступу слайда з
+   кожного боку — разом ≈ −32px), а стіна кадрів росте, доки не впреться
+   в ширину або у висоту панелі (100vh мінус 5rem полів). Плитка — це
+   стіна, поділена на кількість колонок, а самотній кадр ще й зменшений
+   на --solo. Стара формула 12/c рахувала всю сітку й віддавала браузеру
+   ширину в півтора-три рази більшу, ніж плитка має насправді, — і він
+   тягнув 960-піксельний файл туди, де вистачає 480. */
+const stageSizes = (wall, cols, solo) =>
+  `(min-width: 61rem) calc(min((${GRID}) * 2 / 3 - 32px, (100vh - 80px) * ${wall.toFixed(3)})${solo ? ` * ${solo}` : ''} / ${cols}), 100vw`;
 const collageSizes = (share) =>
   `(min-width: 61rem) calc((${GRID}) * ${share} / 4), (min-width: 46rem) calc(50vw * ${share}), 100vw`;
 
@@ -642,20 +652,21 @@ function mosaic(p, eager) {
   const a = compose(picked, Math.min(cap, 9));
   const cells = picked.slice(0, a.n);
 
-  const odd = a.c === 2 && a.n % 2 === 1;
-  const tiles = cells.map((x, i) =>
-    /* The inner frame takes the picture's own shape inside its cell, so the
-       hover push is clipped at the picture's edge and not at the cell's —
-       a frame that is narrower than its cell does not grow into the air. */
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c), skip: eager ? PHONE : '' })}</span></span>`).join('');
-
   /* The wall is given the shape of the frames it holds — columns and rows
      multiplied by the frames' own proportions — so it grows to the largest
      size that fits the panel and every cell comes out the shape of its
      picture. Cells that filled the panel regardless of shape left the air
      between the rows instead, and the wall read as torn apart. */
   const wall = (a.c / a.rows) * median(cells.map((x) => x.ratio));
-  const solo = a.n === 1 ? `;--solo:${soloScale(wall)}` : '';
+  const soloK = a.n === 1 ? soloScale(wall) : null;
+  const solo = soloK ? `;--solo:${soloK}` : '';
+
+  const odd = a.c === 2 && a.n % 2 === 1;
+  const tiles = cells.map((x, i) =>
+    /* The inner frame takes the picture's own shape inside its cell, so the
+       hover push is clipped at the picture's edge and not at the cell's —
+       a frame that is narrower than its cell does not grow into the air. */
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: stageSizes(wall, a.c, soloK), skip: eager ? PHONE : '' })}</span></span>`).join('');
   /* The wall is a link to the project, the same place its row leads. It is
      out of the tab order: the stage is aria-hidden, and the row beside it is
      already the way in for a keyboard or a screen reader. */
