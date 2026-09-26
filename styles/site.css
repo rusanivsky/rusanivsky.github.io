@@ -80,7 +80,7 @@
      lighter than the brightest green: a dark rule reads as a dark stripe
      over the glow. */
   --line: #6a6862;
-  --rule-w: 1px;
+  --rule-w: 2px;
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
 
