@@ -427,15 +427,26 @@ const collageSizes = (share) =>
    файли є (srcset) і яку частину екрана картинка займе (sizes). Без sizes
    браузер припускає всю ширину вікна й тягне найбільший крок на кожну
    дрібну плитку. */
-function img(src, alt, { lazy = true, eager = false, sizes = '100vw' } = {}) {
+function img(src, alt, { lazy = true, eager = false, sizes = '100vw', skip = '' } = {}) {
   const d = dim(src);
   const steps = ladder[src];
   const srcset = steps && steps.length > 1
     ? ` srcset="${steps.map(([w, u]) => `${u} ${w}w`).join(', ')}" sizes="${attr(sizes)}"`
     : '';
-  return `<img src="${src}"${srcset} alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
+  const tag = `<img src="${src}"${srcset} alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
     `${eager ? ' fetchpriority="high"' : ''} loading="${lazy && !eager ? 'lazy' : 'eager'}" decoding="async">`;
+  return skip ? `<picture><source media="${skip}" srcset="${BLANK}">${tag}</picture>` : tag;
 }
+
+/* Картинка, яку на цьому екрані сховано (display: none), але яка має
+   вантажитись одразу на іншому, все одно тягнеться браузером: eager не
+   дивиться на каскад. На головній це чотири кадри стіни на телефоні, де
+   стіни немає, — вони відбирали мережу в першого превʼю й тримали сплеш до
+   `load`. Тому на «чужому» екрані таке зображення отримує порожній гіф
+   через <picture>, і запиту немає зовсім. */
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const PHONE = '(max-width: 60.99rem)';
+const DESK = '(min-width: 61rem)';
 
 /* A cover that is not 16:9 gets cropped to the band. Where the crop sits is
    a property of the picture — a title in the lower third, a motif in the
@@ -638,7 +649,7 @@ function mosaic(p, eager) {
     /* The inner frame takes the picture's own shape inside its cell, so the
        hover push is clipped at the picture's edge and not at the cell's —
        a frame that is narrower than its cell does not grow into the air. */
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c) })}</span></span>`).join('');
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: sizesFor(12 / a.c), skip: eager ? PHONE : '' })}</span></span>`).join('');
 
   /* The wall is given the shape of the frames it holds — columns and rows
      multiplied by the frames' own proportions — so it grows to the largest
@@ -672,7 +683,7 @@ function homePage() {
     ${t(p.title, 'row-title')}
   </span>
   <span class="row-meta">${metaBits(p, esc).join('<span class="dot">·</span>')}</span>
-  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, sizes: sizesFor(4) })}</span>
+  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, eager: i === 0, sizes: sizesFor(4), skip: i === 0 ? DESK : '' })}</span>
 </a>`).join('\n');
 
   const slides = featured.map((p, i) =>
