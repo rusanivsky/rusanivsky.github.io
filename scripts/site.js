@@ -29,11 +29,8 @@
      is never consulted — the brief rules that out explicitly. */
   var THEME_KEY = 'kr-theme';
   var fadeOut = 0;
-  // The subpages wear the old site's green behind the header, so the
-  // browser's own bar takes the same colour there.
-  var SUB = root.classList.contains('sub');
-  var LIGHT = SUB ? '#dbe8d8' : '#f8f8f8';
-  var DARK = SUB ? '#2b3e2d' : '#141412';
+  var LIGHT = '#f8f8f8';
+  var DARK = '#141412';
 
   function stored() {
     try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
@@ -477,14 +474,21 @@
        arrive together are staggered, so a row of pictures lands left to right.
      Everything marked here is unmarked again once it has arrived, so the
      hover transitions the rest of this file relies on come back untouched. */
-  if (root.classList.contains('fx')) {
-    var DONE = 1300;
-    var marked = [];
+  // The boot script shows the page by itself after three seconds; a script
+  // that arrives later than that finds the page already on screen and must
+  // not hide it again for an entrance.
+  if (root.classList.contains('fx') && !root.classList.contains('fx-ready')) {
+    /* One tempo for every entrance. The timings below were drawn at 1 and are
+       all divided by PACE, so the whole sequence can be quickened or slowed
+       in one place; styles/site.css reads the same number as --pace. */
+    var PACE = 1.35;
+    function sec(x) { return x / PACE; }
+    function ms(x) { return Math.round(x / PACE); }
+    var DONE = ms(1300);
 
     function mark(el, cls, delay) {
       el.classList.add(cls);
       el.style.setProperty('--d', delay + 's');
-      marked.push(el);
     }
     function settle(el, delay) {
       setTimeout(function () {
@@ -497,11 +501,9 @@
       settle(el, parseFloat(el.style.getPropertyValue('--d')) || 0);
     }
 
-    // Headings: each word in a span, hidden from the start so nothing shows
-    // before its turn. The lines are counted only when the entrance begins,
-    // by which time the display face has arrived and the breaks are final.
-    function wrap(sec) {
-      var tw = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+    // Each word of a text in a span of its own.
+    function split(el, cls) {
+      var tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       var nodes = [];
       while (tw.nextNode()) {
         var n = tw.currentNode;
@@ -513,22 +515,30 @@
           if (!tok) return;
           if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
           var w = document.createElement('span');
-          w.className = 'w';
+          w.className = cls;
           w.textContent = tok;
           frag.appendChild(w);
         });
         n.parentNode.replaceChild(frag, n);
       });
-      sec.classList.add('lf');
+      return el.querySelectorAll('.' + cls);
     }
-    function lines(sec, base) {
+
+    // Headings: the words are hidden from the start so nothing shows before
+    // its turn. The lines are counted only when the entrance begins, by which
+    // time the display face has arrived and the breaks are final.
+    function wrap(h) {
+      split(h, 'w');
+      h.classList.add('lf');
+    }
+    function lines(h, base) {
       var line = -1, top = null, k = 0;
-      sec.querySelectorAll('.w').forEach(function (w) {
+      h.querySelectorAll('.w').forEach(function (w) {
         var t = w.getBoundingClientRect().top;
         if (top === null || t - top > 3) { line++; top = t; k = 0; }
-        w.style.transitionDelay = (base + line * 0.14 + k++ * 0.022) + 's';
+        w.style.transitionDelay = (base + sec(line * 0.14 + k++ * 0.022)) + 's';
       });
-      return base + (line + 1) * 0.14;
+      return base + sec((line + 1) * 0.14);
     }
 
     var heads = document.querySelectorAll(
@@ -548,11 +558,11 @@
     // picture is not split into pieces.
     var blocks = [];
     var skip = 'script, style, .stage, .splash, [hidden]';
+    var headSel = '.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek';
     function collect(el) {
       Array.prototype.forEach.call(el.children, function (c) {
-        if (c.matches(skip)) return;
-        if (c.matches('.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek')) return;
-        if (c.querySelector('.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek') ||
+        if (c.matches(skip) || c.matches(headSel)) return;
+        if (c.querySelector(headSel) ||
             (c.children.length && c.getBoundingClientRect().height > innerHeight * 0.8)) {
           collect(c);
           return;
@@ -564,14 +574,14 @@
     if (main) collect(main);
 
     blocks.forEach(function (b) { mark(b, 'rv', 0); });
-    chrome.forEach(function (el, i) { mark(el, 'rv', 0.1 + i * 0.045); });
+    chrome.forEach(function (el, i) { mark(el, 'rv', sec(0.1 + i * 0.045)); });
     tiles.forEach(function (el) { mark(el, 'rv-fade', 0); });
     heads.forEach(wrap);
     root.classList.add('fx-ready');
 
     function start() {
-      var t = 0.05;
-      heads.forEach(function (h) { t = lines(h, t) - 0.05; });
+      var t = sec(0.05);
+      heads.forEach(function (h) { t = lines(h, t) - sec(0.05); });
       requestAnimationFrame(function () {
         heads.forEach(function (h) { h.classList.add('lf-in'); });
         chrome.forEach(arrive);
@@ -589,7 +599,7 @@
       }));
       Promise.race([ready, new Promise(function (r) { setTimeout(r, 2500); })]).then(function () {
         tiles.forEach(function (el, i) {
-          el.style.setProperty('--d', (0.15 + i * 0.14) + 's');
+          el.style.setProperty('--d', sec(0.15 + i * 0.14) + 's');
           arrive(el);
         });
       });
@@ -602,7 +612,7 @@
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
           io.unobserve(e.target);
-          e.target.style.setProperty('--d', Math.min(batch++ * 0.09, 0.72) + 's');
+          e.target.style.setProperty('--d', sec(Math.min(batch++ * 0.09, 0.72)) + 's');
           arrive(e.target);
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
@@ -610,17 +620,19 @@
     }
 
     /* ---------- From the title card to the page ----------
-       The name on the card does not fade with it. It travels to the place the
-       name holds in the header — the rail on a wide screen, the bar on a
-       narrow one — and shrinks to its size on the way, while the card's paper
-       dissolves and the page comes up beneath it. Once it lands, the real
-       name takes over. */
+       The name on the card does not fade with it. Each of its words travels
+       to the place the same word holds in the header — the rail on a wide
+       screen, where the name stands on two lines, the bar on a narrow one —
+       and takes that word's size on the way, while the card's paper dissolves
+       and the page comes up beneath it. The words land exactly on the real
+       ones, so the hand-over at the end cannot be seen. */
     var EXPO = 'cubic-bezier(0.16, 1, 0.3, 1)';
 
     function clearSplash() {
       root.className = root.className.replace(/ ?splash-(on|off|clear)/g, '');
       if (splashEl) splashEl.classList.remove('splash-clear');
     }
+    function center(r) { return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
 
     window.krSplashExit = function () {
       window.krSplashExit = null;
@@ -630,44 +642,46 @@
         document.querySelectorAll('.rail .wordmark, .bar .wordmark'),
         function (el) { return el.getClientRects().length > 0; }
       );
-      if (!nm || !target || !nm.animate) {
+      var from = nm && nm.animate ? split(nm, 'fw') : [];
+      var label = target && target.textContent;
+      var to = target ? split(target, 'tw') : [];
+      if (!from.length || from.length !== to.length) {
+        if (target) target.textContent = label;
         root.className += ' splash-off';
         setTimeout(clearSplash, 260);
         start();
         return;
       }
-      var a = nm.getBoundingClientRect();
-      var b = target.getBoundingClientRect();
-      var ca = getComputedStyle(nm), cb = getComputedStyle(target);
-      var fa = parseFloat(ca.fontSize), fb = parseFloat(cb.fontSize);
-      var indent = parseFloat(ca.textIndent) || 0;
-      var lh = parseFloat(cb.lineHeight) || fb * 1.3;
-      var s = fb / fa;
-      var dx = b.left - (a.left + indent);
-      var dy = (b.top + lh / 2) - (a.top + a.height / 2);
-      var FLY = 1150;
+      var FLY = ms(1150);
 
-      nm.style.transformOrigin = indent + 'px 50%';
       target.style.opacity = '0';
-      nm.animate(
-        [{ transform: 'none' }, { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')' }],
-        { duration: FLY, easing: EXPO, fill: 'forwards' }
-      );
+      Array.prototype.forEach.call(from, function (w, i) {
+        var a = w.getBoundingClientRect(), b = to[i].getBoundingClientRect();
+        var ca = center(a), cb = center(b);
+        w.animate(
+          [{ transform: 'none' },
+           { transform: 'translate(' + (cb.x - ca.x) + 'px,' + (cb.y - ca.y) + 'px) scale(' + (b.width / a.width) + ')' }],
+          { duration: FLY, easing: EXPO, fill: 'forwards' }
+        );
+      });
       if (role) {
         role.animate(
           [{ opacity: getComputedStyle(role).opacity, transform: 'none' }, { opacity: 0, transform: 'translateY(-0.6em)' }],
-          { duration: 380, easing: 'ease-out', fill: 'forwards' }
+          { duration: ms(380), easing: 'ease-out', fill: 'forwards' }
         );
       }
       splashEl.classList.add('splash-clear');
-      setTimeout(start, 260);
+      setTimeout(start, ms(260));
 
+      // The travelling words are already where the real ones stand. The real
+      // name comes on at full strength underneath them and only the copy on
+      // top dissolves: two half-faded layers would read as a flicker of grey.
       setTimeout(function () {
-        nm.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: 'ease', fill: 'forwards' });
-        target.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: 'ease' });
+        target.textContent = label;
         target.style.opacity = '';
-        setTimeout(clearSplash, 340);
-      }, FLY - 120);
+        nm.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms(160), easing: 'linear', fill: 'forwards' });
+        setTimeout(clearSplash, ms(180));
+      }, FLY);
     };
 
     if (!waiting) {
