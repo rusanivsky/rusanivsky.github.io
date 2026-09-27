@@ -9,6 +9,7 @@
   'use strict';
 
   var root = document.documentElement;
+  var mobile = matchMedia('(max-width: 60.99rem)').matches;
 
   /* ---------- Grid overlay ----------
      Append ?grid to any URL, or press G, to draw the twelve columns over the
@@ -42,7 +43,8 @@
      the gradient's thirteen stops sample. */
   var glowHosts = [];
   if (root.classList.contains('sub') && document.querySelector('main')) glowHosts.push(document.querySelector('main'));
-  if (document.getElementById('stage')) glowHosts.push(document.getElementById('stage'));
+  if (mobile && document.querySelector('main.home')) glowHosts.push(document.querySelector('main.home'));
+  if (!mobile && document.getElementById('stage')) glowHosts.push(document.getElementById('stage'));
   if (glowHosts.length && window.HTMLCanvasElement) {
     var hex = function (v) {
       v = v.trim().replace('#', '');
@@ -58,11 +60,17 @@
       var glowCanvas = document.createElement('canvas');
       glowCanvas.className = 'glow';
       glowCanvas.setAttribute('aria-hidden', 'true');
+      var footCanvas = null;
+      if (host.tagName === 'MAIN' && mobile) {
+        footCanvas = document.createElement('canvas');
+        footCanvas.className = 'glow glow-foot';
+        footCanvas.setAttribute('aria-hidden', 'true');
+      }
       var glowKey = '';
 
       var drawGlow = function () {
         var box = glowCanvas.getBoundingClientRect();
-        var dpr = Math.min(window.devicePixelRatio || 1, 3);
+        var dpr = Math.min(window.devicePixelRatio || 1, host.tagName === 'MAIN' && mobile ? 2 : 3);
         var side = Math.round(box.width * dpr);
         var cs = getComputedStyle(host);
         var off = parseFloat(cs.getPropertyValue('--glow-off')) || 0;
@@ -104,10 +112,18 @@
           }
         }
         ctx.putImageData(img, 0, 0);
+        if (footCanvas) {
+          footCanvas.width = footCanvas.height = side;
+          footCanvas.getContext('2d').drawImage(glowCanvas, 0, 0);
+          root.classList.add('glow-foot-baked');
+        }
         root.classList.add('glow-baked');
+        if (host.classList.contains('home')) root.classList.add('home-glow-baked');
+        if (host.classList.contains('stage')) root.classList.add('stage-glow-baked');
       };
 
       host.insertBefore(glowCanvas, host.firstChild);
+      if (footCanvas) host.appendChild(footCanvas);
       var glowLater = window.requestIdleCallback || function (f) { return setTimeout(f, 200); };
       glowLater(drawGlow);
       var glowResize = 0;
@@ -718,7 +734,7 @@
     // on a screen, so a whole section is not moved as one slab and a single
     // picture is not split into pieces.
     var blocks = [];
-    var skip = 'script, style, .stage, .splash, [hidden]';
+    var skip = 'script, style, canvas.glow, .stage, .splash, [hidden]';
     var headSel = '.eyebrow, .t-title, .t-display, .standfirst, .page-intro, .project-dek';
     function collect(el) {
       Array.prototype.forEach.call(el.children, function (c) {
@@ -751,16 +767,20 @@
       var d = next ? parseFloat(next.style.getPropertyValue('--d')) || 0 : sec(0.3);
       mark(el, 'rv-rule', d);
     });
-    heads.forEach(wrap);
+    // On a narrow screen every heading is one block in the reading order.
+    // Splitting every word on every page delayed off-screen headings and
+    // made them finish independently of the blocks beside them.
+    if (mobile) heads.forEach(function (h) { mark(h, 'rv', 0); });
+    else heads.forEach(wrap);
     void root.offsetHeight;
     root.classList.remove('fx-mark');
     root.classList.add('fx-ready');
 
     function start() {
       var t = sec(0.05);
-      heads.forEach(function (h) { t = lines(h, t) - sec(0.05); });
+      if (!mobile) heads.forEach(function (h) { t = lines(h, t) - sec(0.05); });
       requestAnimationFrame(function () {
-        heads.forEach(function (h) { h.classList.add('lf-in'); });
+        if (!mobile) heads.forEach(function (h) { h.classList.add('lf-in'); });
         chrome.forEach(arrive);
         rules.forEach(function (el) { if (!el.classList.contains('rv')) arrive(el); });
       });
@@ -787,14 +807,25 @@
         var now = Date.now();
         if (now - batchAt > 120) batch = 0;
         batchAt = now;
-        entries.forEach(function (e) {
+        // IntersectionObserver may deliver entries in a different order from
+        // the visual stack. Read positions once, then stagger top to bottom.
+        var visible = entries.filter(function (e) { return e.isIntersecting; });
+        if (mobile) visible.sort(function (a, b) {
+          return a.boundingClientRect.top - b.boundingClientRect.top ||
+            a.boundingClientRect.left - b.boundingClientRect.left;
+        });
+        visible.forEach(function (e) {
           if (!e.isIntersecting) return;
           io.unobserve(e.target);
           e.target.style.setProperty('--d', sec(Math.min(batch++ * 0.09, 0.72)) + 's');
           arrive(e.target);
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
-      blocks.forEach(function (b) { io.observe(b); });
+      }, mobile
+        ? { threshold: 0.01, rootMargin: '0px 0px 4% 0px' }
+        : { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+      var flow = mobile ? blocks.concat(Array.prototype.slice.call(heads)) : blocks;
+      // Let the small header arrive first; nothing starts under the splash.
+      setTimeout(function () { flow.forEach(function (el) { io.observe(el); }); }, mobile ? ms(160) : 0);
     }
 
     /* ---------- From the title card to the page ----------
@@ -849,7 +880,7 @@
         );
       }
       splashEl.classList.add('splash-clear');
-      setTimeout(start, ms(260));
+      if (!mobile) setTimeout(start, ms(260));
 
       // The travelling words are already where the real ones stand. The real
       // name comes on at full strength underneath them and only the copy on
@@ -858,7 +889,10 @@
         target.textContent = label;
         target.style.opacity = '';
         nm.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms(160), easing: 'linear', fill: 'forwards' });
-        setTimeout(clearSplash, ms(180));
+        setTimeout(function () {
+          clearSplash();
+          if (mobile) start();
+        }, ms(180));
       }, FLY);
     };
 

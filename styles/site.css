@@ -144,7 +144,7 @@
      are divided by this. scripts/site.js carries the same number. */
   --pace: 1.6;
 
-  /* The green of the old site. Every page but the home page carries it as a
+  /* The green of the old site. Subpages and the mobile home carry it as a
      wide glow in the empty top right of the page. It is the top of the old
      plate (#42563f, where it met the header) rather than its middle
      (#2b3e2d): the middle sank into the dark paper. */
@@ -552,7 +552,7 @@ ul, ol { list-style: none; }
    the page and scrolls away with it — nothing is fixed to the window. It sits
    under the content inside the shell's stacking context, so the grain and
    the work stay above it. */
-html.sub main {
+html.sub main, html main.home {
   position: relative;
   /* The glow's geometry lives on main, not on its ::before, so the canvas
      that redraws it (below) reads the same numbers. */
@@ -560,30 +560,8 @@ html.sub main {
   --glow-off: 30vw;
   --glow-core: 28%;
   --glow-base: var(--paper);
-}
-html.sub main::before {
-  /* On a phone: a circle centred beyond the right edge, level with the top,
-     so less than a quarter of it falls on the page and the green stays to
-     the right instead of reaching under the heading. Its full-strength core
-     runs out to the page's corner (--glow-core, the share of the radius that
-     lies off the page), so the corner stays as green as before and only the
-     reach to the left is shorter. */
   --glow-x: calc(100% + var(--glow-off));
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: -1;
-  width: var(--glow-r);
-  height: var(--glow-r);
-  pointer-events: none;
-  /* Opaque from end to end — it fades to the paper, not to transparent —
-     and one layer: WebKit dithers a gradient only while it paints it
-     alone and opaque, and anything with alpha in it goes in hard steps
-     in Safari (Chromium dithers the composite and never shows them). The
-     fall-off is an eased curve over thirteen stops rather than four
-     straight segments: every kink between segments reads as a band. */
-  background: radial-gradient(
+  --page-glow: radial-gradient(
     circle var(--glow-r) at var(--glow-x) 0%,
     var(--head-tint) var(--glow-core),
     color-mix(in srgb, var(--head-tint) 98.3%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.0833),
@@ -600,12 +578,52 @@ html.sub main::before {
     var(--paper) 100%
   );
 }
+html.sub main::before, html main.home::before {
+  /* On a phone: a circle centred beyond the right edge, level with the top,
+     so less than a quarter of it falls on the page and the green stays to
+     the right instead of reaching under the heading. Its full-strength core
+     runs out to the page's corner (--glow-core, the share of the radius that
+     lies off the page), so the corner stays as green as before and only the
+     reach to the left is shorter. */
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: var(--glow-r);
+  height: var(--glow-r);
+  pointer-events: none;
+  /* Opaque from end to end — it fades to the paper, not to transparent —
+     and one layer: WebKit dithers a gradient only while it paints it
+     alone and opaque, and anything with alpha in it goes in hard steps
+     in Safari (Chromium dithers the composite and never shows them). The
+     fall-off is an eased curve over thirteen stops rather than four
+     straight segments: every kink between segments reads as a band. */
+  background: var(--page-glow);
+}
+@media (max-width: 60.99rem) {
+  html.sub main::after, html main.home::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    width: var(--glow-r);
+    height: var(--glow-r);
+    pointer-events: none;
+    background: var(--page-glow);
+    transform: scaleY(-1);
+  }
+  html.glow-foot-baked.sub main::after,
+  html.glow-foot-baked main.home::after { display: none; }
+}
 /* On the desktop the circle keeps its centre on the top right corner, so
    again one quarter of it falls on the page, only larger: its radius is the
    whole width of the column beside the rail (up to a screen and a third
    high), so the quarter reaches across the page without going under the
    rail. */
 @media (min-width: 61rem) {
+  html main.home::before { display: none; }
   html.sub main {
     --glow-r: min(135svh, calc(100vw - var(--rail)));
     --glow-off: 0px;
@@ -618,7 +636,7 @@ html.sub main::before {
    grain added after the rounding cannot undo the rounding. The canvas takes
    the place of the CSS gradient once it is drawn; without JavaScript the
    gradient stays. */
-html.sub main > canvas.glow {
+html.sub main > canvas.glow, html main.home > canvas.glow {
   /* main is a grid: a placed child would take its grid area, inside the
      page padding, as its box. Unplaced, it measures from main's own edge,
      the same edge the ::before measures from. */
@@ -631,7 +649,19 @@ html.sub main > canvas.glow {
   height: var(--glow-r);
   pointer-events: none;
 }
-html.glow-baked.sub main::before { display: none; }
+html.glow-baked.sub main::before, html.home-glow-baked main.home::before { display: none; }
+@media (max-width: 60.99rem) {
+  html.sub main > canvas.glow.glow-foot,
+  html main.home > canvas.glow.glow-foot {
+    top: auto;
+    bottom: 0;
+    transform: scaleY(-1);
+  }
+}
+@media (min-width: 61rem) {
+  html.sub main > canvas.glow.glow-foot,
+  html main.home > canvas.glow.glow-foot { display: none; }
+}
 .stage > canvas.glow {
   position: absolute;
   top: 0;
@@ -669,7 +699,7 @@ html.glow-baked.sub main::before { display: none; }
     var(--stage-bg) 100%
   );
 }
-html.glow-baked .stage::after { display: none; }
+html.stage-glow-baked .stage::after { display: none; }
 
 /* ============================================================
    Home — index on four columns, stage on eight
