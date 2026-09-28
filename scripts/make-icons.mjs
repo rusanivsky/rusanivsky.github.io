@@ -101,26 +101,6 @@ img.src = ${JSON.stringify(src)};
 
 const pngSize = (buf) => ({ w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) });
 
-/* An .ico is a directory plus payloads; since Vista the payload may be a PNG
-   as-is, which every browser in use today reads. */
-function ico(pngs) {
-  const head = Buffer.alloc(6);
-  head.writeUInt16LE(0, 0); head.writeUInt16LE(1, 2); head.writeUInt16LE(pngs.length, 4);
-  let offset = 6 + 16 * pngs.length;
-  const dirs = [];
-  for (const png of pngs) {
-    const { w, h } = pngSize(png);
-    const d = Buffer.alloc(16);
-    d.writeUInt8(w >= 256 ? 0 : w, 0);
-    d.writeUInt8(h >= 256 ? 0 : h, 1);
-    d.writeUInt16LE(1, 4); d.writeUInt16LE(32, 6);
-    d.writeUInt32LE(png.length, 8); d.writeUInt32LE(offset, 12);
-    dirs.push(d);
-    offset += png.length;
-  }
-  return Buffer.concat([head, ...dirs, ...pngs]);
-}
-
 const grab = {};
 for (const [key, svgText, sizes] of [
   ['l', light, [16, 32, 48, 180, 192, 512]],
@@ -131,8 +111,17 @@ for (const [key, svgText, sizes] of [
   }
 }
 
-writeFileSync(path.join(root, 'favicon.ico'), ico([grab.l16, grab.l32, grab.l48]));
-writeFileSync(path.join(root, 'favicon-dark.ico'), ico([grab.d16, grab.d32]));
+/* Safari showed the PNG-encoded ICO as a blank tab icon. Keep the exact
+   browser-rendered artwork, but wrap it in traditional BMP ICO entries. */
+for (const [name, sizes] of [
+  ['favicon.ico', ['l16', 'l32', 'l48']],
+  ['favicon-dark.ico', ['d16', 'd32']],
+]) {
+  await run('python3', [
+    path.join(root, 'scripts/pack-ico.py'), path.join(root, name),
+    ...sizes.map((size) => path.join(work, `${size}.png`)),
+  ]);
+}
 console.log('favicon.ico (16/32/48), favicon-dark.ico (16/32)');
 
 /* Home screen and app library. The dark pair only reaches recent Safari;
