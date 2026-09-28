@@ -3,7 +3,7 @@
 
   Everything here degrades: with JavaScript off you still get a readable
   index, working links to every project, real posters, and a page that
-  keeps its one light theme, which is CSS alone.
+  follows the system theme by default, with a saved manual choice.
 */
 (function () {
   'use strict';
@@ -24,10 +24,55 @@
     root.toggleAttribute('data-grid');
   });
 
-  /* ---------- Theme ----------
-     The site ships in the light theme, written into every page by the build.
-     Clear a dark choice stored by an older version so it cannot linger. */
-  try { localStorage.removeItem('kr-theme'); } catch (e) { /* private mode */ }
+  /* ---------- Theme: auto | light | dark ----------
+     Auto follows the operating system through CSS. A manual choice is saved
+     and remains active until Auto is selected again. */
+  var THEME_KEY = 'kr-theme';
+  var LIGHT = '#f8f8f8';
+  var DARK = '#141412';
+  var colorPreference = matchMedia('(prefers-color-scheme: dark)');
+
+  function storedTheme() {
+    try {
+      var value = localStorage.getItem(THEME_KEY);
+      return value === 'light' || value === 'dark' ? value : 'auto';
+    } catch (e) { return 'auto'; }
+  }
+
+  function effectiveTheme(mode) {
+    if (mode === 'light' || mode === 'dark') return mode;
+    return colorPreference.matches ? 'dark' : 'light';
+  }
+
+  function updateThemeColor(mode) {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', effectiveTheme(mode) === 'dark' ? DARK : LIGHT);
+  }
+
+  function paintTheme(mode) {
+    root.setAttribute('data-theme', mode);
+    updateThemeColor(mode);
+    document.querySelectorAll('.theme-modes [data-theme-mode]').forEach(function (button) {
+      button.setAttribute('aria-pressed', String(button.dataset.themeMode === mode));
+    });
+  }
+
+  paintTheme(storedTheme());
+
+  colorPreference.addEventListener('change', function () {
+    if (root.getAttribute('data-theme') === 'auto') updateThemeColor('auto');
+  });
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('.theme-modes [data-theme-mode]');
+    if (!button) return;
+    var mode = button.dataset.themeMode;
+    try {
+      if (mode === 'auto') localStorage.removeItem(THEME_KEY);
+      else localStorage.setItem(THEME_KEY, mode);
+    } catch (e) { /* private mode: this choice lasts for this page */ }
+    paintTheme(mode);
+  });
 
   /* ---------- The green glow, dithered ----------
      The glow on a subpage is a CSS radial gradient, and Safari barely

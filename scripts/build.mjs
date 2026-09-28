@@ -119,9 +119,18 @@ const navLinks = (list, here) =>
   list.map(([path, key]) =>
     `<a href="${href(path)}"${path === here ? ' aria-current="page"' : ''}>${ui(key)}</a>`).join('');
 
-/* Two faces for the name and the headlines, side by side, so the choice can
-   be made by looking rather than by argument. The switch sits with the theme
-   because it is the same kind of control: a preference, stored, undoable. */
+const themeControl = () => {
+  const modes = [
+    ['auto', 'themeAuto', '<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/>'],
+    ['light', 'themeLight', '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>'],
+    ['dark', 'themeDark', '<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>'],
+  ];
+  return `<div class="theme theme-modes" role="group" aria-label="${attr(ui('theme'))}">` +
+    modes.map(([mode, label, icon]) =>
+      `<button type="button" data-theme-mode="${mode}" aria-label="${attr(ui(label))}" title="${attr(ui(label))}" aria-pressed="${mode === 'auto'}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icon}</svg></button>`).join('') +
+    `</div>`;
+};
+
 /* Real links, so /ua/ is a page you can bookmark and a crawler can index. */
 const langControl = (path) =>
   `<div class="theme lang">` +
@@ -139,6 +148,7 @@ const rail = (here, path) => `
     ${navLinks(NAV_MINOR, here)}
     ${ELSEWHERE.map(([h, l]) => `<a href="${h}" target="_blank" rel="noopener">${l}</a>`).join('')}
     ${langControl(path)}
+    ${themeControl()}
     <a class="rail-legal" href="${href('/privacy/')}">${esc(L(PRIVACY_TITLE))}</a>
     <p class="rail-meta"><span>${ui('copyright')}</span><span>${ui('kyiv')}</span></p>
   </div>
@@ -162,6 +172,7 @@ const mobile = (here, path) => {
     ${navLinks(NAV_MINOR, here)}
     ${ELSEWHERE.map(([h, l]) => `<a href="${h}" target="_blank" rel="noopener">${l}</a>`).join('')}
     ${langControl(path)}
+    ${themeControl()}
   </div>
 </div>`;
 };
@@ -309,7 +320,7 @@ function page({ here, path, title, description, body, ogImage = '/og-image.jpg' 
   const sub = !body.includes('<main class="home"');
   const ogUrl = `${SITE}${ogImage}${ogImage.startsWith('/og-image') ? `?v=${OG_V}` : ''}`;
   return `<!DOCTYPE html>
-<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="light"${sub ? ' class="sub"' : ''}>
+<html lang="${LANG === 'ua' ? 'uk' : 'en'}" data-theme="auto"${sub ? ' class="sub"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

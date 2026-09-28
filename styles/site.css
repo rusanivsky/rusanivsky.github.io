@@ -69,14 +69,16 @@
   --ink: #111111;
   --muted: #6b6b6b;
   --faint: #717171;
-  --line: #dddddd;
-  --line-soft: #ebebeb;
+  /* Solid ink keeps rules the same over paper and the green wash. */
+  --line: #c4c4c4;
+  --line-soft: #d0d0d0;
   --rule-w: 1px;
   --surface: #f1f1f1;
   --stage-bg: #eeeeee;
 
   --grain: 0.022;
   --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-size: 160px;
 
   /* --- Grid --- */
   --cols: 12;
@@ -137,6 +139,51 @@
   --head-tint: #a9c5a2;
 
   color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --paper: #141412;
+  --ink: #e8e5de;
+  --muted: #a7a39a;
+  --faint: #8a857c;
+  --line: #2b2a26;
+  --line-soft: #232220;
+  --surface: #1b1b18;
+  --stage-bg: #1b1b18;
+  --grain: 0.18;
+  --grain-image: url("grain.webp");
+  --grain-size: 160px;
+  --head-tint: #42563f;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='auto'] {
+    --paper: #141412;
+    --ink: #e8e5de;
+    --muted: #a7a39a;
+    --faint: #8a857c;
+    --line: #2b2a26;
+    --line-soft: #232220;
+    --surface: #1b1b18;
+    --stage-bg: #1b1b18;
+    --grain: 0.18;
+    --grain-image: url("grain.webp");
+    --grain-size: 160px;
+    --head-tint: #42563f;
+    color-scheme: dark;
+  }
+}
+
+@media (min-resolution: 1.5dppx) {
+  :root[data-theme='light'],
+  :root[data-theme='dark'],
+  :root[data-theme='auto'] { --grain-size: 80px; }
+}
+@media (min-resolution: 2.5dppx) {
+  :root[data-theme='light'],
+  :root[data-theme='dark'],
+  :root[data-theme='auto'] { --grain-size: 53.334px; }
 }
 
 /* ---------- The grid ----------
@@ -471,6 +518,36 @@ ul, ol { list-style: none; }
   text-underline-offset: 3px;
 }
 .theme .sep { color: var(--line); }
+.theme-modes {
+  margin-top: 0.55rem;
+  gap: 0.35rem;
+  align-items: center;
+}
+.theme-modes button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+.theme-modes button:hover,
+.theme-modes button[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--surface);
+}
+.theme-modes button[aria-pressed='true'] { font-weight: var(--w-regular); }
+.theme-modes button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 /* The pair EN · UA needs no word over it: a rule of the same weight as the one
    between the navigation groups says «another kind of control» without adding
    a label to read. */
