@@ -488,7 +488,11 @@
     "externalLinks": [],
     "featured": false,
     "cover": "/media/design/cases/creativity-01.webp",
-    "designOrder": 5
+    "designOrder": 5,
+    "clientLabel": {
+      "en": "Anna Nechai / Uliana Yefimenko",
+      "ua": "Анна Нечай / Уляна Єфіменко"
+    }
   },
   {
     "id": "p-tale-about-time",
@@ -581,7 +585,11 @@
     "externalLinks": [],
     "featured": false,
     "cover": "/media/design/cases/tale-about-time-01.webp",
-    "designOrder": 6
+    "designOrder": 6,
+    "clientLabel": {
+      "en": "Anna Nechai / Ulyana Yefimenko",
+      "ua": "Анна Нечай / Уляна Єфіменко"
+    }
   },
   {
     "id": "p-selective-vision-textures",
@@ -670,7 +678,11 @@
     "externalLinks": [],
     "featured": false,
     "cover": "/media/design/cases/selective-vision-textures-01.webp",
-    "designOrder": 7
+    "designOrder": 7,
+    "clientLabel": {
+      "en": "Anna Nechai",
+      "ua": "Анна Нечай"
+    }
   },
   {
     "id": "p-zest-for-life",
@@ -759,7 +771,11 @@
     "externalLinks": [],
     "featured": false,
     "cover": "/media/design/cases/zest-for-life-cover.webp",
-    "designOrder": 8
+    "designOrder": 8,
+    "clientLabel": {
+      "en": "Anna Nechai",
+      "ua": "Анна Нечай"
+    }
   },
   {
     "id": "p-anna-nechai-ashok-jain-gallery",
@@ -848,7 +864,11 @@
     "externalLinks": [],
     "featured": false,
     "cover": "/media/design/cases/anna-nechai-ashok-jain-gallery-01.webp",
-    "designOrder": 9
+    "designOrder": 9,
+    "clientLabel": {
+      "en": "Anna Nechai",
+      "ua": "Анна Нечай"
+    }
   },
   {
     "id": "p-30-years-of-ukrainian-independence",
