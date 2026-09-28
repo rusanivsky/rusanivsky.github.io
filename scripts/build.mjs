@@ -28,6 +28,7 @@ const rates = JSON.parse(readFileSync(new URL('../data/rates.json', import.meta.
 const CSS_V = short('styles/site.css');
 const JS_V = short('scripts/site.js');
 const GALLERY_V = short('scripts/gallery-layout.js');
+const DESIGN_V = short('scripts/design-masonry.js');
 // Social networks cache a card by URL and never re-fetch it, so the OG image
 // carries a content hash too.
 const OG_V = short('og-image.jpg');
@@ -365,6 +366,7 @@ ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="fo
 <script>${SPLASH_BOOT}</script>
 <script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
+${here === '/design/' ? `<script src="/scripts/design-masonry.js?v=${DESIGN_V}" defer></script>` : ''}
 ${LIVE ? `<script src="/scripts/google-analytics.js?v=${GA_V}" defer></script>\n` : ''}
 </head>
 <body>
@@ -805,7 +807,7 @@ function practicePage({ here, discipline, extra = '' }) {
   </div>
   <section class="section col-full">
     <h2 class="section-label">${ui('projects')}</h2>
-    <div class="works selection">${list
+    <div class="works ${discipline === 'design' ? 'design-masonry' : 'selection'}">${list
       .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
       .join('\n')}</div>
   </section>

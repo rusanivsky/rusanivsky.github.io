@@ -1740,3 +1740,14 @@ html.fx .lf.lf-in .w { opacity: 1; }
 .design-caption { margin-top: .6rem; font-size: var(--t-meta); color: var(--muted); }
 .execution-note { font-size: var(--t-meta); color: var(--muted); margin: 1rem 0 0; }
 @media (max-width: 40rem) { .design-chapter-head { grid-template-columns: 1fr; gap: .7rem; } .design-frame { padding: .75rem; } }
+
+/* Uncropped design index, with a grid fallback before column packing. */
+.design-masonry { position: relative; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); }
+.design-masonry .work { min-width: 0; grid-column: auto; }
+.design-masonry .work-cover { aspect-ratio: auto; background: transparent; }
+.design-masonry .work-cover img { display: block; width: 100%; height: auto; object-fit: contain; transform: none; }
+.design-masonry.is-packed { display: block; }
+.design-masonry.is-packed .work { position: absolute; }
+@media (min-width: 90rem) { .design-masonry { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 45rem) { .design-masonry { grid-template-columns: minmax(0, 1fr); } }
+.design-masonry .work:hover .work-cover img { transform: none; }
