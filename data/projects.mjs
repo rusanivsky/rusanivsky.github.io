@@ -237,32 +237,6 @@ export const projects = [
   },
 
   {
-    id: 'p-shylero-utility-bag',
-    slug: 'shylero-utility-bag',
-    /* The slug keeps the singular the first file was named with; the project
-       is the series, so the title does not. */
-    title: { en: 'Bags by SHYLERO', ua: 'Bags by SHYLERO' },
-    year: null,
-    client: 'SHYLERO',
-    context: 'commissioned',
-    disciplines: ['video'],
-    roles: ['Camera', 'Editing'],
-    shortDescription: {
-      en: 'A short product video for SHYLERO, a Ukrainian maker of bags — the series of utility bags and backpacks the company builds, filmed and cut as one piece.',
-      ua: 'Короткий продуктовий ролик для SHYLERO, українського виробника сумок, — про серію утилітарних сумок і рюкзаків, які робить компанія, зняту і змонтовану в одне відео.',
-    },
-    credits: [
-      { en: 'Camera Operator & Editor — Kyrylo Rusanivsky', ua: 'Оператор і монтажер — Кирило Русанівський' },
-    ],
-    cover: `${POSTER}utility-bag-poster.webp`,
-    media: [
-      { ...video('cf', 'utility-bag', 'Utility Bags by SHYLERO', `${POSTER}utility-bag-poster.webp`), src: `${CF_VIDEO}short-form/utility-bag-1080.mp4` }, // YouTube EfoTXc5AVkk — не видаляти, відкат
-    ],
-    externalLinks: [],
-    featured: false,
-  },
-
-  {
     id: 'p-ua-trance-family',
     slug: 'ua-trance-family',
     title: { en: 'UA Trance Family', ua: 'UA Trance Family' },
@@ -416,6 +390,86 @@ export const projects = [
     externalLinks: [],
     featured: true,
     featuredOrder: 8,
+  },
+
+  {
+    id: 'p-wordmusic-autumn',
+    slug: 'wordmusic-autumn',
+    title: { en: 'Autumn Rendezvous', ua: 'Осіннє побачення' },
+    year: '2025',
+    client: 'word&music',
+    context: 'commissioned',
+    disciplines: ['photography'],
+    roles: ['Photography'],
+    shortDescription: {
+      en: 'Performers, audience and atmosphere at the Autumn Rendezvous concert.',
+      ua: 'Артисти, глядачі й атмосфера концерту «Осіннє побачення».',
+    },
+    credits: [],
+    cover: photoSequences['wordmusic-autumn'][0].src,
+    media: series('wordmusic-autumn', 8),
+    externalLinks: [{ label: 'word&music', href: 'https://wordandmusic.art/en/photo/autumn-rendezvous.html' }],
+    featured: false,
+  },
+
+  {
+    id: 'p-wordmusic-winter',
+    slug: 'wordmusic-winter',
+    title: { en: 'Winter Extravaganza', ua: 'Зимова феєрія' },
+    year: '2023',
+    client: 'word&music',
+    context: 'commissioned',
+    disciplines: ['photography'],
+    roles: ['Photography'],
+    shortDescription: {
+      en: 'Portraits of the artists and group photographs around the Winter Extravaganza concert.',
+      ua: 'Портрети артистів і спільні кадри навколо концерту «Зимова феєрія».',
+    },
+    credits: [],
+    cover: photoSequences['wordmusic-winter'][0].src,
+    media: series('wordmusic-winter', 7),
+    externalLinks: [{ label: 'word&music', href: 'https://wordandmusic.art/en/photo/winter-extravaganza.html' }],
+    featured: false,
+  },
+
+  {
+    id: 'p-wordmusic-roads',
+    slug: 'wordmusic-roads',
+    title: { en: 'Roads of Love', ua: 'Дороги кохання' },
+    year: '2024',
+    client: 'word&music',
+    context: 'commissioned',
+    disciplines: ['photography'],
+    roles: ['Photography'],
+    shortDescription: {
+      en: 'Music, performers and listeners at the Roads of Love concert.',
+      ua: 'Музика, виконавці й слухачі концерту «Дороги кохання».',
+    },
+    credits: [],
+    cover: photoSequences['wordmusic-roads'][0].src,
+    media: series('wordmusic-roads', 10),
+    externalLinks: [{ label: 'word&music', href: 'https://wordandmusic.art/en/photo/roads-of-love.html' }],
+    featured: false,
+  },
+
+  {
+    id: 'p-wordmusic-christmas',
+    slug: 'wordmusic-christmas',
+    title: { en: 'Christmas Kaleidoscope', ua: 'Різдвяний Калейдоскоп' },
+    year: '2024',
+    client: 'word&music',
+    context: 'commissioned',
+    disciplines: ['photography'],
+    roles: ['Photography'],
+    shortDescription: {
+      en: 'Artists and guests after the Christmas Kaleidoscope concert.',
+      ua: 'Артисти й гості після концерту «Різдвяний Калейдоскоп».',
+    },
+    credits: [],
+    cover: photoSequences['wordmusic-christmas'][0].src,
+    media: series('wordmusic-christmas', 4),
+    externalLinks: [{ label: 'word&music', href: 'https://wordandmusic.art/photo.html' }],
+    featured: false,
   },
 
   {
