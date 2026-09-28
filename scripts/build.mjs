@@ -892,7 +892,7 @@ function projectPage(p, index) {
     sequence = p.media.map((m, i) => `<section class="design-chapter col-full">
       ${m.title ? `<div class="design-chapter-head"><h2 class="t-title">${esc(L(m.title))}</h2>${m.body ? t(m.body, 'design-chapter-copy', 'p') : ''}</div>` : ''}
       <figure class="design-figure">
-        <a class="design-frame" href="${attr(m.src)}" data-lb>${img(m.src, L(m.caption) || m.alt, { eager: i === 0, sizes: '(min-width: 61rem) calc(100vw - 18rem), 100vw' })}</a>
+        <div class="design-frame">${img(m.src, L(m.caption) || m.alt, { eager: i === 0, sizes: '(min-width: 61rem) calc(100vw - 18rem), 100vw' })}</div>
         ${m.caption ? t(m.caption, 'design-caption', 'figcaption') : ''}
       </figure>
     </section>`).join('\n');
@@ -900,7 +900,7 @@ function projectPage(p, index) {
     // Design projects are one or two deliberate objects; a collage of two
     // items is not a collage, it is two pictures with an excuse.
     sequence = p.media.map((m, i) =>
-      `<a class="span-${spanFor(dim(m.src))}" href="${m.src}" data-lb><figure class="shot">${img(m.src, m.alt, { eager: i === 0, sizes: sizesFor(spanFor(dim(m.src))) })}</figure></a>`).join('\n');
+      `<div class="span-${spanFor(dim(m.src))}"><figure class="shot">${img(m.src, m.alt, { eager: i === 0, sizes: sizesFor(spanFor(dim(m.src))) })}</figure></div>`).join('\n');
   }
 
   const others = projects.filter((o) => o.slug !== p.slug);
@@ -921,7 +921,7 @@ function projectPage(p, index) {
     ${p.execution ? `<p class="execution-note">${esc(L({ en: 'Execution work for ', ua: 'Виконавча робота для ' }))}${esc(clientName(p))}.</p>` : ''}
   </div>
 
-  <div class="seq col-full g12" style="padding-inline:0"${isVideo || p.disciplines.includes('photography') ? '' : ` data-lb-group="${attr(p.slug)}"`}>
+  <div class="seq col-full g12" style="padding-inline:0">
 ${sequence}
   </div>
 

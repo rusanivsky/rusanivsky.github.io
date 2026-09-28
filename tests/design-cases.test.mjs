@@ -10,12 +10,12 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const expectedIds = [
   '40712ef215b2', '7c98b1359e9e', '5b70438df6b6',
   '87c97e70206f', 'd680b2424333', 'c74bada85c56',
-  '0bf33a880b88', '7adbc7e08f43', '5b266bfe71d2', '11c63790dd0d',
-  '89b3b10030a9', '1e5529bde6ae', 'dbe7e36d8ba9', 'e637be5d0d55',
+  '7adbc7e08f43', '11c63790dd0d',
+  '89b3b10030a9', 'dbe7e36d8ba9', 'e637be5d0d55',
   '01becb12cc1c',
 ];
 const executionIds = ['c74bada85c56',
-  '0bf33a880b88', '7adbc7e08f43', '5b266bfe71d2', '89b3b10030a9'];
+  '7adbc7e08f43', '89b3b10030a9'];
 const read = path => readFileSync(resolve(root, path), 'utf8');
 const text = html => html.replace(/<[^>]*>/g, ' ').replace(/&nbsp;|&#160;/g, ' ')
   .replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
@@ -38,10 +38,10 @@ test('selected design cases satisfy the publication contract', async t => {
     return project;
   };
 
-  await t.test('12 cases account for exactly the 15 currently approved entries', () => {
+  await t.test('9 cases account for exactly the 12 currently approved entries', () => {
     assert.ok(Array.isArray(projects));
-    assert.equal(projects.length, 12);
-    assert.equal(new Set(projects.map(p => p.slug)).size, 12, 'unique case routes');
+    assert.equal(projects.length, 9);
+    assert.equal(new Set(projects.map(p => p.slug)).size, 9, 'unique case routes');
     for (const p of projects) assert.ok(Array.isArray(p.selectedIds) && p.selectedIds.length, `${p.slug}: selection mapping`);
     const ids = projects.flatMap(p => p.selectedIds);
     assert.equal(new Set(ids).size, ids.length, 'no selection duplicated across cases');
@@ -87,6 +87,18 @@ test('selected design cases satisfy the publication contract', async t => {
     }
   });
 
+  await t.test('design images are static in both languages without lightbox triggers', () => {
+    for (const p of projects) {
+      for (const lang of ['ua', 'en']) {
+        const html = page(p, lang);
+        assert.doesNotMatch(html, /<[^>]+\bdata-lb(?:-group)?(?=[\s=>])/i, `${p.slug}: ${lang} no lightbox trigger or group`);
+        assert.doesNotMatch(html, /<a\b[^>]*\bclass="[^"]*\bdesign-frame\b[^"]*"/i, `${p.slug}: ${lang} design images are not links`);
+        const frames = [...html.matchAll(/<([a-z][\w-]*)\b[^>]*\bclass="[^"]*\bdesign-frame\b[^"]*"[^>]*>/gi)];
+        assert.equal(frames.length, p.media.length, `${p.slug}: ${lang} static frames preserve all images`);
+      }
+    }
+  });
+
   await t.test('saved execution choices remain explicit in both languages', () => {
     for (const p of projects) {
       const expected = p.selectedIds.some(id => executionIds.includes(id));
@@ -98,17 +110,17 @@ test('selected design cases satisfy the publication contract', async t => {
     }
   });
 
-  await t.test('excluded Cozy and deferred Maaaam have no data, index links, sitemap entries or pages', async () => {
-    const excluded = /acb2dcb283ad|a4c0f97b350b|very-cozy-book|very\s+cozy\s+book|дуже\s+затишна\s+книга|maaaaaaam|ма{3,}м/i;
+  await t.test('excluded and deferred design cases have no data, index links, sitemap entries or pages', async () => {
+    const excluded = /acb2dcb283ad|a4c0f97b350b|5b266bfe71d2|0bf33a880b88|1e5529bde6ae|zest-for-life|tale-about-time|indestructible-memory-of-ukraine|very-cozy-book|very\s+cozy\s+book|дуже\s+затишна\s+книга|maaaaaaam|ма{3,}м/i;
     assert.doesNotMatch(JSON.stringify(projects), excluded);
     const { projects: combined } = await import('../data/projects.mjs');
-    // Existing video work can mention these books; only their design cases are excluded.
+    // Existing video work can mention these titles; only their design cases are excluded.
     assert.doesNotMatch(JSON.stringify(combined.map(p => ({ id: p.id, slug: p.slug, title: p.title, selectedIds: p.selectedIds }))), excluded);
     for (const prefix of ['', 'ua/']) {
       for (const index of ['index.html', 'design/index.html']) {
         assert.doesNotMatch(read(prefix + index), excluded, `${prefix}${index}: excluded case absent`);
       }
-      for (const slug of ['very-cozy-book', 'maaaaaaam']) {
+      for (const slug of ['very-cozy-book', 'maaaaaaam', 'zest-for-life', 'tale-about-time', 'indestructible-memory-of-ukraine']) {
         assert.ok(!existsSync(resolve(root, `${prefix}work/${slug}/index.html`)), `${prefix}${slug}: unpublished case page removed`);
       }
     }
@@ -120,6 +132,10 @@ test('selected design cases satisfy the publication contract', async t => {
     assert.match(p.scopeRole.ua, /обкладинк/i);
     assert.match(p.scopeRole.en, /cover/i);
     assert.doesNotMatch(JSON.stringify([p.roles, p.scopeRole]), /layout|typesetting|верстк|блок/i);
+    assert.deepEqual(p.media.map(m => m.id), ['dg-ukraine-existential-war-01', 'dg-ukraine-existential-war-02'], 'approved cover images remain');
+    for (const lang of ['ua', 'en']) {
+      assert.doesNotMatch(page(p, lang), /ukraine-existential-war-03/, `${lang}: removed orange quotation slide is absent`);
+    }
   });
 
   await t.test('history series retains its route and distinguishes both selected editions', () => {
