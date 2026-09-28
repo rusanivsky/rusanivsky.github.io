@@ -1502,7 +1502,8 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .collage.is-packed { position: relative; display: block; }
 .collage.is-packed > .cell { position: absolute; margin: 0; }
 .collage.is-packed .shot { width: 100%; height: 100%; }
-.collage.is-packed img { width: 100%; height: 100%; object-fit: contain; }
+/* Packed geometry already preserves the full frame; override the legacy .seq cap. */
+.collage.is-packed .shot img { width: 100%; height: 100%; max-height: none; object-fit: contain; }
 
 .gallery-controls { display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 1.25rem; }
 .gallery-controls[hidden] { display: none; }
