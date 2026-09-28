@@ -37,7 +37,7 @@
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=a1a56e70">
+<link rel="stylesheet" href="/styles/site.css?v=36a87d15">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
@@ -125,12 +125,14 @@ setTimeout(finish,6000);}catch(e){}})();</script>
              aria-describedby="b-contact-note" autocomplete="email">
       <p class="field-note" id="b-contact-note">Пошта, Телеграм або номер телефону — щоб було куди відповісти</p>
       <label for="b-disc">Напрямок</label>
-      <select id="b-disc" name="Discipline">
-        <option>Відео</option>
-        <option>Фотографія</option>
-        <option>Графічний дизайн</option>
-        <option>Кілька одразу</option>
-      </select>
+      <span class="brief-select">
+        <select id="b-disc" name="Discipline">
+          <option>Відео</option>
+          <option>Фотографія</option>
+          <option>Графічний дизайн</option>
+          <option>Кілька одразу</option>
+        </select>
+      </span>
       <label for="b-dead">Дедлайн</label>
       <input id="b-dead" name="Deadline" type="text" autocomplete="off">
       <label for="b-budget">Бюджет</label>

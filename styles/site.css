@@ -1373,6 +1373,24 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
   border: var(--rule-w) solid var(--line);
   border-radius: 0;
 }
+.brief-select { position: relative; display: block; margin-top: 0.35rem; }
+.brief-select select {
+  margin-top: 0;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+.brief-select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 1.1rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
 .brief option { background: var(--paper); }
 .brief textarea { min-height: 7rem; resize: vertical; }
 /* The one line under the first field. A brief with nowhere to reply to is not

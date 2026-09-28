@@ -1066,12 +1066,14 @@ function enquiriesPage() {
              aria-describedby="b-contact-note" autocomplete="email">
       <p class="field-note" id="b-contact-note">${ui('contactHint')}</p>
       <label for="b-disc">${ui('discipline')}</label>
-      <select id="b-disc" name="Discipline">
-        <option>${ui('video')}</option>
-        <option>${ui('photography')}</option>
-        <option>${ui('graphicDesign')}</option>
-        <option>${ui('moreThanOne')}</option>
-      </select>
+      <span class="brief-select">
+        <select id="b-disc" name="Discipline">
+          <option>${ui('video')}</option>
+          <option>${ui('photography')}</option>
+          <option>${ui('graphicDesign')}</option>
+          <option>${ui('moreThanOne')}</option>
+        </select>
+      </span>
       <label for="b-dead">${ui('deadline')}</label>
       <input id="b-dead" name="Deadline" type="text" autocomplete="off">
       <label for="b-budget">${ui('budget')}</label>
