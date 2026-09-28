@@ -100,7 +100,6 @@ const NAV_MINOR = [['/rates/', 'rates']];
 const PROFILES = [
   ['https://www.instagram.com/rusanivsky/', 'Instagram'],
   ['https://www.threads.com/@rusanivsky', 'Threads'],
-  ['https://www.tiktok.com/@rusanivsky', 'TikTok'],
   ['https://www.youtube.com/@rusanivsky', 'YouTube'],
   ['https://www.facebook.com/rusanivsky', 'Facebook'],
   ['https://www.behance.net/rusanivsky', 'Behance'],
@@ -108,6 +107,7 @@ const PROFILES = [
   ['https://www.linkedin.com/in/rusanivsky/', 'LinkedIn'],
   ['https://www.upwork.com/freelancers/~01538086fd314c4cfa', 'Upwork'],
   ['https://cases.media/rusanivsky/', 'CASES'],
+  ['https://www.tiktok.com/@rusanivsky', 'TikTok'],
 ];
 
 const ELSEWHERE = [
