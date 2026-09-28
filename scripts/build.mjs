@@ -11,6 +11,7 @@
 */
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { projects, videoCatalogue, clients } from '../data/projects.mjs';
 import { UI, PRACTICE_INTRO, CAPABILITIES } from '../data/ui.mjs';
@@ -74,7 +75,7 @@ const dim = (src) => sizes[src.split('?')[0]] || null;
 
 function write(path, html) {
   const out = new URL('../' + path, import.meta.url);
-  mkdirSync(dirname(out.pathname), { recursive: true });
+  mkdirSync(dirname(fileURLToPath(out)), { recursive: true });
   writeFileSync(out, html.replace(/\n{3,}/g, '\n\n'));
 }
 
@@ -791,6 +792,10 @@ function workCard(p, { lead = false, curated = false } = {}) {
 
 function practicePage({ here, discipline, extra = '' }) {
   const list = projects.filter((p) => p.disciplines.includes(discipline));
+  const concertSeries = discipline === 'photography'
+    ? list.filter((p) => p.slug.startsWith('wordmusic-')) : [];
+  const mainProjects = concertSeries.length
+    ? list.filter((p) => !concertSeries.includes(p)) : list;
   const title = L(DISCIPLINE[discipline]);
   const intro = PRACTICE_INTRO[discipline];
   const body = `
@@ -802,11 +807,17 @@ function practicePage({ here, discipline, extra = '' }) {
   </div>
   <section class="section col-full">
     <h2 class="section-label">${ui('projects')}</h2>
-    <div class="works selection">${list
+    <div class="works selection">${mainProjects
       .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
       .join('\n')}</div>
   </section>
-  ${extra}
+${concertSeries.length ? `<section class="section col-full">
+    <h2 class="section-label">${esc(L({ en: 'word&music · Concert series', ua: 'word&music · Концертні серії' }))}</h2>
+    <div class="works selection">${concertSeries
+      .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
+      .join('\n')}</div>
+  </section>` : ''}
+${extra}
   <div class="col-full">${foot()}</div>
 </main>`;
   return page({
