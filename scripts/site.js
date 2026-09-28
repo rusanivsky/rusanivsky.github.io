@@ -3,7 +3,7 @@
 
   Everything here degrades: with JavaScript off you still get a readable
   index, working links to every project, real posters, and a page that
-  keeps its one dark theme, which is CSS alone.
+  keeps its one light theme, which is CSS alone.
 */
 (function () {
   'use strict';
@@ -25,10 +25,8 @@
   });
 
   /* ---------- Theme ----------
-     The site ships in the dark only, so there is nothing to choose and
-     nothing to follow: data-theme="dark" is written into every page by the
-     build. A light choice stored by an earlier version is cleared, so it
-     cannot come back if a switch ever returns. */
+     The site ships in the light theme, written into every page by the build.
+     Clear a dark choice stored by an older version so it cannot linger. */
   try { localStorage.removeItem('kr-theme'); } catch (e) { /* private mode */ }
 
   /* ---------- The green glow, dithered ----------

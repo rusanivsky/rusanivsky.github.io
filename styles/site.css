@@ -64,31 +64,19 @@
    snaps to, and a six-step type scale where each step has one job. Nothing
    is sized ad hoc; if a thing needs a size, it takes one of these steps. */
 :root {
-  /* The site ships in the dark only. */
-  --paper: #141412;
-  --ink: #e8e5de;
-  --muted: #a7a39a;
-  --faint: #8a857c;
-  /* The rules are the ink itself, thinned: 14% and 8% of it over whatever
-     lies beneath. On the paper that is a quiet grey; over the green it is a
-     line a little lighter than the green, never a dark stripe across it. A
-     solid colour cannot do both — a grey quiet enough for the paper is
-     darker than the green and reads black over it. */
-  --line: color-mix(in srgb, var(--ink) 14%, transparent);
-  --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
+  /* Light paper is the default theme. */
+  --paper: #f8f8f8;
+  --ink: #111111;
+  --muted: #6b6b6b;
+  --faint: #717171;
+  --line: #dddddd;
+  --line-soft: #ebebeb;
   --rule-w: 1px;
-  --surface: #1b1b18;
-  --stage-bg: #1b1b18;
+  --surface: #f1f1f1;
+  --stage-bg: #eeeeee;
 
-  /* The grain of the old site, as it was: a raster tile laid in overlay.
-     A raster and not an feTurbulence filter, because every engine
-     rasterises the filter its own way; overlay, because it moves lightness
-     and never hue. It is what keeps the green glow from banding — eight
-     bits a channel across a dark gradient show as steps to the naked eye,
-     and the grain dithers them away. */
-  --grain: 0.18;
-  --grain-image: url("grain.webp");
-  --grain-size: 160px;
+  --grain: 0.022;
+  --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* --- Grid --- */
   --cols: 12;
@@ -144,20 +132,12 @@
      are divided by this. scripts/site.js carries the same number. */
   --pace: 1.6;
 
-  /* The green of the old site. Subpages and the mobile home carry it as a
-     wide glow in the empty top right of the page. It is the top of the old
-     plate (#42563f, where it met the header) rather than its middle
-     (#2b3e2d): the middle sank into the dark paper. */
-  --green: #42563f;
-  --head-tint: var(--green);
+  /* The original green remains a pale wash over the light paper. */
+  --green: #2b3e2d;
+  --head-tint: #a9c5a2;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
-
-/* The tile lies pixel for pixel on the screen's density, or each engine
-   stretches it with its own smoothing and the grain drifts apart again. */
-@media (min-resolution: 1.5dppx) { :root { --grain-size: 80px; } }
-@media (min-resolution: 2.5dppx) { :root { --grain-size: 53.334px; } }
 
 /* ---------- The grid ----------
    One declaration, used by every page-level container. Below the desktop
