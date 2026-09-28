@@ -29,6 +29,7 @@ const rates = JSON.parse(readFileSync(new URL('../data/rates.json', import.meta.
 const CSS_V = short('styles/site.css');
 const JS_V = short('scripts/site.js');
 const GALLERY_V = short('scripts/gallery-layout.js');
+const DESIGN_V = short('scripts/design-masonry.js');
 // Social networks cache a card by URL and never re-fetch it, so the OG image
 // carries a content hash too.
 const OG_V = short('og-image.jpg');
@@ -70,6 +71,8 @@ const other = (lang, path) => (lang === 'ua' ? '/ua' + path : path);
 
 const t = (o, cls = '', tag = 'span') =>
   o ? `<${tag}${cls ? ` class="${cls}"` : ''}>${esc(L(o))}</${tag}>` : '';
+
+const clientName = p => L(p.clientLabel || p.client);
 
 const dim = (src) => sizes[src.split('?')[0]] || null;
 
@@ -364,6 +367,7 @@ ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="fo
 <script>${SPLASH_BOOT}</script>
 <script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
+${here === '/design/' ? `<script src="/scripts/design-masonry.js?v=${DESIGN_V}" defer></script>` : ''}
 ${LIVE ? `<script src="/scripts/google-analytics.js?v=${GA_V}" defer></script>\n` : ''}
 </head>
 <body>
@@ -400,9 +404,9 @@ function projectMeta(p) {
   const bits = [discipline];
   // A role that only restates the practice, or a client that only restates
   // the title, adds nothing to the row.
-  const roles = p.roles.filter((r) => L(ROLE[r] || r) !== discipline).map((r) => L(ROLE[r] || r));
+  const roles = p.scopeRole ? [L(p.scopeRole)] : p.roles.filter((r) => L(ROLE[r] || r) !== discipline).map((r) => L(ROLE[r] || r));
   if (roles.length) bits.push(roles.join(', '));
-  if (p.client && p.client !== L(p.title)) bits.push(p.client);
+  if (p.client && clientName(p) !== L(p.title)) bits.push(clientName(p));
   if (p.year) bits.push(p.year);
   return bits;
 }
@@ -792,6 +796,7 @@ function workCard(p, { lead = false, curated = false } = {}) {
 
 function practicePage({ here, discipline, extra = '' }) {
   const list = projects.filter((p) => p.disciplines.includes(discipline));
+  if (discipline === 'design') list.sort((a, b) => (a.designOrder ?? 99) - (b.designOrder ?? 99));
   const concertSeries = discipline === 'photography'
     ? list.filter((p) => p.slug.startsWith('wordmusic-')) : [];
   const mainProjects = concertSeries.length
@@ -807,7 +812,7 @@ function practicePage({ here, discipline, extra = '' }) {
   </div>
   <section class="section col-full">
     <h2 class="section-label">${ui('projects')}</h2>
-    <div class="works selection">${mainProjects
+    <div class="works ${discipline === 'design' ? 'design-masonry' : 'selection'}">${mainProjects
       .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
       .join('\n')}</div>
   </section>
@@ -881,6 +886,16 @@ function projectPage(p, index) {
     // lazy, so the page still costs only what is scrolled to.
     const series = leadItems.length ? leadItems.concat(restItems) : p.media;
     sequence = `<div class="col-full">${collage(series, p.slug, true)}</div>`;
+  } else if (p.selectedIds) {
+    // Each design case is a deliberate image sequence, with source-specific
+    // captions and optional chapters. Artwork keeps its native proportions.
+    sequence = p.media.map((m, i) => `<section class="design-chapter col-full">
+      ${m.title ? `<div class="design-chapter-head"><h2 class="t-title">${esc(L(m.title))}</h2>${m.body ? t(m.body, 'design-chapter-copy', 'p') : ''}</div>` : ''}
+      <figure class="design-figure">
+        <a class="design-frame" href="${attr(m.src)}" data-lb>${img(m.src, L(m.caption) || m.alt, { eager: i === 0, sizes: '(min-width: 61rem) calc(100vw - 18rem), 100vw' })}</a>
+        ${m.caption ? t(m.caption, 'design-caption', 'figcaption') : ''}
+      </figure>
+    </section>`).join('\n');
   } else {
     // Design projects are one or two deliberate objects; a collage of two
     // items is not a collage, it is two pictures with an excuse.
@@ -890,7 +905,7 @@ function projectPage(p, index) {
 
   const others = projects.filter((o) => o.slug !== p.slug);
   const related = [others[(index + 1) % others.length], others[(index + 2) % others.length]];
-  const roles = p.roles.filter((r) => L(ROLE[r] || r) !== meta[0]).map((r) => L(ROLE[r] || r));
+  const roles = p.scopeRole ? [L(p.scopeRole)] : p.roles.filter((r) => L(ROLE[r] || r) !== meta[0]).map((r) => L(ROLE[r] || r));
 
   const body = `
 <main class="project g12" id="main">
@@ -899,10 +914,11 @@ function projectPage(p, index) {
     <h1 class="project-title t-display">${esc(L(p.title))}</h1>
     ${t(p.shortDescription, 'project-dek t-lead col-7', 'p')}
     ${p.client || roles.length || p.year ? `<dl class="facts">
-      ${p.client ? `<div><dt>${ui('client')}</dt><dd>${esc(p.client)}</dd></div>` : ''}
+      ${p.client ? `<div><dt>${ui('client')}</dt><dd>${esc(clientName(p))}</dd></div>` : ''}
       ${roles.length ? `<div><dt>${ui('role')}</dt><dd>${esc(roles.join(', '))}</dd></div>` : ''}
       ${p.year ? `<div><dt>${ui('year')}</dt><dd>${esc(p.year)}</dd></div>` : ''}
     </dl>` : ''}
+    ${p.execution ? `<p class="execution-note">${esc(L({ en: 'Execution work for ', ua: 'Виконавча робота для ' }))}${esc(clientName(p))}.</p>` : ''}
   </div>
 
   <div class="seq col-full g12" style="padding-inline:0"${isVideo || p.disciplines.includes('photography') ? '' : ` data-lb-group="${attr(p.slug)}"`}>

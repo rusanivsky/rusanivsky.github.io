@@ -111,8 +111,8 @@ export const PRACTICE_INTRO = {
     ua: 'Камера, монтаж і колір: документалістика, інтерв’ю та YouTube-серії, брендові відео й короткий метр.',
   },
   design: {
-    en: 'Book typesetting and layout, cover design, printed matter and prepress for publishers and libraries.',
-    ua: 'Верстка книжкових видань, дизайн обкладинок, друкована продукція і допечатна підготовка для видавництв і бібліотек.',
+    en: 'Visual identities, concert posters, book design and typesetting for cultural projects, publishers and libraries.',
+    ua: 'Айдентика, концертні афіші, дизайн і верстка книжок для культурних проєктів, видавців і бібліотек.',
   },
 };
 

@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "p-wordmusic-design",
+    "slug": "wordmusic-design",
+    "selectedIds": [
+      "40712ef215b2",
+      "7c98b1359e9e",
+      "5b70438df6b6"
+    ],
+    "title": {
+      "en": "word&music",
+      "ua": "word&music"
+    },
+    "year": null,
+    "client": "word&music",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Visual identity and posters"
+    ],
+    "scopeRole": {
+      "en": "Visual identity and posters",
+      "ua": "Айдентика та афіші"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Visual identity and concert graphics for word&music. Typography, colour and abstract forms connect posters, digital announcements and tickets.",
+      "ua": "Айдентика й концертна графіка word&music. Типографіка, колір та абстрактні форми поєднують афіші, цифрові анонси й квитки."
+    },
+    "credits": [
+      {
+        "en": "Visual identity and graphic design — Kyrylo Rusanivsky",
+        "ua": "Айдентика та графічний дизайн — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-word-and-music-01",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-01.webp",
+        "alt": "Concert poster",
+        "caption": {
+          "en": "Concert poster",
+          "ua": "Концертна афіша"
+        },
+        "lead": true,
+        "title": {
+          "en": "Posters",
+          "ua": "Афіші"
+        },
+        "body": {
+          "en": "A shared typographic hierarchy across the concert series.",
+          "ua": "Спільна типографічна ієрархія для концертної серії."
+        }
+      },
+      {
+        "id": "dg-word-and-music-02",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-02.webp",
+        "alt": "Digital announcement — dark version",
+        "caption": {
+          "en": "Digital announcement — dark version",
+          "ua": "Цифровий анонс — темна версія"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-word-and-music-03",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-03.webp",
+        "alt": "Digital announcement — light version",
+        "caption": {
+          "en": "Digital announcement — light version",
+          "ua": "Цифровий анонс — світла версія"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-word-and-music-04",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-04.webp",
+        "alt": "Ticket layout",
+        "caption": {
+          "en": "Ticket layout",
+          "ua": "Макет квитка"
+        },
+        "lead": true,
+        "title": {
+          "en": "Applications",
+          "ua": "Носії"
+        }
+      },
+      {
+        "id": "dg-word-and-music-05",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-05.webp",
+        "alt": "Identity applications",
+        "caption": {
+          "en": "Identity applications",
+          "ua": "Застосування айдентики"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-word-and-music-06",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-06.webp",
+        "alt": "Melodies of a Magical June — archive poster, 2025",
+        "caption": {
+          "en": "Melodies of a Magical June — archive poster, 2025",
+          "ua": "«Мелодії чарівного червня» — архівна афіша, 2025"
+        },
+        "lead": true,
+        "title": {
+          "en": "Concert archive",
+          "ua": "Концертний архів"
+        }
+      },
+      {
+        "id": "dg-word-and-music-07",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-07.webp",
+        "alt": "Archive concert poster, 2024",
+        "caption": {
+          "en": "Archive concert poster, 2024",
+          "ua": "Архівна концертна афіша, 2024"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [
+      {
+        "label": "word&music",
+        "href": "https://wordandmusic.art/"
+      }
+    ],
+    "featured": false,
+    "cover": "/media/design/cases/word-and-music-01.webp",
+    "designOrder": 0
+  },
+  {
+    "id": "p-history-of-ukraine-2020",
+    "slug": "history-of-ukraine-2020",
+    "selectedIds": [
+      "87c97e70206f",
+      "dbe7e36d8ba9"
+    ],
+    "title": {
+      "en": "History of Ukraine",
+      "ua": "Історія України"
+    },
+    "year": null,
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Cover design; design and typesetting of the 2022 volume"
+    ],
+    "scopeRole": {
+      "en": "Cover design; design and typesetting of the 2022 volume",
+      "ua": "Дизайн обкладинок; дизайн і верстка випуску 2022"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "A series of bibliographic indexes for the National Historical Library of Ukraine. Covers for the 2020 and 2022 volumes use a 1918 map of Ukraine. The 2022 volume, published in 2024, brings 588 pages into a consistent typographic system.",
+      "ua": "Серія бібліографічних покажчиків Національної історичної бібліотеки України. Обкладинки випусків 2020 і 2022 побудовані на карті України 1918 року. Випуск 2022, виданий у 2024 році, об’єднує 588 сторінок у послідовну типографічну систему."
+    },
+    "credits": [
+      {
+        "en": "Cover design; 2022 volume design and typesetting — Kyrylo Rusanivsky",
+        "ua": "Дизайн обкладинок; дизайн і верстка випуску 2022 — Кирило Русанівський"
+      },
+      {
+        "en": "2022 volume: compiled by Nataliia Voshchevska, Olha Lytvyn and Zeituna Musina",
+        "ua": "Випуск 2022: упорядниці — Наталія Вощевська, Ольга Литвин, Зейтуна Мусіна"
+      },
+      {
+        "en": "2022 volume: editors — Alla Skorokhvatova and Dariia Stehnii; literary editor — Ihor Odnopozov",
+        "ua": "Випуск 2022: редакторки — Алла Скорохватова, Дарія Стегній; літературний редактор — Ігор Однопозов"
+      },
+      {
+        "en": "2022 volume: publication supervisor — Alla Skorokhvatova; publisher and printer — Lira-K",
+        "ua": "Випуск 2022: відповідальна за випуск — Алла Скорохватова; видавець і виготовлювач — Ліра-К"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-history-of-ukraine-2020-01",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-01.webp",
+        "alt": "2022 volume — cover mockup",
+        "caption": {
+          "en": "2022 volume — cover mockup",
+          "ua": "Випуск 2022 — мокап обкладинки"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-02",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-02.webp",
+        "alt": "2022 volume — full cover artwork",
+        "caption": {
+          "en": "2022 volume — full cover artwork",
+          "ua": "Випуск 2022 — повний макет обкладинки"
+        },
+        "lead": true,
+        "title": {
+          "en": "2022 / Cover",
+          "ua": "2022 / Обкладинка"
+        }
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-03",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-03.webp",
+        "alt": "2022 volume — contents, pp. 6–7",
+        "caption": {
+          "en": "2022 volume — contents, pp. 6–7",
+          "ua": "Випуск 2022 — зміст, с. 6–7"
+        },
+        "lead": true,
+        "title": {
+          "en": "Contents and navigation",
+          "ua": "Зміст і навігація"
+        },
+        "body": {
+          "en": "Indentation, type styles and page numbers distinguish the levels of the contents.",
+          "ua": "Відступи, накреслення й номери сторінок розрізняють рівні змісту."
+        }
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-04",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-04.webp",
+        "alt": "2022 volume — bibliographic records, pp. 120–121",
+        "caption": {
+          "en": "2022 volume — bibliographic records, pp. 120–121",
+          "ua": "Випуск 2022 — бібліографічні записи, с. 120–121"
+        },
+        "lead": true,
+        "title": {
+          "en": "Typesetting",
+          "ua": "Верстка"
+        },
+        "body": {
+          "en": "Two-column text, numbered records and running heads organise the main section.",
+          "ua": "Двоколонний текст, нумерація записів і колонтитули організовують основний блок."
+        }
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-05",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-05.webp",
+        "alt": "2022 volume — name index, pp. 500–501",
+        "caption": {
+          "en": "2022 volume — name index, pp. 500–501",
+          "ua": "Випуск 2022 — іменний покажчик, с. 500–501"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-06",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-06.webp",
+        "alt": "2022 volume — geographical index, pp. 560–561",
+        "caption": {
+          "en": "2022 volume — geographical index, pp. 560–561",
+          "ua": "Випуск 2022 — географічний покажчик, с. 560–561"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-history-of-ukraine-2020-07",
+        "type": "image",
+        "src": "/media/design/cases/history-of-ukraine-2020-07.webp",
+        "alt": "2020 volume — full cover artwork",
+        "caption": {
+          "en": "2020 volume — full cover artwork",
+          "ua": "Випуск 2020 — повний макет обкладинки"
+        },
+        "lead": true,
+        "title": {
+          "en": "2020 / Cover",
+          "ua": "2020 / Обкладинка"
+        }
+      }
+    ],
+    "externalLinks": [
+      {
+        "label": "Behance / 2020",
+        "href": "https://www.behance.net/gallery/133703119/storja-ukrani-2020"
+      }
+    ],
+    "featured": false,
+    "cover": "/media/design/cases/history-of-ukraine-2020-01.webp",
+    "designOrder": 1,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  },
+  {
+    "id": "p-ukraine-existential-war",
+    "slug": "ukraine-existential-war",
+    "selectedIds": [
+      "d680b2424333"
+    ],
+    "title": {
+      "en": "Ukraine in an Existential War",
+      "ua": "Україна в умовах екзистенційної війни"
+    },
+    "year": null,
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Cover design"
+    ],
+    "scopeRole": {
+      "en": "Cover design",
+      "ua": "Дизайн обкладинки"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Cover for a bibliographic index on Ukrainian humanities. An orange spine and lettering contrast with a dark blue field and a line drawing of Kyiv.",
+      "ua": "Обкладинка бібліографічного покажчика «Україна в умовах екзистенційної війни: українська гуманітаристика». Помаранчевий корінець і написи контрастують із темно-синім тлом та контурною панорамою Києва."
+    },
+    "credits": [
+      {
+        "en": "Cover design — Kyrylo Rusanivsky",
+        "ua": "Дизайн обкладинки — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-ukraine-existential-war-01",
+        "type": "image",
+        "src": "/media/design/cases/ukraine-existential-war-01.webp",
+        "alt": "Front cover",
+        "caption": {
+          "en": "Front cover",
+          "ua": "Передня сторонка"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-ukraine-existential-war-02",
+        "type": "image",
+        "src": "/media/design/cases/ukraine-existential-war-02.webp",
+        "alt": "Full cover artwork",
+        "caption": {
+          "en": "Full cover artwork",
+          "ua": "Повний макет обкладинки"
+        },
+        "lead": true,
+        "title": {
+          "en": "Cover",
+          "ua": "Обкладинка"
+        }
+      },
+      {
+        "id": "dg-ukraine-existential-war-03",
+        "type": "image",
+        "src": "/media/design/cases/ukraine-existential-war-03.webp",
+        "alt": "Back cover",
+        "caption": {
+          "en": "Back cover",
+          "ua": "Задня сторонка"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/ukraine-existential-war-01.webp",
+    "designOrder": 2,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  },
+  {
+    "id": "p-creativity",
+    "slug": "creativity",
+    "selectedIds": [
+      "c74bada85c56"
+    ],
+    "title": {
+      "en": "Creativity",
+      "ua": "Creativity"
+    },
+    "year": null,
+    "client": "Anna Nechai / Uliana Yefimenko",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Graphic design"
+    ],
+    "scopeRole": {
+      "en": "Graphic design",
+      "ua": "Графічний дизайн"
+    },
+    "execution": true,
+    "shortDescription": {
+      "en": "Graphic design for Anna Nechai and Uliana Yefimenko’s book, illustrated by Sofia Yefimenko. Colourful images and short text blocks form the publication’s visual rhythm.",
+      "ua": "Графічний дизайн книжки Анни Нечай та Уляни Єфіменко з ілюстраціями Софії Єфіменко. Кольорові зображення й короткі текстові блоки формують ритм видання."
+    },
+    "credits": [
+      {
+        "en": "Graphic design — Kyrylo Rusanivsky",
+        "ua": "Графічний дизайн — Кирило Русанівський"
+      },
+      {
+        "en": "Authors — Anna Nechai and Uliana Yefimenko",
+        "ua": "Авторки — Анна Нечай та Уляна Єфіменко"
+      },
+      {
+        "en": "Illustrations — Sofia Yefimenko; editor — Roger Vaughan",
+        "ua": "Ілюстрації — Софія Єфіменко; редактор — Roger Vaughan"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-creativity-01",
+        "type": "image",
+        "src": "/media/design/cases/creativity-01.webp",
+        "alt": "Cover",
+        "caption": {
+          "en": "Cover",
+          "ua": "Обкладинка"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-creativity-02",
+        "type": "image",
+        "src": "/media/design/cases/creativity-02.webp",
+        "alt": "Spread, pp. 4–5",
+        "caption": {
+          "en": "Spread, pp. 4–5",
+          "ua": "Розворот, с. 4–5"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-creativity-03",
+        "type": "image",
+        "src": "/media/design/cases/creativity-03.webp",
+        "alt": "Spread, pp. 10–11",
+        "caption": {
+          "en": "Spread, pp. 10–11",
+          "ua": "Розворот, с. 10–11"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-creativity-04",
+        "type": "image",
+        "src": "/media/design/cases/creativity-04.webp",
+        "alt": "Spread, pp. 22–23",
+        "caption": {
+          "en": "Spread, pp. 22–23",
+          "ua": "Розворот, с. 22–23"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-creativity-05",
+        "type": "image",
+        "src": "/media/design/cases/creativity-05.webp",
+        "alt": "Spread, pp. 34–35",
+        "caption": {
+          "en": "Spread, pp. 34–35",
+          "ua": "Розворот, с. 34–35"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/creativity-01.webp",
+    "designOrder": 5
+  },
+  {
+    "id": "p-tale-about-time",
+    "slug": "tale-about-time",
+    "selectedIds": [
+      "0bf33a880b88"
+    ],
+    "title": {
+      "en": "Tale About Time",
+      "ua": "Казка про Час"
+    },
+    "year": null,
+    "client": "Anna Nechai / Ulyana Yefimenko",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Book design"
+    ],
+    "scopeRole": {
+      "en": "Book design",
+      "ua": "Дизайн книжки"
+    },
+    "execution": true,
+    "shortDescription": {
+      "en": "Design of a bilingual book by Anna Nechai and Ulyana Yefimenko. English and Ukrainian text share the spreads with Ulyana Yefimenko’s illustrations.",
+      "ua": "Дизайн двомовної книжки Анни Нечай та Уляни Єфіменко. Англійський та український тексти поєднані на розворотах з ілюстраціями Уляни Єфіменко."
+    },
+    "credits": [
+      {
+        "en": "Design — Kyrylo Rusanivsky",
+        "ua": "Дизайн — Кирило Русанівський"
+      },
+      {
+        "en": "Authors — Anna Nechai and Ulyana Yefimenko",
+        "ua": "Авторки — Анна Нечай та Уляна Єфіменко"
+      },
+      {
+        "en": "Illustrations — Ulyana Yefimenko",
+        "ua": "Ілюстрації — Уляна Єфіменко"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-tale-about-time-01",
+        "type": "image",
+        "src": "/media/design/cases/tale-about-time-01.webp",
+        "alt": "Bilingual spread, pp. 20–21",
+        "caption": {
+          "en": "Bilingual spread, pp. 20–21",
+          "ua": "Двомовний розворот, с. 20–21"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-tale-about-time-02",
+        "type": "image",
+        "src": "/media/design/cases/tale-about-time-02.webp",
+        "alt": "Bilingual spread, pp. 42–43",
+        "caption": {
+          "en": "Bilingual spread, pp. 42–43",
+          "ua": "Двомовний розворот, с. 42–43"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-tale-about-time-03",
+        "type": "image",
+        "src": "/media/design/cases/tale-about-time-03.webp",
+        "alt": "Bilingual spread, pp. 62–63",
+        "caption": {
+          "en": "Bilingual spread, pp. 62–63",
+          "ua": "Двомовний розворот, с. 62–63"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-tale-about-time-04",
+        "type": "image",
+        "src": "/media/design/cases/tale-about-time-04.webp",
+        "alt": "Title page",
+        "caption": {
+          "en": "Title page",
+          "ua": "Титульна сторінка"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/tale-about-time-01.webp",
+    "designOrder": 6
+  },
+  {
+    "id": "p-selective-vision-textures",
+    "slug": "selective-vision-textures",
+    "selectedIds": [
+      "7adbc7e08f43"
+    ],
+    "title": {
+      "en": "Selective Vision. Textures",
+      "ua": "Селективний погляд. Фактури"
+    },
+    "year": null,
+    "client": "Anna Nechai",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Catalogue production"
+    ],
+    "scopeRole": {
+      "en": "Catalogue production",
+      "ua": "Робота над каталогом"
+    },
+    "execution": true,
+    "shortDescription": {
+      "en": "Catalogue production for artist Anna Nechai. Exhibition graphics and page layouts bring together reproductions of her textured artworks.",
+      "ua": "Виконавча робота над каталогом для художниці Анни Нечай. Виставкова графіка й сторінки каталогу поєднують репродукції її фактурних творів."
+    },
+    "credits": [
+      {
+        "en": "Catalogue production — Kyrylo Rusanivsky",
+        "ua": "Робота над каталогом — Кирило Русанівський"
+      },
+      {
+        "en": "Artworks — Anna Nechai",
+        "ua": "Мистецькі твори — Анна Нечай"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-selective-vision-textures-01",
+        "type": "image",
+        "src": "/media/design/cases/selective-vision-textures-01.webp",
+        "alt": "Exhibition graphic",
+        "caption": {
+          "en": "Exhibition graphic",
+          "ua": "Виставкова графіка"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-selective-vision-textures-02",
+        "type": "image",
+        "src": "/media/design/cases/selective-vision-textures-02.webp",
+        "alt": "Catalogue layout",
+        "caption": {
+          "en": "Catalogue layout",
+          "ua": "Макет каталогу"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-selective-vision-textures-03",
+        "type": "image",
+        "src": "/media/design/cases/selective-vision-textures-03.webp",
+        "alt": "Artworks in the catalogue",
+        "caption": {
+          "en": "Artworks in the catalogue",
+          "ua": "Твори у каталозі"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-selective-vision-textures-04",
+        "type": "image",
+        "src": "/media/design/cases/selective-vision-textures-04.webp",
+        "alt": "Catalogue layout",
+        "caption": {
+          "en": "Catalogue layout",
+          "ua": "Макет каталогу"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/selective-vision-textures-01.webp",
+    "designOrder": 7
+  },
+  {
+    "id": "p-zest-for-life",
+    "slug": "zest-for-life",
+    "selectedIds": [
+      "5b266bfe71d2"
+    ],
+    "title": {
+      "en": "Zest for Life",
+      "ua": "Zest for Life"
+    },
+    "year": null,
+    "client": "Anna Nechai",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Catalogue design"
+    ],
+    "scopeRole": {
+      "en": "Catalogue design",
+      "ua": "Дизайн каталогу"
+    },
+    "execution": true,
+    "shortDescription": {
+      "en": "Catalogue design for artist Anna Nechai. Reproductions, titles and supporting text present the works as a continuous sequence.",
+      "ua": "Дизайн каталогу для художниці Анни Нечай. Репродукції, назви й супровідний текст вибудовують послідовність представлених робіт."
+    },
+    "credits": [
+      {
+        "en": "Design — Kyrylo Rusanivsky",
+        "ua": "Дизайн — Кирило Русанівський"
+      },
+      {
+        "en": "Artworks — Anna Nechai",
+        "ua": "Мистецькі твори — Анна Нечай"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-zest-cover",
+        "type": "image",
+        "src": "/media/design/cases/zest-for-life-cover.webp",
+        "alt": "Zest for Life catalogue cover",
+        "caption": {
+          "en": "Catalogue cover",
+          "ua": "Обкладинка каталогу"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-zest-for-life-01",
+        "type": "image",
+        "src": "/media/design/cases/zest-for-life-01.webp",
+        "alt": "Opening catalogue spread",
+        "caption": {
+          "en": "Opening catalogue spread",
+          "ua": "Початковий розворот каталогу"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-zest-for-life-02",
+        "type": "image",
+        "src": "/media/design/cases/zest-for-life-02.webp",
+        "alt": "Catalogue spread",
+        "caption": {
+          "en": "Catalogue spread",
+          "ua": "Розворот каталогу"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-zest-for-life-03",
+        "type": "image",
+        "src": "/media/design/cases/zest-for-life-03.webp",
+        "alt": "Catalogue spread",
+        "caption": {
+          "en": "Catalogue spread",
+          "ua": "Розворот каталогу"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/zest-for-life-cover.webp",
+    "designOrder": 8
+  },
+  {
+    "id": "p-anna-nechai-ashok-jain-gallery",
+    "slug": "anna-nechai-ashok-jain-gallery",
+    "selectedIds": [
+      "11c63790dd0d"
+    ],
+    "title": {
+      "en": "Anna Nechai / Ashok Jain Gallery",
+      "ua": "Анна Нечай / Ashok Jain Gallery"
+    },
+    "year": null,
+    "client": "Anna Nechai",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Photography and catalogue design"
+    ],
+    "scopeRole": {
+      "en": "Photography and catalogue design",
+      "ua": "Фотографія та дизайн каталогу"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Photography and catalogue design for Anna Nechai’s solo exhibition at Ashok Jain Gallery. The publication pairs reproductions with exhibition information.",
+      "ua": "Фотографія та дизайн каталогу персональної виставки Анни Нечай в Ashok Jain Gallery. Видання поєднує репродукції з інформацією про виставку."
+    },
+    "credits": [
+      {
+        "en": "Photography and design — Kyrylo Rusanivsky",
+        "ua": "Фотографія й дизайн — Кирило Русанівський"
+      },
+      {
+        "en": "Artworks — Anna Nechai",
+        "ua": "Мистецькі твори — Анна Нечай"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-anna-nechai-ashok-jain-gallery-01",
+        "type": "image",
+        "src": "/media/design/cases/anna-nechai-ashok-jain-gallery-01.webp",
+        "alt": "Exhibition cover",
+        "caption": {
+          "en": "Exhibition cover",
+          "ua": "Обкладинка виставкового каталогу"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-anna-nechai-ashok-jain-gallery-02",
+        "type": "image",
+        "src": "/media/design/cases/anna-nechai-ashok-jain-gallery-02.webp",
+        "alt": "Spread, pp. 4–5",
+        "caption": {
+          "en": "Spread, pp. 4–5",
+          "ua": "Розворот, с. 4–5"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-anna-nechai-ashok-jain-gallery-03",
+        "type": "image",
+        "src": "/media/design/cases/anna-nechai-ashok-jain-gallery-03.webp",
+        "alt": "Spread, pp. 10–11",
+        "caption": {
+          "en": "Spread, pp. 10–11",
+          "ua": "Розворот, с. 10–11"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-anna-nechai-ashok-jain-gallery-04",
+        "type": "image",
+        "src": "/media/design/cases/anna-nechai-ashok-jain-gallery-04.webp",
+        "alt": "Spread, pp. 14–15",
+        "caption": {
+          "en": "Spread, pp. 14–15",
+          "ua": "Розворот, с. 14–15"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/anna-nechai-ashok-jain-gallery-01.webp",
+    "designOrder": 9
+  },
+  {
+    "id": "p-30-years-of-ukrainian-independence",
+    "slug": "30-years-of-ukrainian-independence",
+    "selectedIds": [
+      "89b3b10030a9"
+    ],
+    "title": {
+      "en": "30 Years of Ukrainian Independence",
+      "ua": "30 років незалежності України"
+    },
+    "year": null,
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Design and typesetting"
+    ],
+    "scopeRole": {
+      "en": "Design and typesetting",
+      "ua": "Дизайн і верстка"
+    },
+    "execution": true,
+    "shortDescription": {
+      "en": "Design and typesetting of a bibliographic publication for the National Historical Library of Ukraine. The cover and interior organise a substantial body of reference material.",
+      "ua": "Дизайн і верстка бібліографічного видання для Національної історичної бібліотеки України. Обкладинка й внутрішній блок поєднують великий обсяг довідкового матеріалу."
+    },
+    "credits": [
+      {
+        "en": "Design and typesetting — Kyrylo Rusanivsky",
+        "ua": "Дизайн і верстка — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-30-years-of-ukrainian-independence-01",
+        "type": "image",
+        "src": "/media/design/cases/30-years-of-ukrainian-independence-01.webp",
+        "alt": "Cover",
+        "caption": {
+          "en": "Cover",
+          "ua": "Обкладинка"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-30-years-of-ukrainian-independence-02",
+        "type": "image",
+        "src": "/media/design/cases/30-years-of-ukrainian-independence-02.webp",
+        "alt": "Spread, pp. 158–159",
+        "caption": {
+          "en": "Spread, pp. 158–159",
+          "ua": "Розворот, с. 158–159"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-30-years-of-ukrainian-independence-03",
+        "type": "image",
+        "src": "/media/design/cases/30-years-of-ukrainian-independence-03.webp",
+        "alt": "Spread, pp. 316–317",
+        "caption": {
+          "en": "Spread, pp. 316–317",
+          "ua": "Розворот, с. 316–317"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-30-years-of-ukrainian-independence-04",
+        "type": "image",
+        "src": "/media/design/cases/30-years-of-ukrainian-independence-04.webp",
+        "alt": "Spread, pp. 476–477",
+        "caption": {
+          "en": "Spread, pp. 476–477",
+          "ua": "Розворот, с. 476–477"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/30-years-of-ukrainian-independence-01.webp",
+    "designOrder": 10,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  },
+  {
+    "id": "p-indestructible-memory-of-ukraine",
+    "slug": "indestructible-memory-of-ukraine",
+    "selectedIds": [
+      "1e5529bde6ae"
+    ],
+    "title": {
+      "en": "Indestructible Memory of Ukraine",
+      "ua": "Незнищенна пам’ять України"
+    },
+    "year": null,
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Cover design"
+    ],
+    "scopeRole": {
+      "en": "Cover design",
+      "ua": "Дизайн обкладинки"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Cover design for the National Historical Library of Ukraine. A dark blue field, concentric lines and a bright spine form the graphic composition.",
+      "ua": "Дизайн обкладинки для Національної історичної бібліотеки України. Темно-синє поле, концентричні лінії та яскравий корінець формують графічну композицію."
+    },
+    "credits": [
+      {
+        "en": "Cover design — Kyrylo Rusanivsky",
+        "ua": "Дизайн обкладинки — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-indestructible-memory-of-ukraine-01",
+        "type": "image",
+        "src": "/media/design/cases/indestructible-memory-of-ukraine-01.webp",
+        "alt": "Full cover artwork",
+        "caption": {
+          "en": "Full cover artwork",
+          "ua": "Повний макет обкладинки"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [],
+    "featured": false,
+    "cover": "/media/design/cases/indestructible-memory-of-ukraine-01.webp",
+    "designOrder": 11,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  },
+  {
+    "id": "p-historical-shevchenkiana",
+    "slug": "historical-shevchenkiana",
+    "selectedIds": [
+      "e637be5d0d55"
+    ],
+    "title": {
+      "en": "Historical Shevchenkiana",
+      "ua": "Історична Шевченкіана"
+    },
+    "year": "2016",
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Cover design"
+    ],
+    "scopeRole": {
+      "en": "Cover design",
+      "ua": "Дизайн обкладинки"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Cover design for a bibliographic publication of the National Historical Library of Ukraine. A portrait medallion and a restrained blue palette shape the cover.",
+      "ua": "Дизайн обкладинки бібліографічного видання Національної історичної бібліотеки України. Портретний медальйон і стримана блакитна палітра формують композицію."
+    },
+    "credits": [
+      {
+        "en": "Cover design — Kyrylo Rusanivsky",
+        "ua": "Дизайн обкладинки — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-historical-shevchenkiana-01",
+        "type": "image",
+        "src": "/media/design/cases/historical-shevchenkiana-01.webp",
+        "alt": "Cover mockup",
+        "caption": {
+          "en": "Cover mockup",
+          "ua": "Мокап обкладинки"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-shev-old-1",
+        "type": "image",
+        "src": "/media/design/historical-shevchenkiana-1.webp",
+        "alt": "Historical Shevchenkiana cover",
+        "caption": {
+          "en": "Cover mockup — two views",
+          "ua": "Мокап обкладинки — два ракурси"
+        },
+        "lead": true
+      },
+      {
+        "id": "dg-shev-old-2",
+        "type": "image",
+        "src": "/media/design/historical-shevchenkiana-2.webp",
+        "alt": "Historical Shevchenkiana cover",
+        "caption": {
+          "en": "Full cover artwork",
+          "ua": "Повний макет обкладинки"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [
+      {
+        "label": "Behance",
+        "href": "https://www.behance.net/gallery/121185879/storichna-shevchenkana"
+      }
+    ],
+    "featured": false,
+    "cover": "/media/design/cases/historical-shevchenkiana-01.webp",
+    "designOrder": 12,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  },
+  {
+    "id": "p-chornobyl-35",
+    "slug": "chornobyl-35",
+    "selectedIds": [
+      "01becb12cc1c"
+    ],
+    "title": {
+      "en": "Chornobyl.35",
+      "ua": "Чорнобиль.35"
+    },
+    "year": null,
+    "client": "National Historical Library of Ukraine",
+    "context": "commissioned",
+    "disciplines": [
+      "design"
+    ],
+    "roles": [
+      "Cover design"
+    ],
+    "scopeRole": {
+      "en": "Cover design",
+      "ua": "Дизайн обкладинки"
+    },
+    "execution": false,
+    "shortDescription": {
+      "en": "Cover design for a bibliography marking the 35th anniversary of the Chornobyl disaster. A large radiation symbol and orange-to-yellow colour field organise the composition.",
+      "ua": "Дизайн обкладинки бібліографічного списку до 35-х роковин Чорнобильської катастрофи. Великий знак радіації та помаранчево-жовте поле формують композицію."
+    },
+    "credits": [
+      {
+        "en": "Cover design — Kyrylo Rusanivsky",
+        "ua": "Дизайн обкладинки — Кирило Русанівський"
+      }
+    ],
+    "media": [
+      {
+        "id": "dg-chornobyl-35-01",
+        "type": "image",
+        "src": "/media/design/cases/chornobyl-35-01.webp",
+        "alt": "Cover",
+        "caption": {
+          "en": "Cover",
+          "ua": "Обкладинка"
+        },
+        "lead": true
+      }
+    ],
+    "externalLinks": [
+      {
+        "label": "Behance",
+        "href": "https://www.behance.net/gallery/118894269/Chornobyl35"
+      }
+    ],
+    "featured": false,
+    "cover": "/media/design/cases/chornobyl-35-01.webp",
+    "designOrder": 13,
+    "clientLabel": {
+      "en": "National Historical Library of Ukraine",
+      "ua": "Національна історична бібліотека України"
+    }
+  }
+]

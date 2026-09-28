@@ -1728,3 +1728,26 @@ html.fx .lf.lf-in .w { opacity: 1; }
    tightly fitted, and the same negative tracking pinches the joins, so the
    serif gets a gentler one. */
 .t-display { letter-spacing: -0.008em; }
+
+/* Design cases use the same typography and spacing as the project shell. */
+.design-chapter { min-width: 0; margin-block-end: clamp(1rem, 3vw, 3rem); }
+.design-chapter-head { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--pad); border-top: var(--rule-w) solid var(--line); padding-top: 1.25rem; margin-bottom: 1.5rem; }
+.design-chapter-head h2 { margin: 0; }
+.design-chapter-copy { max-width: var(--measure); color: var(--muted); margin: 0; }
+.design-figure { margin: 0; }
+.design-frame { display: flex; justify-content: center; background: var(--stage-bg); padding: clamp(1rem, 2.5vw, 2.75rem); }
+.design-frame img { display: block; width: auto; height: auto; max-width: 100%; max-height: 80svh; object-fit: contain; }
+.design-caption { margin-top: .6rem; font-size: var(--t-meta); color: var(--muted); }
+.execution-note { font-size: var(--t-meta); color: var(--muted); margin: 1rem 0 0; }
+@media (max-width: 40rem) { .design-chapter-head { grid-template-columns: 1fr; gap: .7rem; } .design-frame { padding: .75rem; } }
+
+/* Uncropped design index, with a grid fallback before column packing. */
+.design-masonry { position: relative; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); }
+.design-masonry .work { min-width: 0; grid-column: auto; }
+.design-masonry .work-cover { aspect-ratio: auto; background: transparent; }
+.design-masonry .work-cover img { display: block; width: 100%; height: auto; object-fit: contain; transform: none; }
+.design-masonry.is-packed { display: block; }
+.design-masonry.is-packed .work { position: absolute; }
+@media (min-width: 90rem) { .design-masonry { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 45rem) { .design-masonry { grid-template-columns: minmax(0, 1fr); } }
+.design-masonry .work:hover .work-cover img { transform: none; }
