@@ -79,7 +79,7 @@ const dim = (src) => sizes[src.split('?')[0]] || null;
 function write(path, html) {
   const out = new URL('../' + path, import.meta.url);
   mkdirSync(dirname(fileURLToPath(out)), { recursive: true });
-  writeFileSync(out, html.replace(/^[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n'));
+  writeFileSync(out, html.replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n'));
 }
 
 /* ---------------- shell ---------------- */
