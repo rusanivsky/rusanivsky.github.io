@@ -1,0 +1,18 @@
+name: Gallery layout
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Geometry, source preservation and deterministic live build
+        run: node --test tests/gallery-layout.test.cjs tests/gallery-build.test.mjs
+      - name: Generated pages are committed
+        run: git diff --exit-code

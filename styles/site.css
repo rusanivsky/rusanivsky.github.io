@@ -995,6 +995,13 @@ html.stage-glow-baked .stage::after { display: none; }
   }
   .tile-in img { object-fit: cover; }
 
+  /* Photography is packed at native aspect ratios; only the outer wall fits
+     the stage. The tile-in remains available to the existing entrances. */
+  .mosaic.editorial { position: relative; display: block; }
+  .mosaic.editorial .tile { position: absolute; display: block; }
+  .mosaic.editorial .tile-in { width: 100%; height: 100%; aspect-ratio: auto; }
+  .mosaic.editorial img { object-fit: contain; }
+
   /* The rule for a wall that does not fill itself: a full wall takes the whole
      panel, and the only frame that is held back is a lone one. It is held back
      by area, not by width: --solo is computed from the frame's own proportions
@@ -1485,53 +1492,31 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 }
 
 /* ============================================================
-   Collage — galleries
-   ============================================================
-   CSS columns rather than a row grid, because a wall of photographs should
-   let frames of different heights settle at different levels; a row grid
-   lines every top edge up and the page reads as a contact sheet.
-
-   The arithmetic is not a coincidence: four columns sharing the grid's own
-   gutter are each exactly three grid tracks wide — (100% − 3g)/4 equals
-   3·((100% − 11g)/12) + 2g — and two columns are exactly six. The collage
-   therefore never leaves the twelve-column grid at any breakpoint.
+   Photography galleries — native-aspect compositions with a flow fallback
    ============================================================ */
-.collage {
-  column-count: 4;
-  column-gap: var(--col-gap);
-}
-@media (max-width: 60.99rem) { .collage { column-count: 2; } }
-@media (max-width: 45.99rem) { .collage { column-count: 1; } }
-
-.cell {
-  display: block;
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-}
-
-/* Vertical rhythm. Equal gaps would re-impose the metronome the columns were
-   meant to break, so the sequence cycles through four measures. */
-.gap-s { margin-bottom: 1.1rem; }
-.gap-m { margin-bottom: 2.2rem; }
-.gap-l { margin-bottom: 3.6rem; }
-.gap-xl { margin-bottom: 5.2rem; }
-
-/* Horizontal rhythm. Some frames sit short of the column edge, alternately
-   left and right, so the columns do not read as four hard rails. */
-.is-full { width: 100%; }
-.is-inset { width: 84%; }
-.is-inset-right { width: 84%; margin-left: 16%; }
-
-/* On one column an inset frame is just a small picture with no neighbour to
-   play against, so every frame runs full width. */
-@media (max-width: 45.99rem) {
-  .collage .cell { width: 100%; margin-left: 0; }
-  .collage .gap-xl { margin-bottom: 3rem; }
-  .collage .gap-l { margin-bottom: 2.4rem; }
-}
-
+.collage { --gallery-gap: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gallery-gap); align-items: start; }
+.collage > .cell { display: block; min-width: 0; margin: 0; }
 .collage .shot { margin: 0; background: var(--stage-bg); overflow: hidden; }
-.collage img { width: 100%; height: auto; }
+.collage img { display: block; width: 100%; height: auto; }
+@media (max-width: 45.99rem) { .collage { --gallery-gap: 8px; grid-template-columns: minmax(0, 1fr); } }
+.collage.is-packed { position: relative; display: block; }
+.collage.is-packed > .cell { position: absolute; margin: 0; }
+.collage.is-packed .shot { width: 100%; height: 100%; }
+.collage.is-packed img { width: 100%; height: 100%; object-fit: contain; }
+
+.gallery-controls { display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 1.25rem; }
+.gallery-controls[hidden] { display: none; }
+.gallery-controls button {
+  padding: 0.25rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--t-label);
+  cursor: pointer;
+}
+.gallery-controls button[aria-pressed="true"] { color: var(--ink); border-bottom-color: currentColor; }
 
 /* ============================================================
    Splash — a title card, not a loader
@@ -1642,9 +1627,8 @@ html.splash-off .splash {
   transition: transform calc(1s / var(--pace)) var(--ease-out);
 }
 @media (hover: hover) {
-  .tile:hover img,
+  .mosaic:not(.editorial) .tile:hover img,
   .work:hover .work-cover img,
-  .cell:hover .shot img,
   .player:hover > img { transform: scale(1.05); }
 }
 
