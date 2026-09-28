@@ -69,7 +69,7 @@
   --ink: #111111;
   --muted: #6b6b6b;
   --faint: #717171;
-  /* Solid ink keeps rules the same over paper and the green wash. */
+  /* Light-theme rules on paper. */
   --line: #c4c4c4;
   --line-soft: #d0d0d0;
   --rule-w: 1px;
@@ -146,8 +146,8 @@
   --ink: #e8e5de;
   --muted: #a7a39a;
   --faint: #8a857c;
-  --line: #2b2a26;
-  --line-soft: #232220;
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
   --grain: 0.18;
@@ -163,8 +163,8 @@
     --ink: #e8e5de;
     --muted: #a7a39a;
     --faint: #8a857c;
-    --line: #2b2a26;
-    --line-soft: #232220;
+    --line: color-mix(in srgb, var(--ink) 14%, transparent);
+    --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
     --surface: #1b1b18;
     --stage-bg: #1b1b18;
     --grain: 0.18;
