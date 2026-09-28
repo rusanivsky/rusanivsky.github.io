@@ -69,10 +69,10 @@
   --ink: #111111;
   --muted: #6b6b6b;
   --faint: #717171;
-  /* Rules over the page glow fade from paper grey to light green. */
+  /* A single rule colour across paper and the green wash. */
   --line: #c4c4c4;
   --line-soft: #d0d0d0;
-  --glow-rule-end: rgb(248 248 248 / 52%);
+  --enquiry-rule: #bdbdbd;
   --rule-w: 1px;
   --surface: #f1f1f1;
   --stage-bg: #eeeeee;
@@ -149,7 +149,7 @@
   --faint: #8a857c;
   --line: color-mix(in srgb, var(--ink) 14%, transparent);
   --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
-  --glow-rule-end: var(--line-soft);
+  --enquiry-rule: var(--line-soft);
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
   --grain: 0.18;
@@ -167,7 +167,7 @@
     --faint: #8a857c;
     --line: color-mix(in srgb, var(--ink) 14%, transparent);
     --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
-    --glow-rule-end: var(--line-soft);
+    --enquiry-rule: var(--line-soft);
     --surface: #1b1b18;
     --stage-bg: #1b1b18;
     --grain: 0.18;
@@ -1046,10 +1046,6 @@ html.stage-glow-baked .stage::after { display: none; }
 
 .section { margin-top: 3.4rem; }
 .section-label { padding-bottom: 0.6rem; border-bottom: var(--rule-w) solid var(--line-soft); }
-html.sub .page .section-label,
-html.sub .page .channels li {
-  border-image: linear-gradient(90deg, var(--line-soft), var(--glow-rule-end)) 1;
-}
 
 /* ---------- Work cards ----------
    Rows, not columns. Column packing existed only because a standing cover
@@ -1379,6 +1375,7 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 
 .channels { margin-top: 1.2rem; }
 .channels li { border-bottom: var(--rule-w) solid var(--line-soft); }
+.enquiries-page .section-label, .enquiries-page .channels li { border-bottom-color: var(--enquiry-rule); }
 .channels a { display: flex; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; font-size: var(--t-lead); font-weight: var(--w-medium); }
 .channels .who { align-self: center; font-size: var(--t-label); font-weight: var(--w-regular); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--faint); }
 .channels a:hover .who { color: var(--muted); }

@@ -1039,7 +1039,7 @@ const ENQ_FORM_NOTE = {
 
 function enquiriesPage() {
   const body = `
-<main class="page g12" id="main">
+<main class="page g12 enquiries-page" id="main">
   <div class="page-head col-8">
     <p class="eyebrow">${ui('enquiries')}</p>
     <h1 class="page-title t-title">${esc(L(ENQ_TITLE))}</h1>
