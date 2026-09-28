@@ -16,6 +16,8 @@ import { projects, videoCatalogue, clients } from '../data/projects.mjs';
 import { UI, PRACTICE_INTRO, CAPABILITIES } from '../data/ui.mjs';
 import ladder from '../data/media-ladder.json' with { type: 'json' };
 import brief from '../data/brief.json' with { type: 'json' };
+import galleryHints from '../data/gallery-layout.json' with { type: 'json' };
+import galleryLayout from './gallery-layout.js';
 
 const short = (file) =>
   createHash('sha1').update(readFileSync(new URL('../' + file, import.meta.url))).digest('hex').slice(0, 8);
@@ -25,6 +27,7 @@ const rates = JSON.parse(readFileSync(new URL('../data/rates.json', import.meta.
 
 const CSS_V = short('styles/site.css');
 const JS_V = short('scripts/site.js');
+const GALLERY_V = short('scripts/gallery-layout.js');
 // Social networks cache a card by URL and never re-fetch it, so the OG image
 // carries a content hash too.
 const OG_V = short('og-image.jpg');
@@ -358,6 +361,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
 ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/styles/site.css?v=${CSS_V}">
 <script>${SPLASH_BOOT}</script>
+<script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
 ${LIVE ? `<script src="/scripts/google-analytics.js?v=${GA_V}" defer></script>\n` : ''}
 </head>
@@ -418,9 +422,6 @@ function metaBits(p, esc) {
    не бачить. Нижче 61rem панелі немає, лишаються самі поля. */
 const GRID = '100vw - 328px';
 const sizesFor = (n) => `(min-width: 61rem) calc((${GRID}) * ${n} / 12), 100vw`;
-/* Стіна кадрів — це колонки, а не дванадцята сітка: чотири колонки на
-   великому екрані, дві до 61rem, одна до 46rem. Вузький кадр займає 84%
-   своєї колонки (.is-inset), і це теж має бути в розрахунку. */
 /* Плитка на сцені головної — не частка сітки. Сцена займає 8 колонок із
    12 (плюс пів проміжку й поле праворуч, мінус 2.5rem відступу слайда з
    кожного боку — разом ≈ −32px), а стіна кадрів росте, доки не впреться
@@ -431,8 +432,8 @@ const sizesFor = (n) => `(min-width: 61rem) calc((${GRID}) * ${n} / 12), 100vw`;
    тягнув 960-піксельний файл туди, де вистачає 480. */
 const stageSizes = (wall, cols, solo) =>
   `(min-width: 61rem) calc(min((${GRID}) * 2 / 3 - 32px, (100vh - 80px) * ${wall.toFixed(3)})${solo ? ` * ${solo}` : ''} / ${cols}), 100vw`;
-const collageSizes = (share) =>
-  `(min-width: 61rem) calc((${GRID}) * ${share} / 4), (min-width: 46rem) calc(50vw * ${share}), 100vw`;
+// A conservative half-page estimate until the runtime knows each tile's width.
+const collageSizes = `(min-width: 61rem) calc((${GRID}) / 2), (min-width: 46rem) 50vw, 100vw`;
 
 /* Скільки пікселів справді треба, вирішує браузер: ми лише кажемо, які
    файли є (srcset) і яку частину екрана картинка займе (sizes). Без sizes
@@ -548,6 +549,19 @@ function sameShape(items) {
 }
 
 function stagePick(p) {
+  if (p.disciplines[0] === 'photography') {
+    const all = stills(p);
+    const requested = galleryHints[p.slug]?.stage;
+    const unique = Array.isArray(requested) ? [...new Set(requested)] : [];
+    const selected = unique.map((src) => all.find((item) => item.src === src)).filter(Boolean);
+    const cover = all.find((item) => item.src === p.cover);
+    const fallback = (cover ? [cover] : []).concat(all.filter((item) => item !== cover));
+    if (!selected.length) return fallback.slice(0, 3);
+    // Keep an intentional one- or two-frame edit; replace stale hint slots
+    // with stable unselected frames instead of silently shrinking the stage.
+    return selected.concat(fallback.filter((item) => !selected.includes(item)))
+      .slice(0, Math.min(3, unique.length));
+  }
   const all = sameShape(stills(p));
   const cap = STAGE_MAX[p.disciplines[0]] ?? 6;
   if (all.length <= cap) return all;
@@ -644,7 +658,26 @@ function soloScale(wall) {
   return Math.min(Math.sqrt(SOLO_AREA / fitShare(wall)), 0.88).toFixed(3);
 }
 
+function photographyMosaic(p, eager) {
+  const picked = stagePick(p);
+  const width = 1000;
+  const composition = galleryLayout.composeStage(picked.map((item, n) => {
+    const d = dim(item.src);
+    return { n, w: d?.w || 1600, h: d?.h || 1000 };
+  }), width, 14);
+  const wall = width / composition.height;
+  const soloK = picked.length === 1 ? soloScale(wall) : null;
+  const pct = (value, total) => (value / total * 100).toFixed(5) + '%';
+  const tiles = composition.tiles.map((tile) => {
+    const item = picked[tile.n];
+    const geometry = `left:${pct(tile.x, width)};top:${pct(tile.y, composition.height)};width:${pct(tile.w, width)};height:${pct(tile.h, composition.height)}`;
+    return `<span class="tile" style="${geometry}"><span class="tile-in">${img(item.src, item.alt, { lazy: !eager, eager, sizes: stageSizes(wall, width / tile.w, soloK), skip: eager ? PHONE : '' })}</span></span>`;
+  }).join('');
+  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--wall:${wall.toFixed(6)}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
+}
+
 function mosaic(p, eager) {
+  if (p.disciplines[0] === 'photography') return photographyMosaic(p, eager);
   const picked = stagePick(p).map((x) => {
     const d = dim(x.src);
     return { ...x, ratio: d ? d.w / d.h : 1.6 };
@@ -800,27 +833,20 @@ function catalogueBlock() {
 }
 
 /* ---------------- collage ----------------
-   Galleries are laid out in CSS columns rather than a row grid. Four columns
-   with the grid's own gutter measure exactly three grid tracks each — and six
-   tracks when it drops to two columns — so the collage never leaves the grid
-   while still letting frames of different heights sit at different levels,
-   which is what makes a wall of photographs read as an edit and not as a
-   contact sheet.
-
-   The width and rhythm variations are keyed to the index, so the same input
-   always produces the same page. */
+   Direct anchors keep source order for keyboard navigation and the viewer.
+   Native dimensions also make the no-script flow usable before packing. */
 function collage(items, groupId, eagerFirst = false) {
-  const WIDTHS = ['is-full', 'is-full', 'is-inset', 'is-full', 'is-inset-right', 'is-full'];
-  const RHYTHM = ['gap-m', 'gap-l', 'gap-s', 'gap-m', 'gap-xl', 'gap-s', 'gap-l', 'gap-m'];
-  const cells = items.map((item, i) => {
-    const d = dim(item.src);
-    const portrait = d && d.h / d.w > 1.15;
-    const width = portrait ? 'is-inset' : WIDTHS[i % WIDTHS.length];
-    return `<a class="cell ${width} ${RHYTHM[i % RHYTHM.length]}" href="${item.src}" data-lb>
-      <figure class="shot">${img(item.src, item.alt, { eager: eagerFirst && i === 0, sizes: collageSizes(width === 'is-full' ? 1 : 0.84) })}</figure>
-    </a>`;
-  }).join('\n');
-  return `<div class="collage" data-lb-group="${groupId}">${cells}</div>`;
+  const galleryId = `gallery-${groupId}`;
+  const heroHint = galleryHints[groupId]?.hero;
+  const heroes = new Set(Array.isArray(heroHint) ? heroHint : []);
+  const cells = items.map((item, i) => `<a class="cell" href="${attr(item.src)}" data-lb${heroes.has(item.src) ? ' data-gallery-hero' : ''}>
+      <figure class="shot">${img(item.src, item.alt, { eager: eagerFirst && i === 0, sizes: collageSizes })}</figure>
+    </a>`).join('\n');
+  const controls = `<div class="gallery-controls" data-gallery-controls role="group" aria-label="${attr(ui('galleryView'))}" hidden>
+    <button type="button" data-gallery-mode="series" aria-controls="${attr(galleryId)}" aria-pressed="true">${ui('gallerySeries')}</button>
+    <button type="button" data-gallery-mode="index" aria-controls="${attr(galleryId)}" aria-pressed="false">${ui('galleryIndex')}</button>
+  </div>`;
+  return `${controls}<div id="${attr(galleryId)}" class="collage" data-gallery data-lb-group="${attr(groupId)}">${cells}</div>`;
 }
 
 /* ---------------- project pages ---------------- */

@@ -38,6 +38,10 @@ export const UI = {
   personal: { en: 'Personal · ongoing', ua: 'Особисте · триває' },
   commercial: { en: 'Commercial', ua: 'Комерція' },
 
+  galleryView: { en: 'Gallery view', ua: 'Вигляд галереї' },
+  gallerySeries: { en: 'Series', ua: 'Серія' },
+  galleryIndex: { en: 'Index', ua: 'Індекс' },
+
   viewer: { en: 'Image viewer', ua: 'Перегляд світлин' },
   closeViewer: { en: 'Close viewer', ua: 'Закрити перегляд' },
   prev: { en: 'Prev', ua: 'Назад' },
