@@ -76,7 +76,13 @@
       if (mode === 'auto') localStorage.removeItem(THEME_KEY);
       else localStorage.setItem(THEME_KEY, mode);
     } catch (e) { /* private mode: this choice lasts for this page */ }
-    paintTheme(mode);
+    if (document.startViewTransition &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        effectiveTheme(mode) !== lastEffectiveTheme) {
+      document.startViewTransition(function () { paintTheme(mode); });
+    } else {
+      paintTheme(mode);
+    }
   });
 
   /* ---------- The green glow, dithered ----------
@@ -178,8 +184,17 @@
         }
         ctx.putImageData(img, 0, 0);
         if (footCanvas) {
+          // The two mobile glows overlap on shorter pages. Make the lower
+          // canvas clear where its glow fades so it cannot cut off the top.
+          for (var j = 0; j < px.length; j += 4) {
+            px[j + 3] = Math.max(0, Math.min(255,
+              Math.round((px[j] - paper[0]) / dr * 255)));
+            px[j] = tint[0];
+            px[j + 1] = tint[1];
+            px[j + 2] = tint[2];
+          }
           footCanvas.width = footCanvas.height = side;
-          footCanvas.getContext('2d').drawImage(glowCanvas, 0, 0);
+          footCanvas.getContext('2d').putImageData(img, 0, 0);
           root.classList.add('glow-foot-baked');
         }
         root.classList.add(bakedClass);

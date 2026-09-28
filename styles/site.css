@@ -261,6 +261,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Theme buttons use a whole-page snapshot so text, paper and glow change
+   together, including the dithered canvas. The JS skips this for reduced
+   motion and for browsers without same-document view transitions. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 420ms;
+  animation-timing-function: ease-in-out;
+}
+
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -635,6 +644,24 @@ html.sub main, html main.home {
     color-mix(in srgb, var(--head-tint) 1.7%, var(--paper)) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.9167),
     var(--paper) 100%
   );
+  /* The lower glow overlaps the upper one on short mobile pages. Its clear
+     edge must let the upper glow show through instead of painting paper. */
+  --page-foot-glow: radial-gradient(
+    circle var(--glow-r) at var(--glow-x) 0%,
+    var(--head-tint) var(--glow-core),
+    color-mix(in srgb, var(--head-tint) 98.3%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.0833),
+    color-mix(in srgb, var(--head-tint) 93.3%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.1667),
+    color-mix(in srgb, var(--head-tint) 85.4%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.2500),
+    color-mix(in srgb, var(--head-tint) 75%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.3333),
+    color-mix(in srgb, var(--head-tint) 62.9%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.4167),
+    color-mix(in srgb, var(--head-tint) 50%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5000),
+    color-mix(in srgb, var(--head-tint) 37.1%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.5833),
+    color-mix(in srgb, var(--head-tint) 25%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.6667),
+    color-mix(in srgb, var(--head-tint) 14.6%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.7500),
+    color-mix(in srgb, var(--head-tint) 6.7%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.8333),
+    color-mix(in srgb, var(--head-tint) 1.7%, transparent) calc(var(--glow-core) + (100% - var(--glow-core)) * 0.9167),
+    transparent 100%
+  );
 }
 html.sub main::before, html main.home::before {
   /* On a phone: a circle centred beyond the right edge, level with the top,
@@ -669,7 +696,7 @@ html.sub main::before, html main.home::before {
     width: var(--glow-r);
     height: var(--glow-r);
     pointer-events: none;
-    background: var(--page-glow);
+    background: var(--page-foot-glow);
     transform: scaleY(-1);
   }
   html.glow-foot-baked.sub main::after,
