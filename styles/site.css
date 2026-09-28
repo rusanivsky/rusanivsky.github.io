@@ -619,6 +619,7 @@ ul, ol { list-style: none; }
 .drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line-soft); }
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
+.drawer .lang + .theme-modes { margin-top: 1.1rem; }
 
 /* The old site's green on a subpage. It is not a header colour: the rail and
    the bar stay paper, and the green lies as a wide glow in the top right of
