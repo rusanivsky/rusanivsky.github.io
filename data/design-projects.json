@@ -93,17 +93,6 @@
         }
       },
       {
-        "id": "dg-word-and-music-05",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-05.webp",
-        "alt": "Identity applications",
-        "caption": {
-          "en": "Identity applications",
-          "ua": "Застосування айдентики"
-        },
-        "lead": true
-      },
-      {
         "id": "dg-word-and-music-06",
         "type": "image",
         "src": "/media/design/cases/word-and-music-06.webp",
