@@ -13,6 +13,8 @@
   later be repointed at media.rusanivsky.com without the id changing.
 */
 
+import designCases from './design-projects.json' with { type: 'json' };
+
 import photoSequences from './photo-sequences.json' with { type: 'json' };
 
 const POSTER = '/media/video/posters/';
@@ -441,6 +443,15 @@ export const projects = [
     featured: false,
   },
 ];
+
+// Selected design cases retain established routes and home-page placement.
+for (const entry of designCases) {
+  const existing = projects.find(p => p.slug === entry.slug);
+  if (existing) {
+    const { id, featured, featuredOrder } = existing;
+    Object.assign(existing, entry, { id, featured, featuredOrder });
+  } else projects.push(entry);
+}
 
 /* The video catalogue: everything filmed or edited that is not already inside
    a selected project. Grouped by the role metadata the brief asks for rather

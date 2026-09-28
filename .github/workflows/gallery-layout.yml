@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: '24'
       - name: Geometry, source preservation and deterministic live build
-        run: node --test tests/gallery-layout.test.cjs tests/gallery-build.test.mjs
+        run: node --test tests/gallery-layout.test.cjs tests/gallery-build.test.mjs tests/design-cases.test.mjs
       - name: Generated pages are committed
         run: git diff --exit-code

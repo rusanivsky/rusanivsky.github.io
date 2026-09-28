@@ -1728,3 +1728,15 @@ html.fx .lf.lf-in .w { opacity: 1; }
    tightly fitted, and the same negative tracking pinches the joins, so the
    serif gets a gentler one. */
 .t-display { letter-spacing: -0.008em; }
+
+/* Design cases use the same typography and spacing as the project shell. */
+.design-chapter { min-width: 0; margin-block-end: clamp(1rem, 3vw, 3rem); }
+.design-chapter-head { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--pad); border-top: var(--rule-w) solid var(--line); padding-top: 1.25rem; margin-bottom: 1.5rem; }
+.design-chapter-head h2 { margin: 0; }
+.design-chapter-copy { max-width: var(--measure); color: var(--muted); margin: 0; }
+.design-figure { margin: 0; }
+.design-frame { display: flex; justify-content: center; background: var(--stage-bg); padding: clamp(1rem, 2.5vw, 2.75rem); }
+.design-frame img { display: block; width: auto; height: auto; max-width: 100%; max-height: 80svh; object-fit: contain; }
+.design-caption { margin-top: .6rem; font-size: var(--t-meta); color: var(--muted); }
+.execution-note { font-size: var(--t-meta); color: var(--muted); margin: 1rem 0 0; }
+@media (max-width: 40rem) { .design-chapter-head { grid-template-columns: 1fr; gap: .7rem; } .design-frame { padding: .75rem; } }
