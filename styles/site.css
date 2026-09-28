@@ -69,9 +69,10 @@
   --ink: #111111;
   --muted: #6b6b6b;
   --faint: #717171;
-  /* Light-theme rules on paper. */
+  /* Rules over the page glow fade from paper grey to light green. */
   --line: #c4c4c4;
   --line-soft: #d0d0d0;
+  --glow-rule-end: rgb(248 248 248 / 52%);
   --rule-w: 1px;
   --surface: #f1f1f1;
   --stage-bg: #eeeeee;
@@ -148,6 +149,7 @@
   --faint: #8a857c;
   --line: color-mix(in srgb, var(--ink) 14%, transparent);
   --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
+  --glow-rule-end: var(--line-soft);
   --surface: #1b1b18;
   --stage-bg: #1b1b18;
   --grain: 0.18;
@@ -165,6 +167,7 @@
     --faint: #8a857c;
     --line: color-mix(in srgb, var(--ink) 14%, transparent);
     --line-soft: color-mix(in srgb, var(--ink) 8%, transparent);
+    --glow-rule-end: var(--line-soft);
     --surface: #1b1b18;
     --stage-bg: #1b1b18;
     --grain: 0.18;
@@ -1043,6 +1046,10 @@ html.stage-glow-baked .stage::after { display: none; }
 
 .section { margin-top: 3.4rem; }
 .section-label { padding-bottom: 0.6rem; border-bottom: var(--rule-w) solid var(--line-soft); }
+html.sub .page .section-label,
+html.sub .page .channels li {
+  border-image: linear-gradient(90deg, var(--line-soft), var(--glow-rule-end)) 1;
+}
 
 /* ---------- Work cards ----------
    Rows, not columns. Column packing existed only because a standing cover

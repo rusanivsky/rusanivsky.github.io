@@ -1048,7 +1048,7 @@ function enquiriesPage() {
 
   <section class="section col-full g12" style="padding-inline:0">
     <h2 class="section-label col-full">${ui('direct')}</h2>
-    <ul class="channels col-7">
+    <ul class="channels col-full">
       <li><a href="mailto:${EMAIL}"><span>${EMAIL}</span><span class="who">Email</span></a></li>
       <li><a href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span>@rusanivsky</span><span class="who">Telegram</span></a></li>
       <li><a href="https://wa.me/380938676581" target="_blank" rel="noopener"><span>+38 093 867 65 81</span><span class="who">WhatsApp</span></a></li>
