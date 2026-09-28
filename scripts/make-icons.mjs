@@ -124,11 +124,11 @@ for (const [name, sizes] of [
 }
 console.log('favicon.ico (16/32/48), favicon-dark.ico (16/32)');
 
-/* Home screen and app library. The dark pair only reaches recent Safari;
-   anything older simply keeps the light icon, which is why the light one is
-   still the unqualified default. */
+/* iOS Home Screen uses one installed Web Clip icon. Keep its default dark so
+   it fits the dark Home Screen; a media-qualified alternate does not switch
+   an icon that has already been added. */
 for (const [file, buf] of [
-  ['apple-touch-icon.png', grab.l180],
+  ['apple-touch-icon.png', grab.d180],
   ['apple-touch-icon-dark.png', grab.d180],
   ['icon-192.png', grab.l192],
   ['icon-192-dark.png', grab.d192],

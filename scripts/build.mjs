@@ -32,7 +32,7 @@ const OG_V = short('og-image.jpg');
 // stays put (a broken render once shipped under an unchanged ?v=).
 const ICON_V = createHash('sha1')
   .update(['favicon.svg', 'favicon-dark.svg', 'favicon.ico', 'favicon-dark.ico',
-    'apple-touch-icon.png', 'apple-touch-icon-dark.png', 'site.webmanifest']
+    'apple-touch-icon.png', 'site.webmanifest']
     .map(short).join(''))
   .digest('hex').slice(0, 8);
 const GA_V = short('scripts/google-analytics.js');
@@ -353,7 +353,6 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="icon" href="/favicon-dark.ico?v=${ICON_V}" sizes="32x32" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon-dark.svg?v=${ICON_V}" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=${ICON_V}">
-<link rel="apple-touch-icon" href="/apple-touch-icon-dark.png?v=${ICON_V}" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="/site.webmanifest?v=${ICON_V}">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
