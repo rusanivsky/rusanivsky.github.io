@@ -485,6 +485,7 @@ ul, ol { list-style: none; }
    language switch rather than with the address links above — both are choices
    about the site itself, not places the work continues. */
 .rail-legal { margin-top: 0.9rem; }
+.rail-legal + .theme-modes { margin-top: 0.55rem; }
 
 .rail-meta {
   margin: 1.4rem 0 0;
@@ -706,6 +707,8 @@ html.sub main > canvas.glow, html main.home > canvas.glow {
   height: var(--glow-r);
   pointer-events: none;
 }
+html:not(.glow-baked).sub main > canvas.glow,
+html:not(.home-glow-baked) main.home > canvas.glow { visibility: hidden; }
 html.glow-baked.sub main::before, html.home-glow-baked main.home::before { display: none; }
 @media (max-width: 60.99rem) {
   html.sub main > canvas.glow.glow-foot,
@@ -714,6 +717,8 @@ html.glow-baked.sub main::before, html.home-glow-baked main.home::before { displ
     bottom: 0;
     transform: scaleY(-1);
   }
+  html:not(.glow-foot-baked).sub main > canvas.glow.glow-foot,
+  html:not(.glow-foot-baked) main.home > canvas.glow.glow-foot { visibility: hidden; }
 }
 @media (min-width: 61rem) {
   html.sub main > canvas.glow.glow-foot,
@@ -728,6 +733,7 @@ html.glow-baked.sub main::before, html.home-glow-baked main.home::before { displ
   aspect-ratio: 1;
   pointer-events: none;
 }
+html:not(.stage-glow-baked) .stage > canvas.glow { visibility: hidden; }
 /* Without JavaScript: the same circle as a gradient. Its box is a square
    whose top right corner is the centre, so `farthest-side` is the radius. */
 .stage::after {

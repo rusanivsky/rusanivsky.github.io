@@ -31,6 +31,8 @@
   var LIGHT = '#f8f8f8';
   var DARK = '#141412';
   var colorPreference = matchMedia('(prefers-color-scheme: dark)');
+  var lastEffectiveTheme;
+  var refreshGlow = function () {};
 
   function storedTheme() {
     try {
@@ -50,8 +52,11 @@
   }
 
   function paintTheme(mode) {
+    var nextEffectiveTheme = effectiveTheme(mode);
     root.setAttribute('data-theme', mode);
     updateThemeColor(mode);
+    if (lastEffectiveTheme && lastEffectiveTheme !== nextEffectiveTheme) refreshGlow();
+    lastEffectiveTheme = nextEffectiveTheme;
     document.querySelectorAll('.theme-modes [data-theme-mode]').forEach(function (button) {
       button.setAttribute('aria-pressed', String(button.dataset.themeMode === mode));
     });
@@ -60,7 +65,7 @@
   paintTheme(storedTheme());
 
   colorPreference.addEventListener('change', function () {
-    if (root.getAttribute('data-theme') === 'auto') updateThemeColor('auto');
+    if (root.getAttribute('data-theme') === 'auto') paintTheme('auto');
   });
 
   document.addEventListener('click', function (event) {
@@ -89,6 +94,8 @@
   if (mobile && document.querySelector('main.home')) glowHosts.push(document.querySelector('main.home'));
   if (!mobile && document.getElementById('stage')) glowHosts.push(document.getElementById('stage'));
   if (glowHosts.length && window.HTMLCanvasElement) {
+    var glowRefreshers = [];
+    refreshGlow = function () { glowRefreshers.forEach(function (refresh) { refresh(); }); };
     var hex = function (v) {
       v = v.trim().replace('#', '');
       if (v.length === 3) v = v.replace(/./g, '$&$&');
@@ -110,6 +117,21 @@
         footCanvas.setAttribute('aria-hidden', 'true');
       }
       var glowKey = '';
+      var glowJob = 0;
+
+      var bakedClass = host.classList.contains('stage') ? 'stage-glow-baked' :
+        host.classList.contains('home') ? 'home-glow-baked' : 'glow-baked';
+      var refresh = function () {
+        root.classList.remove(bakedClass);
+        if (footCanvas) root.classList.remove('glow-foot-baked');
+        if (window.cancelIdleCallback) window.cancelIdleCallback(glowJob);
+        else clearTimeout(glowJob);
+        // The CSS gradient updates immediately; bake its dithered replacement
+        // when the browser has finished painting the theme change.
+        glowJob = window.requestIdleCallback ?
+          requestIdleCallback(drawGlow) : setTimeout(drawGlow, 200);
+      };
+      glowRefreshers.push(refresh);
 
       var drawGlow = function () {
         var box = glowCanvas.getBoundingClientRect();
@@ -124,7 +146,7 @@
         var tint = hex(getComputedStyle(root).getPropertyValue('--head-tint'));
         var paper = hex(cs.getPropertyValue('--glow-base'));
         var key = [side, offPx, risePx, core, tint, paper].join();
-        if (!side || key === glowKey) return;
+        if (!side || (key === glowKey && root.classList.contains(bakedClass))) return;
         glowKey = key;
 
         glowCanvas.width = glowCanvas.height = side;
@@ -160,9 +182,7 @@
           footCanvas.getContext('2d').drawImage(glowCanvas, 0, 0);
           root.classList.add('glow-foot-baked');
         }
-        root.classList.add('glow-baked');
-        if (host.classList.contains('home')) root.classList.add('home-glow-baked');
-        if (host.classList.contains('stage')) root.classList.add('stage-glow-baked');
+        root.classList.add(bakedClass);
       };
 
       host.insertBefore(glowCanvas, host.firstChild);

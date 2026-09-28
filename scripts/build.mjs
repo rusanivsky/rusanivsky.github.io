@@ -148,8 +148,8 @@ const rail = (here, path) => `
     ${navLinks(NAV_MINOR, here)}
     ${ELSEWHERE.map(([h, l]) => `<a href="${h}" target="_blank" rel="noopener">${l}</a>`).join('')}
     ${langControl(path)}
-    ${themeControl()}
     <a class="rail-legal" href="${href('/privacy/')}">${esc(L(PRIVACY_TITLE))}</a>
+    ${themeControl()}
     <p class="rail-meta"><span>${ui('copyright')}</span><span>${ui('kyiv')}</span></p>
   </div>
 </nav>`;
