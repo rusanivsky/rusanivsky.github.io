@@ -1047,8 +1047,8 @@ function enquiriesPage() {
   </div>
 
   <section class="section col-full g12" style="padding-inline:0">
-    <h2 class="section-label col-full">${ui('direct')}</h2>
-    <ul class="channels col-full">
+    <h2 class="section-label col-7">${ui('direct')}</h2>
+    <ul class="channels col-7">
       <li><a href="mailto:${EMAIL}"><span>${EMAIL}</span><span class="who">Email</span></a></li>
       <li><a href="https://t.me/rusanivsky" target="_blank" rel="noopener"><span>@rusanivsky</span><span class="who">Telegram</span></a></li>
       <li><a href="https://wa.me/380938676581" target="_blank" rel="noopener"><span>+38 093 867 65 81</span><span class="who">WhatsApp</span></a></li>
@@ -1056,7 +1056,7 @@ function enquiriesPage() {
   </section>
 
   <section class="section col-full g12" style="padding-inline:0">
-    <h2 class="section-label col-full">${ui('shortBrief')}</h2>
+    <h2 class="section-label col-7">${ui('shortBrief')}</h2>
     <p class="page-intro col-7">${esc(L(ENQ_FORM_NOTE))} <a href="${href('/rates/')}">${ui('rates')}</a> ${ui('ratesCovers')}</p>
     <form class="brief col-7" id="brief" data-mailto="${EMAIL}" data-subject="${attr(ui('briefSubject'))}"${brief.endpoint ? ` data-endpoint="${attr(brief.endpoint)}"` : ''}
           data-sending="${attr(ui('briefSending'))}" data-sent="${attr(ui('briefSent'))}"
