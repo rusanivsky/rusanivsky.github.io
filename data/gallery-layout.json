@@ -7,10 +7,7 @@
     ],
     "hero": [
       "/media/photo/public-events/20260820-192258-A.webp",
-      "/media/photo/public-events/20241213-175555-A.webp",
-      "/media/photo/public-events/20260522-205321-A.webp",
-      "/media/photo/public-events/20260521-193524-A.webp",
-      "/media/photo/public-events/20260522-195046-A.webp"
+      "/media/photo/public-events/20260521-193524-A.webp"
     ]
   },
   "culture-and-art": {
@@ -20,10 +17,7 @@
       "/media/photo/art-events/20240111-161749-A.webp"
     ],
     "hero": [
-      "/media/photo/art-events/20260520-213303-A.webp",
-      "/media/photo/art-events/20260520-215309-A.webp",
-      "/media/photo/art-events/20250416-181140-A.webp",
-      "/media/photo/art-events/20240111-161749-A.webp"
+      "/media/photo/art-events/20260520-213303-A.webp"
     ]
   },
   "portraits": {
@@ -34,8 +28,6 @@
     ],
     "hero": [
       "/media/photo/photo-sessions/20250929-202244-A.webp",
-      "/media/photo/photo-sessions/20241202-190925-A.webp",
-      "/media/photo/photo-sessions/20250529-180841-A.webp",
       "/media/photo/photo-sessions/20250503-133323-A.webp"
     ]
   },
@@ -46,9 +38,7 @@
       "/media/photo/wordmusic-autumn/20251115-173716-A.webp"
     ],
     "hero": [
-      "/media/photo/wordmusic-autumn/20251115-175512-A.webp",
-      "/media/photo/wordmusic-autumn/20251115-173357-A.webp",
-      "/media/photo/wordmusic-autumn/20251115-173716-A.webp"
+      "/media/photo/wordmusic-autumn/20251115-175512-A.webp"
     ]
   },
   "wordmusic-winter": {
@@ -58,9 +48,7 @@
       "/media/photo/wordmusic-winter/20231222-182940-A.webp"
     ],
     "hero": [
-      "/media/photo/wordmusic-winter/20231222-191416-A.webp",
-      "/media/photo/wordmusic-winter/20231222-192635-A.webp",
-      "/media/photo/wordmusic-winter/20231222-182940-A.webp"
+      "/media/photo/wordmusic-winter/20231222-191416-A.webp"
     ]
   },
   "wordmusic-roads": {
@@ -70,9 +58,7 @@
       "/media/photo/wordmusic-roads/20240608-162637-A.webp"
     ],
     "hero": [
-      "/media/photo/wordmusic-roads/20240608-162236-A.webp",
-      "/media/photo/wordmusic-roads/20240608-162933-A.webp",
-      "/media/photo/wordmusic-roads/20240608-162637-A.webp"
+      "/media/photo/wordmusic-roads/20240608-162236-A.webp"
     ]
   },
   "wordmusic-christmas": {
@@ -81,8 +67,7 @@
       "/media/photo/wordmusic-christmas/20241221-160946-A.webp"
     ],
     "hero": [
-      "/media/photo/wordmusic-christmas/20241221-160900-A.webp",
-      "/media/photo/wordmusic-christmas/20241221-160946-A.webp"
+      "/media/photo/wordmusic-christmas/20241221-160900-A.webp"
     ]
   }
 }

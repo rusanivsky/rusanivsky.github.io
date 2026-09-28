@@ -125,3 +125,54 @@ test('a lone portrait is centered and fits a comfortable desktop viewing height'
     close(tile.x + tile.w / 2, 480, 'single portrait centered');
   }
 });
+
+// This is the current published edit, not a spacing restriction on compose().
+// Authors may still explicitly request adjacent heroes in other compositions.
+const openingHeroes = {
+  reportage: '/media/photo/public-events/20260820-192258-A.webp',
+  'culture-and-art': '/media/photo/art-events/20260520-213303-A.webp',
+  portraits: '/media/photo/photo-sessions/20250929-202244-A.webp',
+  'wordmusic-autumn': '/media/photo/wordmusic-autumn/20251115-175512-A.webp',
+  'wordmusic-winter': '/media/photo/wordmusic-winter/20231222-191416-A.webp',
+  'wordmusic-roads': '/media/photo/wordmusic-roads/20240608-162236-A.webp',
+  'wordmusic-christmas': '/media/photo/wordmusic-christmas/20241221-160900-A.webp',
+};
+
+test('current curated galleries retain their opening hero and separate later heroes by four ordinary photographs', async () => {
+  const { projects } = await import('../data/projects.mjs');
+  const hints = JSON.parse(fs.readFileSync(require.resolve('../data/gallery-layout.json'), 'utf8'));
+  const violations = [];
+  for (const [slug, opening] of Object.entries(openingHeroes)) {
+    const project = projects.find(p => p.slug === slug);
+    assert.ok(project, `${slug}: project exists`);
+    const heroes = hints[slug]?.hero;
+    assert.ok(Array.isArray(heroes), `${slug}: curated heroes exist`);
+    assert.equal(heroes[0], opening, `${slug}: preserve the existing opening hero`);
+    const sources = project.media.filter(m => m.type === 'image').map(m => m.src);
+    const indices = heroes.map(src => sources.indexOf(src));
+    assert.ok(indices.every(i => i >= 0), `${slug}: every hero belongs to the series`);
+    for (let i = 1; i < indices.length; i++) {
+      const ordinaryCount = indices[i] - indices[i - 1] - 1;
+      if (ordinaryCount < 4) violations.push(`${slug}: hero indices ${indices[i - 1]} and ${indices[i]} leave ${ordinaryCount} ordinary photographs`);
+    }
+  }
+  assert.deepEqual(violations, [], 'current curation must leave at least four ordinary photographs between heroes');
+});
+
+test('affected desktop series open with a hero followed by a group of photographs', async () => {
+  const { projects } = await import('../data/projects.mjs');
+  const hints = JSON.parse(fs.readFileSync(require.resolve('../data/gallery-layout.json'), 'utf8'));
+  const sizes = JSON.parse(fs.readFileSync(require.resolve('../data/media-sizes.json'), 'utf8'));
+  for (const slug of ['culture-and-art', 'wordmusic-autumn', 'wordmusic-winter', 'wordmusic-roads']) {
+    const project = projects.find(p => p.slug === slug);
+    const input = project.media.filter(m => m.type === 'image').map(m => ({ n: m.src, ...sizes[m.src] }));
+    const result = compose(input, 960, 10, { mode: 'series', heroIds: hints[slug].hero });
+    geometry(result, input, 960, 10);
+    const [opening, next] = result.tiles;
+    assert.equal(opening.n, openingHeroes[slug]);
+    assert.ok(next.y >= opening.y + opening.h + 10 - EPS, `${slug}: opening hero stands alone`);
+    assert.ok(result.tiles.slice(2).some(tile =>
+      Math.min(next.y + next.h, tile.y + tile.h) - Math.max(next.y, tile.y) > EPS),
+    `${slug}: the next photograph must share its vertical band with another photograph`);
+  }
+});

@@ -54,3 +54,16 @@ The build calls the shared `composeStage(photos, 1000, 14)` with `{n, w, h}`
 records and converts returned tile geometry to percentages. Runtime galleries
 use the same module's `compose` geometry. Placement uses left/top/width/height;
 transforms remain owned by the existing entrance effects.
+
+## Curation review — 2026-09-29
+
+The current selection uses one opening hero, with at least four ordinary
+photographs between retained hero hints. Closely spaced hints are removed,
+not moved: source order and homepage stage selections stay intact. This is
+a rule for this selection, not a restriction on the layout engine's API.
+It restores an early transition from the opening frame to packed groups.
+
+Packed images must fill their calculated cells at every viewport height.
+Their CSS explicitly overrides the older `.seq` image width and `70svh`
+height limit, which otherwise exposed empty background inside large cells.
+Verify image and cell rectangles as well as native aspect ratios.
