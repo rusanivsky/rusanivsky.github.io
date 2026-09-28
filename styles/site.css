@@ -550,13 +550,17 @@ ul, ol { list-style: none; }
 }
 .theme-modes button[aria-pressed='true'] { font-weight: var(--w-regular); }
 .theme-modes button svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+@media (min-width: 61rem) {
+  .rail .theme-modes button { width: 1.75rem; height: 1.75rem; }
+  .rail .theme-modes button svg { width: 0.875rem; height: 0.875rem; }
 }
 /* The pair EN · UA needs no word over it: a rule of the same weight as the one
    between the navigation groups says «another kind of control» without adding
