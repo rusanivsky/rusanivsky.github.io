@@ -69,10 +69,10 @@
   --ink: #111111;
   --muted: #6b6b6b;
   --faint: #717171;
-  /* A single rule colour across paper and the green wash. */
-  --line: #c4c4c4;
-  --line-soft: #d0d0d0;
-  --enquiry-rule: #bdbdbd;
+  /* Keep the paper greys, while letting rules follow the green wash. */
+  --line: color-mix(in srgb, var(--ink) 25%, transparent);
+  --line-soft: color-mix(in srgb, var(--ink) 22%, transparent);
+  --enquiry-rule: color-mix(in srgb, var(--ink) 25%, transparent);
   --rule-w: 1px;
   --surface: #f1f1f1;
   --stage-bg: #eeeeee;
