@@ -1,6 +1,6 @@
 import test, { before } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -101,14 +101,14 @@ test('live build output is present and uses the production host', () => {
 test('concert photographs belong to Culture & art without separate photo projects', () => {
   const culture = projects.find(p => p.slug === 'culture-and-art');
   const photos = culture.media.filter(m => m.type === 'image').map(m => m.src);
-  // Accepted Pixover curation adds one staircase photograph to the existing collection.
-  assert.equal(photos.length, 113);
+  // Accepted curation, winter portrait moves and two requested culture removals.
+  assert.equal(photos.length, 99);
   assert.ok(photos.includes('/media/photo/art-events/20251002-180031-A.webp'));
   assert.equal(new Set(photos).size, photos.length);
-  const concerts = { 'wordmusic-autumn': 16, 'wordmusic-winter': 13, 'wordmusic-roads': 30, 'wordmusic-christmas': 4 };
+  const concerts = { 'wordmusic-autumn': 16, 'wordmusic-winter': 1, 'wordmusic-roads': 29, 'wordmusic-christmas': 3 };
   for (const [folder, count] of Object.entries(concerts)) {
     assert.equal(photos.filter(src => src.startsWith(`/media/photo/${folder}/`)).length, count,
-      `${folder}: every photograph included in Culture & art`);
+      `${folder}: expected photographs retained in Culture & art`);
     assert.ok(!projects.some(p => p.slug === folder), `${folder}: no separate photo project`);
   }
   for (const prefix of ['', 'ua/']) {
@@ -119,6 +119,59 @@ test('concert photographs belong to Culture & art without separate photo project
       assert.match(legacy, new RegExp(`/${prefix}work/culture-and-art/`), `${prefix}${slug}: redirects to genre`);
     }
   }
+});
+
+test('the twelve requested winter portraits move to Portraits while the group stays in Culture & art', () => {
+  const culture = projects.find(p => p.slug === 'culture-and-art');
+  const portraits = projects.find(p => p.slug === 'portraits');
+  const moved = [
+    ...['191416', '192635', '182940', '185125', '182246', '184821', '185442', '190049', '190936']
+      .map(time => `20231222-${time}-A.webp`),
+    ...['154436', '154746', '154957'].map(time => `20231225-${time}-A.webp`),
+  ].map(name => `/media/photo/wordmusic-winter/${name}`);
+  for (const src of moved) {
+    assert.equal(portraits.media.filter(m => m.src === src).length, 1, `${src}: exactly once in Portraits`);
+    assert.ok(!culture.media.some(m => m.src === src), `${src}: absent from Culture & art`);
+    for (const prefix of ['', 'ua/']) {
+      assert.ok(read(`${prefix}work/portraits/index.html`).includes(src), `${prefix}${src}: portrait page`);
+      assert.ok(!read(`${prefix}work/culture-and-art/index.html`).includes(src), `${prefix}${src}: absent from culture page`);
+    }
+  }
+  const group = '/media/photo/wordmusic-winter/20231225-153923-A.webp';
+  assert.equal(culture.media.filter(m => m.src === group).length, 1);
+  assert.ok(!portraits.media.some(m => m.src === group));
+});
+
+test('requested gallery removals preserve media and the two event frames move to Reportage', () => {
+  const removed = [
+    '/media/photo/wordmusic-roads/20240608-162236-A.webp',
+    '/media/photo/wordmusic-christmas/20241221-160714-A.webp',
+    '/media/photo/photo-sessions/20240913-132705-A.webp',
+    '/media/photo/photo-sessions/20241202-190925-A.webp',
+  ];
+  for (const src of removed) {
+    assert.ok(existsSync(resolve(root, src.slice(1))), `${src}: media preserved`);
+    for (const project of photoProjects) {
+      assert.ok(!project.media.some(m => m.src === src), `${src}: absent from ${project.slug}`);
+      for (const prefix of ['', 'ua/']) {
+        assert.ok(!read(`${prefix}work/${project.slug}/index.html`).includes(src), `${prefix}${src}: absent from gallery output`);
+      }
+    }
+  }
+  const portraits = projects.find(p => p.slug === 'portraits');
+  const reportage = projects.find(p => p.slug === 'reportage');
+  for (const name of ['20200709_192730_Master.webp', '20200709_191436_Master.webp']) {
+    const src = `/media/photo/photo-sessions/${name}`;
+    assert.equal(reportage.media.filter(m => m.src === src).length, 1, `${src}: exactly once in Reportage`);
+    assert.ok(!portraits.media.some(m => m.src === src), `${src}: absent from Portraits`);
+    assert.ok(existsSync(resolve(root, src.slice(1))), `${src}: media preserved`);
+    for (const prefix of ['', 'ua/']) {
+      assert.ok(read(`${prefix}work/reportage/index.html`).includes(src));
+      assert.ok(!read(`${prefix}work/portraits/index.html`).includes(src));
+    }
+  }
+  assert.equal(portraits.media.filter(m => m.type === 'image').length, 47);
+  assert.equal(reportage.media.filter(m => m.type === 'image').length, 83);
 });
 
 test('reportage preview shows the graduates and the couple belongs to Portraits', () => {
