@@ -288,9 +288,7 @@
         return el.matches('a.cell[data-lb]');
       });
       if (!cells.length) return;
-      var controls = Array.prototype.slice.call(document.querySelectorAll('[data-gallery-mode]'))
-        .filter(function (button) { return button.getAttribute('aria-controls') === gallery.id; });
-      var mode = 'series', lastWidth = 0, frame = 0;
+      var lastWidth = 0, frame = 0;
 
       function dimensions() {
         return cells.map(function (cell, index) {
@@ -300,21 +298,13 @@
             h: Number(im.getAttribute('height')) || im.naturalHeight || 2 };
         });
       }
-      function position() {
-        if (gallery.getBoundingClientRect().top >= 0) return null;
-        var visible = cells.map(function (cell) {
-          return { cell: cell, rect: cell.getBoundingClientRect() };
-        }).filter(function (item) { return item.rect.bottom > 80; });
-        visible.sort(function (a, b) { return a.rect.top - b.rect.top || a.rect.left - b.rect.left; });
-        return visible.length ? { cell: visible[0].cell, top: visible[0].rect.top } : null;
-      }
       function layout(force) {
         var width = gallery.clientWidth;
         if (!width || (!force && Math.abs(width - lastWidth) < 0.5)) return;
         var gap = parseFloat(getComputedStyle(gallery).getPropertyValue('--gallery-gap')) || 10;
         var heroes = [];
         cells.forEach(function (cell, i) { if (cell.hasAttribute('data-gallery-hero')) heroes.push(i); });
-        var result = window.KRGallery.compose(dimensions(), width, gap, { mode: mode, heroIds: heroes });
+        var result = window.KRGallery.compose(dimensions(), width, gap, { mode: 'series', heroIds: heroes });
         result.tiles.forEach(function (tile) {
           var cell = cells[tile.n];
           cell.style.left = tile.x + 'px'; cell.style.top = tile.y + 'px';
@@ -327,21 +317,6 @@
         lastWidth = width;
       }
       layout(true);
-      controls.forEach(function (button) {
-        var wrapper = button.closest('[data-gallery-controls]');
-        if (wrapper && cells.length > 3) wrapper.hidden = false;
-        button.addEventListener('click', function () {
-          var next = button.getAttribute('data-gallery-mode');
-          if (next === mode) return;
-          var before = position(); mode = next;
-          controls.forEach(function (control) {
-            control.setAttribute('aria-pressed', String(control.getAttribute('data-gallery-mode') === mode));
-          });
-          gallery.setAttribute('data-gallery-view', mode);
-          layout(true);
-          if (before) window.scrollBy(0, before.cell.getBoundingClientRect().top - before.top);
-        });
-      });
       function resized() {
         cancelAnimationFrame(frame);
         frame = requestAnimationFrame(function () { layout(false); });

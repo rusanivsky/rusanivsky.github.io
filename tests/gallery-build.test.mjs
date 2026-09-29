@@ -72,25 +72,21 @@ test('every photographic series preserves all native images, alt text, order and
   }
 });
 
-test('gallery modes are accessible buttons and labels are localized', () => {
+test('photographic galleries render directly in the series layout without a view switch', () => {
   for (const project of photoProjects) {
-    const labels = {};
     for (const prefix of ['', 'ua/']) {
       const html = read(`${prefix}work/${project.slug}/index.html`);
-      const buttons = [...html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)]
-        .filter(m => 'data-gallery-mode' in attrs(m[1]));
-      assert.deepEqual(buttons.map(m => attrs(m[1])['data-gallery-mode']).sort(), ['index', 'series']);
-      assert.equal(buttons.filter(m => attrs(m[1])['aria-pressed'] === 'true').length, 1);
-      labels[prefix] = buttons.map(m => {
-        const a = attrs(m[1]);
-        assert.equal(a.type, 'button');
-        assert.ok(['true', 'false'].includes(a['aria-pressed']));
-        const label = a['aria-label'] || m[2].replace(/<[^>]*>/g, '').trim();
-        assert.ok(label.length > 0);
-        return label;
-      });
+      assert.doesNotMatch(html, /data-gallery-mode|data-gallery-controls/);
+      assert.match(html, new RegExp(`id="gallery-${project.slug}" class="collage" data-gallery`));
     }
-    assert.notDeepEqual(labels[''], labels['ua/'], 'Ukrainian controls have localized labels');
+  }
+});
+
+test('home menu keeps a clear name in both languages', () => {
+  for (const [prefix, label] of [['', 'Menu'], ['ua/', 'Меню']]) {
+    const html = read(prefix + 'index.html');
+    assert.match(html, new RegExp(`id="menu-open"[^>]*>${label}</button>`));
+    assert.match(html, new RegExp(`id="drawer"[^>]*aria-label="${label}"`));
   }
 });
 

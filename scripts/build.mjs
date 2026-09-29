@@ -162,7 +162,7 @@ const rail = (here, path) => `
 </nav>`;
 
 const mobile = (here, path) => {
-  const label = here === '/' ? ui('menuHome') : ui('menu');
+  const label = ui('menu');
   return `
 <div class="bar">
   <a class="wordmark" href="${href('/')}">${ui('name')}</a>
@@ -858,11 +858,7 @@ function collage(items, groupId, eagerFirst = false) {
   const cells = items.map((item, i) => `<a class="cell" href="${attr(item.src)}" data-lb${heroes.has(item.src) ? ' data-gallery-hero' : ''}>
       <figure class="shot">${img(item.src, item.alt, { eager: eagerFirst && i === 0, sizes: collageSizes })}</figure>
     </a>`).join('\n');
-  const controls = `<div class="gallery-controls" data-gallery-controls role="group" aria-label="${attr(ui('galleryView'))}" hidden>
-    <button type="button" data-gallery-mode="series" aria-controls="${attr(galleryId)}" aria-pressed="true">${ui('gallerySeries')}</button>
-    <button type="button" data-gallery-mode="index" aria-controls="${attr(galleryId)}" aria-pressed="false">${ui('galleryIndex')}</button>
-  </div>`;
-  return `${controls}<div id="${attr(galleryId)}" class="collage" data-gallery data-lb-group="${attr(groupId)}">${cells}</div>`;
+  return `<div id="${attr(galleryId)}" class="collage" data-gallery data-lb-group="${attr(groupId)}">${cells}</div>`;
 }
 
 /* ---------------- project pages ---------------- */
