@@ -162,7 +162,7 @@ const rail = (here, path) => `
 </nav>`;
 
 const mobile = (here, path) => {
-  const label = ui('menu');
+  const label = here === '/' ? ui('menuHome') : ui('menu');
   return `
 <div class="bar">
   <a class="wordmark" href="${href('/')}">${ui('name')}</a>

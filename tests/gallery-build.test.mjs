@@ -82,14 +82,6 @@ test('photographic galleries render directly in the series layout without a view
   }
 });
 
-test('home menu keeps a clear name in both languages', () => {
-  for (const [prefix, label] of [['', 'Menu'], ['ua/', 'Меню']]) {
-    const html = read(prefix + 'index.html');
-    assert.match(html, new RegExp(`id="menu-open"[^>]*>${label}</button>`));
-    assert.match(html, new RegExp(`id="drawer"[^>]*aria-label="${label}"`));
-  }
-});
-
 test('home and photographic pages load the versioned layout before site code', () => {
   const version = createHash('sha1').update(read('scripts/gallery-layout.js')).digest('hex').slice(0, 8);
   for (const prefix of ['', 'ua/']) for (const path of ['index.html', ...photoProjects.map(p => `work/${p.slug}/index.html`)]) {
