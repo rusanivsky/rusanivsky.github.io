@@ -119,6 +119,24 @@ test('concert photographs belong to Culture & art without separate photo project
   }
 });
 
+test('reportage preview shows the graduates and the couple belongs to Portraits', () => {
+  const graduates = '/media/photo/public-events/20260628-140704-A.webp';
+  const couple = '/media/photo/public-events/20260709-172211-A.webp';
+  const reportage = projects.find(p => p.slug === 'reportage');
+  const portraits = projects.find(p => p.slug === 'portraits');
+  const hints = JSON.parse(read('data/gallery-layout.json'));
+  assert.equal(reportage.cover, graduates);
+  assert.equal(hints.reportage.stage[0], graduates);
+  assert.ok(!reportage.media.some(m => m.src === couple));
+  assert.equal(portraits.media.filter(m => m.src === couple).length, 1);
+  for (const prefix of ['', 'ua/']) {
+    const home = read(`${prefix}index.html`);
+    assert.match(home, new RegExp(graduates));
+    assert.doesNotMatch(read(`${prefix}work/reportage/index.html`), new RegExp(couple));
+    assert.match(read(`${prefix}work/portraits/index.html`), new RegExp(couple));
+  }
+});
+
 
 // Keep author data byte-for-byte intact even when a regression assertion fails.
 function withHints(hints, verify) {

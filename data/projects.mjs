@@ -117,7 +117,7 @@ export const projects = [
       ua: 'Публічні заходи й вечірки, зняті так, як вони відбуваються.',
     },
     credits: [],
-    cover: photoSequences.reportage[0].src,
+    cover: photoSequences.reportage.find((f) => f.src.endsWith('20260628-140704-A.webp')).src,
     media: series('reportage', 16),
     externalLinks: [],
     featured: true,
