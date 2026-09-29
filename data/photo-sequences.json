@@ -323,6 +323,14 @@
   {
    "src": "/media/photo/parties/20190216_040009_A.webp",
    "alt": "Reportage"
+  },
+  {
+   "src": "/media/photo/photo-sessions/20200709_192730_Master.webp",
+   "alt": "Portrait"
+  },
+  {
+   "src": "/media/photo/photo-sessions/20200709_191436_Master.webp",
+   "alt": "Portrait"
   }
  ],
  "culture-art": [
@@ -591,60 +599,8 @@
    "alt": "Autumn Rendezvous — concert photograph"
   },
   {
-   "src": "/media/photo/wordmusic-winter/20231222-191416-A.webp",
-   "alt": "Performer in an evening gown beside an ornate green wall"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-192635-A.webp",
-   "alt": "Performer in an evening gown beside an ornate green wall"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-182940-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-185125-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-182246-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-184821-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-185442-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-190049-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231222-190936-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
    "src": "/media/photo/wordmusic-winter/20231225-153923-A.webp",
    "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231225-154436-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231225-154746-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-winter/20231225-154957-A.webp",
-   "alt": "Winter Extravaganza — concert photograph"
-  },
-  {
-   "src": "/media/photo/wordmusic-roads/20240608-162236-A.webp",
-   "alt": "Roads of Love — concert photograph"
   },
   {
    "src": "/media/photo/wordmusic-roads/20240608-162933-A.webp",
@@ -771,10 +727,6 @@
    "alt": "Christmas Kaleidoscope — concert photograph"
   },
   {
-   "src": "/media/photo/wordmusic-christmas/20241221-160714-A.webp",
-   "alt": "Christmas Kaleidoscope — concert photograph"
-  },
-  {
    "src": "/media/photo/wordmusic-christmas/20241221-162658-A.webp",
    "alt": "Christmas Kaleidoscope — concert photograph"
   }
@@ -855,10 +807,6 @@
    "alt": "Studio portrait in a red dress"
   },
   {
-   "src": "/media/photo/photo-sessions/20241202-190925-A.webp",
-   "alt": "Fashion portrait in blue and amber light"
-  },
-  {
    "src": "/media/photo/photo-sessions/20240124-184154-A.webp",
    "alt": "Portrait in theatrical light and smoke"
   },
@@ -883,10 +831,6 @@
    "alt": "Fashion portrait in a hat and trench coat"
   },
   {
-   "src": "/media/photo/photo-sessions/20240913-132705-A.webp",
-   "alt": "Seated studio portrait"
-  },
-  {
    "src": "/media/photo/photo-sessions/20250803-164346-A.webp",
    "alt": "Business portrait in a grey blazer"
   },
@@ -899,16 +843,56 @@
    "alt": "Couple embracing outdoors"
   },
   {
+   "src": "/media/photo/wordmusic-winter/20231222-191416-A.webp",
+   "alt": "Performer in an evening gown beside an ornate green wall"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-192635-A.webp",
+   "alt": "Performer in an evening gown beside an ornate green wall"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-182940-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-185125-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-182246-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-184821-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-185442-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-190049-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231222-190936-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231225-154436-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231225-154746-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
+   "src": "/media/photo/wordmusic-winter/20231225-154957-A.webp",
+   "alt": "Winter Extravaganza — concert photograph"
+  },
+  {
    "src": "/media/photo/photo-sessions/20231113-134531-A.webp",
    "alt": "Portrait against a green wall"
-  },
-  {
-   "src": "/media/photo/photo-sessions/20200709_192730_Master.webp",
-   "alt": "Portrait"
-  },
-  {
-   "src": "/media/photo/photo-sessions/20200709_191436_Master.webp",
-   "alt": "Portrait"
   },
   {
    "src": "/media/photo/photo-sessions/20190923_154718_B.webp",
