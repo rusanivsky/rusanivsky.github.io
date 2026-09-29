@@ -101,7 +101,9 @@ test('live build output is present and uses the production host', () => {
 test('concert photographs belong to Culture & art without separate photo projects', () => {
   const culture = projects.find(p => p.slug === 'culture-and-art');
   const photos = culture.media.filter(m => m.type === 'image').map(m => m.src);
-  assert.equal(photos.length, 112);
+  // Accepted Pixover curation adds one staircase photograph to the existing collection.
+  assert.equal(photos.length, 113);
+  assert.ok(photos.includes('/media/photo/art-events/20251002-180031-A.webp'));
   assert.equal(new Set(photos).size, photos.length);
   const concerts = { 'wordmusic-autumn': 16, 'wordmusic-winter': 13, 'wordmusic-roads': 30, 'wordmusic-christmas': 4 };
   for (const [folder, count] of Object.entries(concerts)) {

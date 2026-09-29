@@ -5334,5 +5334,95 @@
    1500,
    "/media/design/cases/zest-for-life-cover.webp"
   ]
+ ],
+ "/media/photo/art-events/20251002-180031-A.webp": [
+  [
+   480,
+   "/media/photo/art-events/20251002-180031-A-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/art-events/20251002-180031-A-960.webp"
+  ],
+  [
+   1440,
+   "/media/photo/art-events/20251002-180031-A.webp"
+  ],
+  [
+   2400,
+   "/media/photo/art-events/20251002-180031-A-2400.webp"
+  ]
+ ],
+ "/media/photo/backstage/20250416-175445-A-BW.webp": [
+  [
+   480,
+   "/media/photo/backstage/20250416-175445-A-BW-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/backstage/20250416-175445-A-BW-960.webp"
+  ],
+  [
+   1440,
+   "/media/photo/backstage/20250416-175445-A-BW.webp"
+  ],
+  [
+   2400,
+   "/media/photo/backstage/20250416-175445-A-BW-2400.webp"
+  ]
+ ],
+ "/media/photo/public-events/20260502-155917-A.webp": [
+  [
+   480,
+   "/media/photo/public-events/20260502-155917-A-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/public-events/20260502-155917-A-960.webp"
+  ],
+  [
+   1440,
+   "/media/photo/public-events/20260502-155917-A.webp"
+  ],
+  [
+   2400,
+   "/media/photo/public-events/20260502-155917-A-2400.webp"
+  ]
+ ],
+ "/media/photo/public-events/20260628-131142-A.webp": [
+  [
+   480,
+   "/media/photo/public-events/20260628-131142-A-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/public-events/20260628-131142-A-960.webp"
+  ],
+  [
+   1440,
+   "/media/photo/public-events/20260628-131142-A.webp"
+  ],
+  [
+   2400,
+   "/media/photo/public-events/20260628-131142-A-2400.webp"
+  ]
+ ],
+ "/media/photo/public-events/20260820-185708-A.webp": [
+  [
+   480,
+   "/media/photo/public-events/20260820-185708-A-480.webp"
+  ],
+  [
+   960,
+   "/media/photo/public-events/20260820-185708-A-960.webp"
+  ],
+  [
+   1440,
+   "/media/photo/public-events/20260820-185708-A.webp"
+  ],
+  [
+   2400,
+   "/media/photo/public-events/20260820-185708-A-2400.webp"
+  ]
  ]
 }
