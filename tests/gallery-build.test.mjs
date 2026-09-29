@@ -98,6 +98,27 @@ test('live build output is present and uses the production host', () => {
   assert.doesNotMatch(read('sitemap.xml'), /test\.rusanivsky\.com/);
 });
 
+test('concert photographs belong to Culture & art without separate photo projects', () => {
+  const culture = projects.find(p => p.slug === 'culture-and-art');
+  const photos = culture.media.filter(m => m.type === 'image').map(m => m.src);
+  assert.equal(photos.length, 112);
+  assert.equal(new Set(photos).size, photos.length);
+  const concerts = { 'wordmusic-autumn': 16, 'wordmusic-winter': 13, 'wordmusic-roads': 30, 'wordmusic-christmas': 4 };
+  for (const [folder, count] of Object.entries(concerts)) {
+    assert.equal(photos.filter(src => src.startsWith(`/media/photo/${folder}/`)).length, count,
+      `${folder}: every photograph included in Culture & art`);
+    assert.ok(!projects.some(p => p.slug === folder), `${folder}: no separate photo project`);
+  }
+  for (const prefix of ['', 'ua/']) {
+    const index = read(`${prefix}photo/index.html`);
+    assert.doesNotMatch(index, /word&amp;music · Concert series|word&amp;music · Концертні серії/);
+    for (const slug of Object.keys(concerts)) {
+      const legacy = read(`${prefix}work/${slug}/index.html`);
+      assert.match(legacy, new RegExp(`/${prefix}work/culture-and-art/`), `${prefix}${slug}: redirects to genre`);
+    }
+  }
+});
+
 
 // Keep author data byte-for-byte intact even when a regression assertion fails.
 function withHints(hints, verify) {

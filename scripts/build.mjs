@@ -797,10 +797,6 @@ function workCard(p, { lead = false, curated = false } = {}) {
 function practicePage({ here, discipline, extra = '' }) {
   const list = projects.filter((p) => p.disciplines.includes(discipline));
   if (discipline === 'design') list.sort((a, b) => (a.designOrder ?? 99) - (b.designOrder ?? 99));
-  const concertSeries = discipline === 'photography'
-    ? list.filter((p) => p.slug.startsWith('wordmusic-')) : [];
-  const mainProjects = concertSeries.length
-    ? list.filter((p) => !concertSeries.includes(p)) : list;
   const title = L(DISCIPLINE[discipline]);
   const intro = PRACTICE_INTRO[discipline];
   const body = `
@@ -812,16 +808,10 @@ function practicePage({ here, discipline, extra = '' }) {
   </div>
   <section class="section col-full">
     <h2 class="section-label">${ui('projects')}</h2>
-    <div class="works ${discipline === 'design' ? 'design-masonry' : 'selection'}">${mainProjects
+    <div class="works ${discipline === 'design' ? 'design-masonry' : 'selection'}">${list
       .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
       .join('\n')}</div>
   </section>
-${concertSeries.length ? `<section class="section col-full">
-    <h2 class="section-label">${esc(L({ en: 'word&music · Concert series', ua: 'word&music · Концертні серії' }))}</h2>
-    <div class="works selection">${concertSeries
-      .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
-      .join('\n')}</div>
-  </section>` : ''}
 ${extra}
   <div class="col-full">${foot()}</div>
 </main>`;
@@ -1311,6 +1301,10 @@ function build(lang) {
     'photo/publichni-zahody/index.html': '/work/reportage/',
     'photo/art-events/index.html': '/work/culture-and-art/',
     'photo/concerts-theatre/index.html': '/work/culture-and-art/',
+    'work/wordmusic-autumn/index.html': '/work/culture-and-art/',
+    'work/wordmusic-winter/index.html': '/work/culture-and-art/',
+    'work/wordmusic-roads/index.html': '/work/culture-and-art/',
+    'work/wordmusic-christmas/index.html': '/work/culture-and-art/',
     'photo/parties/index.html': '/work/reportage/',
     'photo/photo-sessions/index.html': '/work/portraits/',
     'photo/public-events/index.html': '/work/reportage/',

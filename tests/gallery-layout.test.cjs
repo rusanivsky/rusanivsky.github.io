@@ -132,10 +132,6 @@ const openingHeroes = {
   reportage: '/media/photo/public-events/20260820-192258-A.webp',
   'culture-and-art': '/media/photo/art-events/20260520-213303-A.webp',
   portraits: '/media/photo/photo-sessions/20250929-202244-A.webp',
-  'wordmusic-autumn': '/media/photo/wordmusic-autumn/20251115-175512-A.webp',
-  'wordmusic-winter': '/media/photo/wordmusic-winter/20231222-191416-A.webp',
-  'wordmusic-roads': '/media/photo/wordmusic-roads/20240608-162236-A.webp',
-  'wordmusic-christmas': '/media/photo/wordmusic-christmas/20241221-160900-A.webp',
 };
 
 test('current curated galleries retain their opening hero and separate later heroes by four ordinary photographs', async () => {
@@ -163,7 +159,7 @@ test('affected desktop series open with a hero followed by a group of photograph
   const { projects } = await import('../data/projects.mjs');
   const hints = JSON.parse(fs.readFileSync(require.resolve('../data/gallery-layout.json'), 'utf8'));
   const sizes = JSON.parse(fs.readFileSync(require.resolve('../data/media-sizes.json'), 'utf8'));
-  for (const slug of ['culture-and-art', 'wordmusic-autumn', 'wordmusic-winter', 'wordmusic-roads']) {
+  for (const slug of ['culture-and-art']) {
     const project = projects.find(p => p.slug === slug);
     const input = project.media.filter(m => m.type === 'image').map(m => ({ n: m.src, ...sizes[m.src] }));
     const result = compose(input, 960, 10, { mode: 'series', heroIds: hints[slug].hero });
