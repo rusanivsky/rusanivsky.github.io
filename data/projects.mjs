@@ -146,8 +146,7 @@ export const projects = [
       { id: 'dg-iu2020-01', type: 'image', src: '/media/design/history-of-ukraine-2020.webp', alt: 'History of Ukraine. 2020 cover', lead: true },
     ],
     externalLinks: [{ label: 'Behance', href: 'https://www.behance.net/gallery/133703119/storja-ukrani-2020' }],
-    featured: true,
-    featuredOrder: 6,
+    featured: false,
   },
 
   {
@@ -297,7 +296,8 @@ export const projects = [
       video('yt', 'UaWqVU8fUw4', '“Struny Sertsia” concert at Sadyba na Kudriavtsi (2023)', `${THUMB}yt-UaWqVU8fUw4.webp`),
     ],
     externalLinks: [],
-    featured: false,
+    featured: true,
+    featuredOrder: 6,
   },
 
   {
