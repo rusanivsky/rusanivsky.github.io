@@ -287,10 +287,10 @@ export const projects = [
     credits: [
       { en: 'Producer, DOP & Editor — Kyrylo Rusanivsky', ua: 'Продюсер, оператор і монтажер — Кирило Русанівський' },
     ],
-    cover: `${THUMB}yt-JAMDscAMvQA.webp`,
+    cover: `${THUMB}yt-bpz1jSrtFMA.webp`,
     media: [
-      video('yt', 'JAMDscAMvQA', 'Christmas Kaleidoscope at Sadyba na Kudriavtsi', `${THUMB}yt-JAMDscAMvQA.webp`),
       video('yt', 'bpz1jSrtFMA', '“Winter Fairytale” — a Christmas evening of classical music', `${THUMB}yt-bpz1jSrtFMA.webp`),
+      video('yt', 'JAMDscAMvQA', 'Christmas Kaleidoscope at Sadyba na Kudriavtsi', `${THUMB}yt-JAMDscAMvQA.webp`),
       video('yt', '474f5Yrp5-o', '“Music of the Soul and Heart” concert at Sadyba na Kudriavtsi (2023)', `${THUMB}yt-474f5Yrp5-o.webp`),
       video('yt', 'qU1Jl_9ZuGQ', '“Amore Eterno” concert at Sadyba na Kudriavtsi (2023)', `${THUMB}yt-qU1Jl_9ZuGQ.webp`),
       video('yt', 'UaWqVU8fUw4', '“Struny Sertsia” concert at Sadyba na Kudriavtsi (2023)', `${THUMB}yt-UaWqVU8fUw4.webp`),
