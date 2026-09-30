@@ -490,6 +490,27 @@ const spanFor = (d) => spanAt(6, d, 3, 8);
 function player(item, eager = false) {
   const d = dim(item.poster);
   const vertical = d && d.h > d.w;
+  if (item.platform === 'cf') {
+    const labels = LANG === 'ua'
+      ? { play: 'Відтворити', sound: 'Увімкнути звук', seek: 'Позиція відтворення' }
+      : { play: 'Play', sound: 'Unmute', seek: 'Playback position' };
+    const icon = (cls, path) => `<svg class="${cls}" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+    return `<div class="server-player">
+  <div class="video-toolbar">
+    <span class="video-status" role="status"></span>
+    <button type="button" class="video-toggle" aria-label="${labels.play} — ${attr(item.title)}">${icon('icon-play', '<path d="m9 5 11 7-11 7Z"/>')}${icon('icon-pause', '<path d="M8 5v14M16 5v14"/>')}</button>
+    <button type="button" class="video-sound" aria-label="${labels.sound} — ${attr(item.title)}">${icon('icon-volume', '<path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/>')}</button>
+  </div>
+  <div class="player${vertical ? ' vertical' : ''}">
+    <video class="cf-video" data-src="${attr(item.src)}" poster="${attr(item.poster)}" title="${attr(item.title)}" muted playsinline controls preload="none"></video>
+    <div class="video-timeline">
+      <span class="video-clock" aria-hidden="true">0:00</span>
+      <input class="video-seek" type="range" min="0" max="1000" step="1" value="0" disabled aria-label="${labels.seek} — ${attr(item.title)}">
+    </div>
+  </div>
+  <noscript><a href="${attr(item.src)}">${labels.play} — ${esc(item.title)}</a></noscript>
+</div>`;
+  }
   /* Every film plays right here, in its own frame, from one tap on the
      poster: YouTube and Vimeo alike. The player itself is only fetched then
      (site.js), so a page of twenty films loads no third-party code. */

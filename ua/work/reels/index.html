@@ -36,7 +36,7 @@
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=811e90ac">
+<link rel="stylesheet" href="/styles/site.css?v=3f6e3c64">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
@@ -53,7 +53,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},2
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();</script>
 <script src="/scripts/gallery-layout.js?v=12853514" defer></script>
-<script src="/scripts/site.js?v=31841279" defer></script>
+<script src="/scripts/site.js?v=f97a8de4" defer></script>
 
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
@@ -114,23 +114,56 @@ setTimeout(finish,6000);}catch(e){}})();</script>
 
   <div class="seq col-full g12" style="padding-inline:0">
 <div class="span-3">
-      <div class="player vertical">
-  <img src="/media/video/posters/dyvoshyv-poster.webp" alt="" width="540" height="960" fetchpriority="high" loading="eager" decoding="async">
-  <button type="button" class="player-btn" data-platform="cf" data-video-id="dyvoshyv" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/dyvoshyv-1080.mp4" aria-label="Відтворити — Dyvochyv"></button>
+      <div class="server-player">
+  <div class="video-toolbar">
+    <span class="video-status" role="status"></span>
+    <button type="button" class="video-toggle" aria-label="Відтворити — Dyvochyv"><svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg><svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+    <button type="button" class="video-sound" aria-label="Увімкнути звук — Dyvochyv"><svg class="icon-volume" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg></button>
+  </div>
+  <div class="player vertical">
+    <video class="cf-video" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/dyvoshyv-1080.mp4" poster="/media/video/posters/dyvoshyv-poster.webp" title="Dyvochyv" muted playsinline controls preload="none"></video>
+    <div class="video-timeline">
+      <span class="video-clock" aria-hidden="true">0:00</span>
+      <input class="video-seek" type="range" min="0" max="1000" step="1" value="0" disabled aria-label="Позиція відтворення — Dyvochyv">
+    </div>
+  </div>
+  <noscript><a href="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/dyvoshyv-1080.mp4">Відтворити — Dyvochyv</a></noscript>
 </div>
       <p class="vid-title">Dyvochyv</p>
     </div>
 <div class="span-3">
-      <div class="player vertical">
-  <img src="/media/video/posters/the-coat-poster.webp" alt="" width="540" height="960" loading="lazy" decoding="async">
-  <button type="button" class="player-btn" data-platform="cf" data-video-id="the-coat" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/the-coat-1080.mp4" aria-label="Відтворити — Dyvochyv"></button>
+      <div class="server-player">
+  <div class="video-toolbar">
+    <span class="video-status" role="status"></span>
+    <button type="button" class="video-toggle" aria-label="Відтворити — Dyvochyv"><svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg><svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+    <button type="button" class="video-sound" aria-label="Увімкнути звук — Dyvochyv"><svg class="icon-volume" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg></button>
+  </div>
+  <div class="player vertical">
+    <video class="cf-video" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/the-coat-1080.mp4" poster="/media/video/posters/the-coat-poster.webp" title="Dyvochyv" muted playsinline controls preload="none"></video>
+    <div class="video-timeline">
+      <span class="video-clock" aria-hidden="true">0:00</span>
+      <input class="video-seek" type="range" min="0" max="1000" step="1" value="0" disabled aria-label="Позиція відтворення — Dyvochyv">
+    </div>
+  </div>
+  <noscript><a href="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/the-coat-1080.mp4">Відтворити — Dyvochyv</a></noscript>
 </div>
       <p class="vid-title">Dyvochyv</p>
     </div>
 <div class="span-3">
-      <div class="player vertical">
-  <img src="/media/video/posters/tsyronian-publishing-poster.webp" srcset="/media/video/posters/tsyronian-publishing-poster-480.webp 480w, /media/video/posters/tsyronian-publishing-poster.webp 1080w" sizes="(min-width: 61rem) calc((100vw - 328px) * 12 / 12), 100vw" alt="" width="1080" height="1920" loading="lazy" decoding="async">
-  <button type="button" class="player-btn" data-platform="cf" data-video-id="tsyronian-publishing" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/tsyronian-publishing-1080.mp4" aria-label="Відтворити — Alisa Levchenko — “A Very Cozy Book”"></button>
+      <div class="server-player">
+  <div class="video-toolbar">
+    <span class="video-status" role="status"></span>
+    <button type="button" class="video-toggle" aria-label="Відтворити — Alisa Levchenko — “A Very Cozy Book”"><svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg><svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+    <button type="button" class="video-sound" aria-label="Увімкнути звук — Alisa Levchenko — “A Very Cozy Book”"><svg class="icon-volume" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg></button>
+  </div>
+  <div class="player vertical">
+    <video class="cf-video" data-src="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/tsyronian-publishing-1080.mp4" poster="/media/video/posters/tsyronian-publishing-poster.webp" title="Alisa Levchenko — “A Very Cozy Book”" muted playsinline controls preload="none"></video>
+    <div class="video-timeline">
+      <span class="video-clock" aria-hidden="true">0:00</span>
+      <input class="video-seek" type="range" min="0" max="1000" step="1" value="0" disabled aria-label="Позиція відтворення — Alisa Levchenko — “A Very Cozy Book”">
+    </div>
+  </div>
+  <noscript><a href="https://rusanivsky-video.rusanivsky-f9d.workers.dev/reels/tsyronian-publishing-1080.mp4">Відтворити — Alisa Levchenko — “A Very Cozy Book”</a></noscript>
 </div>
       <p class="vid-title">Alisa Levchenko — “A Very Cozy Book”</p>
     </div>

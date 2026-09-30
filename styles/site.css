@@ -1193,6 +1193,36 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
    on the frame lands on it. */
 .player-btn { position: absolute; inset: 0; z-index: 2; width: 100%; }
 
+/* Server films: controls live on the paper above the frame; only time lies
+   over the moving picture. Native controls are the pre-JS fallback. */
+.server-player { width: 100%; min-width: 0; }
+.video-toolbar { display: none; align-items: center; justify-content: flex-end; gap: 2px; min-height: 44px; margin-bottom: 6px; }
+.server-player.enhanced .video-toolbar { display: flex; }
+.video-toggle, .video-sound { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); transition: color .2s ease, background .2s ease; }
+.video-toggle:hover, .video-sound:hover { color: var(--ink); background: color-mix(in srgb, currentColor 7%, transparent); }
+.video-toggle:focus-visible, .video-sound:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+.video-toggle svg { grid-area: 1 / 1; }
+.video-toggle .icon-pause, .video-sound .sound-waves { display: none; }
+.server-player[data-playing="true"] .icon-play { display: none; }
+.server-player[data-playing="true"] .icon-pause { display: block; }
+.server-player[data-muted="false"] .sound-cross { display: none; }
+.server-player[data-muted="false"] .sound-waves { display: block; }
+.video-status { margin-right: auto; font-size: var(--t-meta); color: var(--muted); }
+.server-player .player video.cf-video { display: block; }
+.video-timeline { display: none; position: absolute; z-index: 4; inset: auto 0 0; padding: 20px 18px 6px; background: linear-gradient(transparent, rgb(0 0 0 / .38)); color: #fff; }
+.server-player.enhanced .video-timeline { display: block; }
+.video-clock { display: block; font-size: 11px; font-variant-numeric: tabular-nums; letter-spacing: .03em; opacity: .8; pointer-events: none; }
+.video-seek { --progress: 0%; display: block; width: 100%; height: 28px; margin: 0; padding: 0; appearance: none; -webkit-appearance: none; background: transparent; cursor: pointer; touch-action: pan-y; }
+.video-seek::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: linear-gradient(to right, #fff var(--progress), rgb(255 255 255 / .35) var(--progress)); }
+.video-seek::-moz-range-track { height: 2px; border-radius: 2px; background: rgb(255 255 255 / .35); }
+.video-seek::-moz-range-progress { height: 2px; border-radius: 2px; background: #fff; }
+.video-seek::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 10px; height: 10px; margin-top: -4px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgb(255 255 255 / .12); }
+.video-seek::-moz-range-thumb { width: 10px; height: 10px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgb(255 255 255 / .12); }
+.video-seek:focus-visible { outline: 1px solid #fff; outline-offset: 3px; border-radius: 3px; }
+.video-seek:disabled { opacity: .4; cursor: default; }
+.seq .server-player { max-width: calc(var(--frame-max) * 16 / 9); margin-inline: auto; }
+.seq .server-player:has(.vertical) { max-width: calc(var(--frame-max) * 9 / 16); }
+
 .vid-title {
   margin-top: 0.7rem;
   font-size: var(--t-body);
