@@ -31,3 +31,7 @@ Observe `currentTime` twice to confirm silent autoplay, click pause and compare 
 - Runtime review: fixed audible resume mutual pause, viewport pending-play cancellation and hidden-tab pending-play cancellation. Separate regression tests confirm retry and manual pause precedence.
 - Local browser: real MP4 time advances muted; pause remains stable across scrolling; sound toggle changes muted; keyboard seek and pointer drag change currentTime; 390px mobile and vertical Reels have no horizontal overflow, controls are 44px.
 - Final gate: independent reviewer PASS after fixes; 45 tests pass including 8 runtime regressions. Source syntax and diff whitespace checks pass. No video assets or hosting changes.
+
+## Refinement (2026-10-01)
+User clarification: omit visible film captions only on EN/UA `/work/reels/`. For ALL server videos: omit timeline and clock, loop natively, tapping the video toggles playback through the same manual-pause state as the toolbar button. Pause when 50% or less of the frame is visible; resume automatically above 50% unless manually paused. This supersedes AC3 and the 35% threshold in AC1. Other project captions remain. Preserve posters, source URLs, accessible toolbar labels and original files.
+- Refinement gate: 46 tests pass, independent review PASS. Mobile browser verified tap pause/resume, no captions/timeline/clock on Reels, actual native loop after full 32-second playback, pause at 47% visible and resume above 50%. Ordinary captions remain covered by bilingual acceptance tests.

@@ -1,4 +1,4 @@
-// AC1/AC3/AC4 behavior through DOM events and media promises. Only the standalone
+// AC1/AC2/AC4 behavior through DOM events and media promises. Only the standalone
 // server-player block is evaluated; tests never call its private functions.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -51,7 +51,7 @@ function setup(lang = 'en') {
   const frame = new Element();
   const toggle = new Element(), sound = new Element(), seek = new Element(), clock = new Element(), status = new Element();
   const shell = new Element();
-  const children = { 'video.cf-video': video, '.player': frame, '.video-toggle': toggle, '.video-sound': sound, '.video-seek': seek, '.video-clock': clock, '.video-status': status };
+  const children = { 'video.cf-video': video, '.player': frame, '.video-toggle': toggle, '.video-sound': sound, '.video-seek': null, '.video-clock': null, '.video-status': status };
   shell.querySelector = selector => children[selector];
   const document = new Element();
   document.hidden = false;
@@ -62,7 +62,7 @@ function setup(lang = 'en') {
     constructor(callback, options) { this.callback = callback; this.options = options; observers.push(this); }
     observe() {}
     unobserve() {}
-    emit(visible) { this.callback([{ target: frame, isIntersecting: visible, intersectionRatio: visible ? 1 : 0 }]); }
+    emit(visible) { const ratio = typeof visible === 'number' ? visible : visible ? 1 : 0; this.callback([{ target: frame, isIntersecting: ratio > 0, intersectionRatio: ratio }]); }
   }
   let raf = 0;
   const otherVideo = { paused: false, pauseCalls: 0, pause() { this.paused = true; this.pauseCalls++; } };
@@ -94,6 +94,32 @@ test('AC1/AC2: silent visible autoplay reports real state; explicit pause surviv
   p.sound.emit('click');
   assert.equal(p.video.muted, false);
   assert.match(p.sound.getAttribute('aria-label'), /^Mute/);
+});
+
+test('All server films: tapping video toggles playback and pause persists across scrolling', async () => {
+  const p = setup('en');
+  p.visible(1); await flush();
+  assert.equal(p.video.paused, false);
+  p.video.emit('click');
+  assert.equal(p.video.paused, true);
+  p.visible(0); p.visible(1); await flush();
+  assert.equal(p.video.paused, true, 'explicit frame tap pause persists');
+  p.video.emit('click'); await flush();
+  assert.equal(p.video.paused, false);
+});
+
+test('All server films: half-visible playback pauses and more than half visible playback resumes', async () => {
+  const film = setup('uk');
+  film.visible(0.51); await flush();
+  assert.equal(film.video.paused, false);
+  film.visible(0.50);
+  assert.equal(film.video.paused, true, 'half-visible film must pause');
+  for (const ratio of [0.49, 0.35, 0.1]) {
+    film.visible(ratio); await flush();
+    assert.equal(film.video.paused, true, 'film does not play at or below half visibility');
+  }
+  film.visible(0.51); await flush();
+  assert.equal(film.video.paused, false, 'more than half visible film resumes');
 });
 
 test('AC1: automatic playback pauses offscreen and hidden, and resumes on return', async () => {
@@ -149,23 +175,6 @@ test('AC1/AC4: a tab returning during pending play retries after hidden-tab Abor
   assert.equal(p.video.paused, false);
 });
 
-test('AC3: seeking maps range to real time, clamps boundaries and ignores invalid media times', () => {
-  const p = setup();
-  for (const [value, expected] of [['250', 30], ['-100', 0], ['1500', 120]]) {
-    p.seek.value = value; p.seek.emit('input');
-    assert.equal(p.video.currentTime, expected);
-  }
-  p.seek.value = 'invalid'; p.seek.emit('input');
-  assert.equal(p.video.currentTime, 120);
-  for (const duration of [NaN, Infinity, 0, -1]) {
-    p.video.duration = duration;
-    p.seek.value = '500'; p.seek.emit('input');
-    assert.equal(p.video.currentTime, 120, 'invalid duration cannot cause an invalid seek');
-    p.video.emit('durationchange');
-    assert.equal(p.seek.disabled, true);
-  }
-});
-
 test('AC2/ADR: explicit sound and unmuted playback resume quiet other films', async () => {
   const p = setup();
   p.visible(true); await flush();
@@ -180,21 +189,4 @@ test('AC2/ADR: explicit sound and unmuted playback resume quiet other films', as
   assert.equal(p.video.paused, false);
   assert.equal(p.otherVideo.paused, true, 'resumed audible playback pauses other films');
   assert.ok(p.otherVideo.pauseCalls > before);
-});
-
-test('AC3: accessible timeline time matches clock initially, within a second and after seeking', () => {
-  const p = setup();
-  const expectTime = value => {
-    p.video.currentTime = value;
-    p.video.emit('timeupdate');
-    assert.equal(p.seek.getAttribute('aria-valuetext'), p.clock.textContent);
-  };
-  assert.equal(p.seek.getAttribute('aria-valuetext'), '0:00 / 2:00');
-  expectTime(1.2);
-  assert.equal(p.seek.getAttribute('aria-valuetext'), '0:01 / 2:00');
-  expectTime(1.8);
-  assert.equal(p.seek.getAttribute('aria-valuetext'), '0:01 / 2:00');
-  p.seek.value = '500'; p.seek.emit('input');
-  assert.equal(p.seek.getAttribute('aria-valuetext'), '1:00 / 2:00');
-  assert.equal(p.clock.textContent, '1:00 / 2:00');
 });

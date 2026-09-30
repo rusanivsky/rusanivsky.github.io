@@ -58,16 +58,21 @@ test('AC2/AC5: every server film has bilingual custom player markup and preserve
         if (prefix) assert.match(controls[0]['aria-label'], /[А-Яа-яІіЇїЄєҐґ]/, 'Ukrainian control label');
       }
       const seeks = tags(block, 'input').filter(a => hasClass(a, 'video-seek'));
-      assert.equal(seeks.length, 1, 'one native range provides pointer, touch and keyboard seeking');
-      assert.equal(seeks[0].type, 'range');
-      assert.equal(Number(seeks[0].min), 0);
-      assert.equal(Number(seeks[0].max), 1000);
-      assert.ok(seeks[0]['aria-label']?.trim(), 'accessible timeline label');
+      assert.equal(seeks.length, 0, 'all server films omit timeline DOM');
+      assert.ok('loop' in v, 'all server films loop through native media playback');
+      assert.doesNotMatch(block, /class="[^"]*\bvideo-(?:clock|timeline)\b/, 'all server films omit timeline and clock DOM');
       assert.ok(block.indexOf('video-toggle') < block.indexOf('<video'), 'buttons precede frame');
       assert.match(block, /<noscript\b[\s\S]*?<a\b[^>]*href="/, 'no-JS playback link');
     });
   }
   assert.ok(count > 0, 'contract exercises actual server films');
+});
+
+test('Reels refinement: bilingual project omits video captions while other film pages retain them', () => {
+  for (const prefix of ['', 'ua/']) for (const page of pages) {
+    const captions = tags(read(prefix + page.path), 'p').filter(a => hasClass(a, 'vid-title'));
+    assert.equal(captions.length, page.path === 'work/reels/index.html' ? 0 : page.media.length, `${prefix}${page.path}: scoped caption behavior`);
+  }
 });
 
 test('AC5: YouTube and Vimeo remain poster-triggered embeds with original identity and order', () => {

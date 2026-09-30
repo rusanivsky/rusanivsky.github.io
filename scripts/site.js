@@ -458,43 +458,18 @@
   var videoWords = videoUa
     ? { play: 'Відтворити', pause: 'Пауза', unmute: 'Увімкнути звук', mute: 'Вимкнути звук', loading: 'Завантаження…', blocked: 'Натисніть відтворення', error: 'Не вдалося завантажити відео' }
     : { play: 'Play', pause: 'Pause', unmute: 'Unmute', mute: 'Mute', loading: 'Loading…', blocked: 'Press play', error: 'Video could not load' };
-  function videoTime(seconds) {
-    seconds = Math.max(0, Math.floor(seconds || 0));
-    var h = Math.floor(seconds / 3600);
-    var m = Math.floor(seconds / 60) % 60;
-    var sec = String(seconds % 60).padStart(2, '0');
-    return h ? h + ':' + String(m).padStart(2, '0') + ':' + sec : m + ':' + sec;
-  }
   document.querySelectorAll('.server-player').forEach(function (shell) {
     var v = shell.querySelector('video.cf-video');
     var frame = shell.querySelector('.player');
     var toggle = shell.querySelector('.video-toggle');
     var sound = shell.querySelector('.video-sound');
-    var seek = shell.querySelector('.video-seek');
-    var clock = shell.querySelector('.video-clock');
     var status = shell.querySelector('.video-status');
-    var state = { visible: false, manualPause: false, raf: 0, dragging: false, pending: false, retryVisible: false };
+    var state = { visible: false, manualPause: false, pending: false, retryVisible: false };
     v.controls = false;
     v.muted = true;
     shell.classList.add('enhanced');
     function loaded() {
       if (!v.getAttribute('src')) { v.src = v.dataset.src; v.preload = 'metadata'; }
-    }
-    function timeline() {
-      var ready = Number.isFinite(v.duration) && v.duration > 0;
-      seek.disabled = !ready;
-      var percent = ready ? Math.min(100, Math.max(0, v.currentTime / v.duration * 100)) : 0;
-      if (!state.dragging) seek.value = String(Math.round(percent * 10));
-      seek.style.setProperty('--progress', percent + '%');
-      var timeText = videoTime(v.currentTime) + (ready ? ' / ' + videoTime(v.duration) : '');
-      if (clock.textContent !== timeText) {
-        clock.textContent = timeText;
-        seek.setAttribute('aria-valuetext', timeText);
-      }
-    }
-    function paint() {
-      timeline();
-      if (!v.paused && !document.hidden) state.raf = requestAnimationFrame(paint);
     }
     function sync() {
       shell.dataset.playing = String(!v.paused);
@@ -503,9 +478,6 @@
       sound.setAttribute('aria-label', (v.muted ? videoWords.unmute : videoWords.mute) + ' — ' + v.title);
       toggle.title = v.paused ? videoWords.play : videoWords.pause;
       sound.title = v.muted ? videoWords.unmute : videoWords.mute;
-      cancelAnimationFrame(state.raf);
-      timeline();
-      if (!v.paused && !document.hidden) state.raf = requestAnimationFrame(paint);
     }
     function start(manual) {
       if (document.hidden || (!manual && (!state.visible || state.manualPause || v.ended || v.error)) || state.pending || !v.paused) return;
@@ -534,7 +506,7 @@
       if (visible && !document.hidden) start(false);
       else { v.pause(); status.textContent = ''; }
     }
-    toggle.addEventListener('click', function () {
+    function togglePlayback() {
       if (!v.paused || state.pending) {
         state.manualPause = true;
         v.pause();
@@ -546,23 +518,13 @@
         start(true);
       }
       sync();
-    });
+    }
+    toggle.addEventListener('click', togglePlayback);
+    v.addEventListener('click', togglePlayback);
     sound.addEventListener('click', function () {
       v.muted = !v.muted;
       if (!v.muted) quietOthers(frame);
       sync();
-    });
-    seek.addEventListener('pointerdown', function () { state.dragging = true; });
-    function finishSeek() { state.dragging = false; timeline(); }
-    seek.addEventListener('pointerup', finishSeek);
-    seek.addEventListener('pointercancel', finishSeek);
-    seek.addEventListener('change', finishSeek);
-    seek.addEventListener('blur', finishSeek);
-    seek.addEventListener('input', function () {
-      if (!Number.isFinite(v.duration) || v.duration <= 0) return;
-      var target = Math.min(v.duration, Math.max(0, Number(seek.value) / 1000 * v.duration));
-      if (Number.isFinite(target)) v.currentTime = target;
-      timeline();
     });
     v.addEventListener('playing', function () {
       if (!state.visible || document.hidden || state.manualPause) { v.pause(); return; }
@@ -577,7 +539,6 @@
     v.addEventListener('waiting', function () { if (!v.paused) status.textContent = videoWords.loading; });
     v.addEventListener('error', function () { status.textContent = videoWords.error; sync(); });
     v.addEventListener('ended', function () { state.manualPause = true; status.textContent = ''; sync(); });
-    ['loadedmetadata', 'durationchange', 'timeupdate', 'seeked'].forEach(function (event) { v.addEventListener(event, timeline); });
     serverPlayers.push({ frame: frame, load: loaded, visibility: visibility, state: state });
     sync();
   });
@@ -594,15 +555,17 @@
       var visibleVideo = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           var p = serverPlayers.find(function (p) { return p.frame === entry.target; });
-          p.visibility(entry.isIntersecting && entry.intersectionRatio >= 0.35);
+          p.visibility(entry.isIntersecting && entry.intersectionRatio > 0.5);
         });
-      }, { threshold: [0, 0.35] });
+      }, { threshold: [0, 0.5, 0.5 + Number.EPSILON] });
       serverPlayers.forEach(function (p) { nearVideo.observe(p.frame); visibleVideo.observe(p.frame); });
     } else {
       var checkVideos = function () {
         serverPlayers.forEach(function (p) {
           var r = p.frame.getBoundingClientRect();
-          p.visibility(r.bottom > 0 && r.top < window.innerHeight);
+          var visibleHeight = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0));
+          var visibleWidth = Math.max(0, Math.min(r.right, window.innerWidth) - Math.max(r.left, 0));
+          p.visibility(r.width > 0 && r.height > 0 && visibleHeight * visibleWidth / (r.width * r.height) > 0.5);
         });
       };
       window.addEventListener('scroll', checkVideos, { passive: true });
