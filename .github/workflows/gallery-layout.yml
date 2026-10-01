@@ -14,5 +14,7 @@ jobs:
           node-version: '24'
       - name: Geometry, source preservation and deterministic live build
         run: node --test --test-concurrency=1 tests/gallery-layout.test.cjs tests/gallery-build.test.mjs tests/design-cases.test.mjs tests/design-masonry.test.cjs tests/video-player.test.mjs tests/video-player-runtime.test.mjs
+      - name: Tembrava EULA, languages, links and metadata
+        run: python3 tests/tembrava-license-acceptance.py
       - name: Generated pages are committed
         run: git diff --exit-code

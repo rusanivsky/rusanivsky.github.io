@@ -9,7 +9,7 @@
 
   Idempotent: running it twice in a row changes nothing.
 */
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, copyFileSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -1069,6 +1069,7 @@ function infoPage() {
       ${PROFILES.map(([h, l]) => `<li><a href="${h}" target="_blank" rel="noopener">${l}</a></li>`).join('\n      ')}
     </ul>
   </section>
+  <p class="prose col-full" style="margin-top:1.5rem"><a href="${href('/tembrava/license/')}">${esc(L({ en: 'Tembrava Display licence', ua: 'Ліцензія Tembrava Display' }))}</a></p>
   <div class="col-full">${foot()}</div>
 </main>`;
   return page({
@@ -1254,6 +1255,94 @@ ${sections}
   });
 }
 
+/* The download preserves the original EULA bytes. The HTML changes only
+   paragraph wrapping; all words and section headings come from the same text. */
+const TEMBRAVA_EULA = readFileSync(new URL('../data/tembrava-license.txt', import.meta.url), 'utf8');
+const TEMBRAVA_TITLE = { en: 'Tembrava Display licence', ua: 'Ліцензія Tembrava Display' };
+const TEMBRAVA_DEK = {
+  en: 'Commercial font licence. EULA 1.0, 1 October 2026, for Tembrava Display 0.9.5 and later updates.',
+  ua: 'Комерційна ліцензія шрифту. EULA 1.0 від 1 жовтня 2026 року для Tembrava Display 0.9.5 і наступних оновлень.',
+};
+const TEMBRAVA_TYPES = [
+  { h: 'Desktop', p: {
+    en: 'Install on up to 5 computers by default. Create commercial printed matter, PDF, images, video, packaging, signage, merchandise, logos and other static artwork for yourself or clients.',
+    ua: 'За замовчуванням — до 5 комп’ютерів. Друк, PDF, зображення, відео, пакування, вивіски, товари, логотипи й інші статичні роботи для себе та клієнтів; комерційне використання результату дозволено.',
+  } },
+  { h: 'Web', p: {
+    en: 'Self-host WOFF2 via CSS @font-face on the domains named in the Licence Certificate. The default limit is 50,000 page views per month. Serve font files only to those domains and do not offer direct downloads.',
+    ua: 'Самостійний хостинг WOFF2 через CSS @font-face на доменах, вказаних у Licence Certificate. За замовчуванням — 50 000 переглядів на місяць. Файли мають обслуговувати лише ці домени й бути недоступними для прямого завантаження.',
+  } },
+  { h: 'App / Digital Publication', p: {
+    en: 'Embed in applications, games or electronic publications without exposing a separate font file to end users. The default limit is 1 title.',
+    ua: 'Вбудовування в застосунки, ігри та електронні видання без доступу користувачів до окремого файла шрифту. За замовчуванням — 1 назва.',
+  } },
+  { h: { en: 'Broadcast / Advertising', ua: 'Трансляція / Реклама' }, p: {
+    en: 'Films, television, streaming, online video advertising and paid social campaigns are covered by Desktop. Embedding in broadcast graphics systems requires App.',
+    ua: 'Фільми, телебачення, стрімінг, відеореклама та платні кампанії в соцмережах входять у Desktop. Вбудовування в системи телевізійної графіки потребує App.',
+  } },
+  { h: { en: 'Extended Scope', ua: 'Розширена ліцензія' }, p: {
+    en: 'Higher limits, server-side or on-demand generation of customised products, and AI or machine-learning training data sets require a separate written licence.',
+    ua: 'Більші ліміти, серверна генерація персоналізованих продуктів або генерація на вимогу, а також навчальні набори даних для ШІ чи машинного навчання потребують окремої письмової ліцензії.',
+  } },
+];
+const TEMBRAVA_NOTES = [
+  {
+    en: 'This overview explains the licence; the full English EULA below is authoritative. The purchased types and limits are recorded in your invoice or Licence Certificate. If a limit is not stated, the EULA defaults apply. The font is licensed, not sold.',
+    ua: 'Цей огляд пояснює ліцензію; юридично чинний текст — повна англійська EULA нижче. Придбані типи й ліміти вказуються у рахунку або Licence Certificate. Якщо ліміт не вказано, діють ліміти EULA за замовчуванням. Ви отримуєте ліцензію на використання шрифту.',
+  },
+  {
+    en: 'Editable document embedding is permitted. Recipients may view, print and edit the document but may not install or extract the font for independent use. Font files may not be shared; modification is limited to the exceptions in Section 5.',
+    ua: 'Вбудовування в документи з можливістю редагування дозволено. Отримувачі можуть переглядати, друкувати й редагувати документ, але не встановлювати чи витягувати шрифт для окремого використання. Поширювати файли шрифту заборонено; винятки щодо модифікації визначені у розділі 5.',
+  },
+  {
+    en: 'Artwork converted to outlines may be used in your own logos and trademarks, except for the reserved word&music and wm marks. A client needs its own licence to edit or produce further material; a Desktop licence may be transferred once to a client with written notice to the Licensor and deletion of your copies.',
+    ua: 'Текст, переведений у криві, можна використовувати у власних логотипах і торгових знаках, крім зарезервованих знаків word&music та wm. Клієнтові для редагування або створення подальших матеріалів потрібна власна ліцензія. Desktop можна один раз передати клієнтові, письмово повідомивши ліцензіара та видаливши власні копії.',
+  },
+];
+
+const licenceParagraphs = text => text.trim().split(/\n\s*\n/).map(p => `<p>${esc(p.replace(/\n/g, ' '))}</p>`).join('\n      ');
+
+function tembravaLicencePage() {
+  const [preamble, ...clauses] = TEMBRAVA_EULA.split(/(?=^\d+\. [A-Z][A-Z ]+$)/m);
+  const sections = clauses.map(clause => {
+    const end = clause.indexOf('\n');
+    return `
+    <section class="section g12" style="padding-inline:0">
+      <h2 class="section-label col-full">${esc(clause.slice(0, end))}</h2>
+      <div class="prose col-7" style="margin-top:1.1rem">
+      ${licenceParagraphs(clause.slice(end))}
+      </div>
+    </section>`;
+  }).join('');
+  const body = `
+<main class="page g12" id="main">
+  <div class="page-head col-8">
+    <p class="eyebrow">${esc(L({ en: 'Font licence', ua: 'Ліцензія шрифту' }))}</p>
+    <h1 class="page-title t-title">${esc(L(TEMBRAVA_TITLE))}</h1>
+    ${t(TEMBRAVA_DEK, 'page-intro t-lead', 'p')}
+  </div>
+  <section class="section col-full g12" style="padding-inline:0">
+    <h2 class="section-label col-full">${esc(L({ en: 'Overview', ua: 'Стислий виклад' }))}</h2>
+    <div class="prose col-7" style="margin-top:1.1rem">
+      ${TEMBRAVA_NOTES.map(p => t(p, '', 'p')).join('\n      ')}
+      <p><a href="/tembrava/license/LICENSE.txt" download="LICENSE.txt">${esc(L({ en: 'Download the full EULA (LICENSE.txt)', ua: 'Завантажити повну EULA (LICENSE.txt)' }))}</a></p>
+      <p>${esc(L({ en: 'For a licence purchase or a question about scope, write to ', ua: 'Щоб придбати ліцензію або уточнити її обсяг, напишіть на ' }))}<a href="mailto:${EMAIL}">${EMAIL}</a>.</p>
+    </div>
+    <dl class="spec-list col-7">
+      ${TEMBRAVA_TYPES.map(s => `<dt>${esc(L(s.h))}</dt><dd>${esc(L(s.p))}</dd>`).join('\n      ')}
+    </dl>
+  </section>
+  <article class="col-full" id="full-eula" lang="en">
+    <div class="g12" style="margin-top:3.4rem">
+      <div class="prose col-7">${licenceParagraphs(preamble)}</div>
+    </div>
+${sections}
+  </article>
+  <div class="col-full">${foot()}</div>
+</main>`;
+  return page({ here: '', path: '/tembrava/license/', title: `${L(TEMBRAVA_TITLE)} — ${ui('name')}`, description: L(TEMBRAVA_DEK), body });
+}
+
 function notFound() {
 
   const body = `
@@ -1303,6 +1392,7 @@ function build(lang) {
   out('enquiries/index.html', enquiriesPage());
   out('rates/index.html', ratesPage());
   out('privacy/index.html', privacyPage());
+  out('tembrava/license/index.html', tembravaLicencePage());
   out('404.html', notFound());
   projects.forEach((p, i) => out(`work/${p.slug}/index.html`, projectPage(p, i)));
 
@@ -1350,18 +1440,31 @@ function build(lang) {
 
 LANGS.forEach(build);
 
+const licenceDownload = new URL('../tembrava/license/LICENSE.txt', import.meta.url);
+mkdirSync(dirname(fileURLToPath(licenceDownload)), { recursive: true });
+copyFileSync(new URL('../data/tembrava-license.txt', import.meta.url), licenceDownload);
+written.push('tembrava/license/LICENSE.txt');
+
 /* A sitemap with both locales. On the staging host robots.txt closes the
    whole site and every page carries noindex; on the live host it opens and
    points at the sitemap. Both come out of the same switch, so the two can
    never disagree. */
-const PUBLIC = ['/', '/photo/', '/video/', '/design/', ABOUT_PATH, '/enquiries/', '/rates/', '/privacy/',
+const PUBLIC = ['/', '/photo/', '/video/', '/design/', ABOUT_PATH, '/enquiries/', '/rates/', '/privacy/', '/tembrava/license/',
   ...projects.map((p) => `/work/${p.slug}/`)];
 const today = new Date().toISOString().slice(0, 10);
+// Keep existing dates: a rebuild is not a content update. Record the pages
+// changed by this release explicitly, including both language variants.
+const previousSitemap = new URL('../sitemap.xml', import.meta.url);
+const previousDates = new Map(existsSync(previousSitemap)
+  ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
+  : []);
+const PAGE_UPDATED = { [ABOUT_PATH]: '2026-10-01', '/tembrava/license/': '2026-10-01' };
+const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>
 ${LANGS.map((alt) => `    <xhtml:link rel="alternate" hreflang="${alt === 'ua' ? 'uk' : 'en'}" href="${SITE}${other(alt, path)}"/>`).join('\n')}
     <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${path}"/>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastmod(lang, path)}</lastmod>
   </url>`).join('\n')).join('\n');
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">

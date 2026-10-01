@@ -1,0 +1,147 @@
+TEMBRAVA DISPLAY — COMMERCIAL FONT END USER LICENSE AGREEMENT (EULA)
+Version 1.0, 1 October 2026, for Tembrava Display 0.9.5 and later updates
+
+Copyright © 2026 Kyrylo Taraniuk-Rusanivskyi. All Rights Reserved.
+Licensor: Kyrylo Taraniuk-Rusanivskyi, Kyiv, Ukraine ("Licensor").
+Contact and licence purchase: https://rusanivsky.com
+
+1. DEFINITIONS
+
+"Font Software" means Tembrava Display in any format (OTF, TTF, WOFF2 or
+other), including its outlines, glyphs, OpenType data, source files,
+documentation and any update supplied by the Licensor.
+
+"Licensee" means the person or legal entity that has paid for, or otherwise
+received in writing from the Licensor, a licence for the Font Software, as
+named on the invoice or licence certificate ("Licence Certificate").
+
+"Licence Type" and "Licence Scope" mean the type(s) and limits stated on the
+Licence Certificate. If no limit is stated, the minimum limits in Section 3
+apply.
+
+"Reserved Marks" means the glyphs wordmusic.logo (U+E000 and the "word&music"
+discretionary ligature) and wm.logo (U+E001 and the "w&m" discretionary
+ligature), which reproduce the word&music trademarks.
+
+2. GRANT OF LICENCE
+
+Subject to payment and to this EULA, the Licensor grants the Licensee a
+non-exclusive, non-transferable, worldwide, perpetual licence to use the Font
+Software within the Licence Type(s) and Licence Scope purchased. All rights
+not expressly granted are reserved. The Font Software is licensed, not sold.
+
+3. LICENCE TYPES
+
+3.1 Desktop. Install the Font Software on the number of computers (default:
+up to 5) stated on the Licence Certificate, owned or controlled by the
+Licensee, and use it to create static output: printed matter, PDF, images,
+video, packaging, signage, merchandise, logos and other artwork, for the
+Licensee's own projects or for clients. Static output may be used and
+distributed commercially without further fees.
+
+3.2 Web. Self-host the WOFF2 format and embed it in websites via CSS
+@font-face on the domains stated on the Licence Certificate, up to the
+stated monthly page views (default: 50,000 page views per month). The font
+files must be served only to those domains (e.g. with CORS or referrer
+restrictions) and must not be made available for direct download.
+
+3.3 App and Digital Publication. Embed the Font Software, in a form that is
+not accessible to end users as a separate font file, in the number of
+applications, games or electronic publications (EPUB, interactive PDF,
+e-magazines) stated on the Licence Certificate (default: 1 title).
+
+3.4 Broadcast and Advertising. Use in films, television, streaming, online
+video advertising and paid social campaigns is permitted under the Desktop
+licence. Embedding the Font Software in broadcast graphics systems requires
+the App licence.
+
+3.5 Extended Scope. Larger numbers of computers, domains, page views or
+titles, server-side or on-demand generation of customised products (for
+example print-on-demand templates or personalisation tools that let third
+parties set text in the Font Software), and use in any AI/machine-learning
+training data set require a separate written licence.
+
+4. DOCUMENT EMBEDDING
+
+The Font Software is marked "Editable embedding" (OS/2 fsType 8). The
+Licensee may embed the Font Software, in full or as a subset, in electronic
+documents (such as PDF or Office files) distributed to others. Recipients may
+use the embedded font only to view, print and edit those documents and may
+not install it or extract it for independent use.
+
+5. RESTRICTIONS
+
+The Licensee shall not:
+(a) distribute, share, sublicense, sell, rent, lend or upload the Font
+    Software or make it publicly available, except as embedded under
+    Sections 3.2, 3.3 and 4;
+(b) modify, adapt, translate, convert, decompile or reverse engineer the
+    Font Software or create derivative fonts, except for subsetting and
+    format conversion strictly required for a permitted use, and except
+    where such restriction is prohibited by applicable law;
+(c) remove or alter copyright, trademark or licence information in the
+    Font Software;
+(d) use the Reserved Marks, or any output reproducing them, to identify any
+    goods, services or organisation other than word&music, except with the
+    Licensor's written permission;
+(e) use the name "Tembrava" for any other font or product.
+
+The Licensee may convert artwork set in the Font Software to outlines, and
+may use such outlines, including in the Licensee's own logos and trademarks,
+other than the Reserved Marks.
+
+6. AGENCIES AND CLIENTS
+
+A Licensee working for a client may install the Font Software for that
+client's project within the Licensee's own licence. The client needs its own
+licence to edit or produce further material with the Font Software. The
+Licensee may transfer a Desktop licence once to a client upon completion of a
+project, with written notice to the Licensor, after which the Licensee must
+delete its copies.
+
+7. UPDATES AND SUPPORT
+
+The Licensor may supply updates, corrections and new versions of the Font
+Software. Updates are covered by this EULA unless they come with a new one.
+The Licensor will make reasonable efforts to correct reported technical
+defects but is not obliged to provide support.
+
+8. OWNERSHIP
+
+The Font Software, its design and all intellectual property rights in it
+remain the property of the Licensor. "Tembrava", "word&music" and the wm
+mark are trademarks of their respective owners.
+
+9. WARRANTY AND LIABILITY
+
+The Licensor warrants for 90 days from purchase that the Font Software will
+perform substantially as described in its documentation. The Licensee's sole
+remedy for breach of this warranty is replacement of the Font Software or a
+refund of the licence fee. Otherwise, the Font Software is provided "AS IS".
+To the maximum extent permitted by law, the Licensor is not liable for any
+indirect, incidental or consequential damages, and its total liability shall
+not exceed the licence fee paid.
+
+10. TERMINATION
+
+This EULA terminates automatically if the Licensee breaches it. On
+termination the Licensee must stop using and delete all copies of the Font
+Software. Static output lawfully created before termination may continue to
+be used.
+
+11. GOVERNING LAW
+
+This EULA is governed by the laws of Ukraine. Disputes shall be resolved by
+the competent courts of Kyiv, Ukraine, unless mandatory consumer protection
+law of the Licensee's country provides otherwise.
+
+12. ENTIRE AGREEMENT
+
+This EULA, together with the Licence Certificate, is the entire agreement
+regarding the Font Software. A written licence signed by the Licensor
+prevails over this EULA where they conflict. If any provision is held
+unenforceable, the remaining provisions remain in force.
+
+Use of the Font Software without a valid licence is not permitted. Rights of
+the Licensor and of word&music in their own projects are not limited by this
+EULA.
