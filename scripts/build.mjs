@@ -762,6 +762,26 @@ const featured = projects
   .sort((a, b) => a.featuredOrder - b.featuredOrder)
   .slice(0, 8);
 
+/* On a phone the home list carries the preview the desktop stage would show.
+   A photographic project shows its stage frames as a strip the height of the
+   16:9 preview, each frame whole, scrolled sideways; the row keeps the rhythm
+   of the list and a photograph is no longer cut to a band. Video and design
+   keep the single 16:9 cover. */
+const stripSizes = (ratio) => `(min-width: 61rem) 1px, calc((100vw - 2.5rem) * 0.5625 * ${ratio.toFixed(3)})`;
+
+function rowPreview(p, i) {
+  if (p.disciplines[0] !== 'photography') {
+    return `<span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, eager: i === 0, sizes: sizesFor(4), skip: i === 0 ? DESK : '' })}</span>`;
+  }
+  const frames = stagePick(p).map((x, k) => {
+    const d = dim(x.src);
+    const ratio = d ? d.w / d.h : 1.5;
+    const eager = i === 0 && k === 0;
+    return `<span class="strip-frame" style="--r:${ratio.toFixed(4)}">${img(x.src, k === 0 ? L(p.title) : '', { lazy: !eager, eager, sizes: stripSizes(ratio), skip: eager ? DESK : '' })}</span>`;
+  }).join('');
+  return `<span class="row-preview row-strip">${frames}</span>`;
+}
+
 const STANDFIRST = {
   en: 'Kyrylo Rusanivsky works in Kyiv across three practices — photography, video and graphic design — and keeps a street-photography series of his own. Selected projects below.',
   ua: 'Кирило Русанівський працює в Києві у трьох практиках — фотографія, відео і графічний дизайн — і веде власну серію вуличних світлин. Нижче — обрані проєкти.',
@@ -774,7 +794,7 @@ function homePage() {
     ${t(p.title, 'row-title')}
   </span>
   <span class="row-meta">${metaBits(p, esc).join('<span class="dot">·</span>')}</span>
-  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, eager: i === 0, sizes: sizesFor(4), skip: i === 0 ? DESK : '' })}</span>
+  ${rowPreview(p, i)}
 </a>`).join('\n');
 
   const slides = featured.map((p, i) =>

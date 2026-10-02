@@ -1018,6 +1018,34 @@ html.stage-glow-baked .stage::after { display: none; }
   object-position: var(--focus, 50% 50%);
 }
 @media (min-width: 61rem) { .row-preview { display: none; } }
+/* A photographic row on a phone: the stage frames side by side at the height
+   of the 16:9 preview, whole, scrolled sideways and snapping to each frame.
+   The strip bleeds to the right edge so the next frame shows as a promise. */
+@media (max-width: 60.99rem) {
+  .row-preview.row-strip {
+    aspect-ratio: auto;
+    height: calc((100vw - 2 * var(--pad)) * 9 / 16);
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    background: none;
+    margin-right: calc(var(--pad) * -1);
+    padding-right: var(--pad);
+  }
+  .row-strip::-webkit-scrollbar { display: none; }
+  .row-strip::before { display: none; }
+  .strip-frame {
+    flex: none;
+    height: 100%;
+    aspect-ratio: var(--r, 1.5);
+    scroll-snap-align: start;
+    background: var(--stage-bg);
+  }
+  .strip-frame > picture { display: contents; }
+}
 
 /* ---------- Stage ---------- */
 .stage { display: none; }
