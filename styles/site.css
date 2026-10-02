@@ -1820,8 +1820,11 @@ html.splash-off .splash {
    All of this hangs off .fx, which the boot script raises only when motion
    is welcome; site.js explains who is marked and when. Until the script has
    marked the page, the page waits unseen — for three seconds at most, after
-   which the boot script shows it regardless. */
-html.fx:not(.fx-ready) :is(.rail, .bar, main) { opacity: 0; }
+   which the boot script shows it regardless. Between pages of the site
+   (.fx-stay) the header and the rail are the same on both sides, so they
+   stay where they are and only the page itself arrives. */
+html.fx:not(.fx-ready) main,
+html.fx:not(.fx-ready):not(.fx-stay) :is(.rail, .bar) { opacity: 0; }
 /* Raised by site.js for the instant it puts the marks on; see there. */
 html.fx.fx-mark :is(.rv, .rv-fade, .rv-rule, .lf .w) { transition: none !important; }
 
