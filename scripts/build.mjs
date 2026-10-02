@@ -166,12 +166,26 @@ const mobile = (here, path) => {
   return `
 <div class="bar">
   <a class="wordmark" href="${href('/')}">${ui('name')}</a>
-  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">${label}</button>
+  <button type="button" id="menu-open" class="burger-btn" aria-expanded="false" aria-controls="drawer" aria-label="${attr(label)}">
+    <span class="burger-label">${label}</span>
+    <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
+      <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
 </div>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="${attr(label)}" hidden>
   <div class="drawer-top">
     <span class="wordmark">${ui('name')}</span>
-    <button type="button" id="menu-close">${ui('close')}</button>
+    <button type="button" id="menu-close" class="burger-btn" aria-label="${attr(ui('close'))}">
+      <span class="burger-label">${ui('close')}</span>
+      <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
+        <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
   <div class="group">${navLinks(NAV_MAIN, here)}</div>
   <div class="group">${navLinks(NAV_SECOND, here)}</div>

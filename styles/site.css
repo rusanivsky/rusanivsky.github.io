@@ -587,11 +587,48 @@ ul, ol { list-style: none; }
   background: var(--paper);
   border-bottom: var(--rule-w) solid var(--line-soft);
 }
-.bar button {
+.bar button, .drawer-top button {
   font-size: var(--t-label);
   font-weight: var(--w-semi);
   letter-spacing: var(--track-label);
   text-transform: uppercase;
+}
+.burger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.burger-icon {
+  width: 18px;
+  height: 12px;
+  display: block;
+  overflow: visible;
+  flex-shrink: 0;
+}
+.burger-icon .line {
+  transform-box: view-box;
+  transform-origin: 9px 6px;
+  transition: transform 280ms var(--ease-out),
+              opacity 200ms var(--ease-out);
+  will-change: transform, opacity;
+}
+.burger-btn[aria-expanded="true"] .line-top,
+.drawer.open #menu-close .line-top {
+  transform: translateY(5px) rotate(45deg);
+}
+.burger-btn[aria-expanded="true"] .line-mid,
+.drawer.open #menu-close .line-mid {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.burger-btn[aria-expanded="true"] .line-bot,
+.drawer.open #menu-close .line-bot {
+  transform: translateY(-5px) rotate(-45deg);
 }
 @media (min-width: 61rem) { .bar { display: none; } }
 
@@ -607,19 +644,46 @@ ul, ol { list-style: none; }
      twitch on every tap. */
   padding: 0.9rem var(--pad) 3rem;
   overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition: opacity 280ms var(--ease-out),
+              transform 280ms var(--ease-out),
+              visibility 280ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.drawer.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 .drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
-.drawer-top button {
-  font-size: var(--t-label);
-  font-weight: var(--w-semi);
-  letter-spacing: var(--track-label);
-  text-transform: uppercase;
-}
 .drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
+.drawer .group {
+  transform: translateY(-6px);
+  opacity: 0.7;
+  transition: transform 280ms var(--ease-out),
+              opacity 280ms var(--ease-out);
+}
+.drawer.open .group {
+  transform: translateY(0);
+  opacity: 1;
+}
 .drawer .group + .group { margin-top: 1rem; padding-top: 1rem; border-top: var(--rule-w) solid var(--line-soft); }
 .drawer .group.small a { color: var(--muted); }
 .drawer .group.small .theme a { font-size: var(--t-meta); line-height: 2.1; }
 .drawer .lang + .theme-modes { margin-top: 1.1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .burger-icon .line,
+  .drawer,
+  .drawer .group {
+    transition: none !important;
+    transform: none !important;
+  }
+}
 
 /* The old site's green on a subpage. It is not a header colour: the rail and
    the bar stay paper, and the green lies as a wide glow in the top right of
