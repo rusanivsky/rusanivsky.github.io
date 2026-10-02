@@ -604,31 +604,47 @@ ul, ol { list-style: none; }
   cursor: pointer;
 }
 .burger-icon {
-  width: 18px;
-  height: 12px;
-  display: block;
-  overflow: visible;
+  width: 14px;
+  height: 14px;
+  position: relative;
+  display: inline-block;
   flex-shrink: 0;
 }
 .burger-icon .line {
-  transform-box: view-box;
-  transform-origin: 9px 6px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transform-origin: center center;
   transition: transform 280ms var(--ease-out),
               opacity 200ms var(--ease-out);
   will-change: transform, opacity;
 }
+.burger-icon .line-top {
+  transform: translateY(-4.5px);
+}
+.burger-icon .line-mid {
+  transform: translateY(0);
+}
+.burger-icon .line-bot {
+  transform: translateY(4.5px);
+}
 .burger-btn[aria-expanded="true"] .line-top,
 .drawer.open #menu-close .line-top {
-  transform: translateY(5px) rotate(45deg);
+  transform: rotate(45deg);
 }
 .burger-btn[aria-expanded="true"] .line-mid,
 .drawer.open #menu-close .line-mid {
   opacity: 0;
-  transform: scaleX(0);
+  transform: scale(0);
 }
 .burger-btn[aria-expanded="true"] .line-bot,
 .drawer.open #menu-close .line-bot {
-  transform: translateY(-5px) rotate(-45deg);
+  transform: rotate(-45deg);
 }
 @media (min-width: 61rem) { .bar { display: none; } }
 
