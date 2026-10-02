@@ -229,19 +229,48 @@
   if (drawer) {
     var opener = document.getElementById('menu-open');
     var closer = document.getElementById('menu-close');
+    var closing = false;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     function openDrawer() {
+      if (closing) return;
       drawer.hidden = false;
+      drawer.scrollTop = 0;
+      drawer.offsetHeight;
+      drawer.classList.add('open');
+      if (opener) opener.setAttribute('aria-expanded', 'true');
       lockScroll();
       var first = drawer.querySelector('a, button');
       if (first) first.focus();
     }
     function closeDrawer() {
-      drawer.hidden = true;
+      if (drawer.hidden || closing) return;
+      drawer.classList.remove('open');
+      if (opener) opener.setAttribute('aria-expanded', 'false');
       unlockScroll();
-      if (opener) opener.focus();
+      if (reducedMotion) {
+        drawer.hidden = true;
+        if (opener) opener.focus();
+        return;
+      }
+      closing = true;
+      var onEnd = function () {
+        drawer.removeEventListener('transitionend', onEnd);
+        clearTimeout(timer);
+        if (!drawer.classList.contains('open')) {
+          drawer.hidden = true;
+        }
+        closing = false;
+        if (opener) opener.focus();
+      };
+      var timer = setTimeout(onEnd, 300);
+      drawer.addEventListener('transitionend', onEnd);
     }
     if (opener) opener.addEventListener('click', openDrawer);
     if (closer) closer.addEventListener('click', closeDrawer);
+    drawer.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeDrawer();
+    });
     drawer.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeDrawer();
     });

@@ -36,7 +36,7 @@
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=d3ffd22c">
+<link rel="stylesheet" href="/styles/site.css?v=a145e5b5">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
@@ -53,7 +53,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},2
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();</script>
 <script src="/scripts/gallery-layout.js?v=12853514" defer></script>
-<script src="/scripts/site.js?v=753dc571" defer></script>
+<script src="/scripts/site.js?v=d318d57f" defer></script>
 
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
@@ -82,12 +82,26 @@ setTimeout(finish,6000);}catch(e){}})();</script>
 
 <div class="bar">
   <a class="wordmark" href="/ua/">Кирило Русанівський</a>
-  <button type="button" id="menu-open" aria-expanded="false" aria-controls="drawer">Меню</button>
+  <button type="button" id="menu-open" class="burger-btn" aria-expanded="false" aria-controls="drawer" aria-label="Меню">
+    <span class="burger-label">Меню</span>
+    <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
+      <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
 </div>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Меню" hidden>
   <div class="drawer-top">
     <span class="wordmark">Кирило Русанівський</span>
-    <button type="button" id="menu-close">Закрити</button>
+    <button type="button" id="menu-close" class="burger-btn" aria-label="Закрити">
+      <span class="burger-label">Закрити</span>
+      <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
+        <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
   <div class="group"><a href="/ua/">Обране</a><a href="/ua/photo/">Фотографія</a><a href="/ua/video/">Відео</a><a href="/ua/design/">Дизайн</a></div>
   <div class="group"><a href="/ua/aboutme/">Про мене</a><a href="/ua/enquiries/" aria-current="page">Замовлення</a></div>
