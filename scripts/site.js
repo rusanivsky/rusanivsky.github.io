@@ -923,20 +923,93 @@
       if (lbCap) lbCap.textContent = item.alt || '';
     }
 
-    function open(items, index, source) {
+    /* The picture grows out of the frame that was tapped and goes back into
+       it. A copy of the thumbnail (already decoded, so it shows at once)
+       travels between the two places; the viewer's own image, still
+       loading its widest step, takes over when the copy lands and has
+       loaded, or after a short wait. Reduced motion opens and closes in
+       place. Only transform and opacity move. */
+    var lbMotion = !matchMedia('(prefers-reduced-motion: reduce)').matches && !!lbImg.animate;
+    var LB_MS = 460;
+    function thumbOf(el) { return el && el.querySelector && el.querySelector('img'); }
+    function onScreen(r) { return r.width > 0 && r.bottom > 0 && r.top < innerHeight; }
+    function flyer(src, r) {
+      var c = document.createElement('img');
+      c.className = 'lb-flyer';
+      c.src = src;
+      c.alt = '';
+      c.style.cssText = 'position:fixed;left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;z-index:70;transform-origin:0 0;pointer-events:none;object-fit:contain';
+      document.body.appendChild(c);
+      return c;
+    }
+    function between(a, b) {
+      return 'translate(' + (a.left - b.left) + 'px,' + (a.top - b.top) + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
+    }
+
+    var anchors = [];
+    // Where the picture will stand once loaded: its own proportions fitted
+    // into the viewer's stage, the way the stylesheet will lay it out. The
+    // image itself cannot be measured yet — it has no pixels until it loads.
+    function landing(item) {
+      var box = lbImg.parentElement;
+      var b = box.getBoundingClientRect(), cs = getComputedStyle(box);
+      var l = b.left + parseFloat(cs.paddingLeft), t = b.top + parseFloat(cs.paddingTop);
+      var aw = b.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var ah = b.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      if (!(item.w > 0 && item.h > 0 && aw > 0 && ah > 0)) return null;
+      var k = Math.min(aw / item.w, ah / item.h);
+      var w = item.w * k, h = item.h * k;
+      return { left: l + (aw - w) / 2, top: t + (ah - h) / 2, width: w, height: h };
+    }
+
+    function open(items, index, source, links) {
       group = items;
+      anchors = links || [];
       at = index;
       opener2 = source;
+      var thumb = thumbOf(source);
+      var from = thumb && thumb.getBoundingClientRect();
       lb.hidden = false;
       lockScroll();
       render();
       lb.querySelector('.lb-close').focus();
+      if (!lbMotion || !from || !onScreen(from) || !thumb.currentSrc) return;
+      var to = landing(group[at]);
+      if (!to) return;
+      var c = flyer(thumb.currentSrc, to);
+      lbImg.style.visibility = 'hidden';
+      lb.animate([{ backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(lb).backgroundColor }],
+        { duration: LB_MS * 0.7, easing: 'ease-out' });
+      var fly = c.animate([{ transform: between(from, to) }, { transform: 'none' }],
+        { duration: LB_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+      var landed = new Promise(function (r) { fly.onfinish = r; fly.oncancel = r; });
+      var loaded = lbImg.complete ? null : new Promise(function (r) {
+        lbImg.addEventListener('load', r, { once: true });
+        lbImg.addEventListener('error', r, { once: true });
+        setTimeout(r, 1500);
+      });
+      Promise.all([landed, loaded]).then(function () {
+        lbImg.style.visibility = '';
+        c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160 }).onfinish = function () { c.remove(); };
+      });
     }
 
     function close() {
+      var from = lbMotion && !lb.hidden && lbImg.currentSrc ? lbImg.getBoundingClientRect() : null;
+      var src = lbImg.currentSrc;
       lb.hidden = true;
       unlockScroll();
-      if (opener2) opener2.focus();
+      // Back into the frame of the picture now on show, if it is on screen.
+      var shown = anchors[at];
+      var target = shown || opener2;
+      if (target) target.focus({ preventScroll: true });
+      var thumb = thumbOf(target);
+      var to = thumb && thumb.getBoundingClientRect();
+      if (!from || !from.width || !to || !onScreen(to)) return;
+      var c = flyer(src, to);
+      var anim = c.animate([{ transform: between(from, to) }, { transform: 'none', opacity: 1 }, { opacity: 0 }],
+        { duration: LB_MS * 0.85, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+      anim.onfinish = anim.oncancel = function () { c.remove(); };
     }
 
     function step(d) {
@@ -973,7 +1046,7 @@
             alt: im.alt, w: aw, h: ah,
           };
         });
-        open(items, all.indexOf(trigger), trigger);
+        open(items, all.indexOf(trigger), trigger, all);
         return;
       }
       if (e.target.closest('.lb-close')) close();
