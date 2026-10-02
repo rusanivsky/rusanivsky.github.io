@@ -336,11 +336,17 @@
       }, 450);
     }
 
+    var list = document.querySelector('.index');
+    if (list) list.addEventListener('pointerleave', stopPreviews);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stopPreviews(); });
+
     document.querySelectorAll('.row').forEach(function (row, i) {
       // pointerenter rather than mouseenter so a pen behaves like a mouse,
       // while a touch tap goes straight to the link instead of previewing.
       row.addEventListener('pointerenter', function (e) {
         if (e.pointerType === 'touch') return;
+        // Back on the row whose wall is already up: its clip starts again.
+        if (i === current && stage.classList.contains('live') && !stage.querySelector('video.stage-preview')) startPreview(slides[i]);
         show(i);
       });
       row.addEventListener('focus', function () { show(i); });
@@ -498,15 +504,18 @@
             if (wrap.dataset.want) { quietOthers(wrap); ev.target.playVideo(); }
           },
           onStateChange: function (ev) {
-            if (ev.data === 1 || ev.data === 3) {
+            var was = entry.playing;
+            entry.playing = ev.data === 1 || ev.data === 3;
+            if (entry.playing && !was) {
               wrap.classList.add('playing');
               quietOthers(wrap);
-              entry.playing = true;
-              externalChanged();
-            } else if (ev.data === 0 || ev.data === 2) {
-              entry.playing = false;
-              externalChanged();
             }
+            if (entry.playing !== was) externalChanged();
+          },
+          // A film that will not play (embedding off, removed) must not hold
+          // the server films still.
+          onError: function () {
+            if (entry.playing) { entry.playing = false; externalChanged(); }
           },
         },
       });
@@ -942,6 +951,14 @@
       document.body.appendChild(c);
       return c;
     }
+    var flight = null;   // the copy in the air, if any: { anim, el }
+    function land() {
+      if (!flight) return;
+      flight.anim.cancel();
+      flight.el.remove();
+      flight = null;
+      lbImg.style.visibility = '';
+    }
     function between(a, b) {
       return 'translate(' + (a.left - b.left) + 'px,' + (a.top - b.top) + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
     }
@@ -963,6 +980,7 @@
     }
 
     function open(items, index, source, links) {
+      land();
       group = items;
       anchors = links || [];
       at = index;
@@ -982,19 +1000,23 @@
         { duration: LB_MS * 0.7, easing: 'ease-out' });
       var fly = c.animate([{ transform: between(from, to) }, { transform: 'none' }],
         { duration: LB_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
-      var landed = new Promise(function (r) { fly.onfinish = r; fly.oncancel = r; });
+      var mine = flight = { anim: fly, el: c };
+      var landed = new Promise(function (r) { fly.onfinish = r; });
       var loaded = lbImg.complete ? null : new Promise(function (r) {
         lbImg.addEventListener('load', r, { once: true });
         lbImg.addEventListener('error', r, { once: true });
         setTimeout(r, 1500);
       });
       Promise.all([landed, loaded]).then(function () {
+        if (flight !== mine) return;   // closed or reopened meanwhile
+        flight = null;
         lbImg.style.visibility = '';
         c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160 }).onfinish = function () { c.remove(); };
       });
     }
 
     function close() {
+      land();
       var from = lbMotion && !lb.hidden && lbImg.currentSrc ? lbImg.getBoundingClientRect() : null;
       var src = lbImg.currentSrc;
       lb.hidden = true;
@@ -1002,7 +1024,13 @@
       // Back into the frame of the picture now on show, if it is on screen.
       var shown = anchors[at];
       var target = shown || opener2;
-      if (target) target.focus({ preventScroll: true });
+      if (target) {
+        // Focus stays where it can be seen: a frame that has scrolled away
+        // while the viewer stepped through the series is brought back.
+        var tr = target.getBoundingClientRect();
+        target.focus(onScreen(tr) ? { preventScroll: true } : undefined);
+        if (!onScreen(target.getBoundingClientRect()) && target.scrollIntoView) target.scrollIntoView({ block: 'nearest' });
+      }
       var thumb = thumbOf(target);
       var to = thumb && thumb.getBoundingClientRect();
       if (!from || !from.width || !to || !onScreen(to)) return;
