@@ -286,6 +286,9 @@
 
     function show(idx) {
       if (idx === current) return;
+      // The first wall arrives with the page; every wall after it is brought
+      // in by the reader, frame by frame (styles: .stage.live).
+      if (current !== null) stage.classList.add('live');
       current = idx;
       slides.forEach(function (s, i) {
         s.classList.toggle('on', i === idx);

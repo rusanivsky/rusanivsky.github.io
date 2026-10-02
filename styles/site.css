@@ -1596,6 +1596,21 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
    new. The foot stays for the stack, where there is no rail. */
 @media (min-width: 61rem) { .foot { display: none; } }
 
+/* A wall the reader calls up on the stage comes in frame by frame from the
+   lead: each frame rises a few pixels as it fades in, a beat after the one
+   before. The first wall is left to the page entrance (.stage.live is set
+   only from the second wall on). Only opacity and transform move. */
+@keyframes tile-arrive { from { opacity: 0; transform: translateY(10px); } }
+@media (min-width: 61rem) {
+  html.fx .stage.live .slide.on .tile-in {
+    animation: tile-arrive calc(620ms / var(--pace)) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 90ms / var(--pace));
+  }
+  .stage .tile:nth-child(2) { --i: 1; }
+  .stage .tile:nth-child(3) { --i: 2; }
+  .stage .tile:nth-child(4) { --i: 3; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
