@@ -617,7 +617,7 @@
        fixed bar covers the top of the window, so the part of a film under it
        counts as hidden: the film stops once half of it has gone under the
        bar or past the bottom edge, not only past the edge of the glass. */
-    var bar = document.querySelector('.bar');
+    var bar = document.querySelectorAll('.bar')[0];
     var coveredTop = function () {
       return bar && getComputedStyle(bar).display !== 'none' ? Math.round(bar.getBoundingClientRect().bottom) : 0;
     };
