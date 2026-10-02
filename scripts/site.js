@@ -893,6 +893,52 @@
     }, { passive: true });
   }
 
+  /* ---------- Between pages ----------
+     Cross-document view transitions (styles: @view-transition). On the way
+     out, the link the reader followed gives its title and its picture the
+     names kr-title and kr-lead; on the way in, the project page gives the
+     same names to its own title and first frame, and the browser moves one
+     onto the other. The names live only for the transition. The entrance
+     below leaves the named picture out of its fade, so the frame it lands on
+     is visible; a session flag tells it, since not every browser exposes
+     where a navigation came from. */
+  var VT_KEY = 'kr-vt';
+  function vtName(el, name) { if (el) el.style.viewTransitionName = name; }
+  function vtClear() {
+    document.querySelectorAll('[style*="view-transition-name"]').forEach(function (el) {
+      el.style.viewTransitionName = '';
+    });
+  }
+  function vtLead() {
+    return document.querySelector('main.project .seq img, main.project .seq video, main.project .seq .player');
+  }
+  var vtIncoming = false;
+  try { vtIncoming = sessionStorage.getItem(VT_KEY) === location.pathname; sessionStorage.removeItem(VT_KEY); } catch (e) {}
+  window.addEventListener('pageswap', function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    var to = new URL(e.activation.entry.url);
+    if (to.origin !== location.origin) return;
+    var path = to.pathname;
+    var links = Array.prototype.filter.call(document.querySelectorAll('a.row, a.work, a.mosaic'), function (a) {
+      return a.pathname === path && a.getClientRects().length;
+    });
+    if (!links.length) return;
+    var card = links.find(function (a) { return !a.classList.contains('mosaic'); });
+    vtName(card && card.querySelector('.row-title, .work-title'), 'kr-title');
+    var wall = !mobile && links.find(function (a) { return a.classList.contains('mosaic') && a.closest('.slide.on'); });
+    vtName(wall || (card && card.querySelector('.row-preview img, .work-cover img')), 'kr-lead');
+    try { sessionStorage.setItem(VT_KEY, path); } catch (err) {}
+  });
+  window.addEventListener('pagereveal', function (e) {
+    vtClear();
+    if (!e.viewTransition || !vtIncoming) return;
+    vtName(document.querySelector('main.project .project-title'), 'kr-title');
+    vtName(vtLead(), 'kr-lead');
+    e.viewTransition.finished.then(vtClear, vtClear);
+  });
+  // Back from the bfcache: the old page still carries the names it gave away.
+  window.addEventListener('pageshow', function (e) { if (e.persisted) vtClear(); });
+
   /* ---------- How a page arrives ----------
      The boot script in <head> raises .fx before the first paint whenever the
      visitor has not asked for less motion; nothing below runs without it.
@@ -1017,6 +1063,11 @@
     // — which looks like no entrance at all. So the marks go on with
     // transitions switched off, the styles are flushed, and only then are the
     // transitions given back.
+    // The frame a view transition lands on must be visible when it lands.
+    if (vtIncoming) {
+      var landing = vtLead();
+      if (landing) blocks = blocks.filter(function (b) { return !b.contains(landing); });
+    }
     root.classList.add('fx-mark');
     blocks.forEach(function (b) { mark(b, 'rv', 0); });
     chrome.forEach(function (el, i) { mark(el, 'rv', sec(0.1 + i * 0.045)); });

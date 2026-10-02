@@ -273,6 +273,35 @@ body {
   animation-timing-function: ease-in-out;
 }
 
+/* Between pages of the site the browser cross-fades the old page into the
+   new one, and the project a reader chose travels with them: its title and
+   its picture (the stage wall, a list preview or a card cover) move into the
+   title and the first frame of the project page (scripts/site.js names the
+   pair, only for the link that was followed). Reduced motion keeps the plain
+   page change. Browsers without cross-document view transitions ignore all
+   of it. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; types: kr-page; }
+}
+html:active-view-transition-type(kr-page)::view-transition-old(root),
+html:active-view-transition-type(kr-page)::view-transition-new(root) {
+  animation-duration: calc(420ms / var(--pace));
+}
+::view-transition-group(kr-title),
+::view-transition-group(kr-lead) {
+  animation-duration: calc(900ms / var(--pace));
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(kr-title),
+::view-transition-new(kr-title),
+::view-transition-old(kr-lead),
+::view-transition-new(kr-lead) {
+  animation-duration: calc(900ms / var(--pace));
+  /* The picture keeps its own proportions while its box changes shape. */
+  height: 100%;
+  object-fit: cover;
+}
+
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
