@@ -35,7 +35,7 @@
 <link rel="manifest" href="/site.webmanifest?v=a254f2af">
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=a145e5b5">
+<link rel="stylesheet" href="/styles/site.css?v=4392d4b3">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
@@ -83,11 +83,11 @@ setTimeout(finish,6000);}catch(e){}})();</script>
   <a class="wordmark" href="/">Kyrylo Rusanivsky</a>
   <button type="button" id="menu-open" class="burger-btn" aria-expanded="false" aria-controls="drawer" aria-label="Index">
     <span class="burger-label">Index</span>
-    <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
-      <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
+    <span class="burger-icon" aria-hidden="true">
+      <span class="line line-top"></span>
+      <span class="line line-mid"></span>
+      <span class="line line-bot"></span>
+    </span>
   </button>
 </div>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Index" hidden>
@@ -95,11 +95,11 @@ setTimeout(finish,6000);}catch(e){}})();</script>
     <span class="wordmark">Kyrylo Rusanivsky</span>
     <button type="button" id="menu-close" class="burger-btn" aria-label="Close">
       <span class="burger-label">Close</span>
-      <svg class="burger-icon" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
-        <line class="line line-top" x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        <line class="line line-mid" x1="0" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        <line class="line line-bot" x1="0" y1="11" x2="18" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+      <span class="burger-icon" aria-hidden="true">
+        <span class="line line-top"></span>
+        <span class="line line-mid"></span>
+        <span class="line line-bot"></span>
+      </span>
     </button>
   </div>
   <div class="group"><a href="/" aria-current="page">Selected</a><a href="/photo/">Photography</a><a href="/video/">Video</a><a href="/design/">Design</a></div>
