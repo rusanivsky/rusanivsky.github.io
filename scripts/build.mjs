@@ -84,9 +84,12 @@ function write(path, html) {
 
 /* ---------------- shell ---------------- */
 
-const NAV_MAIN = [['/', 'selected'], ['/photo/', 'photography'], ['/video/', 'video'], ['/design/', 'design']];
-/* Street photography is a project like the others (/work/street/), reached
-   from the home page, the photography index and its own old address. */
+const NAV_MAIN = [['/', 'selected'], ['/photo/', 'photography'], ['/video/', 'video'], ['/design/', 'design'], ['/street/', 'street']];
+/* Street photography is the author's own section, not a fourth practice:
+   /street/ lists its series and each series lives under it
+   (/street/after-five/). A project marked `section: 'street'` takes that
+   path and stays off the practice hubs. */
+const workPath = (p) => (p.section === 'street' ? `/street/${p.slug}/` : `/work/${p.slug}/`);
 const ABOUT_PATH = '/aboutme/';
 const NAV_SECOND = [[ABOUT_PATH, 'info'], ['/enquiries/', 'enquiries']];
 const NAV_MINOR = [['/rates/', 'rates']];
@@ -410,7 +413,7 @@ const ROLE = {
 };
 
 function projectMeta(p) {
-  const discipline = p.disciplines.map((d) => L(DISCIPLINE[d])).join(' / ');
+  const discipline = p.section === 'street' ? ui('street') : p.disciplines.map((d) => L(DISCIPLINE[d])).join(' / ');
   const bits = [discipline];
   // A role that only restates the practice, or a client that only restates
   // the title, adds nothing to the row.
@@ -720,7 +723,7 @@ function photographyMosaic(p, eager) {
     return `<span class="tile" style="${geometry}"><span class="tile-in">${img(item.src, item.alt, { lazy: !eager, eager, sizes: stageSizes(wall, width / tile.w, soloK), skip: eager ? PHONE : '' })}</span></span>`;
   }).join('');
   const walls = `--wall-n:${wall.toFixed(6)}${same ? '' : `;--wall-w:${wallWide.toFixed(6)}`}`;
-  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="${walls}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
+  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(workPath(p))}" tabindex="-1" style="${walls}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
 }
 
 function mosaic(p, eager) {
@@ -762,7 +765,7 @@ function mosaic(p, eager) {
   /* The wall is a link to the project, the same place its row leads. It is
      out of the tab order: the stage is aria-hidden, and the row beside it is
      already the way in for a keyboard or a screen reader. */
-  return `<a class="mosaic${a.n === 1 ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</a>`;
+  return `<a class="mosaic${a.n === 1 ? ' solo' : ''}" href="${href(workPath(p))}" tabindex="-1" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</a>`;
 }
 
 /* Eight is the whole selection on the home page: the list is a door, not an
@@ -799,7 +802,7 @@ const STANDFIRST = {
 };
 
 function homePage() {
-  const rows = featured.map((p, i) => `<a class="row" href="${href(`/work/${p.slug}/`)}">
+  const rows = featured.map((p, i) => `<a class="row" href="${href(workPath(p))}">
   <span class="row-head">
     <span class="row-no">${String(i + 1).padStart(2, '0')}</span>
     ${t(p.title, 'row-title')}
@@ -861,7 +864,7 @@ function workCard(p, { lead = false, curated = false } = {}) {
   }
   if (p.coverFocus) vars.push(`--focus:${p.coverFocus}`);
   const style = vars.length ? ` style="${attr(vars.join(';'))}"` : '';
-  return `<a class="work" href="${href(`/work/${p.slug}/`)}"${curated ? style : ''}>
+  return `<a class="work" href="${href(workPath(p))}"${curated ? style : ''}>
   <span class="work-cover"${curated ? '' : focusStyle(p)}>${img(p.cover, L(p.title), { sizes: sizesFor(curated ? (lead ? LEAD_SPAN : RESTSPAN)(d) : 6) })}</span>
   ${t(p.title, 'work-title')}
   <span class="work-meta">${metaBits(p, esc).slice(1).join(' · ') || esc(meta[0])}</span>
@@ -869,7 +872,7 @@ function workCard(p, { lead = false, curated = false } = {}) {
 }
 
 function practicePage({ here, discipline, extra = '' }) {
-  const list = projects.filter((p) => p.disciplines.includes(discipline));
+  const list = projects.filter((p) => !p.section && p.disciplines.includes(discipline));
   if (discipline === 'design') list.sort((a, b) => (a.designOrder ?? 99) - (b.designOrder ?? 99));
   const title = L(DISCIPLINE[discipline]);
   const intro = PRACTICE_INTRO[discipline];
@@ -970,7 +973,7 @@ ${p.slug === 'reels' ? '' : `      <p class="vid-title">${esc(v.title)}</p>`}
   const body = `
 <main class="project g12" id="main">
   <div class="project-head col-8">
-    <p class="eyebrow">${esc(meta[0])}${p.context === 'personal' ? ' · ' + ui('personal') : ''}</p>
+    <p class="eyebrow">${esc(meta[0])}${p.context === 'personal' && !p.section ? ' · ' + ui('personal') : ''}</p>
     <h1 class="project-title t-display">${esc(L(p.title))}</h1>
     ${t(p.shortDescription, 'project-dek t-lead col-7', 'p')}
     ${p.client || roles.length || p.year ? `<dl class="facts">
@@ -1003,8 +1006,8 @@ ${sequence}
 </main>`;
 
   return page({
-    here: '',
-    path: `/work/${p.slug}/`,
+    here: p.section ? `/${p.section}/` : '',
+    path: workPath(p),
     title: `${L(p.title)} — ${ui('name')}`,
     description: L(p.shortDescription),
     body,
@@ -1210,6 +1213,40 @@ function enquiriesPage() {
   });
 }
 
+/* Street photography: not commissioned, never finished, gathered into named
+   series. The section intro is the text the placeholder page carried before
+   the frames landed; the list below it grows a card per series. */
+const STREET_INTRO = {
+  en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
+  ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
+};
+
+function streetPage() {
+  const list = projects.filter((p) => p.section === 'street');
+  const body = `
+<main class="page g12" id="main">
+  <div class="page-head col-8">
+    <p class="eyebrow">${ui('personal')}</p>
+    <h1 class="page-title t-title">${ui('street')}</h1>
+    ${t(STREET_INTRO, 'page-intro t-lead col-7', 'p')}
+  </div>
+  <section class="section col-full">
+    <h2 class="section-label">${ui('series')}</h2>
+    <div class="works selection">${list
+      .map((p, i) => workCard(p, { lead: i === 0, curated: true }))
+      .join('\n')}</div>
+  </section>
+  <div class="col-full">${foot()}</div>
+</main>`;
+  return page({
+    here: '/street/',
+    path: '/street/',
+    title: `${ui('street')} — ${ui('name')}`,
+    description: L(STREET_INTRO),
+    body,
+  });
+}
+
 /* The privacy notice is the one page of the old site that is not portfolio:
    a legal text with its own indexed URL. Every sentence below is copied
    verbatim from rusanivsky.com/privacy/ and its Ukrainian twin — the words
@@ -1366,7 +1403,7 @@ function notFound() {
   <div class="page-head col-8">
     <p class="eyebrow">404</p>
     <h1 class="page-title t-title">${ui('notFound')}</h1>
-    <p class="page-intro t-lead">${ui('tryInstead')} <a href="${href('/')}">${ui('selectedWork')}</a>, <a href="${href('/photo/')}">${ui('photography')}</a>, <a href="${href('/video/')}">${ui('video')}</a>, <a href="${href('/design/')}">${ui('design')}</a>.</p>
+    <p class="page-intro t-lead">${ui('tryInstead')} <a href="${href('/')}">${ui('selectedWork')}</a>, <a href="${href('/photo/')}">${ui('photography')}</a>, <a href="${href('/video/')}">${ui('video')}</a>, <a href="${href('/design/')}">${ui('design')}</a>, <a href="${href('/street/')}">${ui('street')}</a>.</p>
   </div>
   <div class="col-full">${foot()}</div>
 </main>`;
@@ -1403,13 +1440,14 @@ function build(lang) {
   out('photo/index.html', practicePage({ here: '/photo/', discipline: 'photography' }));
   out('video/index.html', practicePage({ here: '/video/', discipline: 'video', extra: catalogueBlock() }));
   out('design/index.html', practicePage({ here: '/design/', discipline: 'design' }));
+  out('street/index.html', streetPage());
   out('aboutme/index.html', infoPage());
   out('enquiries/index.html', enquiriesPage());
   out('rates/index.html', ratesPage());
   out('privacy/index.html', privacyPage());
   out('tembrava/license/index.html', tembravaLicencePage());
   out('404.html', notFound());
-  projects.forEach((p, i) => out(`work/${p.slug}/index.html`, projectPage(p, i)));
+  projects.forEach((p, i) => out(`${workPath(p).slice(1)}index.html`, projectPage(p, i)));
 
   const LEGACY = {
     'photo/reportage/index.html': '/work/reportage/',
@@ -1432,8 +1470,9 @@ function build(lang) {
     'photo/photo-sessions/index.html': '/work/portraits/',
     'photo/public-events/index.html': '/work/reportage/',
     'work/dyvochyv/index.html': '/work/reels/',
-    // The street series became a project with its own frames (2026-10-02).
-    'street/index.html': '/work/street/',
+    // The street series was briefly a project at /work/street/ before Street
+    // became its own section and the series took its name (2026-10-02).
+    'work/street/index.html': '/street/after-five/',
     /* Two addresses were transliterated Ukrainian, which an English reader can
        neither read nor recognise. The pages now answer to their translated
        names; the old addresses stay as redirects, because a link already given
@@ -1467,7 +1506,7 @@ written.push('tembrava/license/LICENSE.txt');
    points at the sitemap. Both come out of the same switch, so the two can
    never disagree. */
 const PUBLIC = ['/', '/photo/', '/video/', '/design/', ABOUT_PATH, '/enquiries/', '/rates/', '/privacy/', '/tembrava/license/',
-  ...projects.map((p) => `/work/${p.slug}/`)];
+  '/street/', ...projects.map(workPath)];
 const today = new Date().toISOString().slice(0, 10);
 // Keep existing dates: a rebuild is not a content update. Record the pages
 // changed by this release explicitly, including both language variants.
@@ -1475,7 +1514,7 @@ const previousSitemap = new URL('../sitemap.xml', import.meta.url);
 const previousDates = new Map(existsSync(previousSitemap)
   ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
   : []);
-const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/work/street/': '2026-10-02', '/tembrava/license/': '2026-10-01' };
+const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/street/': '2026-10-02', '/street/after-five/': '2026-10-02', '/tembrava/license/': '2026-10-01' };
 const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>

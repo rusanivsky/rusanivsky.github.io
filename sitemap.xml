@@ -127,6 +127,20 @@
     <lastmod>2026-10-01</lastmod>
   </url>
   <url>
+    <loc>https://rusanivsky.com/street/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/"/>
+    <lastmod>2026-10-02</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/street/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/"/>
+    <lastmod>2026-10-02</lastmod>
+  </url>
+  <url>
     <loc>https://rusanivsky.com/work/sounds-of-chornobyl/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/sounds-of-chornobyl/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/sounds-of-chornobyl/"/>
@@ -309,17 +323,17 @@
     <lastmod>2026-10-02</lastmod>
   </url>
   <url>
-    <loc>https://rusanivsky.com/work/street/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/street/"/>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/street/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/street/"/>
+    <loc>https://rusanivsky.com/street/after-five/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/after-five/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/after-five/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/after-five/"/>
     <lastmod>2026-10-02</lastmod>
   </url>
   <url>
-    <loc>https://rusanivsky.com/ua/work/street/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/street/"/>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/street/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/street/"/>
+    <loc>https://rusanivsky.com/ua/street/after-five/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/after-five/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/after-five/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/after-five/"/>
     <lastmod>2026-10-02</lastmod>
   </url>
   <url>

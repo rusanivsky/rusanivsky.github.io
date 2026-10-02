@@ -392,25 +392,29 @@ export const projects = [
     featuredOrder: 9,
   },
 
-  /* The author's own series, published 2026-10-02 from twelve frames he
-     chose (Sep 2025 – Mar 2026), in the order they were taken. It closes the
-     selection on the home page, as the standfirst promises it. */
+  /* «After Five», the first series of the author's street photography,
+     published 2026-10-02 from twelve frames the author chose (Sep 2025 –
+     Mar 2026), in the order they were taken. It closes the selection on the
+     home page, as the standfirst promises it. */
   {
-    id: 'p-street',
-    slug: 'street',
-    title: { en: 'Street photography', ua: 'Вулична фотографія' },
-    year: null,
+    id: 'p-after-five',
+    slug: 'after-five',
+    // Street is its own section (/street/), not a photography practice: the
+    // series lives at /street/after-five/ and stays off the /photo/ hub.
+    section: 'street',
+    title: { en: 'After Five', ua: 'Після п’ятої' },
+    year: '2025–2026',
     client: null,
     context: 'personal',
     disciplines: ['photography'],
-    roles: ['Photography'],
+    roles: [],
     shortDescription: {
-      en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
-      ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
+      en: 'Twelve frames made after five in the evening, from September 2025 to March 2026: rain, red light, people behind glass.',
+      ua: 'Дванадцять кадрів, знятих після п’ятої вечора, з вересня 2025 по березень 2026: дощ, червоне світло, люди за склом.',
     },
     credits: [],
-    cover: photoSequences.street[0].src,
-    media: series('street', 12),
+    cover: photoSequences['after-five'][0].src,
+    media: series('after-five', 12),
     externalLinks: [],
     featured: true,
     featuredOrder: 8,
