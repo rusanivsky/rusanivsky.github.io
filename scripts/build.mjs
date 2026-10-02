@@ -224,13 +224,18 @@ const splash = () => `
    Клас fx вмикає появу сторінки (рядки, блоки, прев'ю). Він ставиться тут,
    до першого малювання, щоб текст не блимнув видимим і не сховався знову;
    fx-ready через 3 с — страховка: якщо site.js не завантажився, сторінка
-   однаково показується. */
-const SPLASH_BOOT = `(function(){try{
+   однаково показується.
+
+   Заставка — лише для входу через головну. Хто прийшов за посиланням просто
+   на проєкт, хоче бачити проєкт, а не титульну картку; така сторінка лише
+   позначає сесію як побачену, тож і подальший перехід на головну обходиться
+   без картки. */
+const splashBoot = (home) => `(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
 setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
-sessionStorage.setItem('kr-seen','1');
+sessionStorage.setItem('kr-seen','1');${home ? '' : 'return;'}
 r.className+=' splash-on';
 var t0=Date.now(),done=false;
 function finish(){if(done)return;done=true;
@@ -372,7 +377,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
 ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/styles/site.css?v=${CSS_V}">
-<script>${SPLASH_BOOT}</script>
+<script>${splashBoot(!sub)}</script>
 <script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
 ${here === '/design/' ? `<script src="/scripts/design-masonry.js?v=${DESIGN_V}" defer></script>` : ''}
@@ -380,7 +385,7 @@ ${LIVE ? `<script src="/scripts/google-analytics.js?v=${GA_V}" defer></script>\n
 </head>
 <body>
 <a class="skip" href="#main">${ui('skip')}</a>
-${splash()}
+${sub ? '' : splash()}
 <div class="shell">
 ${rail(here, path)}
 ${mobile(here, path)}
