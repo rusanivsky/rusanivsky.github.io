@@ -273,6 +273,35 @@ body {
   animation-timing-function: ease-in-out;
 }
 
+/* Between pages of the site the browser cross-fades the old page into the
+   new one, and the project a reader chose travels with them: its title and
+   its picture (the stage wall, a list preview or a card cover) move into the
+   title and the first frame of the project page (scripts/site.js names the
+   pair, only for the link that was followed). Reduced motion keeps the plain
+   page change. Browsers without cross-document view transitions ignore all
+   of it. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; types: kr-page; }
+}
+html:active-view-transition-type(kr-page)::view-transition-old(root),
+html:active-view-transition-type(kr-page)::view-transition-new(root) {
+  animation-duration: calc(420ms / var(--pace));
+}
+::view-transition-group(kr-title),
+::view-transition-group(kr-lead) {
+  animation-duration: calc(900ms / var(--pace));
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(kr-title),
+::view-transition-new(kr-title),
+::view-transition-old(kr-lead),
+::view-transition-new(kr-lead) {
+  animation-duration: calc(900ms / var(--pace));
+  /* The picture keeps its own proportions while its box changes shape. */
+  height: 100%;
+  object-fit: cover;
+}
+
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -676,7 +705,7 @@ ul, ol { list-style: none; }
   transform: translateY(0);
 }
 .drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
-.drawer a { display: block; font-size: 1.125rem; font-weight: var(--w-regular); line-height: 2.2; }
+.drawer a { display: block; font-size: var(--t-lead); font-weight: var(--w-regular); line-height: 2.2; }
 .drawer .group {
   transform: translateY(-6px);
   opacity: 0.7;
@@ -989,6 +1018,34 @@ html.stage-glow-baked .stage::after { display: none; }
   object-position: var(--focus, 50% 50%);
 }
 @media (min-width: 61rem) { .row-preview { display: none; } }
+/* A photographic row on a phone: the stage frames side by side at the height
+   of the 16:9 preview, whole, scrolled sideways and snapping to each frame.
+   The strip bleeds to the right edge so the next frame shows as a promise. */
+@media (max-width: 60.99rem) {
+  .row-preview.row-strip {
+    aspect-ratio: auto;
+    height: calc((100vw - 2 * var(--pad)) * 9 / 16);
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    background: none;
+    margin-right: calc(var(--pad) * -1);
+    padding-right: var(--pad);
+  }
+  .row-strip::-webkit-scrollbar { display: none; }
+  .row-strip::before { display: none; }
+  .strip-frame {
+    flex: none;
+    height: 100%;
+    aspect-ratio: var(--r, 1.5);
+    scroll-snap-align: start;
+    background: var(--stage-bg);
+  }
+  .strip-frame > picture { display: contents; }
+}
 
 /* ---------- Stage ---------- */
 .stage { display: none; }
@@ -1023,7 +1080,7 @@ html.stage-glow-baked .stage::after { display: none; }
   }
   .stage-frame { height: 100%; position: relative; }
   .slide {
-    container-type: size;
+    container: slide / size;
     position: absolute;
     inset: 0 2.5rem;
     display: flex;
@@ -1077,8 +1134,11 @@ html.stage-glow-baked .stage::after { display: none; }
 
   /* Photography is packed at native aspect ratios; only the outer wall fits
      the stage. The tile-in remains available to the existing entrances. */
-  .mosaic.editorial { position: relative; display: block; }
-  .mosaic.editorial .tile { position: absolute; display: block; }
+  .mosaic.editorial { position: relative; display: block; --wall: var(--wall-n, 1); }
+  .mosaic.editorial .tile {
+    position: absolute; display: block;
+    left: var(--x); top: var(--y); width: var(--w); height: var(--h);
+  }
   .mosaic.editorial .tile-in { width: 100%; height: 100%; aspect-ratio: auto; }
   .mosaic.editorial img { object-fit: contain; }
 
@@ -1090,6 +1150,15 @@ html.stage-glow-baked .stage::after { display: none; }
      stamp in the middle of an empty panel. */
   .mosaic.solo {
     width: calc(min(100cqw, 100cqh * var(--wall, 1)) * var(--solo, 0.6));
+  }
+  /* A photographic stage carries a second composition for a wide panel
+     (ultrawide monitors). Near-square panels keep the lead across the top. */
+  @container slide (aspect-ratio > 5 / 4) {
+    .mosaic.editorial { --wall: var(--wall-w, var(--wall-n, 1)); }
+    .mosaic.editorial .tile {
+      left: var(--wx, var(--x)); top: var(--wy, var(--y));
+      width: var(--ww, var(--w)); height: var(--wh, var(--h));
+    }
   }
 }
 
@@ -1583,6 +1652,32 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
    all times, so repeating them at the bottom of the main column says nothing
    new. The foot stays for the stack, where there is no rail. */
 @media (min-width: 61rem) { .foot { display: none; } }
+
+/* A wall the reader calls up on the stage comes in frame by frame from the
+   lead: each frame rises a few pixels as it fades in, a beat after the one
+   before. The first wall is left to the page entrance (.stage.live is set
+   only from the second wall on). Only opacity and transform move. */
+/* The muted film over the lead frame of a video wall (scripts/site.js). It
+   lies exactly on the poster it starts from and only fades in once it plays. */
+.tile-in { position: relative; }
+.tile-in > video.stage-preview {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity calc(600ms / var(--pace)) var(--ease);
+  pointer-events: none;
+}
+.tile-in > video.stage-preview.on { opacity: 1; }
+
+@keyframes tile-arrive { from { opacity: 0; transform: translateY(10px); } }
+@media (min-width: 61rem) {
+  html.fx .stage.live .slide.on .tile-in {
+    animation: tile-arrive calc(620ms / var(--pace)) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 90ms / var(--pace));
+  }
+  .stage .tile:nth-child(2) { --i: 1; }
+  .stage .tile:nth-child(3) { --i: 2; }
+  .stage .tile:nth-child(4) { --i: 3; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

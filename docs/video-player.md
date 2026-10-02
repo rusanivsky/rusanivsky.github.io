@@ -35,3 +35,14 @@ Observe `currentTime` twice to confirm silent autoplay, click pause and compare 
 ## Refinement (2026-10-01)
 User clarification: omit visible film captions only on EN/UA `/work/reels/`. For ALL server videos: omit timeline and clock, loop natively, tapping the video toggles playback through the same manual-pause state as the toolbar button. Pause when 50% or less of the frame is visible; resume automatically above 50% unless manually paused. This supersedes AC3 and the 35% threshold in AC1. Other project captions remain. Preserve posters, source URLs, accessible toolbar labels and original files.
 - Refinement gate: 46 tests pass, independent review PASS. Mobile browser verified tap pause/resume, no captions/timeline/clock on Reels, actual native loop after full 32-second playback, pause at 47% visible and resume above 50%. Ordinary captions remain covered by bilingual acceptance tests.
+
+## Refinement (2026-10-02) — one film at a time
+User report: video start-up felt chaotic — several server films played at once, YouTube and server films ignored each other, and on the phone a film half hidden under the sticky bar kept playing. User chose «one film at a time», resuming where a film stopped.
+- V1: of the server films more than half in view, only the one nearest the middle of the visible area (below the sticky bar) plays on its own; the others hold still. A centred film paused by hand does not hand playback to a neighbour. In a two-column row a tie goes to reading order.
+- V2: tapping play on any film makes it the one that plays; it keeps the turn while it stays more than half in view; everything else, YouTube included, gives way.
+- V3: sound turned on carries to the next film that plays; only one film is ever heard. A browser that refuses sound plays the film muted instead (remembered for that film until the visitor turns sound on again).
+- V4: YouTube and Vimeo start only from a tap; while one plays, server films hold still; once half of it is out of view it pauses (Vimeo is taken back to its poster) and the server film in view resumes.
+- V5: a film resumes where it stopped (no reset on return).
+- Visibility excludes the sticky bar at the top of a phone screen (fix 2026-10-02: a film half under the bar kept playing).
+- Home stage previews (desktop hover, six-second clips in `media/video/previews/`) are separate from page films and unaffected.
+- Gate: `tests/video-focus.test.mjs` (V1–V5, written first, RED on 5 of 7 before the change) plus the existing 8 runtime regressions; real Chrome on the kmbs page (one film at a time, sound carried, mobile and desktop) and on `/video/` (YouTube pauses the server film, scrolling YouTube away resumes it).

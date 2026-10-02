@@ -389,6 +389,30 @@ export const projects = [
     media: series('backstage', 15),
     externalLinks: [],
     featured: true,
+    featuredOrder: 9,
+  },
+
+  /* The author's own series, published 2026-10-02 from twelve frames he
+     chose (Sep 2025 – Mar 2026), in the order they were taken. It closes the
+     selection on the home page, as the standfirst promises it. */
+  {
+    id: 'p-street',
+    slug: 'street',
+    title: { en: 'Street photography', ua: 'Вулична фотографія' },
+    year: null,
+    client: null,
+    context: 'personal',
+    disciplines: ['photography'],
+    roles: ['Photography'],
+    shortDescription: {
+      en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
+      ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
+    },
+    credits: [],
+    cover: photoSequences.street[0].src,
+    media: series('street', 12),
+    externalLinks: [],
+    featured: true,
     featuredOrder: 8,
   },
 

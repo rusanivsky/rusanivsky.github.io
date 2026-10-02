@@ -17,8 +17,14 @@ selection, source files, lightbox order or project copy.
   Without JavaScript, every image and link remains available in a two-column
   flow grid (one column on small screens), with the mode controls hidden.
 - Photography stages on the homepage show at most three frames with native
-  proportions. A single frame retains the existing area-based solo scale;
-  two frames share a height and sit side by side without cropping. Video and
+  proportions. A single frame retains the existing area-based solo scale.
+  Two or three frames take the native-aspect arrangement whose outline best
+  fits the panel: on the near-square panels of ordinary screens the cover
+  runs across the top with the other two beneath it at a shared height (a
+  pair stacks); on a wide panel (ultrawide, aspect above 5:4) the cover stands
+  beside the stacked pair (a pair shares a height). Both geometries are in the
+  markup and a container query on the slide picks one. On a 1440×900 screen
+  the three stages fill 0.75–0.98 of the panel instead of 0.34–0.46. Video and
   design stages retain their existing selection and composition.
 - Existing entrances, keyboard navigation, lightbox behavior, first-stage
   eager loading and the phone loading guard remain intact. Gallery frames and
@@ -50,8 +56,11 @@ in stable cover-first order. If no valid paths remain, the cover leads followed
 by the first other frames, up to three. An absent stage hint uses that same
 fallback, so appending frames does not change a full three-frame selection.
 
-The build calls the shared `composeStage(photos, 1000, 14)` with `{n, w, h}`
-records and converts returned tile geometry to percentages. Runtime galleries
+The build calls the shared `composeStage(photos, 1000, 14, { aspect })` twice
+— for the typical panel (`STAGE_ASPECT`) and for a wide one (1.5) — with
+`{n, w, h}` records, and writes each tile's geometry as percentages in
+`--x/--y/--w/--h` (and `--wx…` for the wide variant). Without `aspect` the
+function keeps the original side-by-side arrangement. Runtime galleries
 use the same module's `compose` geometry. Placement uses left/top/width/height;
 transforms remain owned by the existing entrance effects.
 

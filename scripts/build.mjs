@@ -85,11 +85,8 @@ function write(path, html) {
 /* ---------------- shell ---------------- */
 
 const NAV_MAIN = [['/', 'selected'], ['/photo/', 'photography'], ['/video/', 'video'], ['/design/', 'design']];
-/* Street is built and reachable at /street/, but it is held out of the
-   navigation and the sitemap until a real edit exists: a menu entry that
-   leads to «the selection is not ready yet» promises work the page does not
-   have. Put the two lines back — here and in PUBLIC — the day the frames
-   land, and nothing else has to change. */
+/* Street photography is a project like the others (/work/street/), reached
+   from the home page, the photography index and its own old address. */
 const ABOUT_PATH = '/aboutme/';
 const NAV_SECOND = [[ABOUT_PATH, 'info'], ['/enquiries/', 'enquiries']];
 const NAV_MINOR = [['/rates/', 'rates']];
@@ -98,23 +95,17 @@ const NAV_MINOR = [['/rates/', 'rates']];
    a panel that follows every page stays a way in, not a contact card. The
    drawer renders the same list in the same order, so the mobile menu is the
    rail, not a second idea of it. */
-/* The full list of profiles, in the order a reader is likely to want them:
-   the places the work itself lives first, the professional registers after.
+/* The profiles worth a visit, in the order a reader is likely to want them:
+   the places the work itself lives first, the professional register after.
    One Instagram, not two — the personal account is the one that carries the
    pictures — and no handles: a list of names reads as a list, a list of
-   @-handles reads as a form. Every address here comes from the site's own
-   history or from the author; none is guessed. */
+   @-handles reads as a form. Trimmed from ten to four on 2026-10-02 at the
+   author's request; the order of the rest is unchanged. */
 const PROFILES = [
   ['https://www.instagram.com/rusanivsky/', 'Instagram'],
-  ['https://www.threads.com/@rusanivsky', 'Threads'],
   ['https://www.youtube.com/@rusanivsky', 'YouTube'],
-  ['https://www.facebook.com/rusanivsky', 'Facebook'],
   ['https://www.behance.net/rusanivsky', 'Behance'],
-  ['https://www.pinterest.com/rusanivsky/', 'Pinterest'],
   ['https://www.linkedin.com/in/rusanivsky/', 'LinkedIn'],
-  ['https://www.upwork.com/freelancers/~01538086fd314c4cfa', 'Upwork'],
-  ['https://cases.media/rusanivsky/', 'CASES'],
-  ['https://www.tiktok.com/@rusanivsky', 'TikTok'],
 ];
 
 const ELSEWHERE = [
@@ -230,13 +221,18 @@ const splash = () => `
    Клас fx вмикає появу сторінки (рядки, блоки, прев'ю). Він ставиться тут,
    до першого малювання, щоб текст не блимнув видимим і не сховався знову;
    fx-ready через 3 с — страховка: якщо site.js не завантажився, сторінка
-   однаково показується. */
-const SPLASH_BOOT = `(function(){try{
+   однаково показується.
+
+   Заставка — лише для входу через головну. Хто прийшов за посиланням просто
+   на проєкт, хоче бачити проєкт, а не титульну картку; така сторінка лише
+   позначає сесію як побачену, тож і подальший перехід на головну обходиться
+   без картки. */
+const splashBoot = (home) => `(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
 setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
-sessionStorage.setItem('kr-seen','1');
+sessionStorage.setItem('kr-seen','1');${home ? '' : 'return;'}
 r.className+=' splash-on';
 var t0=Date.now(),done=false;
 function finish(){if(done)return;done=true;
@@ -378,7 +374,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
 ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/styles/site.css?v=${CSS_V}">
-<script>${SPLASH_BOOT}</script>
+<script>${splashBoot(!sub)}</script>
 <script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
 ${here === '/design/' ? `<script src="/scripts/design-masonry.js?v=${DESIGN_V}" defer></script>` : ''}
@@ -386,7 +382,7 @@ ${LIVE ? `<script src="/scripts/google-analytics.js?v=${GA_V}" defer></script>\n
 </head>
 <body>
 <a class="skip" href="#main">${ui('skip')}</a>
-${splash()}
+${sub ? '' : splash()}
 <div class="shell">
 ${rail(here, path)}
 ${mobile(here, path)}
@@ -695,22 +691,36 @@ function soloScale(wall) {
   return Math.min(Math.sqrt(SOLO_AREA / fitShare(wall)), 0.88).toFixed(3);
 }
 
+/* The panel is near square on the screens people use (0.69–1.08 measured
+   from 1000×700 to 2560×1440) and wide only on ultrawide monitors (~1.5).
+   Each photographic stage is composed for both shapes; the stylesheet picks
+   the wide one by a container query on the slide, so no script is involved
+   and the first paint is already the right one. */
+const WIDE_STAGE_ASPECT = 1.5;
+
 function photographyMosaic(p, eager) {
   const picked = stagePick(p);
   const width = 1000;
-  const composition = galleryLayout.composeStage(picked.map((item, n) => {
+  const frames = picked.map((item, n) => {
     const d = dim(item.src);
     return { n, w: d?.w || 1600, h: d?.h || 1000 };
-  }), width, 14);
+  });
+  const composition = galleryLayout.composeStage(frames, width, 14, { aspect: STAGE_ASPECT });
+  const wide = galleryLayout.composeStage(frames, width, 14, { aspect: WIDE_STAGE_ASPECT });
   const wall = width / composition.height;
+  const wallWide = width / wide.height;
+  const same = JSON.stringify(wide) === JSON.stringify(composition);
   const soloK = picked.length === 1 ? soloScale(wall) : null;
   const pct = (value, total) => (value / total * 100).toFixed(5) + '%';
-  const tiles = composition.tiles.map((tile) => {
+  const vars = (tile, height, k = '') =>
+    `--${k}x:${pct(tile.x, width)};--${k}y:${pct(tile.y, height)};--${k}w:${pct(tile.w, width)};--${k}h:${pct(tile.h, height)}`;
+  const tiles = composition.tiles.map((tile, i) => {
     const item = picked[tile.n];
-    const geometry = `left:${pct(tile.x, width)};top:${pct(tile.y, composition.height)};width:${pct(tile.w, width)};height:${pct(tile.h, composition.height)}`;
+    const geometry = vars(tile, composition.height) + (same ? '' : ';' + vars(wide.tiles[i], wide.height, 'w'));
     return `<span class="tile" style="${geometry}"><span class="tile-in">${img(item.src, item.alt, { lazy: !eager, eager, sizes: stageSizes(wall, width / tile.w, soloK), skip: eager ? PHONE : '' })}</span></span>`;
   }).join('');
-  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--wall:${wall.toFixed(6)}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
+  const walls = `--wall-n:${wall.toFixed(6)}${same ? '' : `;--wall-w:${wallWide.toFixed(6)}`}`;
+  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="${walls}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
 }
 
 function mosaic(p, eager) {
@@ -733,23 +743,55 @@ function mosaic(p, eager) {
   const solo = soloK ? `;--solo:${soloK}` : '';
 
   const odd = a.c === 2 && a.n % 2 === 1;
+  /* The lead frame of a wall made of the author's own films may play a few
+     muted seconds of its film while the reader stays on the row (site.js).
+     It plays a six-second clip cut from the film (media/video/previews/,
+     ~0.5 MB), never the film itself: a hover must not cost a download of
+     tens of megabytes. Only server films; YouTube and Vimeo are not ours. */
+  const clipOf = (x) => {
+    const film = p.media.find((m) => m.platform === 'cf' && m.poster === x.src);
+    const clip = film && `/media/video/previews/${film.videoId}.mp4`;
+    return clip && existsSync(new URL('..' + clip, import.meta.url)) ? clip : null;
+  };
+  const previewAt = cells.findIndex(clipOf);
   const tiles = cells.map((x, i) =>
     /* The inner frame takes the picture's own shape inside its cell, so the
        hover push is clipped at the picture's edge and not at the cell's —
        a frame that is narrower than its cell does not grow into the air. */
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: stageSizes(wall, a.c, soloK), skip: eager ? PHONE : '' })}</span></span>`).join('');
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}"${i === previewAt ? ` data-preview="${attr(clipOf(x))}"` : ''}>${img(x.src, x.alt, { lazy: !eager, eager, sizes: stageSizes(wall, a.c, soloK), skip: eager ? PHONE : '' })}</span></span>`).join('');
   /* The wall is a link to the project, the same place its row leads. It is
      out of the tab order: the stage is aria-hidden, and the row beside it is
      already the way in for a keyboard or a screen reader. */
   return `<a class="mosaic${a.n === 1 ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</a>`;
 }
 
-/* Seven is the whole selection on the home page: the list is a door, not an
-   archive, and seven rows still fit the column without crowding the type. */
+/* Eight is the whole selection on the home page: the list is a door, not an
+   archive. The eighth row is the author's street series, which the standfirst
+   names; the list scrolls inside its column if the window is short. */
 const featured = projects
   .filter((p) => p.featured)
   .sort((a, b) => a.featuredOrder - b.featuredOrder)
-  .slice(0, 7);
+  .slice(0, 8);
+
+/* On a phone the home list carries the preview the desktop stage would show.
+   A photographic project shows its stage frames as a strip the height of the
+   16:9 preview, each frame whole, scrolled sideways; the row keeps the rhythm
+   of the list and a photograph is no longer cut to a band. Video and design
+   keep the single 16:9 cover. */
+const stripSizes = (ratio) => `(min-width: 61rem) 1px, calc((100vw - 2.5rem) * 0.5625 * ${ratio.toFixed(3)})`;
+
+function rowPreview(p, i) {
+  if (p.disciplines[0] !== 'photography') {
+    return `<span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, eager: i === 0, sizes: sizesFor(4), skip: i === 0 ? DESK : '' })}</span>`;
+  }
+  const frames = stagePick(p).map((x, k) => {
+    const d = dim(x.src);
+    const ratio = d ? d.w / d.h : 1.5;
+    const eager = i === 0 && k === 0;
+    return `<span class="strip-frame" style="--r:${ratio.toFixed(4)}">${img(x.src, k === 0 ? L(p.title) : '', { lazy: !eager, eager, sizes: stripSizes(ratio), skip: eager ? DESK : '' })}</span>`;
+  }).join('');
+  return `<span class="row-preview row-strip">${frames}</span>`;
+}
 
 const STANDFIRST = {
   en: 'Kyrylo Rusanivsky works in Kyiv across three practices — photography, video and graphic design — and keeps a street-photography series of his own. Selected projects below.',
@@ -763,7 +805,7 @@ function homePage() {
     ${t(p.title, 'row-title')}
   </span>
   <span class="row-meta">${metaBits(p, esc).join('<span class="dot">·</span>')}</span>
-  <span class="row-preview"${focusStyle(p)}>${img(p.cover, L(p.title), { lazy: i > 0, eager: i === 0, sizes: sizesFor(4), skip: i === 0 ? DESK : '' })}</span>
+  ${rowPreview(p, i)}
 </a>`).join('\n');
 
   const slides = featured.map((p, i) =>
@@ -1032,10 +1074,6 @@ const ABOUT = [
     en: 'I edit videos. I design and typeset books. I photograph people and events. I work on interviews, YouTube series and social-media videos; I create publications and printed materials. I also keep a street-photography series about the city, spontaneous scenes and landscapes. I work remotely.',
     ua: 'Монтую відео. Проєктую й верстаю книжки. Знімаю людей і події. Працюю з інтерв’ю, YouTube-серіями й роликами для соцмереж; створюю видання та поліграфічну продукцію. Також веду серію вуличних світлин — про місто, випадкові сцени і краєвиди. Працюю дистанційно.',
   },
-  {
-    en: 'I have worked remotely, as a freelancer, since 2013. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.',
-    ua: 'Працюю дистанційно, на фрилансі, з 2013 року. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.',
-  },
 ];
 
 const PORTRAIT_ALT = {
@@ -1168,42 +1206,6 @@ function enquiriesPage() {
     path: '/enquiries/',
     title: `${ui('enquiries')} — ${ui('name')}`,
     description: L(ENQ_INTRO),
-    body,
-  });
-}
-
-const STREET_INTRO = {
-  en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
-  ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
-};
-const STREET_NOTE = {
-  en: 'The edit for this page is still being made. The production site has never published these frames on its own pages — until a real selection exists here, the series continues on Instagram.',
-  ua: 'Добірку для цієї сторінки ще роблю. На основному сайті ці кадри ніколи не публікувалися окремо — доки тут немає справжнього відбору, серія триває в Instagram.',
-};
-
-function streetPage() {
-  const body = `
-<main class="page g12" id="main">
-  <div class="page-head col-8">
-    <p class="eyebrow">${ui('personal')}</p>
-    <h1 class="page-title t-title">${ui('street')}</h1>
-    ${t(STREET_INTRO, 'page-intro t-lead col-7', 'p')}
-  </div>
-
-  <section class="section col-full g12" style="padding-inline:0">
-    <h2 class="section-label col-full">${ui('theSequence')}</h2>
-    <div class="prose col-7" style="margin-top:1.1rem">
-      ${t(STREET_NOTE, '', 'p')}
-      <p><a href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener">Instagram — @rusanivsky →</a></p>
-    </div>
-  </section>
-  <div class="col-full">${foot()}</div>
-</main>`;
-  return page({
-    here: '/street/',
-    path: '/street/',
-    title: `${ui('street')} — ${ui('name')}`,
-    description: L(STREET_INTRO),
     body,
   });
 }
@@ -1401,7 +1403,6 @@ function build(lang) {
   out('photo/index.html', practicePage({ here: '/photo/', discipline: 'photography' }));
   out('video/index.html', practicePage({ here: '/video/', discipline: 'video', extra: catalogueBlock() }));
   out('design/index.html', practicePage({ here: '/design/', discipline: 'design' }));
-  out('street/index.html', streetPage());
   out('aboutme/index.html', infoPage());
   out('enquiries/index.html', enquiriesPage());
   out('rates/index.html', ratesPage());
@@ -1431,6 +1432,8 @@ function build(lang) {
     'photo/photo-sessions/index.html': '/work/portraits/',
     'photo/public-events/index.html': '/work/reportage/',
     'work/dyvochyv/index.html': '/work/reels/',
+    // The street series became a project with its own frames (2026-10-02).
+    'street/index.html': '/work/street/',
     /* Two addresses were transliterated Ukrainian, which an English reader can
        neither read nor recognise. The pages now answer to their translated
        names; the old addresses stay as redirects, because a link already given
@@ -1472,7 +1475,7 @@ const previousSitemap = new URL('../sitemap.xml', import.meta.url);
 const previousDates = new Map(existsSync(previousSitemap)
   ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
   : []);
-const PAGE_UPDATED = { [ABOUT_PATH]: '2026-10-01', '/tembrava/license/': '2026-10-01' };
+const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/work/street/': '2026-10-02', '/tembrava/license/': '2026-10-01' };
 const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>

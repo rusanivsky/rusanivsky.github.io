@@ -286,7 +286,12 @@
 
     function show(idx) {
       if (idx === current) return;
+      // The first wall arrives with the page; every wall after it is brought
+      // in by the reader, frame by frame (styles: .stage.live).
+      if (current !== null) stage.classList.add('live');
       current = idx;
+      stopPreviews();
+      if (stage.classList.contains('live')) startPreview(slides[idx]);
       slides.forEach(function (s, i) {
         s.classList.toggle('on', i === idx);
         // Anything off-stage is hidden from assistive tech too; the index
@@ -295,11 +300,53 @@
       });
     }
 
+    /* A wall of the author's own films plays a six-second muted clip of its
+       lead film (data-preview, from the build) once the reader stays on the
+       row. Not on touch, not for reduced motion or Save-Data. Leaving the row
+       stops the download, not only the picture: the source is dropped and
+       the element reloaded. */
+    var canPreview = !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      matchMedia('(hover: hover)').matches &&
+      !(navigator.connection && navigator.connection.saveData);
+    var previewTimer = null;
+    function stopPreviews() {
+      clearTimeout(previewTimer);
+      stage.querySelectorAll('video.stage-preview').forEach(function (v) {
+        v.classList.remove('on');
+        setTimeout(function () {
+          v.pause(); v.removeAttribute('src'); v.load(); v.remove();
+        }, 400);
+      });
+    }
+    function startPreview(slide) {
+      var host = slide.querySelector('[data-preview]');
+      if (!canPreview || !host) return;
+      previewTimer = setTimeout(function () {
+        var v = document.createElement('video');
+        v.className = 'stage-preview';
+        v.muted = true; v.loop = true; v.playsInline = true;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+        v.setAttribute('aria-hidden', 'true');
+        v.preload = 'auto';
+        v.addEventListener('playing', function () { v.classList.add('on'); }, { once: true });
+        v.src = host.getAttribute('data-preview');
+        host.appendChild(v);
+        var played = v.play();
+        if (played && played.catch) played.catch(function () {});
+      }, 450);
+    }
+
+    var list = document.querySelector('.index');
+    if (list) list.addEventListener('pointerleave', stopPreviews);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stopPreviews(); });
+
     document.querySelectorAll('.row').forEach(function (row, i) {
       // pointerenter rather than mouseenter so a pen behaves like a mouse,
       // while a touch tap goes straight to the link instead of previewing.
       row.addEventListener('pointerenter', function (e) {
         if (e.pointerType === 'touch') return;
+        // Back on the row whose wall is already up: its clip starts again.
+        if (i === current && stage.classList.contains('live') && !stage.querySelector('video.stage-preview')) startPreview(slides[i]);
         show(i);
       });
       row.addEventListener('focus', function () { show(i); });
@@ -395,7 +442,15 @@
     return ytApi;
   }
 
-  var armed = [];   // { wrap, player } for every YouTube film made so far
+  var armed = [];   // { wrap, player, playing } for every YouTube film made so far
+
+  // A YouTube or Vimeo film playing holds the server films still (see the
+  // one-film-at-a-time rule below); this tells them whether one is.
+  function externalChanged() {
+    var any = armed.some(function (a) { return a.playing; }) ||
+      !!document.querySelector('.player iframe.vm-frame');
+    if (window.krVideoExternal) window.krVideoExternal(any);
+  }
 
   // One film at a time: the others pause, and a Vimeo frame is taken down to
   // its poster.
@@ -408,12 +463,15 @@
     document.querySelectorAll('.player video.cf-video').forEach(function (v) {
       if (v.closest('.player') !== except) v.pause();
     });
+    var removed = false;
     document.querySelectorAll('.player iframe.vm-frame').forEach(function (f) {
       var p = f.closest('.player');
       if (p === except) return;
       f.remove();
+      removed = true;
       if (p) { var b = p.querySelector('.player-btn'); if (b) b.hidden = false; }
     });
+    if (removed) externalChanged();
   }
 
   function arm(wrap, playNow) {
@@ -446,10 +504,18 @@
             if (wrap.dataset.want) { quietOthers(wrap); ev.target.playVideo(); }
           },
           onStateChange: function (ev) {
-            if (ev.data === 1 || ev.data === 3) {
+            var was = entry.playing;
+            entry.playing = ev.data === 1 || ev.data === 3;
+            if (entry.playing && !was) {
               wrap.classList.add('playing');
               quietOthers(wrap);
             }
+            if (entry.playing !== was) externalChanged();
+          },
+          // A film that will not play (embedding off, removed) must not hold
+          // the server films still.
+          onError: function () {
+            if (entry.playing) { entry.playing = false; externalChanged(); }
           },
         },
       });
@@ -478,22 +544,63 @@
     quietOthers(wrap);
     wrap.appendChild(frame);
     btn.hidden = true;
+    externalChanged();
   }
 
   /* Direct films stay inline. Media events are the truth for the controls;
-     visibility requests playback, and an explicit pause always wins. */
+     visibility requests playback, and an explicit pause always wins.
+     One film at a time (docs/video-player.md, 2026-10-02): of the films more
+     than half in view, only the one nearest the middle of what the reader
+     can see plays on its own; a film started by hand holds the turn while it
+     stays in view; sound once turned on carries to the next film; a playing
+     YouTube or Vimeo film holds every server film still. */
   var serverPlayers = [];
   var videoUa = document.documentElement.lang === 'uk';
   var videoWords = videoUa
     ? { play: 'Відтворити', pause: 'Пауза', unmute: 'Увімкнути звук', mute: 'Вимкнути звук', loading: 'Завантаження…', blocked: 'Натисніть відтворення', error: 'Не вдалося завантажити відео' }
     : { play: 'Play', pause: 'Pause', unmute: 'Unmute', mute: 'Mute', loading: 'Loading…', blocked: 'Press play', error: 'Video could not load' };
+  var soundWanted = false;
+  var externalPlaying = false;
+  var chosen = null;
+  /* «Half the frame» is half of what the reader can see. On a phone the
+     fixed bar covers the top of the window, so the part of a film under it
+     counts as hidden: the film stops once half of it has gone under the
+     bar or past the bottom edge, not only past the edge of the glass. */
+  var bar = document.querySelectorAll('.bar')[0];
+  var coveredTop = function () {
+    return bar && getComputedStyle(bar).display !== 'none' ? Math.round(bar.getBoundingClientRect().bottom) : 0;
+  };
+  function elect() {
+    var live = serverPlayers.filter(function (p) { return p.state.visible && !document.hidden; });
+    var pick = null;
+    if (!externalPlaying) {
+      if (chosen && live.indexOf(chosen) >= 0) pick = chosen;
+      else if (live.length === 1) pick = live[0];
+      else if (live.length > 1) {
+        var top = coveredTop();
+        var mid = (top + (window.innerHeight || 0)) / 2;
+        var best = Infinity;
+        live.forEach(function (p) {
+          var r = p.frame.getBoundingClientRect();
+          var d = Math.abs((r.top + r.bottom) / 2 - mid);
+          if (d < best) { best = d; pick = p; }
+        });
+      }
+    }
+    serverPlayers.forEach(function (p) { p.focus(p === pick); });
+  }
+  window.krVideoExternal = function (playing) {
+    externalPlaying = !!playing;
+    elect();
+  };
   document.querySelectorAll('.server-player').forEach(function (shell) {
     var v = shell.querySelector('video.cf-video');
     var frame = shell.querySelector('.player');
     var toggle = shell.querySelector('.video-toggle');
     var sound = shell.querySelector('.video-sound');
     var status = shell.querySelector('.video-status');
-    var state = { visible: false, manualPause: false, pending: false, retryVisible: false };
+    var state = { visible: false, manualPause: false, pending: false, retryVisible: false, focus: false, soundRefused: false };
+    var self;
     v.controls = false;
     v.muted = true;
     shell.classList.add('enhanced');
@@ -509,18 +616,21 @@
       sound.title = v.muted ? videoWords.unmute : videoWords.mute;
     }
     function start(manual) {
-      if (document.hidden || (!manual && (!state.visible || state.manualPause || v.ended || v.error)) || state.pending || !v.paused) return;
+      if (document.hidden || (!manual && (!state.visible || !state.focus || state.manualPause || v.ended || v.error)) || state.pending || !v.paused) return;
       loaded();
       v.preload = 'auto';
+      if (!manual) v.muted = !soundWanted || state.soundRefused;
       state.pending = true;
       status.textContent = videoWords.loading;
       var promise = v.play();
       if (promise && promise.then) promise.then(function () {
         state.pending = false;
         state.retryVisible = false;
-        if (document.hidden || !state.visible || state.manualPause) v.pause();
+        if (document.hidden || !state.visible || state.manualPause || (!manual && !state.focus)) v.pause();
       }).catch(function (error) {
         state.pending = false;
+        // A browser that will not play this film with sound plays it muted.
+        if (error.name === 'NotAllowedError' && !v.muted) { state.soundRefused = true; v.muted = true; sync(); start(manual); return; }
         var retry = state.retryVisible;
         state.retryVisible = false;
         if (error.name !== 'AbortError' && state.visible) status.textContent = v.error ? videoWords.error : videoWords.blocked;
@@ -532,18 +642,33 @@
     function visibility(visible) {
       state.retryVisible = visible && !document.hidden && state.pending;
       state.visible = visible;
-      if (visible && !document.hidden) start(false);
-      else { v.pause(); status.textContent = ''; }
+      if (!visible || document.hidden) {
+        v.pause(); status.textContent = '';
+        if (!visible && chosen === self) chosen = null;
+      }
+      elect();
+    }
+    function focus(on) {
+      state.focus = on;
+      if (on) start(false);
+      else if (!v.paused) { v.pause(); status.textContent = ''; }
     }
     function togglePlayback() {
       if (!v.paused || state.pending) {
         state.manualPause = true;
+        if (chosen === self) chosen = null;
         v.pause();
         status.textContent = '';
       } else {
         state.manualPause = false;
         if (v.error) { v.load(); }
         if (v.ended) v.currentTime = 0;
+        // A film started by hand is the one that plays: everything else,
+        // YouTube included, gives way.
+        chosen = self;
+        quietOthers(frame);
+        externalPlaying = false;
+        elect();
         start(true);
       }
       sync();
@@ -552,6 +677,8 @@
     v.addEventListener('click', togglePlayback);
     sound.addEventListener('click', function () {
       v.muted = !v.muted;
+      soundWanted = !v.muted;
+      state.soundRefused = false;
       if (!v.muted) quietOthers(frame);
       sync();
     });
@@ -568,7 +695,8 @@
     v.addEventListener('waiting', function () { if (!v.paused) status.textContent = videoWords.loading; });
     v.addEventListener('error', function () { status.textContent = videoWords.error; sync(); });
     v.addEventListener('ended', function () { state.manualPause = true; status.textContent = ''; sync(); });
-    serverPlayers.push({ frame: frame, load: loaded, visibility: visibility, state: state });
+    self = { frame: frame, load: loaded, visibility: visibility, focus: focus, state: state };
+    serverPlayers.push(self);
     sync();
   });
   if (serverPlayers.length) {
@@ -586,13 +714,13 @@
           var p = serverPlayers.find(function (p) { return p.frame === entry.target; });
           p.visibility(entry.isIntersecting && entry.intersectionRatio > 0.5);
         });
-      }, { threshold: [0, 0.5, 0.5 + Number.EPSILON] });
+      }, { threshold: [0, 0.5, 0.5 + Number.EPSILON], rootMargin: '-' + coveredTop() + 'px 0px 0px 0px' });
       serverPlayers.forEach(function (p) { nearVideo.observe(p.frame); visibleVideo.observe(p.frame); });
     } else {
       var checkVideos = function () {
         serverPlayers.forEach(function (p) {
           var r = p.frame.getBoundingClientRect();
-          var visibleHeight = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0));
+          var visibleHeight = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, coveredTop()));
           var visibleWidth = Math.max(0, Math.min(r.right, window.innerWidth) - Math.max(r.left, 0));
           p.visibility(r.width > 0 && r.height > 0 && visibleHeight * visibleWidth / (r.width * r.height) > 0.5);
         });
@@ -601,6 +729,13 @@
       window.addEventListener('resize', checkVideos);
       checkVideos();
     }
+    // Two films in view: the one nearer the middle takes over as the page
+    // scrolls, though neither crosses the half-visible line.
+    var electFrame = 0;
+    if (window.addEventListener) window.addEventListener('scroll', function () {
+      if (electFrame) return;
+      electFrame = requestAnimationFrame(function () { electFrame = 0; elect(); });
+    }, { passive: true });
     document.addEventListener('visibilitychange', function () {
       serverPlayers.forEach(function (p) { p.visibility(p.state.visible); });
     });
@@ -623,6 +758,33 @@
     };
     if (document.readyState === 'complete') startArming();
     else window.addEventListener('load', startArming, { once: true });
+  }
+
+  /* YouTube and Vimeo films stop, like the server films, once half of what
+     the reader can see of them is gone. A Vimeo frame has no remote control
+     here, so it is taken back down to its poster. */
+  var embedWraps = Array.prototype.map.call(document.querySelectorAll('button.player-btn'),
+    function (b) { return b.closest('.player'); });
+  if (embedWraps.length && 'IntersectionObserver' in window) {
+    var embedSeen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio > 0.5) return;
+        var wrap = e.target;
+        armed.forEach(function (a) {
+          if (a.wrap === wrap && a.playing && a.player && a.player.pauseVideo) {
+            try { a.player.pauseVideo(); } catch (err) { /* not ready */ }
+          }
+        });
+        var f = wrap.querySelector('iframe.vm-frame');
+        if (f) {
+          f.remove();
+          var b = wrap.querySelector('.player-btn');
+          if (b) b.hidden = false;
+          externalChanged();
+        }
+      });
+    }, { threshold: [0, 0.5, 0.5 + Number.EPSILON], rootMargin: '-' + coveredTop() + 'px 0px 0px 0px' });
+    embedWraps.forEach(function (w) { embedSeen.observe(w); });
   }
 
   document.addEventListener('click', function (e) {
@@ -770,20 +932,112 @@
       if (lbCap) lbCap.textContent = item.alt || '';
     }
 
-    function open(items, index, source) {
+    /* The picture grows out of the frame that was tapped and goes back into
+       it. A copy of the thumbnail (already decoded, so it shows at once)
+       travels between the two places; the viewer's own image, still
+       loading its widest step, takes over when the copy lands and has
+       loaded, or after a short wait. Reduced motion opens and closes in
+       place. Only transform and opacity move. */
+    var lbMotion = !matchMedia('(prefers-reduced-motion: reduce)').matches && !!lbImg.animate;
+    var LB_MS = 460;
+    function thumbOf(el) { return el && el.querySelector && el.querySelector('img'); }
+    function onScreen(r) { return r.width > 0 && r.bottom > 0 && r.top < innerHeight; }
+    function flyer(src, r) {
+      var c = document.createElement('img');
+      c.className = 'lb-flyer';
+      c.src = src;
+      c.alt = '';
+      c.style.cssText = 'position:fixed;left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;z-index:70;transform-origin:0 0;pointer-events:none;object-fit:contain';
+      document.body.appendChild(c);
+      return c;
+    }
+    var flight = null;   // the copy in the air, if any: { anim, el }
+    function land() {
+      if (!flight) return;
+      flight.anim.cancel();
+      flight.el.remove();
+      flight = null;
+      lbImg.style.visibility = '';
+    }
+    function between(a, b) {
+      return 'translate(' + (a.left - b.left) + 'px,' + (a.top - b.top) + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
+    }
+
+    var anchors = [];
+    // Where the picture will stand once loaded: its own proportions fitted
+    // into the viewer's stage, the way the stylesheet will lay it out. The
+    // image itself cannot be measured yet — it has no pixels until it loads.
+    function landing(item) {
+      var box = lbImg.parentElement;
+      var b = box.getBoundingClientRect(), cs = getComputedStyle(box);
+      var l = b.left + parseFloat(cs.paddingLeft), t = b.top + parseFloat(cs.paddingTop);
+      var aw = b.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var ah = b.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      if (!(item.w > 0 && item.h > 0 && aw > 0 && ah > 0)) return null;
+      var k = Math.min(aw / item.w, ah / item.h);
+      var w = item.w * k, h = item.h * k;
+      return { left: l + (aw - w) / 2, top: t + (ah - h) / 2, width: w, height: h };
+    }
+
+    function open(items, index, source, links) {
+      land();
       group = items;
+      anchors = links || [];
       at = index;
       opener2 = source;
+      var thumb = thumbOf(source);
+      var from = thumb && thumb.getBoundingClientRect();
       lb.hidden = false;
       lockScroll();
       render();
       lb.querySelector('.lb-close').focus();
+      if (!lbMotion || !from || !onScreen(from) || !thumb.currentSrc) return;
+      var to = landing(group[at]);
+      if (!to) return;
+      var c = flyer(thumb.currentSrc, to);
+      lbImg.style.visibility = 'hidden';
+      lb.animate([{ backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(lb).backgroundColor }],
+        { duration: LB_MS * 0.7, easing: 'ease-out' });
+      var fly = c.animate([{ transform: between(from, to) }, { transform: 'none' }],
+        { duration: LB_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+      var mine = flight = { anim: fly, el: c };
+      var landed = new Promise(function (r) { fly.onfinish = r; });
+      var loaded = lbImg.complete ? null : new Promise(function (r) {
+        lbImg.addEventListener('load', r, { once: true });
+        lbImg.addEventListener('error', r, { once: true });
+        setTimeout(r, 1500);
+      });
+      Promise.all([landed, loaded]).then(function () {
+        if (flight !== mine) return;   // closed or reopened meanwhile
+        flight = null;
+        lbImg.style.visibility = '';
+        c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160 }).onfinish = function () { c.remove(); };
+      });
     }
 
     function close() {
+      land();
+      var from = lbMotion && !lb.hidden && lbImg.currentSrc ? lbImg.getBoundingClientRect() : null;
+      var src = lbImg.currentSrc;
       lb.hidden = true;
       unlockScroll();
-      if (opener2) opener2.focus();
+      // Back into the frame of the picture now on show, if it is on screen.
+      var shown = anchors[at];
+      var target = shown || opener2;
+      if (target) {
+        // Focus stays where it can be seen: a frame that has scrolled away
+        // while the viewer stepped through the series is brought back.
+        var tr = target.getBoundingClientRect();
+        target.focus(onScreen(tr) ? { preventScroll: true } : undefined);
+        if (!onScreen(target.getBoundingClientRect()) && target.scrollIntoView) target.scrollIntoView({ block: 'nearest' });
+      }
+      var thumb = thumbOf(target);
+      var to = thumb && thumb.getBoundingClientRect();
+      if (!from || !from.width || !to || !onScreen(to)) return;
+      var c = flyer(src, to);
+      var anim = c.animate([{ transform: between(from, to) }, { transform: 'none', opacity: 1 }, { opacity: 0 }],
+        { duration: LB_MS * 0.85, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+      anim.onfinish = anim.oncancel = function () { c.remove(); };
     }
 
     function step(d) {
@@ -820,7 +1074,7 @@
             alt: im.alt, w: aw, h: ah,
           };
         });
-        open(items, all.indexOf(trigger), trigger);
+        open(items, all.indexOf(trigger), trigger, all);
         return;
       }
       if (e.target.closest('.lb-close')) close();
@@ -889,6 +1143,52 @@
       x0 = null;
     }, { passive: true });
   }
+
+  /* ---------- Between pages ----------
+     Cross-document view transitions (styles: @view-transition). On the way
+     out, the link the reader followed gives its title and its picture the
+     names kr-title and kr-lead; on the way in, the project page gives the
+     same names to its own title and first frame, and the browser moves one
+     onto the other. The names live only for the transition. The entrance
+     below leaves the named picture out of its fade, so the frame it lands on
+     is visible; a session flag tells it, since not every browser exposes
+     where a navigation came from. */
+  var VT_KEY = 'kr-vt';
+  function vtName(el, name) { if (el) el.style.viewTransitionName = name; }
+  function vtClear() {
+    document.querySelectorAll('[style*="view-transition-name"]').forEach(function (el) {
+      el.style.viewTransitionName = '';
+    });
+  }
+  function vtLead() {
+    return document.querySelector('main.project .seq img, main.project .seq video, main.project .seq .player');
+  }
+  var vtIncoming = false;
+  try { vtIncoming = sessionStorage.getItem(VT_KEY) === location.pathname; sessionStorage.removeItem(VT_KEY); } catch (e) {}
+  window.addEventListener('pageswap', function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    var to = new URL(e.activation.entry.url);
+    if (to.origin !== location.origin) return;
+    var path = to.pathname;
+    var links = Array.prototype.filter.call(document.querySelectorAll('a.row, a.work, a.mosaic'), function (a) {
+      return a.pathname === path && a.getClientRects().length;
+    });
+    if (!links.length) return;
+    var card = links.find(function (a) { return !a.classList.contains('mosaic'); });
+    vtName(card && card.querySelector('.row-title, .work-title'), 'kr-title');
+    var wall = !mobile && links.find(function (a) { return a.classList.contains('mosaic') && a.closest('.slide.on'); });
+    vtName(wall || (card && card.querySelector('.row-preview img, .work-cover img')), 'kr-lead');
+    try { sessionStorage.setItem(VT_KEY, path); } catch (err) {}
+  });
+  window.addEventListener('pagereveal', function (e) {
+    vtClear();
+    if (!e.viewTransition || !vtIncoming) return;
+    vtName(document.querySelector('main.project .project-title'), 'kr-title');
+    vtName(vtLead(), 'kr-lead');
+    e.viewTransition.finished.then(vtClear, vtClear);
+  });
+  // Back from the bfcache: the old page still carries the names it gave away.
+  window.addEventListener('pageshow', function (e) { if (e.persisted) vtClear(); });
 
   /* ---------- How a page arrives ----------
      The boot script in <head> raises .fx before the first paint whenever the
@@ -1014,6 +1314,11 @@
     // — which looks like no entrance at all. So the marks go on with
     // transitions switched off, the styles are flushed, and only then are the
     // transitions given back.
+    // The frame a view transition lands on must be visible when it lands.
+    if (vtIncoming) {
+      var landing = vtLead();
+      if (landing) blocks = blocks.filter(function (b) { return !b.contains(landing); });
+    }
     root.classList.add('fx-mark');
     blocks.forEach(function (b) { mark(b, 'rv', 0); });
     chrome.forEach(function (el, i) { mark(el, 'rv', sec(0.1 + i * 0.045)); });
