@@ -59,18 +59,25 @@ function compose(photos,width,gap=10,options={}) {
 
 /* The homepage is a deliberately small selection. A portrait at either end
    becomes the single frame; three horizontal images give the cover the lead.
-   The remaining two frames stack in their source order beside it. */
-function composeStage(photos, width, gap = 14) {
-  const ps = photos.slice(0, 3);
-  if (!ps.length) return { height: 0, tiles: [] };
-  const ratios = ps.map(p => p.w / p.h);
-  if (ps.length < 3) {
-    const h = (width - gap * (ps.length - 1)) / ratios.reduce((a,b) => a+b, 0);
-    let x = 0;
-    return { height: h, tiles: ps.map((p,i) => {
-      const w = ratios[i] * h;const tile = { n:p.n, x, y:0, w, h };x += w + gap;return tile;
-    }) };
-  }
+   The remaining two frames stack in their source order beside it.
+   Given the panel's shape (options.aspect, width over height), the stage also
+   weighs the other native-aspect arrangements — the lead across the top with
+   the pair beneath it, a pair stacked rather than side by side — and keeps
+   the one whose outline best matches the panel. A near-square panel no longer
+   holds a wide strip with two thirds of it empty. */
+function stageRow(ps, ratios, width, gap) {
+  const h = (width - gap * (ps.length - 1)) / ratios.reduce((a,b) => a+b, 0);
+  let x = 0;
+  return { height: h, tiles: ps.map((p,i) => {
+    const w = ratios[i] * h;const tile = { n:p.n, x, y:0, w, h };x += w + gap;return tile;
+  }) };
+}
+function stageColumn(ps, ratios, width, gap) {
+  let y = 0;
+  const tiles = ps.map((p,i) => { const h = width / ratios[i];const tile = { n:p.n, x:0, y, w:width, h };y += h + gap;return tile; });
+  return { height: y - gap, tiles };
+}
+function stageSide(ps, ratios, width, gap) {
   const single = ratios[2] < 1 && ratios[0] >= 1 && ratios[1] >= 1 ? 2 : 0;
   const a = single === 0 ? 1 : 0; const b = a + 1;
   const stackRatio = 1 / (1 / ratios[a] + 1 / ratios[b]);
@@ -82,6 +89,29 @@ function composeStage(photos, width, gap = 14) {
   return { height, tiles: ps.map((p,i) => i === single
     ? { n:p.n, x:singleX, y:0, w:singleWidth, h:height }
     : { n:p.n, x:stackX, y:i === a ? 0 : stackWidth / ratios[a] + gap, w:stackWidth, h:stackWidth / ratios[i] }) };
+}
+// The cover across the top; the other two beneath it at one shared height.
+function stageTop(ps, ratios, width, gap) {
+  const leadH = width / ratios[0];
+  const pairH = (width - gap) / (ratios[1] + ratios[2]);
+  const y = leadH + gap;
+  return { height: y + pairH, tiles: [
+    { n:ps[0].n, x:0, y:0, w:width, h:leadH },
+    { n:ps[1].n, x:0, y, w:ratios[1] * pairH, h:pairH },
+    { n:ps[2].n, x:ratios[1] * pairH + gap, y, w:ratios[2] * pairH, h:pairH },
+  ] };
+}
+function composeStage(photos, width, gap = 14, options = {}) {
+  const ps = photos.slice(0, 3);
+  if (!ps.length) return { height: 0, tiles: [] };
+  const ratios = ps.map(p => p.w / p.h);
+  const legacy = ps.length < 3 ? stageRow(ps, ratios, width, gap) : stageSide(ps, ratios, width, gap);
+  const aspect = options && options.aspect;
+  if (ps.length === 1 || !(aspect > 0) || !Number.isFinite(aspect)) return legacy;
+  const alternative = ps.length === 2 ? stageColumn(ps, ratios, width, gap) : stageTop(ps, ratios, width, gap);
+  const misfit = c => Math.abs(Math.log(width / c.height / aspect));
+  // Ties keep the established arrangement.
+  return misfit(alternative) < misfit(legacy) - 1e-9 ? alternative : legacy;
 }
 if (typeof module !== 'undefined' && module.exports) module.exports = { compose, composeStage };
 if (typeof window !== 'undefined') window.KRGallery = { compose, composeStage };

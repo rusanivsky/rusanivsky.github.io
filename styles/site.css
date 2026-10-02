@@ -1023,7 +1023,7 @@ html.stage-glow-baked .stage::after { display: none; }
   }
   .stage-frame { height: 100%; position: relative; }
   .slide {
-    container-type: size;
+    container: slide / size;
     position: absolute;
     inset: 0 2.5rem;
     display: flex;
@@ -1077,8 +1077,11 @@ html.stage-glow-baked .stage::after { display: none; }
 
   /* Photography is packed at native aspect ratios; only the outer wall fits
      the stage. The tile-in remains available to the existing entrances. */
-  .mosaic.editorial { position: relative; display: block; }
-  .mosaic.editorial .tile { position: absolute; display: block; }
+  .mosaic.editorial { position: relative; display: block; --wall: var(--wall-n, 1); }
+  .mosaic.editorial .tile {
+    position: absolute; display: block;
+    left: var(--x); top: var(--y); width: var(--w); height: var(--h);
+  }
   .mosaic.editorial .tile-in { width: 100%; height: 100%; aspect-ratio: auto; }
   .mosaic.editorial img { object-fit: contain; }
 
@@ -1090,6 +1093,15 @@ html.stage-glow-baked .stage::after { display: none; }
      stamp in the middle of an empty panel. */
   .mosaic.solo {
     width: calc(min(100cqw, 100cqh * var(--wall, 1)) * var(--solo, 0.6));
+  }
+  /* A photographic stage carries a second composition for a wide panel
+     (ultrawide monitors). Near-square panels keep the lead across the top. */
+  @container slide (aspect-ratio > 5 / 4) {
+    .mosaic.editorial { --wall: var(--wall-w, var(--wall-n, 1)); }
+    .mosaic.editorial .tile {
+      left: var(--wx, var(--x)); top: var(--wy, var(--y));
+      width: var(--ww, var(--w)); height: var(--wh, var(--h));
+    }
   }
 }
 

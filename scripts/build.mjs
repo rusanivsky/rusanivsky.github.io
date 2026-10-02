@@ -695,22 +695,36 @@ function soloScale(wall) {
   return Math.min(Math.sqrt(SOLO_AREA / fitShare(wall)), 0.88).toFixed(3);
 }
 
+/* The panel is near square on the screens people use (0.69–1.08 measured
+   from 1000×700 to 2560×1440) and wide only on ultrawide monitors (~1.5).
+   Each photographic stage is composed for both shapes; the stylesheet picks
+   the wide one by a container query on the slide, so no script is involved
+   and the first paint is already the right one. */
+const WIDE_STAGE_ASPECT = 1.5;
+
 function photographyMosaic(p, eager) {
   const picked = stagePick(p);
   const width = 1000;
-  const composition = galleryLayout.composeStage(picked.map((item, n) => {
+  const frames = picked.map((item, n) => {
     const d = dim(item.src);
     return { n, w: d?.w || 1600, h: d?.h || 1000 };
-  }), width, 14);
+  });
+  const composition = galleryLayout.composeStage(frames, width, 14, { aspect: STAGE_ASPECT });
+  const wide = galleryLayout.composeStage(frames, width, 14, { aspect: WIDE_STAGE_ASPECT });
   const wall = width / composition.height;
+  const wallWide = width / wide.height;
+  const same = JSON.stringify(wide) === JSON.stringify(composition);
   const soloK = picked.length === 1 ? soloScale(wall) : null;
   const pct = (value, total) => (value / total * 100).toFixed(5) + '%';
-  const tiles = composition.tiles.map((tile) => {
+  const vars = (tile, height, k = '') =>
+    `--${k}x:${pct(tile.x, width)};--${k}y:${pct(tile.y, height)};--${k}w:${pct(tile.w, width)};--${k}h:${pct(tile.h, height)}`;
+  const tiles = composition.tiles.map((tile, i) => {
     const item = picked[tile.n];
-    const geometry = `left:${pct(tile.x, width)};top:${pct(tile.y, composition.height)};width:${pct(tile.w, width)};height:${pct(tile.h, composition.height)}`;
+    const geometry = vars(tile, composition.height) + (same ? '' : ';' + vars(wide.tiles[i], wide.height, 'w'));
     return `<span class="tile" style="${geometry}"><span class="tile-in">${img(item.src, item.alt, { lazy: !eager, eager, sizes: stageSizes(wall, width / tile.w, soloK), skip: eager ? PHONE : '' })}</span></span>`;
   }).join('');
-  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--wall:${wall.toFixed(6)}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
+  const walls = `--wall-n:${wall.toFixed(6)}${same ? '' : `;--wall-w:${wallWide.toFixed(6)}`}`;
+  return `<a class="mosaic editorial${soloK ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="${walls}${soloK ? `;--solo:${soloK}` : ''}">${tiles}</a>`;
 }
 
 function mosaic(p, eager) {

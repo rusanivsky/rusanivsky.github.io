@@ -172,3 +172,72 @@ test('affected desktop series open with a hero followed by a group of photograph
     `${slug}: the next photograph must share its vertical band with another photograph`);
   }
 });
+
+// Stage fitted to the panel's shape (audit 2026-10-02). The composition is
+// chosen among native-aspect arrangements by how well its overall shape fits
+// the panel, so a nearly square panel is not left two thirds empty.
+const wallAspect = (r, width) => width / r.height;
+const panelFill = (r, width, panel) => {
+  const wall = wallAspect(r, width);
+  const share = Math.min(panel / wall, wall / panel);
+  return share * r.tiles.reduce((s, t) => s + t.w * t.h, 0) / (width * r.height);
+};
+const set = ratios => ratios.map((q, i) => ({ n: `s${i}`, w: q * 1000, h: 1000 }));
+const HOME_SETS = [[1.5, 1.5, 1.5], [1.5, 2 / 3, 1.5], [4 / 3, 2 / 3, 2 / 3]];
+
+test('stage with a panel aspect keeps native geometry, order and gutters', () => {
+  for (const ratios of [...HOME_SETS, [2 / 3, 1.5, 1.5], [1.5, 1.5, 2 / 3], [3, 4, 5], [0.5, 0.6, 0.8]]) {
+    for (const aspect of [0.5, 0.87, 1.05, 1.5, 2.4]) {
+      const input = set(ratios);
+      const r = composeStage(input, 1000, 14, { aspect });
+      geometry(r, input, 1000, 14, true);
+      close(Math.max(...r.tiles.map(t => t.x + t.w)), 1000, 'stage fills width');
+      assert.deepEqual(r, composeStage(input, 1000, 14, { aspect }), 'deterministic');
+    }
+  }
+});
+
+test('three landscape frames stack under the lead in a near-square panel', () => {
+  const r = composeStage(set([1.5, 1.5, 1.5]), 1000, 14, { aspect: 0.87 });
+  close(r.tiles[0].x, 0, 'lead at left'); close(r.tiles[0].y, 0, 'lead on top'); close(r.tiles[0].w, 1000, 'lead spans');
+  close(r.tiles[1].y, r.tiles[2].y, 'pair shares a top'); close(r.tiles[1].h, r.tiles[2].h, 'pair shares a height');
+  assert.ok(r.tiles[1].x < r.tiles[2].x, 'pair keeps source order');
+});
+
+test('a wide panel keeps the lead beside the stacked pair', () => {
+  const input = set([1.5, 1.5, 1.5]);
+  assert.deepEqual(composeStage(input, 1000, 14, { aspect: 2.3 }), composeStage(input, 1000, 14));
+});
+
+// The 1440×900 laptop panel is ~0.87. A portrait pair under a 4:3 lead
+// cannot fill a squarer panel much past 0.63–0.68 without cropping, so there
+// the floor is 0.6; on laptop panels the gain over the old side-by-side wall
+// (0.34–0.46 on the live site before this change) must be clear.
+test('home photo stages fill most of a typical desktop panel', () => {
+  for (const ratios of HOME_SETS) for (const panel of [0.85, 0.87, 0.96, 1.04]) {
+    const r = composeStage(set(ratios), 1000, 14, { aspect: panel });
+    const fill = panelFill(r, 1000, panel);
+    const before = panelFill(composeStage(set(ratios), 1000, 14), 1000, panel);
+    if (panel < 0.9) {
+      assert.ok(fill >= 0.7, `${ratios} at ${panel}: fill ${fill.toFixed(2)}`);
+      assert.ok(fill >= before * 1.4, `${ratios} at ${panel}: ${fill.toFixed(2)} vs ${before.toFixed(2)}`);
+    } else assert.ok(fill >= 0.6, `${ratios} at ${panel}: fill ${fill.toFixed(2)}`);
+  }
+});
+
+test('the chosen stage is the best panel fit among the arrangements', () => {
+  for (const ratios of [...HOME_SETS, [2 / 3, 1.5, 1.5]]) for (const panel of [0.87, 1.5]) {
+    const chosen = panelFill(composeStage(set(ratios), 1000, 14, { aspect: panel }), 1000, panel);
+    const legacy = panelFill(composeStage(set(ratios), 1000, 14), 1000, panel);
+    assert.ok(chosen >= legacy - 1e-9, `${ratios} at ${panel}: ${chosen} < legacy ${legacy}`);
+  }
+});
+
+test('two landscape frames stack in a tall panel and stand side by side in a wide one', () => {
+  const input = set([1.5, 1.5]);
+  const tall = composeStage(input, 1000, 14, { aspect: 0.87 });
+  close(tall.tiles[0].w, 1000, 'first spans'); close(tall.tiles[1].w, 1000, 'second spans');
+  assert.ok(tall.tiles[1].y > tall.tiles[0].y, 'source order top to bottom');
+  const wide = composeStage(input, 1000, 14, { aspect: 3 });
+  close(wide.tiles[0].y, 0, 'row'); close(wide.tiles[1].y, 0, 'row');
+});
