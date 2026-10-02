@@ -30,5 +30,16 @@
       "/media/photo/photo-sessions/20250929-202244-A.webp",
       "/media/photo/photo-sessions/20250503-133323-A.webp"
     ]
+  },
+  "street": {
+    "stage": [
+      "/media/photo/street/20250927-193041-A.webp",
+      "/media/photo/street/20251112-185614-A.webp",
+      "/media/photo/street/20260318-193928-A.webp"
+    ],
+    "hero": [
+      "/media/photo/street/20250927-193041-A.webp",
+      "/media/photo/street/20260318-194757-A.webp"
+    ]
   }
 }

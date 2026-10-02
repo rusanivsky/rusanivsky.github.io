@@ -61,14 +61,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/aboutme/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/aboutme/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/aboutme/"/>
-    <lastmod>2026-10-01</lastmod>
+    <lastmod>2026-10-02</lastmod>
   </url>
   <url>
     <loc>https://rusanivsky.com/ua/aboutme/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/aboutme/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/aboutme/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/aboutme/"/>
-    <lastmod>2026-10-01</lastmod>
+    <lastmod>2026-10-02</lastmod>
   </url>
   <url>
     <loc>https://rusanivsky.com/enquiries/</loc>
@@ -306,6 +306,20 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/backstage/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/backstage/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/backstage/"/>
+    <lastmod>2026-10-02</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/work/street/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/street/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/street/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/street/"/>
+    <lastmod>2026-10-02</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/work/street/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/work/street/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/street/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/street/"/>
     <lastmod>2026-10-02</lastmod>
   </url>
   <url>

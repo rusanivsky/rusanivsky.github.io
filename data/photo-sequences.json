@@ -990,5 +990,55 @@
    "src": "/media/photo/photo-sessions/20201004_101905_Master.webp",
    "alt": "Portrait"
   }
+ ],
+ "street": [
+  {
+   "src": "/media/photo/street/20250927-193041-A.webp",
+   "alt": "Red smoke rising beneath an illuminated arch at night"
+  },
+  {
+   "src": "/media/photo/street/20251009-193955-A.webp",
+   "alt": "A figure with a headlamp in the rain beyond a graffiti-covered wall"
+  },
+  {
+   "src": "/media/photo/street/20251009-195031-A.webp",
+   "alt": "Passengers blurred behind the window of a passing vehicle"
+  },
+  {
+   "src": "/media/photo/street/20251030-173443-A.webp",
+   "alt": "A lone figure at a lit table in a dark park strewn with autumn leaves"
+  },
+  {
+   "src": "/media/photo/street/20251102-181905-A.webp",
+   "alt": "A shadow behind a translucent sheet hung on a lit fence at night"
+  },
+  {
+   "src": "/media/photo/street/20251106-175948-A.webp",
+   "alt": "Lit floors of an office building behind a row of columns at night"
+  },
+  {
+   "src": "/media/photo/street/20251112-185614-A.webp",
+   "alt": "Two silhouettes photographing the city from a bridge railing at dusk"
+  },
+  {
+   "src": "/media/photo/street/20251112-195828-A.webp",
+   "alt": "A bus passing at night, its passengers blurred in the windows"
+  },
+  {
+   "src": "/media/photo/street/20260126-192139-A.webp",
+   "alt": "Red lights and a shadow on a misted blue glass panel"
+  },
+  {
+   "src": "/media/photo/street/20260227-184442-A.webp",
+   "alt": "Orange-lit balconies of an apartment block seen from below"
+  },
+  {
+   "src": "/media/photo/street/20260318-193928-A.webp",
+   "alt": "A person with a red umbrella walking down a wet street at night"
+  },
+  {
+   "src": "/media/photo/street/20260318-194757-A.webp",
+   "alt": "A person with a red umbrella passing a lit doorway in the rain"
+  }
  ]
 }

@@ -85,11 +85,8 @@ function write(path, html) {
 /* ---------------- shell ---------------- */
 
 const NAV_MAIN = [['/', 'selected'], ['/photo/', 'photography'], ['/video/', 'video'], ['/design/', 'design']];
-/* Street is built and reachable at /street/, but it is held out of the
-   navigation and the sitemap until a real edit exists: a menu entry that
-   leads to «the selection is not ready yet» promises work the page does not
-   have. Put the two lines back — here and in PUBLIC — the day the frames
-   land, and nothing else has to change. */
+/* Street photography is a project like the others (/work/street/), reached
+   from the home page, the photography index and its own old address. */
 const ABOUT_PATH = '/aboutme/';
 const NAV_SECOND = [[ABOUT_PATH, 'info'], ['/enquiries/', 'enquiries']];
 const NAV_MINOR = [['/rates/', 'rates']];
@@ -757,12 +754,13 @@ function mosaic(p, eager) {
   return `<a class="mosaic${a.n === 1 ? ' solo' : ''}" href="${href(`/work/${p.slug}/`)}" tabindex="-1" style="--mc:${a.c};--mr:${a.rows};--wall:${wall.toFixed(3)}${solo}">${tiles}</a>`;
 }
 
-/* Seven is the whole selection on the home page: the list is a door, not an
-   archive, and seven rows still fit the column without crowding the type. */
+/* Eight is the whole selection on the home page: the list is a door, not an
+   archive. The eighth row is the author's street series, which the standfirst
+   names; the list scrolls inside its column if the window is short. */
 const featured = projects
   .filter((p) => p.featured)
   .sort((a, b) => a.featuredOrder - b.featuredOrder)
-  .slice(0, 7);
+  .slice(0, 8);
 
 const STANDFIRST = {
   en: 'Kyrylo Rusanivsky works in Kyiv across three practices — photography, video and graphic design — and keeps a street-photography series of his own. Selected projects below.',
@@ -1181,42 +1179,6 @@ function enquiriesPage() {
   });
 }
 
-const STREET_INTRO = {
-  en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
-  ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
-};
-const STREET_NOTE = {
-  en: 'The edit for this page is still being made. The production site has never published these frames on its own pages — until a real selection exists here, the series continues on Instagram.',
-  ua: 'Добірку для цієї сторінки ще роблю. На основному сайті ці кадри ніколи не публікувалися окремо — доки тут немає справжнього відбору, серія триває в Instagram.',
-};
-
-function streetPage() {
-  const body = `
-<main class="page g12" id="main">
-  <div class="page-head col-8">
-    <p class="eyebrow">${ui('personal')}</p>
-    <h1 class="page-title t-title">${ui('street')}</h1>
-    ${t(STREET_INTRO, 'page-intro t-lead col-7', 'p')}
-  </div>
-
-  <section class="section col-full g12" style="padding-inline:0">
-    <h2 class="section-label col-full">${ui('theSequence')}</h2>
-    <div class="prose col-7" style="margin-top:1.1rem">
-      ${t(STREET_NOTE, '', 'p')}
-      <p><a href="https://www.instagram.com/rusanivsky/" target="_blank" rel="noopener">Instagram — @rusanivsky →</a></p>
-    </div>
-  </section>
-  <div class="col-full">${foot()}</div>
-</main>`;
-  return page({
-    here: '/street/',
-    path: '/street/',
-    title: `${ui('street')} — ${ui('name')}`,
-    description: L(STREET_INTRO),
-    body,
-  });
-}
-
 /* The privacy notice is the one page of the old site that is not portfolio:
    a legal text with its own indexed URL. Every sentence below is copied
    verbatim from rusanivsky.com/privacy/ and its Ukrainian twin — the words
@@ -1410,7 +1372,6 @@ function build(lang) {
   out('photo/index.html', practicePage({ here: '/photo/', discipline: 'photography' }));
   out('video/index.html', practicePage({ here: '/video/', discipline: 'video', extra: catalogueBlock() }));
   out('design/index.html', practicePage({ here: '/design/', discipline: 'design' }));
-  out('street/index.html', streetPage());
   out('aboutme/index.html', infoPage());
   out('enquiries/index.html', enquiriesPage());
   out('rates/index.html', ratesPage());
@@ -1440,6 +1401,8 @@ function build(lang) {
     'photo/photo-sessions/index.html': '/work/portraits/',
     'photo/public-events/index.html': '/work/reportage/',
     'work/dyvochyv/index.html': '/work/reels/',
+    // The street series became a project with its own frames (2026-10-02).
+    'street/index.html': '/work/street/',
     /* Two addresses were transliterated Ukrainian, which an English reader can
        neither read nor recognise. The pages now answer to their translated
        names; the old addresses stay as redirects, because a link already given
@@ -1481,7 +1444,7 @@ const previousSitemap = new URL('../sitemap.xml', import.meta.url);
 const previousDates = new Map(existsSync(previousSitemap)
   ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
   : []);
-const PAGE_UPDATED = { [ABOUT_PATH]: '2026-10-01', '/tembrava/license/': '2026-10-01' };
+const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/work/street/': '2026-10-02', '/tembrava/license/': '2026-10-01' };
 const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>
