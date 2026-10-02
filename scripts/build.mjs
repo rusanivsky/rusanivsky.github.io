@@ -1313,8 +1313,8 @@ ${sections}
 const TEMBRAVA_EULA = readFileSync(new URL('../data/tembrava-license.txt', import.meta.url), 'utf8');
 const TEMBRAVA_TITLE = { en: 'Tembrava Display licence', ua: 'Ліцензія Tembrava Display' };
 const TEMBRAVA_DEK = {
-  en: 'Commercial font licence. EULA 1.0, 1 October 2026, for Tembrava Display 0.9.5 and later updates.',
-  ua: 'Комерційна ліцензія шрифту. EULA 1.0 від 1 жовтня 2026 року для Tembrava Display 0.9.5 і наступних оновлень.',
+  en: 'Commercial font licence. EULA 1.0, 1 October 2026, for Tembrava Display 0.9.5 and later updates. Current version: Tembrava Display 1.0.',
+  ua: 'Комерційна ліцензія шрифту. EULA 1.0 від 1 жовтня 2026 року для Tembrava Display 0.9.5 і наступних оновлень. Поточна версія — Tembrava Display 1.0.',
 };
 const TEMBRAVA_TYPES = [
   { h: 'Desktop', p: {
@@ -1514,7 +1514,7 @@ const previousSitemap = new URL('../sitemap.xml', import.meta.url);
 const previousDates = new Map(existsSync(previousSitemap)
   ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
   : []);
-const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/street/': '2026-10-02', '/street/after-five/': '2026-10-02', '/tembrava/license/': '2026-10-01' };
+const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/street/': '2026-10-02', '/street/after-five/': '2026-10-02', '/tembrava/license/': '2026-10-02' };
 const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>
