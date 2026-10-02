@@ -98,23 +98,17 @@ const NAV_MINOR = [['/rates/', 'rates']];
    a panel that follows every page stays a way in, not a contact card. The
    drawer renders the same list in the same order, so the mobile menu is the
    rail, not a second idea of it. */
-/* The full list of profiles, in the order a reader is likely to want them:
-   the places the work itself lives first, the professional registers after.
+/* The profiles worth a visit, in the order a reader is likely to want them:
+   the places the work itself lives first, the professional register after.
    One Instagram, not two — the personal account is the one that carries the
    pictures — and no handles: a list of names reads as a list, a list of
-   @-handles reads as a form. Every address here comes from the site's own
-   history or from the author; none is guessed. */
+   @-handles reads as a form. Trimmed from ten to four on 2026-10-02 at the
+   author's request; the order of the rest is unchanged. */
 const PROFILES = [
   ['https://www.instagram.com/rusanivsky/', 'Instagram'],
-  ['https://www.threads.com/@rusanivsky', 'Threads'],
   ['https://www.youtube.com/@rusanivsky', 'YouTube'],
-  ['https://www.facebook.com/rusanivsky', 'Facebook'],
   ['https://www.behance.net/rusanivsky', 'Behance'],
-  ['https://www.pinterest.com/rusanivsky/', 'Pinterest'],
   ['https://www.linkedin.com/in/rusanivsky/', 'LinkedIn'],
-  ['https://www.upwork.com/freelancers/~01538086fd314c4cfa', 'Upwork'],
-  ['https://cases.media/rusanivsky/', 'CASES'],
-  ['https://www.tiktok.com/@rusanivsky', 'TikTok'],
 ];
 
 const ELSEWHERE = [
@@ -1045,10 +1039,6 @@ const ABOUT = [
   {
     en: 'I edit videos. I design and typeset books. I photograph people and events. I work on interviews, YouTube series and social-media videos; I create publications and printed materials. I also keep a street-photography series about the city, spontaneous scenes and landscapes. I work remotely.',
     ua: 'Монтую відео. Проєктую й верстаю книжки. Знімаю людей і події. Працюю з інтерв’ю, YouTube-серіями й роликами для соцмереж; створюю видання та поліграфічну продукцію. Також веду серію вуличних світлин — про місто, випадкові сцени і краєвиди. Працюю дистанційно.',
-  },
-  {
-    en: 'I have worked remotely, as a freelancer, since 2013. Right now I take on video editing and design projects — from a single task to ongoing support. I work as a registered sole proprietor in Ukraine: a contract or a public offer, an invoice, payment to a business account.',
-    ua: 'Працюю дистанційно, на фрилансі, з 2013 року. Зараз беру проєкти з відеомонтажу та графічного дизайну — від однієї задачі до постійного супроводу. Працюю офіційно як ФОП: договір або публічна оферта, рахунок, акт, оплата на розрахунковий рахунок.',
   },
 ];
 
