@@ -226,6 +226,11 @@ const splash = () => `
    fx-ready через 3 с — страховка: якщо site.js не завантажився, сторінка
    однаково показується.
 
+   fx-stay — перехід усередині сайту (той самий origin у referrer). Шапка й
+   бічна колонка на обох сторінках однакові, тож лишаються на місці: якби
+   вони щоразу гасли й заходили наново поверх переходу браузера, сторінка
+   виглядала б так, ніби вантажиться двічі. Повний вхід — лише першої сторінки.
+
    Заставка — лише для входу через головну. Хто прийшов за посиланням просто
    на проєкт, хоче бачити проєкт, а не титульну картку; така сторінка лише
    позначає сесію як побачену, тож і подальший перехід на головну обходиться
@@ -233,6 +238,7 @@ const splash = () => `
 const splashBoot = (home) => `(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
+try{if(new URL(document.referrer).origin===location.origin)r.className+=' fx-stay';}catch(e){}
 setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');${home ? '' : 'return;'}

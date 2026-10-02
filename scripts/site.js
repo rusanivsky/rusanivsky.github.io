@@ -1277,16 +1277,19 @@
     );
     var splashEl = document.querySelector('.splash');
     var waiting = root.classList.contains('splash-on') && !root.classList.contains('splash-off');
+    // Arriving from another page of the site, the header is already on
+    // screen and identical: it stays put instead of coming in a second time.
+    var stay = root.classList.contains('fx-stay');
     // Without the card the name fades in with the rest of the header; with
     // it, the name is brought in by the card itself (below).
-    var chrome = Array.prototype.slice.call(document.querySelectorAll(
+    var chrome = stay ? [] : Array.prototype.slice.call(document.querySelectorAll(
       (waiting ? '' : '.rail .wordmark, .bar .wordmark, ') + '.rail-nav a, .rail-foot > *, .bar > :not(.wordmark)'
     ));
     var tiles = document.querySelectorAll('.slide.on .tile');
     // Rules are part of the entrance too: a divider that is already drawn
     // while the words around it are still to come reads as a leftover. Each
     // one comes in with the first item after it.
-    var rules = Array.prototype.slice.call(document.querySelectorAll('.rail-nav + .rail-nav, .index'));
+    var rules = Array.prototype.slice.call(document.querySelectorAll(stay ? '.index' : '.rail-nav + .rail-nav, .index'));
 
     // Blocks: walk down from <main> and stop at the first element that fits
     // on a screen, so a whole section is not moved as one slab and a single

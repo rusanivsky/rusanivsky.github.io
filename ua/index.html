@@ -36,10 +36,11 @@
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles/site.css?v=41d1da66">
+<link rel="stylesheet" href="/styles/site.css?v=869959d9">
 <script>(function(){try{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var r=document.documentElement;r.className+=' fx';
+try{if(new URL(document.referrer).origin===location.origin)r.className+=' fx-stay';}catch(e){}
 setTimeout(function(){r.className+=' fx-ready';},3000);
 if(sessionStorage.getItem('kr-seen'))return;
 sessionStorage.setItem('kr-seen','1');
@@ -53,7 +54,7 @@ setTimeout(function(){r.className=r.className.replace(/ splash-o(n|ff)/g,'');},2
 addEventListener('load',finish);
 setTimeout(finish,6000);}catch(e){}})();</script>
 <script src="/scripts/gallery-layout.js?v=1ab48dfa" defer></script>
-<script src="/scripts/site.js?v=9348e3f4" defer></script>
+<script src="/scripts/site.js?v=dfb85ad7" defer></script>
 
 <script src="/scripts/google-analytics.js?v=d5f2d15b" defer></script>
 
