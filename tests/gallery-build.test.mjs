@@ -12,6 +12,8 @@ const read = path => readFileSync(resolve(root, path), 'utf8');
 const hash = text => createHash('sha256').update(text).digest('hex');
 const dimensions = JSON.parse(read('data/media-sizes.json'));
 const photoProjects = projects.filter(p => p.disciplines.includes('photography'));
+// A project page lives under its section: the street series under /street/, the rest under /work/.
+const pagePath = p => (p.section === 'street' ? 'street/' : 'work/') + p.slug + '/';
 const decode = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)(?:="([^"]*)")?/g)].map(m => [m[1], decode(m[2] ?? '')]));
 const tags = (html, name) => [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, 'g'))].map(m => attrs(m[0]));
@@ -43,7 +45,7 @@ before(() => {
 
 test('every photographic series preserves all native images, alt text, order and lightbox grouping in EN and UA', () => {
   for (const project of photoProjects) for (const prefix of ['', 'ua/']) {
-    const html = read(`${prefix}work/${project.slug}/index.html`);
+    const html = read(`${prefix}${pagePath(project)}index.html`);
     const opening = [...html.matchAll(/<div\b[^>]*>/g)].find(m => hasClass(attrs(m[0]), 'collage'));
     assert.ok(opening, `${prefix}${project.slug}: gallery exists`);
     const container = attrs(opening[0]);
@@ -68,14 +70,14 @@ test('every photographic series preserves all native images, alt text, order and
       assert.ok(!/position\s*:\s*absolute|transform\s*:/.test(a.style || ''));
     });
     const canonical = tags(html, 'link').find(a => a.rel === 'canonical');
-    assert.equal(canonical.href, `https://rusanivsky.com/${prefix}work/${project.slug}/`);
+    assert.equal(canonical.href, `https://rusanivsky.com/${prefix}${pagePath(project)}`);
   }
 });
 
 test('photographic galleries render directly in the series layout without a view switch', () => {
   for (const project of photoProjects) {
     for (const prefix of ['', 'ua/']) {
-      const html = read(`${prefix}work/${project.slug}/index.html`);
+      const html = read(`${prefix}${pagePath(project)}index.html`);
       assert.doesNotMatch(html, /data-gallery-mode|data-gallery-controls/);
       assert.match(html, new RegExp(`id="gallery-${project.slug}" class="collage" data-gallery`));
     }
@@ -84,7 +86,7 @@ test('photographic galleries render directly in the series layout without a view
 
 test('home and photographic pages load the versioned layout before site code', () => {
   const version = createHash('sha1').update(read('scripts/gallery-layout.js')).digest('hex').slice(0, 8);
-  for (const prefix of ['', 'ua/']) for (const path of ['index.html', ...photoProjects.map(p => `work/${p.slug}/index.html`)]) {
+  for (const prefix of ['', 'ua/']) for (const path of ['index.html', ...photoProjects.map(p => `${pagePath(p)}index.html`)]) {
     const scripts = tags(read(prefix + path), 'script').map(a => a.src).filter(Boolean);
     const layout = scripts.indexOf(`/scripts/gallery-layout.js?v=${version}`);
     const site = scripts.findIndex(src => /^\/scripts\/site\.js\?v=/.test(src));
@@ -154,7 +156,7 @@ test('requested gallery removals preserve media and the two event frames move to
     for (const project of photoProjects) {
       assert.ok(!project.media.some(m => m.src === src), `${src}: absent from ${project.slug}`);
       for (const prefix of ['', 'ua/']) {
-        assert.ok(!read(`${prefix}work/${project.slug}/index.html`).includes(src), `${prefix}${src}: absent from gallery output`);
+        assert.ok(!read(`${prefix}${pagePath(project)}index.html`).includes(src), `${prefix}${src}: absent from gallery output`);
       }
     }
   }
@@ -214,7 +216,7 @@ test('malformed optional hero hints cannot abort a live build', () => {
   const project = photoProjects.find(p => p.featured);
   withHints({ [project.slug]: { hero: {} } }, () => {
     for (const prefix of ['', 'ua/']) {
-      const html = read(`${prefix}work/${project.slug}/index.html`);
+      const html = read(`${prefix}${pagePath(project)}index.html`);
       assert.equal(tags(html, 'a').filter(a => 'data-lb' in a).length, project.media.filter(m => m.type === 'image').length);
       assert.doesNotMatch(html, /data-gallery-hero/);
     }
@@ -229,7 +231,7 @@ test('a stale stage hint is replaced so a three-frame home preview stays complet
       const html = read(prefix + 'index.html');
       const mosaic = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].find(m => {
         const a = attrs(m[1]);
-        return hasClass(a, 'mosaic') && a.href === `/${prefix}work/${project.slug}/`;
+        return hasClass(a, 'mosaic') && a.href === `/${prefix}${pagePath(project)}`;
       });
       assert.ok(mosaic, 'photographic homepage preview exists');
       const sources = tags(mosaic[2], 'img').map(a => a.src);

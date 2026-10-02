@@ -79,6 +79,7 @@ export const UI = {
   graphicDesign: { en: 'Graphic design', ua: 'Графічний дизайн' },
 
   theSequence: { en: 'The sequence', ua: 'Послідовність' },
+  series: { en: 'Series', ua: 'Серії' },
   notFound: { en: 'This page is not here.', ua: 'Цієї сторінки тут немає.' },
   notFoundTitle: { en: 'Not found', ua: 'Не знайдено' },
   tryInstead: { en: 'Try', ua: 'Спробуйте' },
