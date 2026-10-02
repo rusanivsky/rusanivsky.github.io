@@ -300,10 +300,11 @@
       });
     }
 
-    /* A wall of the author's own films plays a few muted seconds of its
-       lead film once the reader stays on the row. Not on touch, not for
-       reduced motion or Save-Data. Leaving the row stops the download, not
-       only the picture: the source is dropped and the element reloaded. */
+    /* A wall of the author's own films plays a six-second muted clip of its
+       lead film (data-preview, from the build) once the reader stays on the
+       row. Not on touch, not for reduced motion or Save-Data. Leaving the row
+       stops the download, not only the picture: the source is dropped and
+       the element reloaded. */
     var canPreview = !matchMedia('(prefers-reduced-motion: reduce)').matches &&
       matchMedia('(hover: hover)').matches &&
       !(navigator.connection && navigator.connection.saveData);
@@ -327,10 +328,6 @@
         v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
         v.setAttribute('aria-hidden', 'true');
         v.preload = 'auto';
-        v.addEventListener('loadedmetadata', function () {
-          // Past the opening titles, into the film itself.
-          if (v.duration > 20) v.currentTime = Math.min(v.duration * 0.2, 40);
-        }, { once: true });
         v.addEventListener('playing', function () { v.classList.add('on'); }, { once: true });
         v.src = host.getAttribute('data-preview');
         host.appendChild(v);

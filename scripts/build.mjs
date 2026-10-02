@@ -743,11 +743,22 @@ function mosaic(p, eager) {
   const solo = soloK ? `;--solo:${soloK}` : '';
 
   const odd = a.c === 2 && a.n % 2 === 1;
+  /* The lead frame of a wall made of the author's own films may play a few
+     muted seconds of its film while the reader stays on the row (site.js).
+     It plays a six-second clip cut from the film (media/video/previews/,
+     ~0.5 MB), never the film itself: a hover must not cost a download of
+     tens of megabytes. Only server films; YouTube and Vimeo are not ours. */
+  const clipOf = (x) => {
+    const film = p.media.find((m) => m.platform === 'cf' && m.poster === x.src);
+    const clip = film && `/media/video/previews/${film.videoId}.mp4`;
+    return clip && existsSync(new URL('..' + clip, import.meta.url)) ? clip : null;
+  };
+  const previewAt = cells.findIndex(clipOf);
   const tiles = cells.map((x, i) =>
     /* The inner frame takes the picture's own shape inside its cell, so the
        hover push is clipped at the picture's edge and not at the cell's —
        a frame that is narrower than its cell does not grow into the air. */
-    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}">${img(x.src, x.alt, { lazy: !eager, eager, sizes: stageSizes(wall, a.c, soloK), skip: eager ? PHONE : '' })}</span></span>`).join('');
+    `<span class="tile${odd && i === a.n - 1 ? ' orphan' : ''}"><span class="tile-in" style="--r:${x.ratio.toFixed(4)}"${i === previewAt ? ` data-preview="${attr(clipOf(x))}"` : ''}>${img(x.src, x.alt, { lazy: !eager, eager, sizes: stageSizes(wall, a.c, soloK), skip: eager ? PHONE : '' })}</span></span>`).join('');
   /* The wall is a link to the project, the same place its row leads. It is
      out of the tab order: the stage is aria-hidden, and the row beside it is
      already the way in for a keyboard or a screen reader. */
