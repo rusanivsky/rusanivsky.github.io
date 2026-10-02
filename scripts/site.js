@@ -290,12 +290,53 @@
       // in by the reader, frame by frame (styles: .stage.live).
       if (current !== null) stage.classList.add('live');
       current = idx;
+      stopPreviews();
+      if (stage.classList.contains('live')) startPreview(slides[idx]);
       slides.forEach(function (s, i) {
         s.classList.toggle('on', i === idx);
         // Anything off-stage is hidden from assistive tech too; the index
         // beside it already carries the same titles.
         s.setAttribute('aria-hidden', String(i !== idx));
       });
+    }
+
+    /* A wall of the author's own films plays a few muted seconds of its
+       lead film once the reader stays on the row. Not on touch, not for
+       reduced motion or Save-Data. Leaving the row stops the download, not
+       only the picture: the source is dropped and the element reloaded. */
+    var canPreview = !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      matchMedia('(hover: hover)').matches &&
+      !(navigator.connection && navigator.connection.saveData);
+    var previewTimer = null;
+    function stopPreviews() {
+      clearTimeout(previewTimer);
+      stage.querySelectorAll('video.stage-preview').forEach(function (v) {
+        v.classList.remove('on');
+        setTimeout(function () {
+          v.pause(); v.removeAttribute('src'); v.load(); v.remove();
+        }, 400);
+      });
+    }
+    function startPreview(slide) {
+      var host = slide.querySelector('[data-preview]');
+      if (!canPreview || !host) return;
+      previewTimer = setTimeout(function () {
+        var v = document.createElement('video');
+        v.className = 'stage-preview';
+        v.muted = true; v.loop = true; v.playsInline = true;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+        v.setAttribute('aria-hidden', 'true');
+        v.preload = 'auto';
+        v.addEventListener('loadedmetadata', function () {
+          // Past the opening titles, into the film itself.
+          if (v.duration > 20) v.currentTime = Math.min(v.duration * 0.2, 40);
+        }, { once: true });
+        v.addEventListener('playing', function () { v.classList.add('on'); }, { once: true });
+        v.src = host.getAttribute('data-preview');
+        host.appendChild(v);
+        var played = v.play();
+        if (played && played.catch) played.catch(function () {});
+      }, 450);
     }
 
     document.querySelectorAll('.row').forEach(function (row, i) {
@@ -575,6 +616,14 @@
     sync();
   });
   if (serverPlayers.length) {
+    /* «Half the frame» is half of what the reader can see. On a phone the
+       fixed bar covers the top of the window, so the part of a film under it
+       counts as hidden: the film stops once half of it has gone under the
+       bar or past the bottom edge, not only past the edge of the glass. */
+    var bar = document.querySelector('.bar');
+    var coveredTop = function () {
+      return bar && getComputedStyle(bar).display !== 'none' ? Math.round(bar.getBoundingClientRect().bottom) : 0;
+    };
     if ('IntersectionObserver' in window) {
       var nearVideo = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -589,13 +638,13 @@
           var p = serverPlayers.find(function (p) { return p.frame === entry.target; });
           p.visibility(entry.isIntersecting && entry.intersectionRatio > 0.5);
         });
-      }, { threshold: [0, 0.5, 0.5 + Number.EPSILON] });
+      }, { threshold: [0, 0.5, 0.5 + Number.EPSILON], rootMargin: '-' + coveredTop() + 'px 0px 0px 0px' });
       serverPlayers.forEach(function (p) { nearVideo.observe(p.frame); visibleVideo.observe(p.frame); });
     } else {
       var checkVideos = function () {
         serverPlayers.forEach(function (p) {
           var r = p.frame.getBoundingClientRect();
-          var visibleHeight = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0));
+          var visibleHeight = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, coveredTop()));
           var visibleWidth = Math.max(0, Math.min(r.right, window.innerWidth) - Math.max(r.left, 0));
           p.visibility(r.width > 0 && r.height > 0 && visibleHeight * visibleWidth / (r.width * r.height) > 0.5);
         });
