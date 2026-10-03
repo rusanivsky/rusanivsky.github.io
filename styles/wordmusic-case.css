@@ -1,0 +1,70 @@
+/* word&music case: the system told in chapters.
+   Linked only from the two case pages. The face itself is declared inline in
+   their head, next to the hashed file name, so no other page fetches it. */
+.tembrava { font-family: 'Tembrava Case', var(--font-display); font-weight: 400; font-feature-settings: 'kern', 'liga'; }
+.wm-chapter { margin-block-end: clamp(2.5rem, 6vw, 5.5rem); }
+
+.wm-marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+.wm-ground { box-shadow: inset 0 0 0 var(--rule-w) var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem); align-items: end; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.wm-light { background: #ffffff; color: #111111; }
+.wm-night { background: #161616; color: #f4f1ea; }
+.wm-mark-cell { display: grid; gap: .75rem; justify-items: start; }
+.wm-mark-wordmusic { grid-column: 1 / -1; }
+.wm-mark { display: block; height: auto; overflow: visible; }
+.wm-mark-wordmusic .wm-mark { width: 100%; }
+.wm-mark-wandm .wm-mark { width: 62%; }
+.wm-mark-wm .wm-mark { width: 44%; }
+.wm-mark-name { font-size: var(--t-meta); opacity: .6; }
+
+.wm-type { display: grid; gap: clamp(1rem, 2.5vw, 2rem); }
+.wm-specimen { margin: 0; font-size: clamp(2.6rem, 1rem + 6vw, 6.5rem); line-height: 1; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.wm-specimen-line { margin: 0; font-size: clamp(1.25rem, 0.9rem + 1.6vw, 2.25rem); line-height: 1.2; }
+.wm-alphabet { display: grid; gap: clamp(.6rem, 1.4vw, 1rem); padding-block: clamp(1rem, 2.5vw, 2rem); border-block: var(--rule-w) solid var(--line); }
+.wm-line { width: 100%; max-height: 3.4rem; }
+.wm-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+.wm-pair figure { margin: 0; padding: clamp(1rem, 2.5vw, 2rem); background: var(--stage-bg); }
+.wm-pair figcaption, .wm-palette-name, .wm-hierarchy dt { font-size: var(--t-meta); color: var(--muted); }
+.wm-ss { margin: 0 0 .5rem; font-size: clamp(2.4rem, 1.2rem + 4vw, 4.5rem); line-height: 1.1; font-feature-settings: 'kern'; }
+.wm-ss01 { font-feature-settings: 'kern', 'ss01'; }
+.wm-dlig { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(.75rem, 2vw, 2rem); padding: clamp(1rem, 2.5vw, 2rem); background: var(--stage-bg); }
+.wm-typed { margin: 0; font-size: clamp(1.75rem, 1rem + 2.6vw, 3.25rem); line-height: 1; }
+.wm-dlig .wm-mark { width: min(22rem, 100%); }
+.wm-arrow { color: var(--muted); font-size: 1.5rem; }
+.wm-note { color: var(--muted); }
+.wm-links { margin: 0; }
+
+.wm-palettes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--col-gap); margin-bottom: clamp(1.5rem, 4vw, 3rem); }
+.wm-palette-name { margin: 0 0 .75rem; }
+.wm-swatches { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.wm-swatches li { display: grid; grid-template-columns: 2.5rem 1fr; grid-template-rows: auto auto; column-gap: .75rem; align-items: center; }
+.wm-chip { grid-row: span 2; width: 2.5rem; height: 2.5rem; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 12%, transparent); }
+.wm-role { font-size: var(--t-meta); color: var(--muted); }
+.wm-hex { font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+
+.wm-hierarchy { margin: 0 0 clamp(1.5rem, 4vw, 3rem); display: grid; border-top: var(--rule-w) solid var(--line); }
+.wm-level { display: grid; grid-template-columns: 8rem 1fr; gap: var(--col-gap); align-items: baseline; padding-block: .9rem; border-bottom: var(--rule-w) solid var(--line-soft); }
+.wm-level dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.wm-xl .wm-sample { font-size: clamp(2rem, 1rem + 3.5vw, 4rem); line-height: 1.05; }
+.wm-l .wm-sample { font-size: clamp(1.4rem, 1rem + 1.6vw, 2.25rem); }
+.wm-m .wm-sample { font-size: clamp(1.2rem, .95rem + 1vw, 1.75rem); }
+.wm-s .wm-sample { font-size: var(--t-body); }
+.wm-note-small { font-size: var(--t-meta); color: var(--muted); margin-left: .5rem; }
+
+.wm-group { display: grid; gap: var(--col-gap); margin-bottom: var(--col-gap); }
+.wm-pair-grid, .wm-formats { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.wm-formats.wm-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wm-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.wm-group .design-frame img { max-height: 72svh; }
+.wm-strip .design-frame { padding: clamp(.5rem, 1.2vw, 1rem); }
+
+@media (max-width: 60.99rem) {
+  .wm-palettes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 40rem) {
+  .wm-marks, .wm-pair, .wm-pair-grid, .wm-formats, .wm-formats.wm-three { grid-template-columns: minmax(0, 1fr); }
+  /* The long alphabet lines keep a readable height and scroll inside their band. */
+  .wm-alphabet { overflow-x: auto; }
+  .wm-line { width: auto; height: 1.6rem; max-width: none; max-height: none; }
+  .wm-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wm-level { grid-template-columns: 1fr; gap: .35rem; }
+}

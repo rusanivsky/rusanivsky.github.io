@@ -9,7 +9,7 @@
 
   Idempotent: running it twice in a row changes nothing.
 */
-import { mkdirSync, writeFileSync, readFileSync, copyFileSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, copyFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -333,7 +333,7 @@ const OG_ALT = {
   ua: 'Кирило Русанівський — фотограф, відеомонтажер і графічний дизайнер, Київ',
 };
 
-function page({ here, path, title, description, body, ogImage = '/og-image.jpg' }) {
+function page({ here, path, title, description, body, ogImage = '/og-image.jpg', head = '' }) {
   const canonical = other(LANG, path);
   const seo = SEO[canonical];
   if (seo) {
@@ -383,7 +383,7 @@ ${LIVE ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<link rel="ca
 <link rel="preload" href="/fonts/fixel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/prata-${LANG === 'ua' ? 'cyrillic' : 'latin'}.woff2" as="font" type="font/woff2" crossorigin>
 ${LANG === 'ua' ? '<link rel="preload" href="/fonts/fixel-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/styles/site.css?v=${CSS_V}">
-<script>${splashBoot(!sub)}</script>
+${head}<script>${splashBoot(!sub)}</script>
 <script src="/scripts/gallery-layout.js?v=${GALLERY_V}" defer></script>
 <script src="/scripts/site.js?v=${JS_V}" defer></script>
 ${here === '/design/' ? `<script src="/scripts/design-masonry.js?v=${DESIGN_V}" defer></script>` : ''}
@@ -934,6 +934,103 @@ function collage(items, groupId, eagerFirst = false) {
   return `<div id="${attr(galleryId)}" class="collage" data-gallery data-lb-group="${attr(groupId)}">${cells}</div>`;
 }
 
+/* ---------------- design case told as a system ----------------
+   word&music is the one case whose subject is a system rather than a set of
+   pictures, so it carries a `story`: chapters that show the mark, the
+   typeface, the system and the work, in that order. Every picture still
+   lives in `media` and is drawn in a static .design-frame like any other
+   case; the chapters only decide where each one stands.
+
+   The marks are vector paths taken from the Full font's own outlines
+   (data/wordmusic-marks.json), never the font: the Full build is not
+   published. Live text is set in a subset of the Retail build that holds
+   only the characters these two pages use — enough to read, not enough to
+   set anything else. */
+
+const marks = JSON.parse(readFileSync(new URL('../data/wordmusic-marks.json', import.meta.url), 'utf8'));
+// The subset carries its content hash in its name (scripts/build-case-font.py).
+const CASE_FONT = readdirSync(new URL('../fonts/', import.meta.url)).find((f) => /^tembrava-case-[0-9a-f]{8}\.woff2$/.test(f));
+const CASE_CSS_V = short('styles/wordmusic-case.css');
+if (projects.some((p) => p.story) && !CASE_FONT) throw new Error('fonts/tembrava-case-<hash>.woff2 is missing: run scripts/build-case-font.py');
+
+// The specimen mixes Ukrainian, French and English on both pages; a screen
+// reader needs to be told which is which wherever it differs from the page.
+const textLang = (s) => (/[\u0400-\u04ff]/.test(s) ? 'uk' : /[àâçéèêëîïôûù]/i.test(s) ? 'fr' : 'en');
+const langAttr = (s) => (textLang(s) === (LANG === 'ua' ? 'uk' : 'en') ? '' : ` lang="${textLang(s)}"`);
+const CHAPTER_KINDS = new Set(['mark', 'typeface', 'system', 'in-use', 'second-event']);
+
+const markSvg = (key, label, cls = '') => {
+  const m = marks.marks[key] || marks.lines[key];
+  if (!m || !/^[MLCQZHVmlcqzhv0-9 .,eE-]+$/.test(m.d)) throw new Error(`wordmusic-marks.json: no clean path for ${key}`);
+  const [x, y, w, h] = m.viewBox.map(Number);
+  return `<svg class="wm-mark${cls ? ' ' + cls : ''}" viewBox="${x} ${y} ${w} ${h}" role="img" aria-label="${attr(label)}"${langAttr(label)}><path d="${m.d}" fill="currentColor"/></svg>`;
+};
+
+const caseHead = () => `${CASE_FONT ? `<link rel="preload" href="/fonts/${CASE_FONT}" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Tembrava Case';src:url('/fonts/${CASE_FONT}') format('woff2');font-weight:400;font-display:swap}</style>
+` : ''}<link rel="stylesheet" href="/styles/wordmusic-case.css?v=${CASE_CSS_V}">
+`;
+
+function storyFrame(m, sizes) {
+  return `<figure class="design-figure">
+        <div class="design-frame">${img(m.src, L(m.caption) || m.alt, { sizes })}</div>
+        ${m.caption ? t(m.caption, 'design-caption', 'figcaption') : ''}
+      </figure>`;
+}
+
+const GROUP_SIZES = {
+  formats: '(min-width: 61rem) calc((100vw - 18rem) / 2), 100vw',
+  wide: '(min-width: 61rem) calc(100vw - 18rem), 100vw',
+  strip: '(min-width: 61rem) calc((100vw - 18rem) / 4), 50vw',
+  pair: '(min-width: 61rem) calc((100vw - 18rem) / 2), 100vw',
+};
+
+function storyChapter(p, c) {
+  if (!CHAPTER_KINDS.has(c.chapter)) throw new Error(`${p.slug}: unknown chapter ${c.chapter}`);
+  const byId = (id) => p.media.find((m) => m.id === id) || (() => { throw new Error(`${p.slug}: no media ${id}`); })();
+  const frames = (ids, layout) => {
+    if (!GROUP_SIZES[layout]) throw new Error(`${p.slug}: unknown layout ${layout}`);
+    return `<div class="wm-group wm-${layout === 'pair' ? 'pair-grid' : layout}${ids.length === 3 ? ' wm-three' : ''}">${ids.map((id) => storyFrame(byId(id), GROUP_SIZES[layout])).join('')}</div>`;
+  };
+  const head = `<div class="design-chapter-head"><h2 class="t-title"${langAttr(L(c.title))}>${esc(L(c.title))}</h2>${c.body ? t(c.body, 'design-chapter-copy', 'p') : ''}</div>`;
+  let inner = '';
+  if (c.chapter === 'mark') {
+    inner = `<div class="wm-marks">${['light', 'night'].map((tone) => `<div class="wm-ground wm-${tone}">${c.marks.map((k) =>
+      `<div class="wm-mark-cell wm-mark-${k.key}">${markSvg(k.key, k.label)}<span class="wm-mark-name" aria-hidden="true">${esc(k.label)}</span></div>`).join('')}</div>`).join('')}</div>`;
+  } else if (c.chapter === 'typeface') {
+    const lic = LANG === 'ua' ? '/ua/tembrava/license/' : '/tembrava/license/';
+    inner = `<div class="wm-type">
+      ${c.specimen.map((s) => `<p class="tembrava wm-specimen"${langAttr(s)}>${esc(s)}</p>`).join('')}
+      <p class="tembrava wm-specimen-line"${langAttr(c.specimenLine)}>${esc(c.specimenLine)}</p>
+      <div class="wm-alphabet">${c.lines.map((k) => markSvg(k, marks.lines[k].text, 'wm-line')).join('')}</div>
+      <div class="wm-pair">
+        <figure><p class="tembrava wm-ss"${langAttr(c.ss01.text)}>${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.default))}</figcaption></figure>
+        <figure><p class="tembrava wm-ss wm-ss01"${langAttr(c.ss01.text)}>${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.feature))}</figcaption></figure>
+      </div>
+      <div class="wm-dlig">
+        <p class="tembrava wm-typed">${esc(c.dlig.typed)}</p>
+        <span class="wm-arrow" aria-hidden="true">→</span>
+        ${markSvg('wordmusic', 'word&music')}
+      </div>
+      ${t(c.dlig.note, 'design-chapter-copy wm-note', 'p')}
+      <ul class="bullets wm-links"><li><a href="${lic}">${esc(L(c.licence))} →</a></li></ul>
+    </div>`;
+  } else if (c.chapter === 'system') {
+    inner = `<div class="wm-palettes">${c.palettes.map((pal) => `<div class="wm-palette">
+        <p class="wm-palette-name"${langAttr(L(pal.name))}>${esc(L(pal.name))}</p>
+        <ul class="wm-swatches">${pal.colours.map((col) => /^#[0-9a-f]{6}$/i.test(col.hex) ? col : (() => { throw new Error(`${p.slug}: bad colour ${col.hex}`); })()).map((col) => `<li><span class="wm-chip" style="background:${attr(col.hex)}"></span><span class="wm-role">${esc(L(c.roles[col.role]))}</span><span class="wm-hex">${esc(col.hex.toUpperCase())}</span></li>`).join('')}</ul>
+      </div>`).join('')}</div>
+      <dl class="wm-hierarchy">${c.hierarchy.map((h) => `<div class="wm-level wm-${h.size}"><dt>${esc(L(h.level))}</dt><dd><span class="${h.face === 'tembrava' ? 'tembrava ' : ''}wm-sample"${langAttr(h.text)}>${esc(h.text)}</span>${h.note ? ` <span class="wm-note-small"${langAttr(h.note)}>${esc(h.note)}</span>` : ''}</dd></div>`).join('')}</dl>
+      ${frames(c.media, 'pair')}`;
+  } else {
+    inner = c.groups.map((g) => frames(g.media, g.layout)).join('\n');
+  }
+  return `<section class="design-chapter wm-chapter col-full" data-chapter="${attr(c.chapter)}">
+      ${head}
+      ${inner}
+    </section>`;
+}
+
 /* ---------------- project pages ---------------- */
 
 function projectPage(p, index) {
@@ -955,6 +1052,8 @@ ${p.slug === 'reels' ? '' : `      <p class="vid-title">${esc(v.title)}</p>`}
     // lazy, so the page still costs only what is scrolled to.
     const series = leadItems.length ? leadItems.concat(restItems) : p.media;
     sequence = `<div class="col-full">${collage(series, p.slug, true)}</div>`;
+  } else if (p.story) {
+    sequence = p.story.map((c) => storyChapter(p, c)).join('\n');
   } else if (p.selectedIds) {
     // Each design case is a deliberate image sequence, with source-specific
     // captions and optional chapters. Artwork keeps its native proportions.
@@ -1018,6 +1117,7 @@ ${sequence}
     description: L(p.shortDescription),
     body,
     ogImage: p.cover,
+    head: p.story ? caseHead() : '',
   });
 }
 
