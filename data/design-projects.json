@@ -26,8 +26,8 @@
     },
     "execution": false,
     "shortDescription": {
-      "en": "Visual identity and concert graphics for word&music. Typography, colour and abstract forms connect posters, digital announcements and tickets.",
-      "ua": "Айдентика й концертна графіка word&music. Типографіка, колір та абстрактні форми поєднують афіші, цифрові анонси й квитки."
+      "en": "Identity and concert graphics for word&music: a mark, a typeface drawn for the series and a system that turns every concert into posters, posts, stories and banners.",
+      "ua": "Айдентика й концертна графіка word&music: знак, шрифт, накреслений для серії, і система, що перетворює кожен концерт на афіші, пости, сторіс і банери."
     },
     "credits": [
       {
@@ -37,86 +37,134 @@
     ],
     "media": [
       {
-        "id": "dg-word-and-music-01",
+        "id": "dg-word-and-music-form-heart",
         "type": "image",
-        "src": "/media/design/cases/word-and-music-01.webp",
-        "alt": "Concert poster",
+        "src": "/media/design/cases/word-and-music-form-heart.webp",
+        "alt": "Form of “On the Wings of Love”: a heart with staves",
         "caption": {
-          "en": "Concert poster",
-          "ua": "Концертна афіша"
-        },
-        "lead": true,
-        "title": {
-          "en": "Posters",
-          "ua": "Афіші"
-        },
-        "body": {
-          "en": "A shared typographic hierarchy across the concert series.",
-          "ua": "Спільна типографічна ієрархія для концертної серії."
+          "en": "Form of “On the Wings of Love”: a heart with staves",
+          "ua": "Форма «На крилах кохання»: серце з нотним станом"
         }
       },
       {
-        "id": "dg-word-and-music-02",
+        "id": "dg-word-and-music-form-ellipse",
         "type": "image",
-        "src": "/media/design/cases/word-and-music-02.webp",
-        "alt": "Digital announcement — dark version",
+        "src": "/media/design/cases/word-and-music-form-ellipse.webp",
+        "alt": "Form of “Vivre, Aimer, Rêver…”: an ellipse with staves",
         "caption": {
-          "en": "Digital announcement — dark version",
-          "ua": "Цифровий анонс — темна версія"
-        },
-        "lead": true
-      },
-      {
-        "id": "dg-word-and-music-03",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-03.webp",
-        "alt": "Digital announcement — light version",
-        "caption": {
-          "en": "Digital announcement — light version",
-          "ua": "Цифровий анонс — світла версія"
-        },
-        "lead": true
-      },
-      {
-        "id": "dg-word-and-music-04",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-04.webp",
-        "alt": "Ticket layout",
-        "caption": {
-          "en": "Ticket layout",
-          "ua": "Макет квитка"
-        },
-        "lead": true,
-        "title": {
-          "en": "Applications",
-          "ua": "Носії"
+          "en": "Form of “Vivre, Aimer, Rêver…”: an ellipse with staves",
+          "ua": "Форма «Vivre, Aimer, Rêver…»: еліпс із нотним станом"
         }
       },
       {
-        "id": "dg-word-and-music-06",
+        "id": "dg-word-and-music-krila-a3",
         "type": "image",
-        "src": "/media/design/cases/word-and-music-06.webp",
-        "alt": "Melodies of a Magical June — archive poster, 2025",
+        "src": "/media/design/cases/word-and-music-krila-a3.webp",
+        "alt": "A3 poster",
         "caption": {
-          "en": "Melodies of a Magical June — archive poster, 2025",
-          "ua": "«Мелодії чарівного червня» — архівна афіша, 2025"
-        },
-        "lead": true,
-        "title": {
-          "en": "Concert archive",
-          "ua": "Концертний архів"
+          "en": "A3 poster",
+          "ua": "Афіша A3"
         }
       },
       {
-        "id": "dg-word-and-music-07",
+        "id": "dg-word-and-music-krila-post",
         "type": "image",
-        "src": "/media/design/cases/word-and-music-07.webp",
-        "alt": "Archive concert poster, 2024",
+        "src": "/media/design/cases/word-and-music-krila-post.webp",
+        "alt": "Post 4:5, light",
         "caption": {
-          "en": "Archive concert poster, 2024",
-          "ua": "Архівна концертна афіша, 2024"
-        },
-        "lead": true
+          "en": "Post 4:5, light",
+          "ua": "Пост 4:5, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-story",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-story.webp",
+        "alt": "Story 9:16, night",
+        "caption": {
+          "en": "Story 9:16, night",
+          "ua": "Сторіс 9:16, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-eventmate",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-eventmate.webp",
+        "alt": "Banner 16:9 for the ticket service, night",
+        "caption": {
+          "en": "Banner 16:9 for the ticket service, night",
+          "ua": "Банер 16:9 для квиткового сервісу, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-carousel-1",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-carousel-1.webp",
+        "alt": "Carousel: cover",
+        "caption": {
+          "en": "Carousel: cover",
+          "ua": "Карусель: обкладинка"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-carousel-2",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-carousel-2.webp",
+        "alt": "Carousel: performers",
+        "caption": {
+          "en": "Carousel: performers",
+          "ua": "Карусель: виконавці"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-carousel-3",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-carousel-3.webp",
+        "alt": "Carousel: programme",
+        "caption": {
+          "en": "Carousel: programme",
+          "ua": "Карусель: програма"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-carousel-4",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-carousel-4.webp",
+        "alt": "Carousel: notes",
+        "caption": {
+          "en": "Carousel: notes",
+          "ua": "Карусель: анотація"
+        }
+      },
+      {
+        "id": "dg-word-and-music-vivre-a3",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-vivre-a3.webp",
+        "alt": "A3 poster, light",
+        "caption": {
+          "en": "A3 poster, light",
+          "ua": "Афіша A3, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-vivre-eventmate",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-vivre-eventmate.webp",
+        "alt": "Banner 16:9, night",
+        "caption": {
+          "en": "Banner 16:9, night",
+          "ua": "Банер 16:9, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-vivre-story",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-vivre-story.webp",
+        "alt": "Story 9:16, night",
+        "caption": {
+          "en": "Story 9:16, night",
+          "ua": "Сторіс 9:16, нічна версія"
+        }
       }
     ],
     "externalLinks": [
@@ -126,8 +174,316 @@
       }
     ],
     "featured": false,
-    "cover": "/media/design/cases/word-and-music-01.webp",
-    "designOrder": 0
+    "cover": "/media/design/cases/word-and-music-krila-a3.webp",
+    "designOrder": 0,
+    "story": [
+      {
+        "chapter": "mark",
+        "title": {
+          "en": "Mark",
+          "ua": "Знак"
+        },
+        "body": {
+          "en": "The wordmark sets word&music in one line, with the ampersand binding the two words. Two short forms work where space is small: w&m and the monogram wm.",
+          "ua": "Знак набирає word&music одним рядком, амперсанд зв’язує два слова. Там, де місця мало, працюють дві короткі форми: w&m і монограма wm."
+        },
+        "marks": [
+          {
+            "key": "wordmusic",
+            "label": "word&music"
+          },
+          {
+            "key": "wandm",
+            "label": "w&m"
+          },
+          {
+            "key": "wm",
+            "label": "wm"
+          }
+        ]
+      },
+      {
+        "chapter": "typeface",
+        "title": {
+          "en": "Tembrava Display",
+          "ua": "Tembrava Display"
+        },
+        "body": {
+          "en": "The series has its own typeface: a high-contrast Regular with full Ukrainian Cyrillic and Latin for 23 European languages. Concert titles, names and dates are set in it.",
+          "ua": "Серія має власний шрифт: контрастний Regular з повною українською кирилицею та латиницею для 23 європейських мов. Ним набрано назви концертів, імена й дати."
+        },
+        "specimen": [
+          "На крилах кохання",
+          "Vivre, Aimer, Rêver…"
+        ],
+        "specimenLine": "15.10.2026 · 18:00 · Будинок актора",
+        "lines": [
+          "cyr-upper",
+          "cyr-lower",
+          "lat-upper",
+          "lat-lower",
+          "figures"
+        ],
+        "ss01": {
+          "text": "Л Д л д",
+          "default": {
+            "en": "Default",
+            "ua": "Основні форми"
+          },
+          "feature": {
+            "en": "ss01 — classic Л and Д",
+            "ua": "ss01 — класичні Л і Д"
+          }
+        },
+        "dlig": {
+          "typed": "word&music",
+          "note": {
+            "en": "In the internal Full build, typed word&music becomes the mark through discretionary ligatures; w&m works the same way. The Retail build licensed to others contains no marks.",
+            "ua": "У внутрішній збірці Full набраний word&music стає знаком через дискреційні лігатури (dlig); так само працює w&m. Retail-збірка для ліцензування знаків не містить."
+          }
+        },
+        "licence": {
+          "en": "Tembrava Display licence",
+          "ua": "Ліцензія Tembrava Display"
+        }
+      },
+      {
+        "chapter": "system",
+        "title": {
+          "en": "System",
+          "ua": "Система"
+        },
+        "body": {
+          "en": "The grid, type sizes and placement stay fixed from concert to concert. Each concert gets its own ground, ink and one form, and every layout exists in a light and a night version.",
+          "ua": "Сітка, кеглі й розташування не змінюються від концерту до концерту. Кожен концерт отримує власне тло, колір тексту й одну форму, а кожен макет існує у світлій і нічній версіях."
+        },
+        "palettes": [
+          {
+            "name": {
+              "en": "On the Wings of Love · light",
+              "ua": "На крилах кохання · світла"
+            },
+            "source": "20261015_На_крилах_кохання/All-Artboards.pdf, page 8 (A3 trim)",
+            "colours": [
+              {
+                "role": "ground-top",
+                "hex": "#f6e4b9"
+              },
+              {
+                "role": "ground-bottom",
+                "hex": "#edcd92"
+              },
+              {
+                "role": "form",
+                "hex": "#d9425c"
+              },
+              {
+                "role": "ink",
+                "hex": "#20151d"
+              }
+            ]
+          },
+          {
+            "name": {
+              "en": "On the Wings of Love · night",
+              "ua": "На крилах кохання · нічна"
+            },
+            "source": "20261015_На_крилах_кохання/20-CAROUSEL-NIGHT-01-COVER.png",
+            "colours": [
+              {
+                "role": "ground-top",
+                "hex": "#491529"
+              },
+              {
+                "role": "ground-bottom",
+                "hex": "#88293b"
+              },
+              {
+                "role": "form",
+                "hex": "#e3b249"
+              },
+              {
+                "role": "ink",
+                "hex": "#fdf7e4"
+              }
+            ]
+          },
+          {
+            "name": {
+              "en": "Vivre, Aimer, Rêver… · light",
+              "ua": "Vivre, Aimer, Rêver… · світла"
+            },
+            "source": "20260921_VIVRE_AIMER_REVER/All-Artboards.pdf, page 7 (A3 trim)",
+            "colours": [
+              {
+                "role": "ground-top",
+                "hex": "#e9e2ed"
+              },
+              {
+                "role": "ground-bottom",
+                "hex": "#d8dae4"
+              },
+              {
+                "role": "form",
+                "hex": "#4958ec"
+              },
+              {
+                "role": "ink",
+                "hex": "#0b0a14"
+              }
+            ]
+          },
+          {
+            "name": {
+              "en": "Vivre, Aimer, Rêver… · night",
+              "ua": "Vivre, Aimer, Rêver… · нічна"
+            },
+            "source": "20260921_VIVRE_AIMER_REVER/06-EVENTMATE-NIGHT-16x9.png",
+            "colours": [
+              {
+                "role": "ground-top",
+                "hex": "#20243c"
+              },
+              {
+                "role": "ground-bottom",
+                "hex": "#373851"
+              },
+              {
+                "role": "form",
+                "hex": "#8188e4"
+              },
+              {
+                "role": "ink",
+                "hex": "#ffffff"
+              }
+            ]
+          }
+        ],
+        "roles": {
+          "ground-top": {
+            "en": "Ground, top",
+            "ua": "Тло, верх"
+          },
+          "ground-bottom": {
+            "en": "Ground, bottom",
+            "ua": "Тло, низ"
+          },
+          "form": {
+            "en": "Form",
+            "ua": "Форма"
+          },
+          "ink": {
+            "en": "Text",
+            "ua": "Текст"
+          }
+        },
+        "hierarchy": [
+          {
+            "level": {
+              "en": "Title",
+              "ua": "Назва"
+            },
+            "text": "На крилах кохання",
+            "face": "tembrava",
+            "size": "xl"
+          },
+          {
+            "level": {
+              "en": "Date",
+              "ua": "Дата"
+            },
+            "text": "15.10.2026 · 18:00",
+            "face": "tembrava",
+            "size": "l"
+          },
+          {
+            "level": {
+              "en": "Names",
+              "ua": "Імена"
+            },
+            "text": "Анжеліна Швачка",
+            "face": "tembrava",
+            "size": "m",
+            "note": "мецо-сопрано"
+          },
+          {
+            "level": {
+              "en": "Details",
+              "ua": "Подробиці"
+            },
+            "text": "Київ · Ярославів Вал, 7 · Будинок актора",
+            "face": "body",
+            "size": "s"
+          }
+        ],
+        "media": [
+          "dg-word-and-music-form-heart",
+          "dg-word-and-music-form-ellipse"
+        ]
+      },
+      {
+        "chapter": "in-use",
+        "title": {
+          "en": "One concert, every format",
+          "ua": "Один концерт — усі формати"
+        },
+        "body": {
+          "en": "On the Wings of Love, 15 October 2026. One master layout becomes an A3 poster, posts and stories, a banner for the ticket service and an eight-slide carousel with the performers, programme and notes.",
+          "ua": "«На крилах кохання», 15 жовтня 2026. Один головний макет стає афішею A3, постами й сторіс, банером для квиткового сервісу та каруселлю з восьми слайдів із виконавцями, програмою й анотацією."
+        },
+        "groups": [
+          {
+            "layout": "formats",
+            "media": [
+              "dg-word-and-music-krila-a3",
+              "dg-word-and-music-krila-post",
+              "dg-word-and-music-krila-story"
+            ]
+          },
+          {
+            "layout": "wide",
+            "media": [
+              "dg-word-and-music-krila-eventmate"
+            ]
+          },
+          {
+            "layout": "strip",
+            "media": [
+              "dg-word-and-music-krila-carousel-1",
+              "dg-word-and-music-krila-carousel-2",
+              "dg-word-and-music-krila-carousel-3",
+              "dg-word-and-music-krila-carousel-4"
+            ]
+          }
+        ]
+      },
+      {
+        "chapter": "second-event",
+        "title": {
+          "en": "Vivre, Aimer, Rêver…",
+          "ua": "Vivre, Aimer, Rêver…"
+        },
+        "body": {
+          "en": "3 October 2026. The same grid and type with a different ground and form: lavender and night blue, an ellipse in place of the heart.",
+          "ua": "3 жовтня 2026. Та сама сітка й шрифт з іншим тлом і формою: лавандовий і нічний синій, еліпс замість серця."
+        },
+        "groups": [
+          {
+            "layout": "formats",
+            "media": [
+              "dg-word-and-music-vivre-a3",
+              "dg-word-and-music-vivre-story"
+            ]
+          },
+          {
+            "layout": "wide",
+            "media": [
+              "dg-word-and-music-vivre-eventmate"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "p-history-of-ukraine-2020",
