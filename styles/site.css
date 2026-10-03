@@ -1825,10 +1825,15 @@ html.splash-off .splash {
    is welcome; site.js explains who is marked and when. Until the script has
    marked the page, the page waits unseen — for three seconds at most, after
    which the boot script shows it regardless. Between pages of the site
-   (.fx-stay) the header and the rail are the same on both sides, so they
-   stay where they are and only the page itself arrives. */
-html.fx:not(.fx-ready) main,
-html.fx:not(.fx-ready):not(.fx-stay) :is(.rail, .bar) { opacity: 0; }
+   (.fx-stay) nothing waits unseen: the browser's own cross-fade is the
+   entrance, and it must land on the page as it is, not on an empty paper
+   that then arrives a second time. */
+html.fx:not(.fx-ready):not(.fx-stay) :is(main, .rail, .bar) { opacity: 0; }
+/* A photo collage is packed by site.js; until then it stands in the plain
+   CSS grid, and showing that for one frame makes the series jump into place
+   under the reader's eyes. It waits for its packing (or for .fx-ready, if
+   the script never comes). */
+html.fx:not(.fx-ready) [data-gallery]:not(.is-packed) { opacity: 0; }
 /* Raised by site.js for the instant it puts the marks on; see there. */
 html.fx.fx-mark :is(.rv, .rv-fade, .rv-rule, .lf .w) { transition: none !important; }
 

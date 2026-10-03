@@ -1272,24 +1272,27 @@
       return base + sec((line + 1) * 0.14);
     }
 
-    var heads = document.querySelectorAll(
+    // Arriving from another page of the site, the header is already on
+    // screen and identical, and the browser cross-fades the rest: what is on
+    // the first screen is shown as it is, and only what lies below it still
+    // rises as it is scrolled to. Entering it again on top of the cross-fade
+    // is what made a page change look like two.
+    var stay = root.classList.contains('fx-stay');
+    var heads = stay ? [] : document.querySelectorAll(
       'main .eyebrow, main .t-title, main .t-display, main .standfirst, main .page-intro, main .project-dek'
     );
     var splashEl = document.querySelector('.splash');
     var waiting = root.classList.contains('splash-on') && !root.classList.contains('splash-off');
-    // Arriving from another page of the site, the header is already on
-    // screen and identical: it stays put instead of coming in a second time.
-    var stay = root.classList.contains('fx-stay');
     // Without the card the name fades in with the rest of the header; with
     // it, the name is brought in by the card itself (below).
     var chrome = stay ? [] : Array.prototype.slice.call(document.querySelectorAll(
       (waiting ? '' : '.rail .wordmark, .bar .wordmark, ') + '.rail-nav a, .rail-foot > *, .bar > :not(.wordmark)'
     ));
-    var tiles = document.querySelectorAll('.slide.on .tile');
+    var tiles = stay ? [] : document.querySelectorAll('.slide.on .tile');
     // Rules are part of the entrance too: a divider that is already drawn
     // while the words around it are still to come reads as a leftover. Each
     // one comes in with the first item after it.
-    var rules = Array.prototype.slice.call(document.querySelectorAll(stay ? '.index' : '.rail-nav + .rail-nav, .index'));
+    var rules = stay ? [] : Array.prototype.slice.call(document.querySelectorAll('.rail-nav + .rail-nav, .index'));
 
     // Blocks: walk down from <main> and stop at the first element that fits
     // on a screen, so a whole section is not moved as one slab and a single
@@ -1310,6 +1313,7 @@
     }
     var main = document.getElementById('main');
     if (main) collect(main);
+    if (stay) blocks = blocks.filter(function (b) { return b.getBoundingClientRect().top >= innerHeight; });
 
     // The marks hide things that the browser may already have painted. Were
     // the transitions live at that moment, each element would start fading

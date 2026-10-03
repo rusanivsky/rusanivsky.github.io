@@ -5,7 +5,9 @@
 AC5 of the Tembrava Display 0.9.6 brief: publish English and Ukrainian pages
 at `/tembrava/license/` and `/ua/tembrava/license/`, with working language
 links, canonical/hreflang metadata and sitemap entries. Keep the portfolio's
-existing typography and layout. Link from Info so the page is discoverable.
+existing typography and layout. Discoverable from the word&music case page
+(`/work/wordmusic-design/`, `/ua/work/wordmusic-design/`) and the sitemap;
+not linked from Info (owner decision, 3 October 2026; earlier: linked from Info).
 
 The English EULA 1.0 (1 October 2026) is authoritative. Copy the existing
 `LICENSE.txt` without changing its terms. Its original SHA-256 is
@@ -47,3 +49,6 @@ Licence Certificate. No prices or additional rights are introduced.
   2026 only for the edited Info pages and new licence pages. Content detection
   was rejected because existing fixture tests temporarily rebuild modified
   content; those fixture changes must not alter the publication dates.
+- 3 October 2026: owner removed the licence link from Info. The page is
+  reached from the word&music case page in its language and from the
+  sitemap. Acceptance test updated by an independent author.
