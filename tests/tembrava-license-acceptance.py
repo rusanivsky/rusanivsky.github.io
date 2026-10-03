@@ -85,15 +85,18 @@ class LicensePageAcceptance(unittest.TestCase):
                 other='uk' if language=='en' else 'en'
                 self.assertTrue(any(a.get('href') in (URLS[other],BASE+URLS[other]) for a in p.anchors), 'language switch missing')
 
-    def test_sitemap_and_discoverable_info_link(self):
+    def test_sitemap_and_case_link_not_info(self):
         sitemap=ET.parse(ROOT/'sitemap.xml')
         locations={e.text for e in sitemap.iter() if e.tag.rsplit('}',1)[-1]=='loc'}
+        license_hrefs={v for href in URLS.values() for v in (href,BASE+href)}
         for language, href in URLS.items():
+            prefix='ua/' if language=='uk' else ''
             with self.subTest(language=language):
                 self.assertIn(BASE+href,locations)
-                info=ROOT/('ua/aboutme/index.html' if language=='uk' else 'aboutme/index.html')
-                p=Page(info.read_text())
-                self.assertTrue(any(a.get('href') in (href,BASE+href) for a in p.anchors), 'Info must link to license')
+                info=Page((ROOT/(prefix+'aboutme/index.html')).read_text())
+                self.assertFalse(any(a.get('href') in license_hrefs for a in info.anchors), 'Info must not link to license (owner decision, 3 October 2026)')
+                case=Page((ROOT/(prefix+'work/wordmusic-design/index.html')).read_text())
+                self.assertTrue(any(a.get('href') in (href,BASE+href) for a in case.anchors), 'word&music case page must link to its own-language license')
 
     def test_no_font_download_link_on_license_pages(self):
         for language in URLS:
