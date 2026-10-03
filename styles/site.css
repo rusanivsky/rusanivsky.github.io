@@ -313,11 +313,15 @@ ul, ol { list-style: none; }
    glow as well as the paper, and every picture sits on top of it — the brief
    is explicit that grain must never land on a photograph. The shell carries
    the paper itself because overlay needs something to blend with inside the
-   shell's own stacking context; over nothing it would lie as plain grey. */
+   shell's own stacking context; over nothing it would lie as plain grey.
+   For the same reason the grain is laid on the shell, not pinned to the
+   window: when Safari bounces the page past its end, the shell slides away
+   from a window-pinned layer, and the strip it uncovered showed as a grey
+   band of bare grain under the page. */
 .shell { background: var(--paper); }
 .shell::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
