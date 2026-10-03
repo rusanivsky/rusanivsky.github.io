@@ -443,7 +443,12 @@ ul, ol { list-style: none; }
 /* ============================================================
    Shell
    ============================================================ */
-.shell { position: relative; z-index: 1; min-height: 100svh; }
+/* The glow is a square as wide as the window, so on a short page it reaches
+   below the end of the page. Clipped here, it cannot make the document
+   longer than the shell: past the shell's end the sticky rail scrolls away
+   and the grain has no paper under it. clip, unlike hidden, makes no scroll
+   container, so the rail and the bar stay sticky. */
+.shell { position: relative; z-index: 1; min-height: 100svh; overflow-y: clip; }
 
 @media (min-width: 61rem) {
   .shell { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); }
