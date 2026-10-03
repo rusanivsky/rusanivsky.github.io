@@ -5818,5 +5818,19 @@
    1080,
    "/media/design/cases/word-and-music-vivre-story.webp"
   ]
+ ],
+ "/media/design/cases/word-and-music-cover.webp": [
+  [
+   480,
+   "/media/design/cases/word-and-music-cover-480.webp"
+  ],
+  [
+   960,
+   "/media/design/cases/word-and-music-cover-960.webp"
+  ],
+  [
+   1600,
+   "/media/design/cases/word-and-music-cover.webp"
+  ]
  ]
 }
