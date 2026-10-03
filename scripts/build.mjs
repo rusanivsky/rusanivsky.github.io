@@ -1013,7 +1013,7 @@ function storyChapter(p, c) {
         ${markSvg('wordmusic', 'word&music')}
       </div>
       ${t(c.dlig.note, 'design-chapter-copy wm-note', 'p')}
-      <ul class="bullets wm-links"><li><a href="${lic}">${esc(L(c.licence))} →</a></li></ul>
+      <p class="prose wm-links"><a href="${lic}">${esc(L(c.licence))}</a></p>
     </div>`;
   } else if (c.chapter === 'system') {
     inner = `<div class="wm-palettes">${c.palettes.map((pal) => `<div class="wm-palette">
@@ -1230,7 +1230,6 @@ function infoPage() {
       ${PROFILES.map(([h, l]) => `<li><a href="${h}" target="_blank" rel="noopener">${l}</a></li>`).join('\n      ')}
     </ul>
   </section>
-  <p class="prose col-full" style="margin-top:1.5rem"><a href="${href('/tembrava/license/')}">${esc(L({ en: 'Tembrava Display licence', ua: 'Ліцензія Tembrava Display' }))}</a></p>
   <div class="col-full">${foot()}</div>
 </main>`;
   return page({
