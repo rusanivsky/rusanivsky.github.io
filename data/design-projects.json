@@ -184,21 +184,33 @@
           "ua": "Знак"
         },
         "body": {
-          "en": "The wordmark sets word&music in one line, with the ampersand binding the two words. Two short forms work where space is small: w&m and the monogram wm.",
-          "ua": "Знак — це word&music, набраний одним рядком; амперсанд зв’язує два слова. Там, де місця мало, працюють дві короткі форми: w&m і монограма wm."
+          "en": "The wordmark sets word&music in one line, with the ampersand binding the two words. Two short forms work where space is small: w&m, and the monogram wm, which is also the favicon.",
+          "ua": "Знак — це word&music, набраний одним рядком; амперсанд зв’язує два слова. Там, де місця мало, працюють дві короткі форми: w&m і монограма wm, вона ж фавікон."
         },
         "marks": [
           {
             "key": "wordmusic",
-            "label": "word&music"
+            "label": "word&music",
+            "role": {
+              "en": "Wordmark",
+              "ua": "Основний знак"
+            }
           },
           {
             "key": "wandm",
-            "label": "w&m"
+            "label": "w&m",
+            "role": {
+              "en": "Short form",
+              "ua": "Коротка форма"
+            }
           },
           {
             "key": "wm",
-            "label": "wm"
+            "label": "wm",
+            "role": {
+              "en": "Monogram and favicon",
+              "ua": "Монограма й фавікон"
+            }
           }
         ]
       },
