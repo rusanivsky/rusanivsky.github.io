@@ -996,7 +996,7 @@ function storyChapter(p, c) {
   let inner = '';
   if (c.chapter === 'mark') {
     inner = `<div class="wm-marks">${['light', 'night'].map((tone) => `<div class="wm-ground wm-${tone}">${c.marks.map((k) =>
-      `<div class="wm-mark-cell wm-mark-${k.key}">${markSvg(k.key, k.label)}<span class="wm-mark-name" aria-hidden="true">${esc(k.label)}</span></div>`).join('')}</div>`).join('')}</div>`;
+      `<div class="wm-mark-cell wm-mark-${k.key}">${markSvg(k.key, k.label)}<span class="wm-mark-name">${esc(L(k.role))}</span></div>`).join('')}</div>`).join('')}</div>`;
   } else if (c.chapter === 'typeface') {
     const lic = LANG === 'ua' ? '/ua/tembrava/license/' : '/tembrava/license/';
     inner = `<div class="wm-type">
