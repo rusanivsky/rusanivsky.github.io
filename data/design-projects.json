@@ -185,7 +185,7 @@
         },
         "body": {
           "en": "The wordmark sets word&music in one line, with the ampersand binding the two words. Two short forms work where space is small: w&m and the monogram wm.",
-          "ua": "Знак набирає word&music одним рядком, амперсанд зв’язує два слова. Там, де місця мало, працюють дві короткі форми: w&m і монограма wm."
+          "ua": "Знак — це word&music, набраний одним рядком; амперсанд зв’язує два слова. Там, де місця мало, працюють дві короткі форми: w&m і монограма wm."
         },
         "marks": [
           {
@@ -209,8 +209,8 @@
           "ua": "Tembrava Display"
         },
         "body": {
-          "en": "The series has its own typeface: a high-contrast Regular with full Ukrainian Cyrillic and Latin for 23 European languages. Concert titles, names and dates are set in it.",
-          "ua": "Серія має власний шрифт: контрастний Regular з повною українською кирилицею та латиницею для 23 європейських мов. Ним набрано назви концертів, імена й дати."
+          "en": "The series has its own typeface: a high-contrast Regular with full Ukrainian Cyrillic and an extended Latin. Concert titles, names and dates are set in it.",
+          "ua": "Серія має власний шрифт: контрастний Regular з повною українською кирилицею та розширеною латиницею. Ним набрано назви концертів, імена й дати."
         },
         "specimen": [
           "На крилах кохання",

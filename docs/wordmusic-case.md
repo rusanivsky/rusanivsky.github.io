@@ -112,3 +112,10 @@ labels, no pill buttons.
   `All-Artboards.pdf` at 300 dpi. Owner removed the post with the soloists'
   photographs from the page. Published without the independent review
   (reviewer unavailable, session limit); owner approved publishing.
+- 3 October 2026: independent review — ACCEPTED WITH REMARKS. Fixed before
+  merge: deterministic subset build (source timestamps kept), `lang` on
+  Ukrainian/French/English fragments, build fails without the subset,
+  validated chapter/colour/path data, three-up formats row, alphabet lines
+  scroll inside their band on phones, ground outlines, pinned fontTools in
+  CI, unverified "23 languages" claim removed. Open for the owner: the
+  alphabet is drawn as SVG outlines of every basic glyph (allowed by AC3).

@@ -951,11 +951,19 @@ const marks = JSON.parse(readFileSync(new URL('../data/wordmusic-marks.json', im
 // The subset carries its content hash in its name (scripts/build-case-font.py).
 const CASE_FONT = readdirSync(new URL('../fonts/', import.meta.url)).find((f) => /^tembrava-case-[0-9a-f]{8}\.woff2$/.test(f));
 const CASE_CSS_V = short('styles/wordmusic-case.css');
+if (projects.some((p) => p.story) && !CASE_FONT) throw new Error('fonts/tembrava-case-<hash>.woff2 is missing: run scripts/build-case-font.py');
+
+// The specimen mixes Ukrainian, French and English on both pages; a screen
+// reader needs to be told which is which wherever it differs from the page.
+const textLang = (s) => (/[\u0400-\u04ff]/.test(s) ? 'uk' : /[àâçéèêëîïôûù]/i.test(s) ? 'fr' : 'en');
+const langAttr = (s) => (textLang(s) === (LANG === 'ua' ? 'uk' : 'en') ? '' : ` lang="${textLang(s)}"`);
+const CHAPTER_KINDS = new Set(['mark', 'typeface', 'system', 'in-use', 'second-event']);
 
 const markSvg = (key, label, cls = '') => {
   const m = marks.marks[key] || marks.lines[key];
-  const [x, y, w, h] = m.viewBox;
-  return `<svg class="wm-mark${cls ? ' ' + cls : ''}" viewBox="${x} ${y} ${w} ${h}" role="img" aria-label="${attr(label)}"><path d="${m.d}" fill="currentColor"/></svg>`;
+  if (!m || !/^[MLCQZHVmlcqzhv0-9 .,eE-]+$/.test(m.d)) throw new Error(`wordmusic-marks.json: no clean path for ${key}`);
+  const [x, y, w, h] = m.viewBox.map(Number);
+  return `<svg class="wm-mark${cls ? ' ' + cls : ''}" viewBox="${x} ${y} ${w} ${h}" role="img" aria-label="${attr(label)}"${langAttr(label)}><path d="${m.d}" fill="currentColor"/></svg>`;
 };
 
 const caseHead = () => `${CASE_FONT ? `<link rel="preload" href="/fonts/${CASE_FONT}" as="font" type="font/woff2" crossorigin>
@@ -963,9 +971,9 @@ const caseHead = () => `${CASE_FONT ? `<link rel="preload" href="/fonts/${CASE_F
 ` : ''}<link rel="stylesheet" href="/styles/wordmusic-case.css?v=${CASE_CSS_V}">
 `;
 
-function storyFrame(m, i, sizes) {
+function storyFrame(m, sizes) {
   return `<figure class="design-figure">
-        <div class="design-frame">${img(m.src, L(m.caption) || m.alt, { eager: i === 0, sizes })}</div>
+        <div class="design-frame">${img(m.src, L(m.caption) || m.alt, { sizes })}</div>
         ${m.caption ? t(m.caption, 'design-caption', 'figcaption') : ''}
       </figure>`;
 }
@@ -978,21 +986,26 @@ const GROUP_SIZES = {
 };
 
 function storyChapter(p, c) {
-  const byId = (id) => p.media.find((m) => m.id === id);
-  const head = `<div class="design-chapter-head"><h2 class="t-title">${esc(L(c.title))}</h2>${c.body ? t(c.body, 'design-chapter-copy', 'p') : ''}</div>`;
+  if (!CHAPTER_KINDS.has(c.chapter)) throw new Error(`${p.slug}: unknown chapter ${c.chapter}`);
+  const byId = (id) => p.media.find((m) => m.id === id) || (() => { throw new Error(`${p.slug}: no media ${id}`); })();
+  const frames = (ids, layout) => {
+    if (!GROUP_SIZES[layout]) throw new Error(`${p.slug}: unknown layout ${layout}`);
+    return `<div class="wm-group wm-${layout === 'pair' ? 'pair-grid' : layout}${ids.length === 3 ? ' wm-three' : ''}">${ids.map((id) => storyFrame(byId(id), GROUP_SIZES[layout])).join('')}</div>`;
+  };
+  const head = `<div class="design-chapter-head"><h2 class="t-title"${langAttr(L(c.title))}>${esc(L(c.title))}</h2>${c.body ? t(c.body, 'design-chapter-copy', 'p') : ''}</div>`;
   let inner = '';
   if (c.chapter === 'mark') {
     inner = `<div class="wm-marks">${['light', 'night'].map((tone) => `<div class="wm-ground wm-${tone}">${c.marks.map((k) =>
-      `<div class="wm-mark-cell wm-mark-${k.key}">${markSvg(k.key, k.label)}<span class="wm-mark-name">${esc(k.label)}</span></div>`).join('')}</div>`).join('')}</div>`;
+      `<div class="wm-mark-cell wm-mark-${k.key}">${markSvg(k.key, k.label)}<span class="wm-mark-name" aria-hidden="true">${esc(k.label)}</span></div>`).join('')}</div>`).join('')}</div>`;
   } else if (c.chapter === 'typeface') {
     const lic = LANG === 'ua' ? '/ua/tembrava/license/' : '/tembrava/license/';
     inner = `<div class="wm-type">
-      ${c.specimen.map((s) => `<p class="tembrava wm-specimen">${esc(s)}</p>`).join('')}
-      <p class="tembrava wm-specimen-line">${esc(c.specimenLine)}</p>
+      ${c.specimen.map((s) => `<p class="tembrava wm-specimen"${langAttr(s)}>${esc(s)}</p>`).join('')}
+      <p class="tembrava wm-specimen-line"${langAttr(c.specimenLine)}>${esc(c.specimenLine)}</p>
       <div class="wm-alphabet">${c.lines.map((k) => markSvg(k, marks.lines[k].text, 'wm-line')).join('')}</div>
       <div class="wm-pair">
-        <figure><p class="tembrava wm-ss">${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.default))}</figcaption></figure>
-        <figure><p class="tembrava wm-ss wm-ss01">${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.feature))}</figcaption></figure>
+        <figure><p class="tembrava wm-ss"${langAttr(c.ss01.text)}>${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.default))}</figcaption></figure>
+        <figure><p class="tembrava wm-ss wm-ss01"${langAttr(c.ss01.text)}>${esc(c.ss01.text)}</p><figcaption>${esc(L(c.ss01.feature))}</figcaption></figure>
       </div>
       <div class="wm-dlig">
         <p class="tembrava wm-typed">${esc(c.dlig.typed)}</p>
@@ -1004,15 +1017,15 @@ function storyChapter(p, c) {
     </div>`;
   } else if (c.chapter === 'system') {
     inner = `<div class="wm-palettes">${c.palettes.map((pal) => `<div class="wm-palette">
-        <p class="wm-palette-name">${esc(L(pal.name))}</p>
-        <ul class="wm-swatches">${pal.colours.map((col) => `<li><span class="wm-chip" style="background:${attr(col.hex)}"></span><span class="wm-role">${esc(L(c.roles[col.role]))}</span><span class="wm-hex">${esc(col.hex.toUpperCase())}</span></li>`).join('')}</ul>
+        <p class="wm-palette-name"${langAttr(L(pal.name))}>${esc(L(pal.name))}</p>
+        <ul class="wm-swatches">${pal.colours.map((col) => /^#[0-9a-f]{6}$/i.test(col.hex) ? col : (() => { throw new Error(`${p.slug}: bad colour ${col.hex}`); })()).map((col) => `<li><span class="wm-chip" style="background:${attr(col.hex)}"></span><span class="wm-role">${esc(L(c.roles[col.role]))}</span><span class="wm-hex">${esc(col.hex.toUpperCase())}</span></li>`).join('')}</ul>
       </div>`).join('')}</div>
-      <dl class="wm-hierarchy">${c.hierarchy.map((h) => `<div class="wm-level wm-${h.size}"><dt>${esc(L(h.level))}</dt><dd><span class="${h.face === 'tembrava' ? 'tembrava ' : ''}wm-sample">${esc(h.text)}</span>${h.note ? ` <span class="wm-note-small">${esc(h.note)}</span>` : ''}</dd></div>`).join('')}</dl>
-      <div class="wm-group wm-pair-grid">${c.media.map((id, i) => storyFrame(byId(id), 1, GROUP_SIZES.pair)).join('')}</div>`;
+      <dl class="wm-hierarchy">${c.hierarchy.map((h) => `<div class="wm-level wm-${h.size}"><dt>${esc(L(h.level))}</dt><dd><span class="${h.face === 'tembrava' ? 'tembrava ' : ''}wm-sample"${langAttr(h.text)}>${esc(h.text)}</span>${h.note ? ` <span class="wm-note-small"${langAttr(h.note)}>${esc(h.note)}</span>` : ''}</dd></div>`).join('')}</dl>
+      ${frames(c.media, 'pair')}`;
   } else {
-    inner = c.groups.map((g) => `<div class="wm-group wm-${g.layout}">${g.media.map((id) => storyFrame(byId(id), 1, GROUP_SIZES[g.layout])).join('')}</div>`).join('\n');
+    inner = c.groups.map((g) => frames(g.media, g.layout)).join('\n');
   }
-  return `<section class="design-chapter wm-chapter col-full" data-chapter="${c.chapter}">
+  return `<section class="design-chapter wm-chapter col-full" data-chapter="${attr(c.chapter)}">
       ${head}
       ${inner}
     </section>`;

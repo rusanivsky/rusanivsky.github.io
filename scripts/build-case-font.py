@@ -4,14 +4,18 @@ The word&music case sets its specimen in the typeface itself, as live text.
 Live text needs a font, and the font is a product for sale — so the page gets
 a subset that holds only the characters these two pages set in it, and the
 layout features the specimen shows (kern, liga, ss01). It is enough to read
-the page and not enough to set anything else: no alphabet, no marks, no dlig.
+the page and not enough to set anything else: no marks, no dlig. (The page
+draws the alphabet as SVG outlines, which is a picture of the face, not a
+font.)
 
 The characters are read from the `story` of the case in
 data/design-projects.json — every string the renderer puts inside a
 `.tembrava` element — so a change of wording there needs a rebuild here.
 
 The file name carries the first 8 hex of its SHA-1, the same short hash the
-rest of the site uses for cache-busting, and older subsets are removed.
+rest of the site uses for cache-busting, and older subsets are removed. The
+head timestamps are kept from the source, so the same input always gives the
+same bytes and the same name.
 
 Source: Tembrava Display Retail 1.0 (OTF, CFF), which is not in this
 repository. Requires fontTools and brotli.
@@ -41,14 +45,16 @@ def tembrava_text(story):
 
 
 def main(src):
-    projects = json.load(open('data/design-projects.json', encoding='utf-8'))
+    with open('data/design-projects.json', encoding='utf-8') as fh:
+        projects = json.load(fh)
     story = next(p for p in projects if p['slug'] == SLUG)['story']
     chars = sorted({ch for s in tembrava_text(story) for ch in s if not ch.isspace()} | {' '})
 
-    font = TTFont(src)
+    font = TTFont(src, recalcTimestamp=False)
     family = font['name'].getDebugName(1)
-    if family != 'Tembrava Display Retail':
-        sys.exit(f'{src}: family is {family!r}, expected the Retail build')
+    version = font['name'].getDebugName(5) or ''
+    if family != 'Tembrava Display Retail' or not version.startswith('Version 1.000'):
+        sys.exit(f'{src}: {family!r} {version!r}, expected Tembrava Display Retail 1.000')
 
     opts = subset.Options()
     opts.layout_features = FEATURES

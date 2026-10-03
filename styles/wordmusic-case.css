@@ -5,7 +5,7 @@
 .wm-chapter { margin-block-end: clamp(2.5rem, 6vw, 5.5rem); }
 
 .wm-marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
-.wm-ground { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem); align-items: end; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.wm-ground { box-shadow: inset 0 0 0 var(--rule-w) var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem); align-items: end; padding: clamp(1.5rem, 4vw, 3.5rem); }
 .wm-light { background: #ffffff; color: #111111; }
 .wm-night { background: #161616; color: #f4f1ea; }
 .wm-mark-cell { display: grid; gap: .75rem; justify-items: start; }
@@ -52,6 +52,7 @@
 
 .wm-group { display: grid; gap: var(--col-gap); margin-bottom: var(--col-gap); }
 .wm-pair-grid, .wm-formats { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.wm-formats.wm-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .wm-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .wm-group .design-frame img { max-height: 72svh; }
 .wm-strip .design-frame { padding: clamp(.5rem, 1.2vw, 1rem); }
@@ -60,7 +61,10 @@
   .wm-palettes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 40rem) {
-  .wm-marks, .wm-pair, .wm-formats, .wm-pair-grid { grid-template-columns: minmax(0, 1fr); }
+  .wm-marks, .wm-pair, .wm-pair-grid, .wm-formats, .wm-formats.wm-three { grid-template-columns: minmax(0, 1fr); }
+  /* The long alphabet lines keep a readable height and scroll inside their band. */
+  .wm-alphabet { overflow-x: auto; }
+  .wm-line { width: auto; height: 1.6rem; max-width: none; max-height: none; }
   .wm-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wm-level { grid-template-columns: 1fr; gap: .35rem; }
 }
