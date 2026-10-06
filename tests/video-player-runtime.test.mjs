@@ -18,7 +18,7 @@ class Element extends EventTarget {
     this.attrs = new Map();
     this.dataset = {};
     this.style = { setProperty() {} };
-    this.classList = { add() {} };
+    this.classList = { add() {}, remove() {} };
     this.textContent = '';
     this.value = '0';
   }
@@ -26,7 +26,7 @@ class Element extends EventTarget {
   getAttribute(name) { return this.attrs.get(name) ?? null; }
   emit(name) { this.dispatchEvent(new Event(name)); }
 }
-function setup(lang = 'en') {
+function setup(lang = 'en', desktopHover = true) {
   const video = new Element();
   Object.assign(video, { title: 'Film', duration: 120, currentTime: 0, paused: true, muted: true, ended: false, error: null, playCalls: 0, deferNext: false });
   video.dataset.src = 'https://example.test/original.mp4';
@@ -37,7 +37,7 @@ function setup(lang = 'en') {
     this.emit('play');
     if (this.deferNext) {
       this.deferNext = false;
-      return new Promise((resolve, reject) => { this.resolvePlay = resolve; this.rejectPlay = reject; });
+      return new Promise((resolve, reject) => { this.resolvePlay = resolve; this.rejectPlay = error => { this.paused = true; this.emit('pause'); reject(error); }; });
     }
     this.emit('playing');
     return Promise.resolve();
@@ -66,16 +66,18 @@ function setup(lang = 'en') {
   }
   let raf = 0;
   const otherVideo = { paused: false, pauseCalls: 0, pause() { this.paused = true; this.pauseCalls++; } };
-  vm.runInNewContext(code, { document, window: { IntersectionObserver: Observer }, IntersectionObserver: Observer, requestAnimationFrame: () => ++raf, cancelAnimationFrame() {}, quietOthers(except) { assert.equal(except, frame, 'current player excluded from mutual pause'); otherVideo.pause(); } });
+  const media = new Element(); media.matches = desktopHover;
+  const win = new Element(); win.IntersectionObserver = Observer; win.matchMedia = () => media;
+  vm.runInNewContext(code, { document, matchMedia: () => media, window: win, IntersectionObserver: Observer, requestAnimationFrame: () => ++raf, cancelAnimationFrame() {}, quietOthers(except) { assert.equal(except, frame, 'current player excluded from mutual pause'); otherVideo.pause(); } });
   const visibility = observers.find(o => 'threshold' in o.options);
-  return { video, shell, toggle, sound, seek, clock, status, otherVideo, visible: value => visibility.emit(value), hidden(value) { document.hidden = value; document.emit('visibilitychange'); } };
+  return { hover(value) { shell.emit(value ? 'pointerenter' : 'pointerleave'); }, mode(value) { media.matches = value; media.emit('change'); }, near() { observers.filter(o => 'rootMargin' in o.options && !('threshold' in o.options)).forEach(o => o.emit(true)); }, video, shell, toggle, sound, seek, clock, status, otherVideo, visible: value => visibility.emit(value), hidden(value) { document.hidden = value; document.emit('visibilitychange'); } };
 }
 
-test('AC1/AC2: silent visible autoplay reports real state; explicit pause survives scrolling and tab changes', async () => {
+test('H1/AC2: silent hover playback reports real state; explicit pause survives scrolling and tab changes', async () => {
   const p = setup();
   assert.equal(p.video.playCalls, 0, 'offscreen films do not start');
   assert.equal(p.video.src, null, 'source initially deferred');
-  p.visible(true);
+  p.visible(true); p.hover(true);
   await flush();
   assert.equal(p.video.src, p.video.dataset.src);
   assert.equal(p.video.muted, true);
@@ -84,7 +86,7 @@ test('AC1/AC2: silent visible autoplay reports real state; explicit pause surviv
   p.toggle.emit('click');
   assert.equal(p.video.paused, true);
   assert.match(p.toggle.getAttribute('aria-label'), /^Play/);
-  p.visible(false); p.visible(true); p.hidden(true); p.hidden(false);
+  p.visible(false); p.visible(true); p.hover(true); p.hidden(true); p.hidden(false);
   await flush();
   assert.equal(p.video.playCalls, 1, 'manual pause cannot restart automatically');
   p.toggle.emit('click');
@@ -98,7 +100,7 @@ test('AC1/AC2: silent visible autoplay reports real state; explicit pause surviv
 
 test('All server films: tapping video toggles playback and pause persists across scrolling', async () => {
   const p = setup('en');
-  p.visible(1); await flush();
+  p.visible(1); p.hover(true); await flush();
   assert.equal(p.video.paused, false);
   p.video.emit('click');
   assert.equal(p.video.paused, true);
@@ -108,9 +110,9 @@ test('All server films: tapping video toggles playback and pause persists across
   assert.equal(p.video.paused, false);
 });
 
-test('All server films: half-visible playback pauses and more than half visible playback resumes', async () => {
+test('H1: half-visible playback pauses; fresh hover resumes when more than half visible', async () => {
   const film = setup('uk');
-  film.visible(0.51); await flush();
+  film.visible(0.51); film.hover(true); await flush();
   assert.equal(film.video.paused, false);
   film.visible(0.50);
   assert.equal(film.video.paused, true, 'half-visible film must pause');
@@ -118,21 +120,23 @@ test('All server films: half-visible playback pauses and more than half visible 
     film.visible(ratio); await flush();
     assert.equal(film.video.paused, true, 'film does not play at or below half visibility');
   }
-  film.visible(0.51); await flush();
+  film.visible(0.51); film.hover(true); await flush();
   assert.equal(film.video.paused, false, 'more than half visible film resumes');
 });
 
-test('AC1: automatic playback pauses offscreen and hidden, and resumes on return', async () => {
+test('H2: offscreen and hidden pause; return needs fresh hover', async () => {
   const p = setup('uk');
-  p.visible(true); await flush();
+  p.visible(true); p.hover(true); await flush();
   assert.match(p.toggle.getAttribute('aria-label'), /^Пауза/);
   p.visible(false);
   assert.equal(p.video.paused, true);
-  p.visible(true); await flush();
+  p.visible(true); p.hover(true); await flush();
   assert.equal(p.video.paused, false);
   p.hidden(true);
   assert.equal(p.video.paused, true);
   p.hidden(false); await flush();
+  assert.equal(p.video.paused, true, 'tab return alone does not start playback');
+  p.hover(true); await flush();
   assert.equal(p.video.paused, false);
   assert.equal(p.video.playCalls, 3);
 });
@@ -140,9 +144,9 @@ test('AC1: automatic playback pauses offscreen and hidden, and resumes on return
 test('AC4: exit and reenter during a pending play retry after AbortError', async () => {
   const p = setup();
   p.video.deferNext = true;
-  p.visible(true);
+  p.visible(true); p.hover(true);
   assert.equal(p.video.playCalls, 1);
-  p.visible(false); p.visible(true);
+  p.visible(false); p.visible(true); p.hover(true);
   p.video.rejectPlay(Object.assign(new Error('interrupted by pause'), { name: 'AbortError' }));
   await flush();
   assert.equal(p.video.playCalls, 2, 'return during pending play must not strand the film');
@@ -154,9 +158,9 @@ test('AC4: exit and reenter during a pending play retry after AbortError', async
 test('AC4: manual pause during pending play prevents the AbortError retry', async () => {
   const p = setup();
   p.video.deferNext = true;
-  p.visible(true);
+  p.visible(true); p.hover(true);
   p.toggle.emit('click');
-  p.visible(false); p.visible(true);
+  p.visible(false); p.visible(true); p.hover(true);
   p.video.rejectPlay(Object.assign(new Error('interrupted'), { name: 'AbortError' }));
   await flush();
   assert.equal(p.video.playCalls, 1);
@@ -164,29 +168,73 @@ test('AC4: manual pause during pending play prevents the AbortError retry', asyn
   assert.match(p.toggle.getAttribute('aria-label'), /^Play/);
 });
 
-test('AC1/AC4: a tab returning during pending play retries after hidden-tab AbortError', async () => {
+test('H2: returning tab during pending play stays paused until fresh hover', async () => {
   const p = setup();
   p.video.deferNext = true;
-  p.visible(true);
+  p.visible(true); p.hover(true);
   p.hidden(true); p.hidden(false);
   p.video.rejectPlay(Object.assign(new Error('hidden tab interrupted play'), { name: 'AbortError' }));
   await flush();
-  assert.equal(p.video.playCalls, 2, 'visible active tab must recover pending playback');
+  assert.equal(p.video.playCalls, 1, 'tab return does not restore hover intent');
+  assert.equal(p.video.paused, true);
+  p.hover(true); await flush();
+  assert.equal(p.video.playCalls, 2);
   assert.equal(p.video.paused, false);
 });
 
 test('AC2/ADR: explicit sound and unmuted playback resume quiet other films', async () => {
   const p = setup();
-  p.visible(true); await flush();
+  p.visible(true); p.hover(true); await flush();
   assert.equal(p.otherVideo.pauseCalls, 0, 'silent autoplay does not interrupt other films');
   p.sound.emit('click');
   assert.equal(p.video.muted, false);
   assert.equal(p.otherVideo.paused, true, 'visitor sound choice pauses other films');
   const before = p.otherVideo.pauseCalls;
   p.otherVideo.paused = false;
-  p.visible(false); p.visible(true); await flush();
+  p.visible(false); p.visible(true); p.hover(true); await flush();
   assert.equal(p.video.muted, false, 'sound choice retained on return');
   assert.equal(p.video.paused, false);
   assert.equal(p.otherVideo.paused, true, 'resumed audible playback pauses other films');
   assert.ok(p.otherVideo.pauseCalls > before);
+});
+
+
+test('H1/H4: visibility and near viewport do not load; hover loads and leave pauses at same time', async () => {
+  const p = setup(); p.near(); p.visible(true); await flush();
+  assert.equal(p.video.src, null); assert.equal(p.video.playCalls, 0);
+  p.hover(true); await flush(); assert.equal(p.video.paused, false);
+  p.video.currentTime = 18.5; p.hover(false);
+  assert.equal(p.video.paused, true); assert.equal(p.video.currentTime, 18.5);
+  p.hover(true); await flush(); assert.equal(p.video.paused, false); assert.equal(p.video.currentTime, 18.5);
+});
+test('H2: hover leave and reentry recovers pending AbortError', async () => {
+  const p = setup(); p.visible(true); p.video.deferNext = true; p.hover(true);
+  assert.equal(p.video.playCalls, 1); p.hover(false); p.hover(true);
+  p.video.rejectPlay(Object.assign(new Error('interrupted'), { name: 'AbortError' })); await flush();
+  assert.equal(p.video.playCalls, 2); assert.equal(p.video.paused, false);
+});
+test('H2: resolving pending playback after hover leave cannot restart film', async () => {
+  const p = setup(); p.visible(true); p.video.deferNext = true; p.hover(true); p.hover(false);
+  p.video.resolvePlay(); await flush(); assert.equal(p.video.paused, true);
+});
+test('H3: touch/tablet only manual play, no automatic resume on return or mode change', async () => {
+  const p = setup('en', false); p.near(); p.visible(true); p.hover(true); await flush();
+  assert.equal(p.video.src, null); assert.equal(p.video.playCalls, 0);
+  p.video.emit('click'); await flush(); assert.equal(p.video.paused, false);
+  p.visible(false); p.visible(true); p.hover(true); p.hidden(true); p.hidden(false); await flush();
+  assert.equal(p.video.paused, true); assert.equal(p.video.playCalls, 1);
+  p.toggle.emit('click'); await flush(); assert.equal(p.video.paused, false);
+  p.mode(true); await flush(); assert.equal(p.video.paused, true, 'layout switch requires fresh intent');
+  p.hover(true); await flush(); assert.equal(p.video.paused, false);
+  p.mode(false); await flush(); assert.equal(p.video.paused, true);
+});
+test('H4: separate poster waits for decoded playing, survives blocked playback, returns on error', async () => {
+  const p = setup(); p.visible(true); p.video.deferNext = true; p.hover(true);
+  assert.notEqual(p.shell.dataset.ready, 'true', 'play request alone cannot hide poster');
+  p.video.rejectPlay(Object.assign(new Error('blocked'), { name: 'NotAllowedError' })); await flush();
+  assert.notEqual(p.shell.dataset.ready, 'true');
+  p.toggle.emit('click'); await flush();
+  assert.equal(p.shell.dataset.ready, 'true', 'only playing reveals video');
+  p.hover(false); assert.equal(p.shell.dataset.ready, 'true', 'pause holds decoded frame');
+  p.video.error = {}; p.video.emit('error'); assert.notEqual(p.shell.dataset.ready, 'true');
 });

@@ -495,8 +495,10 @@ ul, ol { list-style: none; }
   transition: color var(--t) var(--ease);
 }
 .rail-nav a:hover { color: var(--ink); }
-.rail-nav a[aria-current='page'] { color: var(--ink); font-weight: var(--w-medium); }
-.rail-nav a[aria-current='page']::before {
+.rail :is(.rail-nav, .rail-foot) a[aria-current='page'] { color: var(--ink); font-weight: var(--w-medium); }
+.rail :is(.rail-nav, .rail-foot) a[aria-current='page']::before,
+.rail-nav a:hover::before,
+.rail-foot > a[href$='/rates/']:hover::before {
   content: '';
   display: inline-block;
   width: 0.55rem;
@@ -1370,6 +1372,9 @@ figcaption { margin-top: 0.5rem; font-size: var(--t-label); color: var(--faint);
 .video-status { margin-right: auto; font-size: var(--t-meta); color: var(--muted); }
 .server-player .player video.cf-video { display: block; }
 .server-player.enhanced video.cf-video { cursor: pointer; touch-action: pan-y; }
+.server-player .video-poster { pointer-events: none; }
+.server-player.enhanced[data-ready="false"] video.cf-video { opacity: 0; }
+.server-player[data-ready="true"] .video-poster { opacity: 0; visibility: hidden; }
 .seq .server-player { max-width: calc(var(--frame-max) * 16 / 9); margin-inline: auto; }
 .seq .server-player:has(.vertical) { max-width: calc(var(--frame-max) * 9 / 16); }
 
@@ -1988,7 +1993,7 @@ html.fx .lf.lf-in .w { opacity: 1; }
   .collage-tile { left: var(--x3); top: var(--y3); width: var(--w3); height: var(--h3); }
   .collage-tile:nth-child(-n + 14) { display: block; }
 }
-@media (min-width: 112rem) {
+@media (min-width: 90rem) {
   .home-collage { --collage-columns: 4; --collage-ratio: var(--ratio4); }
   .collage-tile { left: var(--x4); top: var(--y4); width: var(--w4); height: var(--h4); }
   .collage-tile:nth-child(n) { display: block; }

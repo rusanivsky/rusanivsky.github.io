@@ -66,8 +66,9 @@ function setup(tops) {
     observe() {}
     unobserve() {}
   }
+  const media = new Element(); media.matches = true; win.matchMedia = () => media;
   vm.runInNewContext(code, {
-    document, window: Object.assign(win, { IntersectionObserver: Observer }), IntersectionObserver: Observer,
+    document, matchMedia: () => media, window: Object.assign(win, { IntersectionObserver: Observer }), IntersectionObserver: Observer,
     requestAnimationFrame: (f) => { f(); return 1; }, cancelAnimationFrame() {}, getComputedStyle: () => ({ display: 'block' }),
     quietOthers() {}, setTimeout, clearTimeout,
   });
@@ -75,21 +76,20 @@ function setup(tops) {
   const show = (i, ratio) => visibility.callback([{ target: films[i].frame, isIntersecting: ratio > 0, intersectionRatio: ratio }]);
   const scrollTo = (newTops) => { newTops.forEach((t, i) => { films[i].frame.top = t; }); win.emit('scroll'); };
   const playing = () => films.map((f) => (f.video.paused ? '-' : 'P')).join('');
-  return { films, show, scrollTo, playing, win, document };
+  return { hover(i, value = true) { films[i].shell.emit(value ? 'pointerenter' : 'pointerleave'); }, films, show, scrollTo, playing, win, document };
 }
 
-test('V1: of two visible films only the one nearest the centre plays', async () => {
-  const p = setup([60, 420]);            // centres 260 and 620; view centre 400
-  p.show(0, 1); p.show(1, 0.9); await flush();
-  assert.equal(p.playing(), 'P-', 'the film nearer the centre plays alone');
-  p.scrollTo([-120, 240]);               // centres 80 and 440
-  await flush();
-  assert.equal(p.playing(), '-P', 'scrolling hands playback to the new centre');
+test('H1/V1: visible films stay still until hovered; only hovered film plays', async () => {
+  const p = setup([60, 420]);
+  p.show(0, 1); p.show(1, 0.9); await flush(); assert.equal(p.playing(), '--');
+  p.hover(0); await flush(); assert.equal(p.playing(), 'P-');
+  p.scrollTo([-120, 240]); await flush(); assert.equal(p.playing(), 'P-', 'scroll cannot hand playback to unhovered neighbour');
+  p.hover(0, false); p.hover(1); await flush(); assert.equal(p.playing(), '-P');
 });
 
 test('V1: a film manually paused at the centre does not hand playback to its neighbour', async () => {
   const p = setup([200, 640]);
-  p.show(0, 1); p.show(1, 0.6); await flush();
+  p.show(0, 1); p.show(1, 0.6); p.hover(0); await flush();
   assert.equal(p.playing(), 'P-');
   p.films[0].toggle.emit('click'); await flush();
   assert.equal(p.playing(), '--', 'nothing starts in its place');
@@ -97,7 +97,7 @@ test('V1: a film manually paused at the centre does not hand playback to its nei
 
 test('V2: tapping play on another film makes it the one that plays', async () => {
   const p = setup([60, 420]);
-  p.show(0, 1); p.show(1, 0.9); await flush();
+  p.show(0, 1); p.show(1, 0.9); p.hover(0); await flush();
   assert.equal(p.playing(), 'P-');
   p.films[1].video.emit('click'); await flush();
   assert.equal(p.playing(), '-P', 'the tapped film plays and the other stops');
@@ -109,10 +109,10 @@ test('V2: tapping play on another film makes it the one that plays', async () =>
 
 test('V3: sound turned on carries to the next film that plays', async () => {
   const p = setup([200, 1200]);
-  p.show(0, 1); await flush();
+  p.show(0, 1); p.hover(0); await flush();
   p.films[0].sound.emit('click');
   assert.equal(p.films[0].video.muted, false);
-  p.show(0, 0); p.scrollTo([-800, 200]); p.show(1, 1); await flush();
+  p.show(0, 0); p.scrollTo([-800, 200]); p.show(1, 1); p.hover(1); await flush();
   assert.equal(p.films[1].video.paused, false);
   assert.equal(p.films[1].video.muted, false, 'next film starts with sound');
   assert.equal(p.films[0].video.paused, true, 'only one film is ever heard');
@@ -121,30 +121,31 @@ test('V3: sound turned on carries to the next film that plays', async () => {
 test('V3: a browser that refuses sound still plays the film muted', async () => {
   const p = setup([200, 1200]);
   p.films[1].video.blockSound = true;
-  p.show(0, 1); await flush();
+  p.show(0, 1); p.hover(0); await flush();
   p.films[0].sound.emit('click');
-  p.show(0, 0); p.scrollTo([-800, 200]); p.show(1, 1); await flush();
+  p.show(0, 0); p.scrollTo([-800, 200]); p.show(1, 1); p.hover(1); await flush();
   assert.equal(p.films[1].video.paused, false, 'film plays');
   assert.equal(p.films[1].video.muted, true, 'muted after the refusal');
 });
 
 test('V4: while a YouTube film plays, server films hold still', async () => {
   const p = setup([200, 1200]);
-  p.show(0, 1); await flush();
+  p.show(0, 1); p.hover(0); await flush();
   assert.equal(p.playing(), 'P-');
   p.win.krVideoExternal(true); await flush();
   assert.equal(p.playing(), '--', 'the server film yields');
   p.show(0, 0.4); p.show(0, 1); p.scrollTo([210, 1210]); await flush();
   assert.equal(p.playing(), '--', 'scrolling does not restart it');
   p.win.krVideoExternal(false); await flush();
-  assert.equal(p.playing(), 'P-', 'it resumes once YouTube stops');
+  assert.equal(p.playing(), '--', 'offscreen cleared hover intent');
+  p.hover(0); await flush(); assert.equal(p.playing(), 'P-');
 });
 
 test('V5: a film resumes where it stopped', async () => {
   const p = setup([200, 1200]);
-  p.show(0, 1); await flush();
+  p.show(0, 1); p.hover(0); await flush();
   p.films[0].video.currentTime = 12.5;
-  p.show(0, 0); p.show(0, 1); await flush();
+  p.show(0, 0); p.show(0, 1); p.hover(0); await flush();
   assert.equal(p.films[0].video.paused, false);
   assert.equal(p.films[0].video.currentTime, 12.5);
 });
