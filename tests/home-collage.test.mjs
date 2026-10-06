@@ -160,4 +160,3 @@ test('AC8: playing video hides poster pixels; inactive fallback remains in marku
     });
   }
 });
-
