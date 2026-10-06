@@ -46,3 +46,29 @@ User report: video start-up felt chaotic — several server films played at once
 - Visibility excludes the sticky bar at the top of a phone screen (fix 2026-10-02: a film half under the bar kept playing).
 - Home stage previews (desktop hover, six-second clips in `media/video/previews/`) are separate from page films and unaffected.
 - Gate: `tests/video-focus.test.mjs` (V1–V5, written first, RED on 5 of 7 before the change) plus the existing 8 runtime regressions; real Chrome on the kmbs page (one film at a time, sound carried, mobile and desktop) and on `/video/` (YouTube pauses the server film, scrolling YouTube away resumes it).
+
+## Desktop hover playback (2026-10-06)
+- H1: on desktop layouts (at least 61rem) with a fine pointer and hover support,
+  a visible server film starts automatically only while its player or toolbar
+  is hovered. Enter starts/resumes; leave pauses without resetting its time.
+- H2: scrolling or returning to a tab alone cannot start a desktop film. The
+  existing visibility, explicit-pause and one-film-at-a-time rules still apply.
+  Leaving during a pending play request must not strand playback on reentry.
+- H3: touch/tablet/mobile films stay on their poster until the visitor taps
+  play or the film. Visibility, scrolling and returning to a tab never start
+  them automatically. Switching input/layout mode pauses automatic playback.
+  Explicit play/pause controls remain usable with mouse, touch and keyboard.
+- Scope: project and video catalogue server players in both languages. YouTube
+  and Vimeo keep their click-to-play behavior; homepage collage playback is unchanged.
+- H4: defer direct video sources until hover/manual play. Keep a separate photo
+  poster visible until the first real playing event, including during loading or
+  a rejected play request; restore it after a media error. Pausing retains the
+  last decoded frame. This protects the loading state from a blank native video.
+- Navigation: main/secondary rail links and Rates & Terms show a dash on hover;
+  Rates & Terms also uses the same active-page dash as the main rail.
+  No video assets, source URLs, player geometry or new dependencies change.
+- Gate: independent RED/GREEN and final review; 101 Node tests pass in a clean
+  export. Local browser confirms an untouched neighbour has no MP4 source,
+  hover advances real time, leave holds that time, and a coarse-pointer tablet
+  remains on posters until explicit play. After scrolling away and returning,
+  touch playback remains paused. Poster changes only after actual playback.

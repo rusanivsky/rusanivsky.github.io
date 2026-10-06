@@ -163,7 +163,7 @@ test('AC8: playing video hides poster pixels; inactive fallback remains in marku
     const tiles = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m => hasClass(attrs(m[1]), 'collage-tile'));
     tiles.forEach((m, i) => {
       const sources = [...m[2].matchAll(/<source\b([^>]*)>/g)].map(x => attrs(x[1]));
-      const limit = i >= 14 ? '111.99rem' : (i === 7 || (i >= 8 && i !== 12)) ? '79.99rem' : '60.99rem';
+      const limit = i >= 14 ? '89.99rem' : (i === 7 || (i >= 8 && i !== 12)) ? '79.99rem' : '60.99rem';
       assert.ok(sources.some(s => s.media.includes(limit) && s.srcset.startsWith('data:image/')), 'hidden tile serves a tiny inline fallback instead of downloading photo');
     });
   }

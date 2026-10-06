@@ -9,8 +9,8 @@ active on hover/focus. Mobile row previews are unchanged.
 Acceptance:
 - C1: one shared media canvas, no slideshow or floating hover image. Images keep
   their original proportions. Links go to the project that owns the media.
-- C2: 61–79.99rem: 2 columns/8 frames (6 photos, 2 videos); 80–111.99rem: 3 columns/14 frames;
-  112rem and above: 4 columns/18 frames (15 photos, 3 videos). Below 61rem the stage stays hidden.
+- C2: 61–79.99rem: 2 columns/8 frames (6 photos, 2 videos); 80–89.99rem: 3 columns/14 frames;
+  90rem and above: 4 columns/18 frames (15 photos, 3 videos). Below 61rem the stage stays hidden.
   Breakpoints use CSS width: a Retina 4K monitor at 1920 logical pixels therefore
   receives 4 columns. In the 2-column composition the last speaker photo finishes
   the left column.

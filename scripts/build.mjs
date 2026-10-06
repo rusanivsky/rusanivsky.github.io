@@ -463,13 +463,13 @@ const collageSizes = `(min-width: 61rem) calc((${GRID}) / 2), (min-width: 46rem)
    файли є (srcset) і яку частину екрана картинка займе (sizes). Без sizes
    браузер припускає всю ширину вікна й тягне найбільший крок на кожну
    дрібну плитку. */
-function img(src, alt, { lazy = true, eager = false, sizes = '100vw', skip = '' } = {}) {
+function img(src, alt, { lazy = true, eager = false, sizes = '100vw', skip = '', cls = '' } = {}) {
   const d = dim(src);
   const steps = ladder[src];
   const srcset = steps && steps.length > 1
     ? ` srcset="${steps.map(([w, u]) => `${u} ${w}w`).join(', ')}" sizes="${attr(sizes)}"`
     : '';
-  const tag = `<img src="${src}"${srcset} alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
+  const tag = `<img${cls ? ` class="${attr(cls)}"` : ''} src="${src}"${srcset} alt="${attr(alt || '')}"${d ? ` width="${d.w}" height="${d.h}"` : ''}` +
     `${eager ? ' fetchpriority="high"' : ''} loading="${lazy && !eager ? 'lazy' : 'eager'}" decoding="async">`;
   return skip ? `<picture><source media="${skip}" srcset="${BLANK}">${tag}</picture>` : tag;
 }
@@ -521,6 +521,7 @@ function player(item, eager = false) {
     <button type="button" class="video-sound" aria-label="${labels.sound} — ${attr(item.title)}">${icon('icon-volume', '<path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/>')}</button>
   </div>
   <div class="player${vertical ? ' vertical' : ''}">
+    ${img(item.poster, item.title, { lazy: !eager, eager, cls: 'video-poster' })}
     <video class="cf-video" data-src="${attr(item.src)}" poster="${attr(item.poster)}" title="${attr(item.title)}" muted playsinline loop controls preload="none"></video>
 
   </div>
@@ -861,8 +862,8 @@ function homeCollage() {
   });
   const tiles = items.map((item, i) => {
     const expandedOnly = i === 7 || (i >= 8 && i !== 12);
-    const skip = i >= 14 ? '(max-width: 111.99rem)' : expandedOnly ? '(max-width: 79.99rem)' : PHONE;
-    return `<a class="collage-tile${i === 7 ? ' expanded-video' : i === 12 ? ' compact-photo' : ''}" href="${href(workPath(item.p))}" tabindex="-1" style="${vars[i].join(';')}"${item.clip ? ` data-preview="${item.clip}"${i === 7 ? ' data-preview-min-width="80rem"' : ''}` : ''}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 112rem) 17vw, (min-width: 80rem) 24vw, (min-width: 61rem) 28vw, 1px', skip })}</a>`;
+    const skip = i >= 14 ? '(max-width: 89.99rem)' : expandedOnly ? '(max-width: 79.99rem)' : PHONE;
+    return `<a class="collage-tile${i === 7 ? ' expanded-video' : i === 12 ? ' compact-photo' : ''}" href="${href(workPath(item.p))}" tabindex="-1" style="${vars[i].join(';')}"${item.clip ? ` data-preview="${item.clip}"${i === 7 ? ' data-preview-min-width="80rem"' : ''}` : ''}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 90rem) 17vw, (min-width: 80rem) 24vw, (min-width: 61rem) 28vw, 1px', skip })}</a>`;
   }).join('\n');
   return `<div class="home-collage" style="${ratios.join(';')}">${tiles}</div>`;
 }

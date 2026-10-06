@@ -527,14 +527,11 @@
     externalChanged();
   }
 
-  /* Direct films stay inline. Media events are the truth for the controls;
-     visibility requests playback, and an explicit pause always wins.
-     One film at a time (docs/video-player.md, 2026-10-02): of the films more
-     than half in view, only the one nearest the middle of what the reader
-     can see plays on its own; a film started by hand holds the turn while it
-     stays in view; sound once turned on carries to the next film; a playing
-     YouTube or Vimeo film holds every server film still. */
+  /* Direct films stay inline. Desktop hover or an explicit play requests
+     playback; visibility only permits it. Touch never starts a film by
+     scrolling. Media events govern controls and the poster fallback. */
   var serverPlayers = [];
+  var videoHover = matchMedia('(min-width: 61rem) and (hover: hover) and (pointer: fine)');
   var videoUa = document.documentElement.lang === 'uk';
   var videoWords = videoUa
     ? { play: 'Відтворити', pause: 'Пауза', unmute: 'Увімкнути звук', mute: 'Вимкнути звук', loading: 'Завантаження…', blocked: 'Натисніть відтворення', error: 'Не вдалося завантажити відео' }
@@ -551,7 +548,10 @@
     return bar && getComputedStyle(bar).display !== 'none' ? Math.round(bar.getBoundingClientRect().bottom) : 0;
   };
   function elect() {
-    var live = serverPlayers.filter(function (p) { return p.state.visible && !document.hidden; });
+    var live = serverPlayers.filter(function (p) {
+      return p.state.visible && !document.hidden &&
+        (p.state.manualPlay || (videoHover.matches && p.state.hovered));
+    });
     var pick = null;
     if (!externalPlaying) {
       if (chosen && live.indexOf(chosen) >= 0) pick = chosen;
@@ -579,11 +579,12 @@
     var toggle = shell.querySelector('.video-toggle');
     var sound = shell.querySelector('.video-sound');
     var status = shell.querySelector('.video-status');
-    var state = { visible: false, manualPause: false, pending: false, retryVisible: false, focus: false, soundRefused: false };
+    var state = { visible: false, hovered: false, manualPlay: false, manualPause: false, pending: false, retryVisible: false, focus: false, soundRefused: false };
     var self;
     v.controls = false;
     v.muted = true;
     shell.classList.add('enhanced');
+    shell.dataset.ready = 'false';
     function loaded() {
       if (!v.getAttribute('src')) { v.src = v.dataset.src; v.preload = 'metadata'; }
     }
@@ -606,7 +607,7 @@
       if (promise && promise.then) promise.then(function () {
         state.pending = false;
         state.retryVisible = false;
-        if (document.hidden || !state.visible || state.manualPause || (!manual && !state.focus)) v.pause();
+        if (document.hidden || !state.visible || state.manualPause || !state.focus) v.pause();
       }).catch(function (error) {
         state.pending = false;
         // A browser that will not play this film with sound plays it muted.
@@ -620,11 +621,11 @@
       else state.pending = false;
     }
     function visibility(visible) {
-      state.retryVisible = visible && !document.hidden && state.pending;
       state.visible = visible;
       if (!visible || document.hidden) {
+        state.hovered = false; state.manualPlay = false; state.retryVisible = false;
         v.pause(); status.textContent = '';
-        if (!visible && chosen === self) chosen = null;
+        if (chosen === self) chosen = null;
       }
       elect();
     }
@@ -636,11 +637,13 @@
     function togglePlayback() {
       if (!v.paused || state.pending) {
         state.manualPause = true;
+        state.manualPlay = false;
         if (chosen === self) chosen = null;
         v.pause();
         status.textContent = '';
       } else {
         state.manualPause = false;
+        state.manualPlay = true;
         if (v.error) { v.load(); }
         if (v.ended) v.currentTime = 0;
         // A film started by hand is the one that plays: everything else,
@@ -655,6 +658,18 @@
     }
     toggle.addEventListener('click', togglePlayback);
     v.addEventListener('click', togglePlayback);
+    shell.addEventListener('pointerenter', function (e) {
+      if (!videoHover.matches || e.pointerType === 'touch') return;
+      state.hovered = true;
+      state.retryVisible = state.pending && state.visible && !document.hidden;
+      elect();
+    });
+    shell.addEventListener('pointerleave', function () {
+      if (!videoHover.matches) return;
+      state.hovered = false; state.manualPlay = false; state.retryVisible = false;
+      if (chosen === self) chosen = null;
+      elect();
+    });
     sound.addEventListener('click', function () {
       v.muted = !v.muted;
       soundWanted = !v.muted;
@@ -663,9 +678,10 @@
       sync();
     });
     v.addEventListener('playing', function () {
-      if (!state.visible || document.hidden || state.manualPause) { v.pause(); return; }
+      if (!state.visible || document.hidden || state.manualPause || !state.focus) { v.pause(); return; }
       if (!v.muted) quietOthers(frame);
       frame.classList.add('playing');
+      shell.dataset.ready = 'true';
       status.textContent = '';
       sync();
     });
@@ -673,7 +689,10 @@
     v.addEventListener('pause', sync);
     v.addEventListener('volumechange', sync);
     v.addEventListener('waiting', function () { if (!v.paused) status.textContent = videoWords.loading; });
-    v.addEventListener('error', function () { status.textContent = videoWords.error; sync(); });
+    v.addEventListener('error', function () {
+      shell.dataset.ready = 'false'; frame.classList.remove('playing');
+      status.textContent = videoWords.error; sync();
+    });
     v.addEventListener('ended', function () { state.manualPause = true; status.textContent = ''; sync(); });
     self = { frame: frame, load: loaded, visibility: visibility, focus: focus, state: state };
     serverPlayers.push(self);
@@ -681,21 +700,13 @@
   });
   if (serverPlayers.length) {
     if ('IntersectionObserver' in window) {
-      var nearVideo = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var p = serverPlayers.find(function (p) { return p.frame === entry.target; });
-          p.load();
-          nearVideo.unobserve(entry.target);
-        });
-      }, { rootMargin: '400px 0px' });
       var visibleVideo = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           var p = serverPlayers.find(function (p) { return p.frame === entry.target; });
           p.visibility(entry.isIntersecting && entry.intersectionRatio > 0.5);
         });
       }, { threshold: [0, 0.5, 0.5 + Number.EPSILON], rootMargin: '-' + coveredTop() + 'px 0px 0px 0px' });
-      serverPlayers.forEach(function (p) { nearVideo.observe(p.frame); visibleVideo.observe(p.frame); });
+      serverPlayers.forEach(function (p) { visibleVideo.observe(p.frame); });
     } else {
       var checkVideos = function () {
         serverPlayers.forEach(function (p) {
@@ -718,6 +729,13 @@
     }, { passive: true });
     document.addEventListener('visibilitychange', function () {
       serverPlayers.forEach(function (p) { p.visibility(p.state.visible); });
+    });
+    videoHover.addEventListener('change', function () {
+      chosen = null;
+      serverPlayers.forEach(function (p) {
+        p.state.hovered = false; p.state.manualPlay = false; p.state.retryVisible = false;
+      });
+      elect();
     });
   }
 

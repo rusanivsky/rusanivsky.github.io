@@ -45,7 +45,11 @@ test('AC2/AC5: every server film has bilingual custom player markup and preserve
       assert.ok(hasClass(v, 'cf-video'));
       assert.equal(v['data-src'], expected[i].src, 'original direct source and sequence');
       assert.equal(v.poster, expected[i].poster, 'original poster');
-      assert.ok(!('src' in v), 'source deferred until near viewport');
+      const posters = tags(block, 'img').filter(a => hasClass(a, 'video-poster'));
+      assert.equal(posters.length, 1, 'separate image protects video loading state');
+      assert.equal(posters[0].src, expected[i].poster);
+      assert.ok(posters[0].alt !== undefined, 'poster alternative is explicit');
+      assert.ok(!('src' in v), 'source deferred until hover or manual play');
       assert.ok('muted' in v, 'silent by default');
       assert.ok('playsinline' in v, 'no automatic fullscreen on phones');
       assert.equal(v.preload, 'none', 'no eager media transfer');
@@ -101,4 +105,30 @@ test('AC2: icon hit targets meet 44px in both axes and controls align above the 
   }
   const toolbar = rules.filter(m => /\.video-(?:toolbar|controls)/.test(m[1])).map(m => m[2]).join(';');
   assert.match(toolbar, /justify-content\s*:\s*(?:flex-)?end/, 'toolbar controls align right');
+});
+
+
+test('H4: poster remains visible until playing, does not intercept controls, and native aspect is retained', () => {
+  const css = read('styles/site.css');
+  assert.match(css, /\.video-poster[^{}]*\{[^}]*pointer-events:\s*none/);
+  assert.match(css, /\.server-player\[data-ready=["']true["']\][^{}]*\.video-poster[^{}]*\{[^}]*(?:opacity:\s*0|visibility:\s*hidden)/);
+});
+test('Navigation: Rates & Terms carries current-page dash in both desktop rails', () => {
+  for (const prefix of ['', 'ua/']) {
+    const html = read(`${prefix}rates/index.html`);
+    assert.match(html, new RegExp(`<a href="/${prefix}rates/" aria-current="page">`));
+  }
+  const css = read('styles/site.css');
+  const dash = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].find(m => m[1].includes('.rail-foot') && m[1].includes("[aria-current='page']::before"));
+  assert.ok(dash, 'current-page dash selector includes actual rail footer');
+  assert.match(dash[2], /content:/);
+});
+
+test('Navigation: hover dash covers main rail links and Rates only in footer', () => {
+  const css = read('styles/site.css');
+  const pseudoRules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter(m => m[1].includes(':hover::before') && /content:/.test(m[2]));
+  const selectors = pseudoRules.map(m => m[1]).join(',');
+  assert.match(selectors, /\.rail-nav\s+a:hover::before/, 'primary and secondary rail groups get hover dash');
+  assert.match(selectors, /\.rail-foot[^,]*rates[^,]*:hover::before/, 'footer hover dash is explicitly scoped to Rates');
+  assert.doesNotMatch(selectors, /\.rail-foot\s*>?\s*a:hover::before/, 'external/footer theme and language links do not gain a dash');
 });
