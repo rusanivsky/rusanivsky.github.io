@@ -277,82 +277,112 @@
   }
 
   /* ---------- Home: index + stage ----------
-     Hover and keyboard focus both drive the stage. Nothing here touches
-     history or the URL — only a real click navigates. */
+     The collage stays put. Only compact local video previews animate. */
   var stage = document.getElementById('stage');
   if (stage) {
-    var slides = stage.querySelectorAll('.slide');
-    var current = null;
-
-    function show(idx) {
-      if (idx === current) return;
-      // The first wall arrives with the page; every wall after it is brought
-      // in by the reader, frame by frame (styles: .stage.live).
-      if (current !== null) stage.classList.add('live');
-      current = idx;
-      stopPreviews();
-      if (stage.classList.contains('live')) startPreview(slides[idx]);
-      slides.forEach(function (s, i) {
-        s.classList.toggle('on', i === idx);
-        // Anything off-stage is hidden from assistive tech too; the index
-        // beside it already carries the same titles.
-        s.setAttribute('aria-hidden', String(i !== idx));
+    var collageDesktop = matchMedia('(min-width: 61rem)');
+    var collageReduced = matchMedia('(prefers-reduced-motion: reduce)');
+    var collageConnection = navigator.connection;
+    var motionToggle = document.getElementById('collage-motion-toggle');
+    var collagePaused = false;
+    function syncCollage() {
+      var allowed = collageDesktop.matches && !collageReduced.matches &&
+        !(collageConnection && collageConnection.saveData);
+      if (motionToggle) motionToggle.hidden = !allowed;
+      stage.querySelectorAll('[data-preview]').forEach(function (host) {
+        var v = host.querySelector('video');
+        if (!allowed) {
+          if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }
+          return;
+        }
+        if (!v && !document.hidden && !collagePaused) {
+          v = document.createElement('video');
+          v.className = 'stage-preview';
+          v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
+          v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+          v.setAttribute('aria-hidden', 'true');
+          v.preload = 'auto';
+          v.addEventListener('playing', function () { this.classList.add('on'); });
+          v.addEventListener('error', function () { this.classList.remove('on'); });
+          v.src = host.getAttribute('data-preview');
+          host.appendChild(v);
+        }
+        if (!v) return;
+        if (document.hidden || collagePaused) v.pause();
+        else {
+          var played = v.play();
+          if (played && played.catch) played.catch(function () { v.classList.remove('on'); });
+        }
       });
     }
-
-    /* A wall of the author's own films plays a six-second muted clip of its
-       lead film (data-preview, from the build) once the reader stays on the
-       row. Not on touch, not for reduced motion or Save-Data. Leaving the row
-       stops the download, not only the picture: the source is dropped and
-       the element reloaded. */
-    var canPreview = !matchMedia('(prefers-reduced-motion: reduce)').matches &&
-      matchMedia('(hover: hover)').matches &&
-      !(navigator.connection && navigator.connection.saveData);
-    var previewTimer = null;
-    function stopPreviews() {
-      clearTimeout(previewTimer);
-      stage.querySelectorAll('video.stage-preview').forEach(function (v) {
-        v.classList.remove('on');
-        setTimeout(function () {
-          v.pause(); v.removeAttribute('src'); v.load(); v.remove();
-        }, 400);
-      });
-    }
-    function startPreview(slide) {
-      var host = slide.querySelector('[data-preview]');
-      if (!canPreview || !host) return;
-      previewTimer = setTimeout(function () {
-        var v = document.createElement('video');
-        v.className = 'stage-preview';
-        v.muted = true; v.loop = true; v.playsInline = true;
-        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-        v.setAttribute('aria-hidden', 'true');
-        v.preload = 'auto';
-        v.addEventListener('playing', function () { v.classList.add('on'); }, { once: true });
-        v.src = host.getAttribute('data-preview');
-        host.appendChild(v);
-        var played = v.play();
-        if (played && played.catch) played.catch(function () {});
-      }, 450);
-    }
-
-    var list = document.querySelector('.index');
-    if (list) list.addEventListener('pointerleave', stopPreviews);
-    document.addEventListener('visibilitychange', function () { if (document.hidden) stopPreviews(); });
-
-    document.querySelectorAll('.row').forEach(function (row, i) {
-      // pointerenter rather than mouseenter so a pen behaves like a mouse,
-      // while a touch tap goes straight to the link instead of previewing.
-      row.addEventListener('pointerenter', function (e) {
-        if (e.pointerType === 'touch') return;
-        // Back on the row whose wall is already up: its clip starts again.
-        if (i === current && stage.classList.contains('live') && !stage.querySelector('video.stage-preview')) startPreview(slides[i]);
-        show(i);
-      });
-      row.addEventListener('focus', function () { show(i); });
+    if (motionToggle) motionToggle.addEventListener('click', function () {
+      collagePaused = !collagePaused;
+      motionToggle.setAttribute('aria-pressed', String(collagePaused));
+      motionToggle.textContent = motionToggle.getAttribute(collagePaused ? 'data-resume' : 'data-pause');
+      syncCollage();
     });
+    collageDesktop.addEventListener('change', syncCollage);
+    collageReduced.addEventListener('change', syncCollage);
+    if (collageConnection && collageConnection.addEventListener) collageConnection.addEventListener('change', syncCollage);
+    document.addEventListener('visibilitychange', syncCollage);
+    window.addEventListener('pagehide', function () {
+      stage.querySelectorAll('video').forEach(function (v) { v.pause(); });
+    });
+    window.addEventListener('pageshow', syncCollage);
+    syncCollage();
 
-    show(0);
+    // One floating image belongs to the list, never replaces the right wall.
+    var hoverPreview = document.getElementById('project-hover-preview');
+    var hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
+    if (hoverPreview) {
+      var hoverImage = hoverPreview.querySelector('img');
+      var hoveredRow = null;
+      function hideProjectPreview() {
+        hoverPreview.hidden = true;
+        hoveredRow = null;
+      }
+      function moveProjectPreview(x, y) {
+        var w = hoverPreview.offsetWidth;
+        var h = hoverPreview.offsetHeight;
+        var left = x + 24;
+        if (left + w > window.innerWidth - 16) left = x - w - 24;
+        hoverPreview.style.left = Math.max(16, left) + 'px';
+        hoverPreview.style.top = Math.max(16, Math.min(y - h / 2, window.innerHeight - h - 16)) + 'px';
+      }
+      function showProjectPreview(row, x, y) {
+        if (!collageDesktop.matches || !hoverPointer.matches) return;
+        hoveredRow = row;
+        var src = row.getAttribute('data-hover-image');
+        // Use an existing small derivative when the row supplies a srcset.
+        var cover = row.querySelector('.row-preview img');
+        hoverImage.src = src;
+        hoverImage.srcset = cover ? cover.getAttribute('srcset') || '' : '';
+        hoverImage.sizes = '360px';
+        hoverPreview.hidden = false;
+        moveProjectPreview(x, y);
+      }
+      document.querySelectorAll('.index .row').forEach(function (row) {
+        row.addEventListener('pointerenter', function (e) {
+          if (e.pointerType !== 'touch') showProjectPreview(row, e.clientX, e.clientY);
+        });
+        row.addEventListener('pointermove', function (e) {
+          if (hoveredRow === row) moveProjectPreview(e.clientX, e.clientY);
+        });
+        row.addEventListener('pointerleave', hideProjectPreview);
+        row.addEventListener('focus', function () {
+          var r = row.getBoundingClientRect();
+          showProjectPreview(row, r.right, r.top + r.height / 2);
+        });
+        row.addEventListener('blur', hideProjectPreview);
+        row.addEventListener('click', hideProjectPreview);
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideProjectPreview(); });
+      document.addEventListener('scroll', hideProjectPreview, true);
+      window.addEventListener('blur', hideProjectPreview);
+      window.addEventListener('resize', hideProjectPreview);
+      collageDesktop.addEventListener('change', hideProjectPreview);
+      hoverPointer.addEventListener('change', hideProjectPreview);
+    }
   }
 
   /* ---------- Editorial photo galleries ----------

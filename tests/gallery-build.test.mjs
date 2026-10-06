@@ -223,21 +223,21 @@ test('malformed optional hero hints cannot abort a live build', () => {
   });
 });
 
-test('a stale stage hint is replaced so a three-frame home preview stays complete', () => {
+test('a stale stage hint is replaced so the persistent collage keeps two valid project photos', () => {
   const project = photoProjects.find(p => p.featured && p.media.length >= 3);
   const valid = project.media.filter(m => m.type === 'image').slice(0, 2).map(m => m.src);
   withHints({ [project.slug]: { stage: [valid[0], '/media/photo/no-longer-present.webp', valid[1]] } }, () => {
     for (const prefix of ['', 'ua/']) {
       const html = read(prefix + 'index.html');
-      const mosaic = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].find(m => {
+      const mosaic = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m => {
         const a = attrs(m[1]);
-        return hasClass(a, 'mosaic') && a.href === `/${prefix}${pagePath(project)}`;
+        return hasClass(a, 'collage-tile') && a.href === `/${prefix}${pagePath(project)}`;
       });
-      assert.ok(mosaic, 'photographic homepage preview exists');
-      const sources = tags(mosaic[2], 'img').map(a => a.src);
-      assert.equal(sources.length, 3, 'invalid hint must not shrink the three-frame preview');
-      assert.equal(new Set(sources).size, 3, 'fallback uses distinct photographs');
-      assert.deepEqual(sources.slice(0, 2), valid, 'valid authored selections retain their order');
+      assert.equal(mosaic.length, 2, 'project retains two simultaneous photographic tiles');
+      const sources = mosaic.flatMap(m => tags(m[2], 'img').map(a => a.src));
+      assert.equal(sources.length, 2, 'invalid hint must not shrink the collage selection');
+      assert.equal(new Set(sources).size, 2, 'fallback uses distinct photographs');
+      assert.deepEqual([...sources].sort(), [...valid].sort(), 'valid authored selections are preserved across layout columns');
       assert.ok(sources.every(src => project.media.some(m => m.src === src)), 'only this project supplies the fallback');
     }
   });
