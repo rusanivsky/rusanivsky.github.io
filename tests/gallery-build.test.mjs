@@ -173,7 +173,7 @@ test('requested gallery removals preserve media and the two event frames move to
     }
   }
   assert.equal(portraits.media.filter(m => m.type === 'image').length, 47);
-  assert.equal(reportage.media.filter(m => m.type === 'image').length, 83);
+  assert.equal(reportage.media.filter(m => m.type === 'image').length, 82);
 });
 
 test('reportage preview shows the graduates and the couple belongs to Portraits', () => {

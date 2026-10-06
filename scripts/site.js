@@ -281,6 +281,7 @@
   var stage = document.getElementById('stage');
   if (stage) {
     var collageDesktop = matchMedia('(min-width: 61rem)');
+    var collageExpanded = matchMedia('(min-width: 80rem)');
     var collageReduced = matchMedia('(prefers-reduced-motion: reduce)');
     var collageConnection = navigator.connection;
     var motionToggle = document.getElementById('collage-motion-toggle');
@@ -291,7 +292,7 @@
       if (motionToggle) motionToggle.hidden = !allowed;
       stage.querySelectorAll('[data-preview]').forEach(function (host) {
         var v = host.querySelector('video');
-        if (!allowed) {
+        if (!allowed || (host.getAttribute('data-preview-min-width') === '80rem' && !collageExpanded.matches)) {
           if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }
           return;
         }
@@ -322,6 +323,7 @@
       syncCollage();
     });
     collageDesktop.addEventListener('change', syncCollage);
+    collageExpanded.addEventListener('change', syncCollage);
     collageReduced.addEventListener('change', syncCollage);
     if (collageConnection && collageConnection.addEventListener) collageConnection.addEventListener('change', syncCollage);
     document.addEventListener('visibilitychange', syncCollage);
