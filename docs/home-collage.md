@@ -1,40 +1,44 @@
-# Desktop home collage
+# Desktop home collage — responsive revision
 
-Scope: replace the hover-switched right stage on both home languages with one
-persistent collage. Keep the existing desktop breakpoint (61rem), fixed panel,
-left list, navigation and mobile previews. Use existing featured-project media;
-no new background, typography, labels, cropping or source-media changes.
+Scope: keep one fixed art collage on EN/UA home, replacing the former
+hover-switched stage. Current revision removes the floating hover image,
+replaces YouTube artwork with real photographs, adds a third landscape video with full-length loops,
+and adapts the composition to the available viewport. Gray titles still become
+active on hover/focus. Mobile row previews are unchanged.
 
 Acceptance:
-- C1: one composition, at least one linked tile per featured project; hover/focus
-  on the list never replaces or rearranges it. Images retain native proportions.
-- C2: existing lightweight local video previews play together, muted, inline,
-  looping, automatically on desktop. Posters remain on autoplay failure.
-- C3: no preview video requests on mobile, reduced-motion or Save-Data. Hidden
-  documents pause; returning resumes unless the reader paused playback.
-- C4: a localized keyboard-accessible pause/resume button controls animation.
-- C5: EN/UA parity, unchanged mobile row previews and working project links.
-- C6: desktop list titles are gray until hover/keyboard focus. A separate single
-  project cover appears near the pointer (reference: ASOT Episodes), never
-  replacing the collage or intercepting clicks. Hide on leave, scroll, Escape
-  and blur. Mobile gets no floating preview.
+- C1: one shared media canvas, no slideshow or floating hover image. Images keep
+  their original proportions. Links go to the project that owns the media.
+- C2: 61–79.99rem: 2 columns/8 frames; 80–149.99rem: 3 columns/14 frames;
+  150rem and above: 4 columns/18 frames. Below 61rem the stage stays hidden.
+- C3: 15 genuine photographs and 3 local video posters overall; no YouTube
+  thumbnail in the collage. Hidden extra photos use a blank picture source.
+- C4: all three muted inline full-length looping videos appear in every desktop layout;
+  video positions are separated by photos (upper, middle, lower composition).
+- C5: no video loads on mobile, reduced-motion, or Save-Data; pause/resume control,
+  hidden-tab pause, poster fallback on playback rejection/error remain.
+- C6: hide the poster pixels when video is playing so fractional-size rounding
+  cannot expose a thin strip of the poster at the edge. The fallback node stays.
+- C7: EN/UA parity, all project-list links and mobile previews remain intact.
 
-Implementation: static build produces the collage from featured projects and
-stage picks. Three balanced columns share one aspect-ratio canvas fitted inside
-the panel, preserving each frame. Runtime owns only video lifecycle. Existing
-short previews total about 1.1 MB; never request full films. No API/DB contract,
-new dependencies or service endpoints (N/A).
+Design: unequal columns with staggered starts; no cropping, new background,
+font, decorative frame, numbering or pill controls. Static build emits three
+geometries on the same nodes; CSS selects one. No API/DB/dependency changes.
 
-Verification: independent acceptance tests and review, existing CI suite,
-deterministic production build, desktop/mobile browser and live deployment.
+Full-length loops: derived from the existing owned Cloudflare project sources;
+no scenes trimmed. H.264 at 24fps, no audio/data streams, faststart. Original
+films and original six-second preview files remain unchanged. Collage uses
+new `-loop.mp4` files only; no full-resolution source is requested by the page.
 
-Review and verification (2026-10-06):
-- Independent contract and implementation review: no blocking findings.
-- Independent RED → GREEN: 14 collage tests; gallery-build 10 and Street 7 pass.
-- Browser: 1280×720 and 1600×1000 desktop; UA links and loaded images;
-  both videos playing muted/looping; pause control; floating hover image.
-- 390×844 mobile: original row strips, no horizontal page overflow, stage hidden,
-  zero mounted preview videos after resizing.
-- Local full suite encounters an unrelated nested `.claude/worktrees` scan;
-  production CI runs from a clean checkout. System Python lacks fontTools;
-  CI installs its pinned font dependencies for those unchanged font checks.
+| Video | Source duration | Loop duration | Output | Bytes |
+| --- | ---: | ---: | --- | ---: |
+| DAS graduation episode 3 | 160.958s | 160.916667s | 640×360 | 4888316 |
+| Dyvoshyv | 32.062s | 32.041667s | 360×640 | 1236989 |
+| SSA Start 2025 | 97.193s | 97.166667s | 640×360 | 3240613 |
+
+Durations and video-only streams verified by ffprobe; small duration differences
+come from source audio/container lengths and 24fps frame quantization.
+
+Verification: independent RED/GREEN tests and final review; responsive browser
+checks at tablet-like desktop, ordinary desktop and 3840×2160, mobile unchanged;
+production CI, deployment and live browser verification.

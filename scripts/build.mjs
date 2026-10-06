@@ -807,40 +807,67 @@ const STANDFIRST = {
   ua: 'Кирило Русанівський працює в Києві у трьох практиках — фотографія, відео і графічний дизайн — і веде власну серію вуличних світлин. Нижче — обрані проєкти.',
 };
 
-/* One persistent editorial canvas. Unequal columns and staggered starts
-   give the wall a rhythm; every tile keeps the source's native proportions. */
+/* Three responsive art-wall compositions share the same media nodes.
+   Video positions are authored: upper left, middle, and lower right/left,
+   with photographs between them in every layout. No YouTube artwork. */
 function homeCollage() {
-  const columns = [
-    { x: 0, w: 358, y: 36, tiles: [] },
-    { x: 378, w: 244, y: 0, tiles: [] },
-    { x: 642, w: 358, y: 72, tiles: [] },
-  ];
-  const items = featured.flatMap((p) => stagePick(p)
-    .slice(0, p.disciplines[0] === 'photography' ? 2 : 1)
-    .map((item) => ({ ...item, p })));
-  // Place the tall reel in the slender middle column, then balance the rest.
-  items.sort((a, b) => (b.p.slug === 'reels') - (a.p.slug === 'reels'));
-  items.forEach((item, index) => {
-    const d = dim(item.src);
-    const column = index === 0 && item.p.slug === 'reels' ? columns[1] :
-      columns.reduce((a, b) => a.y < b.y ? a : b);
-    const h = column.w * (d?.h || 1000) / (d?.w || 1600);
-    column.tiles.push({ ...item, x: column.x, y: column.y, w: column.w, h });
-    column.y += h + 20;
+  const photoProjects = featured.filter(p => p.disciplines[0] === 'photography');
+  const selections = photoProjects.map(p => {
+    const picked = stagePick(p);
+    return picked.concat(stills(p).filter(x => !picked.some(y => y.src === x.src)))
+      .map(item => ({ ...item, p }));
   });
-  const height = Math.max(...columns.map(c => c.y)) - 20;
-  const tiles = columns.flatMap(c => c.tiles).map((item, i) => {
-    const film = item.p.media.find(m => m.platform === 'cf' && m.poster === item.src);
-    const clip = film && `/media/video/previews/${film.videoId}.mp4`;
-    const preview = clip && existsSync(new URL('..' + clip, import.meta.url)) ? ` data-preview="${clip}"` : '';
-    const geometry = `left:${item.x / 10}%;top:${item.y / height * 100}%;width:${item.w / 10}%;height:${item.h / height * 100}%`;
-    return `<a class="collage-tile" href="${href(workPath(item.p))}" tabindex="-1" style="${geometry}"${preview}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 61rem) 24vw, 1px', skip: PHONE })}</a>`;
+  const photos = Array.from({ length: 4 }, (_, i) => selections.map(a => a[i]).filter(Boolean)).flat().slice(0, 13);
+  const horizontal = selections.flat().filter(item => {
+    const d = dim(item.src);
+    return d.w / d.h >= 1.3 && !photos.some(p => p.src === item.src);
+  }).slice(0, 2);
+  const preview = (slug, id) => {
+    const p = featured.find(p => p.slug === slug);
+    const film = p.media.find(m => m.videoId === id && m.platform === 'cf');
+    const clip = `/media/video/previews/${id}-loop.mp4`;
+    if (!film || !existsSync(new URL('..' + clip, import.meta.url))) throw new Error(`Missing collage preview: ${id}`);
+    return { p, src: film.poster, alt: film.title, clip };
+  };
+  const items = [
+    preview('kmbs-defence-programmes', 'das-graduation-episode-3'),
+    photos[0], photos[1], preview('reels', 'dyvoshyv'),
+    photos[2], photos[3], photos[4], preview('kmbs-defence-programmes', 'ssa-start-2025'),
+    ...photos.slice(5, 9), ...horizontal, ...photos.slice(9),
+  ];
+  const plans = [
+    { n: 2, widths: [520, 460], starts: [0, 48], columns: [[0, 2, 4, 7], [1, 3, 5, 6]] },
+    { n: 3, widths: [358, 244, 358], starts: [36, 0, 72], columns: [[0, 2, 4, 10, 12], [1, 3, 9, 11, 13], [5, 6, 8, 7]] },
+    { n: 4, widths: [270, 230, 210, 230], starts: [0, 60, 24, 90], columns: [[0, 2, 8, 14, 13], [1, 4, 9, 17, 12], [5, 3, 10, 11], [6, 15, 16, 7]] },
+  ];
+  const vars = items.map(() => []);
+  const ratios = plans.map(plan => {
+    let x = 0;
+    const placed = [];
+    plan.columns.forEach((column, c) => {
+      let y = plan.starts[c];
+      const w = plan.widths[c];
+      column.forEach(i => {
+        const d = dim(items[i].src);
+        const h = w * d.h / d.w;
+        placed.push({ i, x, y, w, h });
+        y += h + 20;
+      });
+      x += w + 20;
+    });
+    const height = Math.max(...placed.map(t => t.y + t.h));
+    placed.forEach(t => vars[t.i].push(`--x${plan.n}:${t.x / 10}%;--y${plan.n}:${t.y / height * 100}%;--w${plan.n}:${t.w / 10}%;--h${plan.n}:${t.h / height * 100}%`));
+    return `--ratio${plan.n}:${1000 / height}`;
+  });
+  const tiles = items.map((item, i) => {
+    const skip = i >= 14 ? '(max-width: 149.99rem)' : i >= 8 ? '(max-width: 79.99rem)' : PHONE;
+    return `<a class="collage-tile" href="${href(workPath(item.p))}" tabindex="-1" style="${vars[i].join(';')}"${item.clip ? ` data-preview="${item.clip}"` : ''}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 150rem) 17vw, (min-width: 80rem) 24vw, (min-width: 61rem) 28vw, 1px', skip })}</a>`;
   }).join('\n');
-  return `<div class="home-collage" style="--collage-ratio:${1000 / height}">${tiles}</div>`;
+  return `<div class="home-collage" style="${ratios.join(';')}">${tiles}</div>`;
 }
 
 function homePage() {
-  const rows = featured.map((p, i) => `<a class="row" href="${href(workPath(p))}" data-hover-image="${attr(p.cover)}">
+  const rows = featured.map((p, i) => `<a class="row" href="${href(workPath(p))}">
   <span class="row-head">
     <span class="row-no">${String(i + 1).padStart(2, '0')}</span>
     ${t(p.title, 'row-title')}
@@ -865,7 +892,6 @@ ${rows}
 ${homeCollage()}
     </div>
   </div>
-  <div id="project-hover-preview" aria-hidden="true" hidden><img alt="" decoding="async"></div>
 </main>`;
 
   return page({

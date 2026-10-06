@@ -331,58 +331,6 @@
     window.addEventListener('pageshow', syncCollage);
     syncCollage();
 
-    // One floating image belongs to the list, never replaces the right wall.
-    var hoverPreview = document.getElementById('project-hover-preview');
-    var hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
-    if (hoverPreview) {
-      var hoverImage = hoverPreview.querySelector('img');
-      var hoveredRow = null;
-      function hideProjectPreview() {
-        hoverPreview.hidden = true;
-        hoveredRow = null;
-      }
-      function moveProjectPreview(x, y) {
-        var w = hoverPreview.offsetWidth;
-        var h = hoverPreview.offsetHeight;
-        var left = x + 24;
-        if (left + w > window.innerWidth - 16) left = x - w - 24;
-        hoverPreview.style.left = Math.max(16, left) + 'px';
-        hoverPreview.style.top = Math.max(16, Math.min(y - h / 2, window.innerHeight - h - 16)) + 'px';
-      }
-      function showProjectPreview(row, x, y) {
-        if (!collageDesktop.matches || !hoverPointer.matches) return;
-        hoveredRow = row;
-        var src = row.getAttribute('data-hover-image');
-        // Use an existing small derivative when the row supplies a srcset.
-        var cover = row.querySelector('.row-preview img');
-        hoverImage.src = src;
-        hoverImage.srcset = cover ? cover.getAttribute('srcset') || '' : '';
-        hoverImage.sizes = '360px';
-        hoverPreview.hidden = false;
-        moveProjectPreview(x, y);
-      }
-      document.querySelectorAll('.index .row').forEach(function (row) {
-        row.addEventListener('pointerenter', function (e) {
-          if (e.pointerType !== 'touch') showProjectPreview(row, e.clientX, e.clientY);
-        });
-        row.addEventListener('pointermove', function (e) {
-          if (hoveredRow === row) moveProjectPreview(e.clientX, e.clientY);
-        });
-        row.addEventListener('pointerleave', hideProjectPreview);
-        row.addEventListener('focus', function () {
-          var r = row.getBoundingClientRect();
-          showProjectPreview(row, r.right, r.top + r.height / 2);
-        });
-        row.addEventListener('blur', hideProjectPreview);
-        row.addEventListener('click', hideProjectPreview);
-      });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideProjectPreview(); });
-      document.addEventListener('scroll', hideProjectPreview, true);
-      window.addEventListener('blur', hideProjectPreview);
-      window.addEventListener('resize', hideProjectPreview);
-      collageDesktop.addEventListener('change', hideProjectPreview);
-      hoverPointer.addEventListener('change', hideProjectPreview);
-    }
   }
 
   /* ---------- Editorial photo galleries ----------

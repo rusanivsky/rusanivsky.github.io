@@ -1953,19 +1953,28 @@ html.fx .lf.lf-in .w { opacity: 1; }
 @media (max-width: 45rem) { .design-masonry { grid-template-columns: minmax(0, 1fr); } }
 .design-masonry .work:hover .work-cover img { transform: none; }
 
-/* Persistent art wall: staggered unequal columns, full uncropped frames. */
+/* Persistent art wall. Responsive geometry keeps original image proportions. */
 @media (min-width: 61rem) {
   .stage-frame { container-type: size; display: grid; place-items: center; margin-inline: clamp(1.25rem, 2.2vw, 3rem); }
   .home-collage {
+    --collage-columns: 2;
+    --collage-ratio: var(--ratio2);
     position: relative;
     width: min(100cqw, 100cqh * var(--collage-ratio));
     aspect-ratio: var(--collage-ratio);
   }
-  .collage-tile { position: absolute; display: block; overflow: hidden; }
+  .collage-tile {
+    position: absolute; display: block; overflow: hidden;
+    left: var(--x2); top: var(--y2); width: var(--w2); height: var(--h2);
+  }
+  .collage-tile:nth-child(n + 9) { display: none; }
   .collage-tile picture { display: contents; }
   .collage-tile img, .collage-tile video { display: block; width: 100%; height: 100%; object-fit: contain; }
   .collage-tile video { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
   .collage-tile video.on { opacity: 1; }
+  /* Fractional CSS sizes can leave a subpixel poster edge under the video.
+     Retain the fallback node, but hide its pixels only during playback. */
+  .collage-tile:has(video.on) img { visibility: hidden; }
   .collage-motion-toggle {
     position: absolute; right: clamp(1.25rem, 2.2vw, 3rem); bottom: .7rem; z-index: 3;
     padding: .2rem 0; border: 0; background: transparent; color: var(--muted);
@@ -1973,9 +1982,13 @@ html.fx .lf.lf-in .w { opacity: 1; }
   }
   .collage-motion-toggle:hover, .collage-motion-toggle:focus-visible { color: var(--ink); }
 }
-#project-hover-preview {
-  position: fixed; z-index: 80; pointer-events: none;
-  width: clamp(220px, 24vw, 360px); height: clamp(180px, 27vh, 280px);
+@media (min-width: 80rem) {
+  .home-collage { --collage-columns: 3; --collage-ratio: var(--ratio3); }
+  .collage-tile { left: var(--x3); top: var(--y3); width: var(--w3); height: var(--h3); }
+  .collage-tile:nth-child(-n + 14) { display: block; }
 }
-#project-hover-preview img { width: 100%; height: 100%; object-fit: contain; }
-@media (max-width: 60.99rem) { #project-hover-preview { display: none; } }
+@media (min-width: 150rem) {
+  .home-collage { --collage-columns: 4; --collage-ratio: var(--ratio4); }
+  .collage-tile { left: var(--x4); top: var(--y4); width: var(--w4); height: var(--h4); }
+  .collage-tile:nth-child(n) { display: block; }
+}
