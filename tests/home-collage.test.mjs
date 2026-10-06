@@ -11,7 +11,14 @@ for (const prefix of ['', 'ua/']) test(`AC1: ${prefix || 'en/'} home is one pers
   const links = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(m => ({ a: attrs(m[1]), body: m[2] }));
   const tiles = links.filter(t => hasClass(t.a, 'collage-tile'));
   const projects = new Set(links.filter(t => hasClass(t.a, 'row')).map(t => t.a.href));
-  assert.ok(tiles.length >= 8, 'at least eight simultaneous tiles');
+  assert.equal(tiles.length, 18, 'adaptive collage has eighteen total tiles');
+  assert.equal(tiles.filter(t => t.body.includes('src="/media/photo/')).length, 15, 'fifteen genuine photographs');
+  assert.ok(tiles.every(t => !t.body.includes('/video/thumbs/yt')), 'no YouTube thumbnails in collage');
+  for (const tile of tiles.slice(12, 14)) {
+    const image = attrs(tile.body.match(/<img\b([^>]*)>/)[1]);
+    assert.ok(image.src.startsWith('/media/photo/'), 'new lower frames are genuine photos');
+    assert.ok(Number(image.width) / Number(image.height) >= 1.3, 'new lower photos are horizontal');
+  }
   for (const { a, body } of tiles) {
     assert.ok(projects.has(a.href), `${a.href} belongs to the selected projects`);
     assert.equal(a.tabindex, '-1', 'decorative duplicate links are excluded from tab order');
@@ -23,10 +30,10 @@ for (const prefix of ['', 'ua/']) test(`AC1: ${prefix || 'en/'} home is one pers
     }
   }
   const previews = [...html.matchAll(/data-preview="([^"]+)"/g)].map(m => m[1]);
-  assert.ok(previews.length >= 2, 'multiple small videos present concurrently');
+  assert.equal(previews.length, 3, 'three compact preview films');
   for (const src of previews) {
-    assert.match(src, /^\/media\/video\/previews\/.+\.mp4$/);
-    assert.ok(statSync(new URL(`..${src}`, import.meta.url)).size < 3 * 1024 * 1024, 'preview remains below 3 MB');
+    assert.match(src, /^\/media\/video\/previews\/.+-loop\.mp4$/);
+    assert.ok(statSync(new URL(`..${src}`, import.meta.url)).size < 8 * 1024 * 1024, 'full-length compressed loop remains below 8 MiB');
   }
   assert.doesNotMatch(html, /<video[^>]*\bsrc=/, 'mobile receives no video requests from HTML');
   assert.match(html, /<button\b[^>]*id="collage-motion-toggle"/, 'keyboard accessible motion toggle');
@@ -52,22 +59,17 @@ class Element extends EventTarget {
   querySelectorAll(selector) { return this.children.filter(v => selector.includes('video') && v.className === 'stage-preview'); }
   querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
 }
-function setup({ desktop = true, reduced = false, saveData = false, floating = false, finePointer = true } = {}) {
+function setup({ desktop = true, reduced = false, saveData = false } = {}) {
   const stage = new Element(), button = new Element(), doc = new Element();
-  const overlay = new Element(), hoverImage = new Element(), row = new Element();
-  overlay.hidden = true; overlay.style = {}; overlay.offsetWidth = 360; overlay.offsetHeight = 240;
-  overlay.querySelector = () => hoverImage;
-  row.setAttribute('data-hover-image', '/media/photo/project.webp');
-  row.getBoundingClientRect = () => ({ right: 320, top: 100, height: 50 });
-  const hosts = [new Element(), new Element()];
+  const hosts = [new Element(), new Element(), new Element()];
   hosts.forEach((h, i) => { h.setAttribute('data-preview', `/media/video/previews/${i}.mp4`); h.dataset.preview = h.getAttribute('data-preview'); });
   const videos = () => hosts.flatMap(h => h.children);
   stage.querySelectorAll = s => s.includes('data-preview') ? hosts : s.includes('video') ? videos() : [];
   doc.hidden = false; doc.body = new Element();
   doc.documentElement = { lang: 'en' };
-  doc.getElementById = id => id === 'stage' ? stage : id === 'collage-motion-toggle' ? button : id === 'project-hover-preview' && floating ? overlay : null;
+  doc.getElementById = id => id === 'stage' ? stage : id === 'collage-motion-toggle' ? button : null;
   doc.querySelector = s => s.includes('collage-motion') ? button : null;
-  doc.querySelectorAll = s => floating && s.includes('.row') ? [row] : [];
+  doc.querySelectorAll = () => [];
   doc.createElement = tag => {
     assert.equal(tag, 'video');
     const v = new Element(); v.paused = true;
@@ -79,16 +81,15 @@ function setup({ desktop = true, reduced = false, saveData = false, floating = f
   };
   const desktopMQ = new Element(), reducedMQ = new Element(), connection = new Element();
   desktopMQ.matches = desktop; reducedMQ.matches = reduced; connection.saveData = saveData;
-  const hoverMQ = new Element(); hoverMQ.matches = finePointer;
-  const matchMedia = q => q.includes('61rem') ? desktopMQ : q.includes('reduced-motion') ? reducedMQ : hoverMQ;
+  const matchMedia = q => q.includes('61rem') ? desktopMQ : q.includes('reduced-motion') ? reducedMQ : { matches: true };
   const js = read('scripts/site.js');
   const code = js.slice(js.indexOf('/* ---------- Home: index + stage'), js.indexOf('/* ---------- Editorial photo galleries'));
   const win = new Element(); win.matchMedia = matchMedia; win.innerWidth = 1400; win.innerHeight = 900;
   vm.runInNewContext(code, { document: doc, window: win, navigator: { connection }, matchMedia, setTimeout: fn => { fn(); return 1; }, clearTimeout() {} });
-  return { videos, button, overlay, hoverImage, row, doc, win, hidden(value) { doc.hidden = value; doc.emit('visibilitychange'); }, desktop(value) { desktopMQ.matches = value; desktopMQ.emit('change'); } };
+  return { videos, button, hidden(value) { doc.hidden = value; doc.emit('visibilitychange'); }, desktop(value) { desktopMQ.matches = value; desktopMQ.emit('change'); } };
 }
-test('AC3: both previews autoplay immediately, silently, inline and looping on desktop', () => {
-  const p = setup(); assert.equal(p.videos().length, 2);
+test('AC3: all previews autoplay immediately, silently, inline and looping on desktop', () => {
+  const p = setup(); assert.equal(p.videos().length, 3);
   for (const v of p.videos()) {
     assert.equal(v.muted, true); assert.equal(v.loop, true); assert.equal(v.playsInline, true);
     assert.equal(v.paused, false);
@@ -100,7 +101,7 @@ for (const option of [{ desktop: false }, { reduced: true }, { saveData: true }]
 test('AC4: tab hiding pauses, explicit user pause survives visibility, desktop exit unloads', () => {
   const p = setup();
   p.hidden(true); assert.ok(p.videos().every(v => v.paused));
-  p.hidden(false); assert.equal(p.videos().length, 2); assert.ok(p.videos().every(v => !v.paused));
+  p.hidden(false); assert.equal(p.videos().length, 3); assert.ok(p.videos().every(v => !v.paused));
   p.button.emit('click'); assert.equal(p.button.getAttribute('aria-pressed'), 'true');
   p.hidden(true); p.hidden(false); assert.ok(p.videos().every(v => v.paused));
   p.button.emit('click'); assert.equal(p.button.getAttribute('aria-pressed'), 'false');
@@ -108,41 +109,54 @@ test('AC4: tab hiding pauses, explicit user pause survives visibility, desktop e
   const mounted = p.videos(); p.desktop(false);
   assert.equal(p.videos().length, 0);
   assert.ok(mounted.every(v => v.paused && !v.getAttribute('src')));
-  p.desktop(true); assert.equal(p.videos().length, 2);
+  p.desktop(true); assert.equal(p.videos().length, 3);
 });
 
-for (const prefix of ['', 'ua/']) test(`AC6: ${prefix || 'en/'} floating preview keeps real project links and decorative semantics`, () => {
-  const html = read(`${prefix}index.html`);
-  const rows = [...html.matchAll(/<a\b([^>]*)>/g)].map(m => attrs(m[1])).filter(a => hasClass(a, 'row'));
-  for (const row of rows) {
-    assert.ok(row.href.startsWith('/'), 'real navigation URL retained');
-    assert.match(row['data-hover-image'] || '', /^\/media\//, 'row identifies one project image');
-    assert.ok(statSync(new URL(`..${row['data-hover-image']}`, import.meta.url)).isFile());
+test('AC6: floating previews are removed; gray project text retains hover/focus affordances', () => {
+  for (const path of ['index.html', 'ua/index.html', 'scripts/site.js', 'styles/site.css']) {
+    assert.doesNotMatch(read(path), /project-hover-preview|data-hover-image/, path);
   }
-  const overlay = [...html.matchAll(/<[a-z]+\b([^>]*)>/g)].map(m => attrs(m[1])).filter(a => a.id === 'project-hover-preview');
-  assert.equal(overlay.length, 1, 'single shared floating preview');
-  assert.equal(overlay[0]['aria-hidden'], 'true');
-});
-
-test('AC6: floating preview follows the row, preserves collage media, and dismisses without interception', () => {
-  const p = setup({ floating: true }); const original = p.videos();
-  const enter = () => { const e = new Event('pointerenter'); Object.assign(e, { pointerType: 'mouse', clientX: 200, clientY: 300 }); p.row.dispatchEvent(e); };
-  enter(); assert.equal(p.overlay.hidden, false); assert.equal(p.hoverImage.src, '/media/photo/project.webp');
-  assert.equal(p.overlay.style.left, '224px'); assert.deepEqual(p.videos(), original);
-  for (const [target, event] of [[p.row, 'pointerleave'], [p.doc, 'scroll'], [p.win, 'blur']]) {
-    enter(); target.emit(event); assert.equal(p.overlay.hidden, true, event);
-  }
-  enter(); const escape = new Event('keydown'); escape.key = 'Escape'; p.doc.dispatchEvent(escape); assert.equal(p.overlay.hidden, true);
-  p.row.emit('focus'); assert.equal(p.overlay.hidden, false); p.row.emit('blur'); assert.equal(p.overlay.hidden, true);
-});
-for (const option of [{ desktop: false }, { finePointer: false }]) test(`AC6: no floating preview for ${JSON.stringify(option)}`, () => {
-  const p = setup({ floating: true, ...option }); p.row.emit('focus'); assert.equal(p.overlay.hidden, true);
-});
-
-test('AC6: floating image cannot intercept clicks and project text has hover/focus affordances', () => {
   const css = read('styles/site.css');
-  assert.match(css, /#project-hover-preview\s*\{[^}]*pointer-events:\s*none/);
   assert.match(css, /\.index \.row-title\s*\{[^}]*color:\s*var\(--muted\)/);
   assert.match(css, /\.index \.row:hover \.row-title[^}]*color:\s*var\(--ink\)/);
   assert.match(css, /\.index \.row:focus-visible \.row-title[^}]*color:\s*var\(--ink\)/);
+});
+for (const prefix of ['', 'ua/']) test(`AC7: ${prefix || 'en/'} adaptive geometry preserves photo shape without overlap`, () => {
+  const html = read(`${prefix}index.html`);
+  const canvas = attrs(html.match(/<div([^>]*class="home-collage"[^>]*)>/)[1]);
+  const properties = s => Object.fromEntries([...s.matchAll(/--([a-z]+[234]):([\d.]+)%?/g)].map(m => [m[1], Number(m[2])]));
+  const ratios = properties(canvas.style);
+  const tiles = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m => hasClass(attrs(m[1]), 'collage-tile'));
+  for (const [columns, count] of [[2, 8], [3, 14], [4, 18]]) {
+    const visible = tiles.map(m => ({ geometry: properties(attrs(m[1]).style), image: attrs(m[2].match(/<img\b([^>]*)>/)[1]), preview: attrs(m[1])['data-preview'] })).filter(t => `w${columns}` in t.geometry);
+    assert.equal(visible.length, count, `${columns} columns visible count`);
+    assert.ok(ratios[`ratio${columns}`] > 0, 'canvas ratio exists');
+    assert.equal(new Set(visible.filter(t => t.preview).map(t => t.preview)).size, 3, 'three unique video hosts visible in every mode');
+    const rects = visible.map(({ geometry: g, image }) => {
+      const r = { x: g[`x${columns}`], y: g[`y${columns}`], w: g[`w${columns}`], h: g[`h${columns}`] };
+      assert.ok(Object.values(r).every(Number.isFinite));
+      assert.ok(r.x >= 0 && r.y >= 0 && r.x + r.w <= 100.001 && r.y + r.h <= 100.001, 'tile within canvas');
+      const ratio = r.w / r.h * ratios[`ratio${columns}`];
+      assert.ok(Math.abs(ratio / (Number(image.width) / Number(image.height)) - 1) < .001, 'native aspect ratio');
+      return r;
+    });
+    assert.equal(new Set(rects.map(r => r.x)).size, columns);
+    for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) {
+      const a = rects[i], b = rects[j];
+      assert.ok(a.x + a.w <= b.x + .001 || b.x + b.w <= a.x + .001 || a.y + a.h <= b.y + .001 || b.y + b.h <= a.y + .001, 'tiles never overlap');
+    }
+  }
+});
+test('AC8: playing video hides poster pixels; inactive fallback remains in markup', () => {
+  const css = read('styles/site.css');
+  assert.match(css, /\.collage-tile:has\(video\.on\) img\s*\{\s*visibility:\s*hidden/);
+  for (const prefix of ['', 'ua/']) {
+    const html = read(`${prefix}index.html`);
+    const tiles = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m => hasClass(attrs(m[1]), 'collage-tile'));
+    tiles.forEach((m, i) => {
+      const sources = [...m[2].matchAll(/<source\b([^>]*)>/g)].map(x => attrs(x[1]));
+      const limit = i >= 14 ? '149.99rem' : i >= 8 ? '79.99rem' : '60.99rem';
+      assert.ok(sources.some(s => s.media.includes(limit) && s.srcset.startsWith('data:image/')), 'hidden tile serves a tiny inline fallback instead of downloading photo');
+    });
+  }
 });
