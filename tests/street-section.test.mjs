@@ -130,7 +130,7 @@ test('S3: /street/after-five/ is the series page with its twelve-frame collage',
   }
 });
 
-test('S4: home keeps the series as the eighth Selected row and in a stage mosaic', () => {
+test('S4: home keeps the series as the eighth Selected row and in the persistent collage', () => {
   for (const prefix of PREFIXES) {
     const html = read(`${prefix}index.html`);
     const target = `/${prefix}street/after-five/`;
@@ -141,7 +141,7 @@ test('S4: home keeps the series as the eighth Selected row and in a stage mosaic
     const title = eighth[2].match(/<span class="row-title">([\s\S]*?)<\/span>/);
     assert.ok(title, `${prefix}index.html: eighth row has a title`);
     assert.equal(text(title[1]), L.series[lang(prefix)], `${prefix}index.html: eighth row title`);
-    assert.ok(tags(html, 'a').some(a => hasClass(a, 'mosaic') && a.href === target), `${prefix}index.html: a stage mosaic links to the series`);
+    assert.ok(tags(html, 'a').some(a => hasClass(a, 'collage-tile') && a.href === target), `${prefix}index.html: a collage tile links to the series`);
   }
 });
 

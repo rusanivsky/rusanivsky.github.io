@@ -995,11 +995,13 @@ html.stage-glow-baked .stage::after { display: none; }
 .row-meta .dot { color: var(--line); margin: 0 0.4rem; }
 .nowrap { white-space: nowrap; }
 
+@media (min-width: 61rem) {
+  .index .row-title { color: var(--muted); transition: color var(--t) var(--ease); }
+  .index .row:focus-visible .row-title,
+  .index .row:focus-visible .row-no { color: var(--ink); }
+}
 @media (hover: hover) and (min-width: 61rem) {
-  .index:hover .row { opacity: 0.42; }
-  .index:hover .row:hover,
-  .index .row:focus-within { opacity: 1; }
-  .row:hover .row-no, .row:focus-within .row-no { color: var(--ink); }
+  .index .row:hover .row-title, .index .row:hover .row-no { color: var(--ink); }
 }
 
 /* On a phone every preview holds the same 16:9 band, so the list reads as a
@@ -1950,3 +1952,30 @@ html.fx .lf.lf-in .w { opacity: 1; }
 @media (min-width: 90rem) { .design-masonry { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 45rem) { .design-masonry { grid-template-columns: minmax(0, 1fr); } }
 .design-masonry .work:hover .work-cover img { transform: none; }
+
+/* Persistent art wall: staggered unequal columns, full uncropped frames. */
+@media (min-width: 61rem) {
+  .stage-frame { container-type: size; display: grid; place-items: center; margin-inline: clamp(1.25rem, 2.2vw, 3rem); }
+  .home-collage {
+    position: relative;
+    width: min(100cqw, 100cqh * var(--collage-ratio));
+    aspect-ratio: var(--collage-ratio);
+  }
+  .collage-tile { position: absolute; display: block; overflow: hidden; }
+  .collage-tile picture { display: contents; }
+  .collage-tile img, .collage-tile video { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .collage-tile video { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .collage-tile video.on { opacity: 1; }
+  .collage-motion-toggle {
+    position: absolute; right: clamp(1.25rem, 2.2vw, 3rem); bottom: .7rem; z-index: 3;
+    padding: .2rem 0; border: 0; background: transparent; color: var(--muted);
+    font: inherit; font-size: var(--t-label); cursor: pointer;
+  }
+  .collage-motion-toggle:hover, .collage-motion-toggle:focus-visible { color: var(--ink); }
+}
+#project-hover-preview {
+  position: fixed; z-index: 80; pointer-events: none;
+  width: clamp(220px, 24vw, 360px); height: clamp(180px, 27vh, 280px);
+}
+#project-hover-preview img { width: 100%; height: 100%; object-fit: contain; }
+@media (max-width: 60.99rem) { #project-hover-preview { display: none; } }

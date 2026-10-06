@@ -807,8 +807,40 @@ const STANDFIRST = {
   ua: 'Кирило Русанівський працює в Києві у трьох практиках — фотографія, відео і графічний дизайн — і веде власну серію вуличних світлин. Нижче — обрані проєкти.',
 };
 
+/* One persistent editorial canvas. Unequal columns and staggered starts
+   give the wall a rhythm; every tile keeps the source's native proportions. */
+function homeCollage() {
+  const columns = [
+    { x: 0, w: 358, y: 36, tiles: [] },
+    { x: 378, w: 244, y: 0, tiles: [] },
+    { x: 642, w: 358, y: 72, tiles: [] },
+  ];
+  const items = featured.flatMap((p) => stagePick(p)
+    .slice(0, p.disciplines[0] === 'photography' ? 2 : 1)
+    .map((item) => ({ ...item, p })));
+  // Place the tall reel in the slender middle column, then balance the rest.
+  items.sort((a, b) => (b.p.slug === 'reels') - (a.p.slug === 'reels'));
+  items.forEach((item, index) => {
+    const d = dim(item.src);
+    const column = index === 0 && item.p.slug === 'reels' ? columns[1] :
+      columns.reduce((a, b) => a.y < b.y ? a : b);
+    const h = column.w * (d?.h || 1000) / (d?.w || 1600);
+    column.tiles.push({ ...item, x: column.x, y: column.y, w: column.w, h });
+    column.y += h + 20;
+  });
+  const height = Math.max(...columns.map(c => c.y)) - 20;
+  const tiles = columns.flatMap(c => c.tiles).map((item, i) => {
+    const film = item.p.media.find(m => m.platform === 'cf' && m.poster === item.src);
+    const clip = film && `/media/video/previews/${film.videoId}.mp4`;
+    const preview = clip && existsSync(new URL('..' + clip, import.meta.url)) ? ` data-preview="${clip}"` : '';
+    const geometry = `left:${item.x / 10}%;top:${item.y / height * 100}%;width:${item.w / 10}%;height:${item.h / height * 100}%`;
+    return `<a class="collage-tile" href="${href(workPath(item.p))}" tabindex="-1" style="${geometry}"${preview}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 61rem) 24vw, 1px', skip: PHONE })}</a>`;
+  }).join('\n');
+  return `<div class="home-collage" style="--collage-ratio:${1000 / height}">${tiles}</div>`;
+}
+
 function homePage() {
-  const rows = featured.map((p, i) => `<a class="row" href="${href(workPath(p))}">
+  const rows = featured.map((p, i) => `<a class="row" href="${href(workPath(p))}" data-hover-image="${attr(p.cover)}">
   <span class="row-head">
     <span class="row-no">${String(i + 1).padStart(2, '0')}</span>
     ${t(p.title, 'row-title')}
@@ -816,9 +848,6 @@ function homePage() {
   <span class="row-meta">${metaBits(p, esc).join('<span class="dot">·</span>')}</span>
   ${rowPreview(p, i)}
 </a>`).join('\n');
-
-  const slides = featured.map((p, i) =>
-    `<div class="slide${i === 0 ? ' on' : ''}" aria-hidden="${i === 0 ? 'false' : 'true'}">${mosaic(p, i === 0)}</div>`).join('\n');
 
   const body = `
 <main class="home" id="main">
@@ -830,11 +859,13 @@ ${rows}
     </div>
     ${foot()}
   </div>
-  <div class="stage" id="stage" aria-hidden="true">
-    <div class="stage-frame">
-${slides}
+  <div class="stage" id="stage">
+    <button type="button" id="collage-motion-toggle" class="collage-motion-toggle" aria-pressed="false" data-pause="${LANG === 'ua' ? 'Зупинити відео' : 'Pause videos'}" data-resume="${LANG === 'ua' ? 'Відтворити відео' : 'Play videos'}" hidden>${LANG === 'ua' ? 'Зупинити відео' : 'Pause videos'}</button>
+    <div class="stage-frame" aria-hidden="true">
+${homeCollage()}
     </div>
   </div>
+  <div id="project-hover-preview" aria-hidden="true" hidden><img alt="" decoding="async"></div>
 </main>`;
 
   return page({
