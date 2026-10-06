@@ -836,7 +836,7 @@ function homeCollage() {
     ...photos.slice(5, 9), ...horizontal, ...photos.slice(9),
   ];
   const plans = [
-    { n: 2, widths: [520, 460], starts: [0, 48], columns: [[0, 2, 4, 7], [1, 3, 5, 6]] },
+    { n: 2, widths: [610, 370], starts: [0, 48], columns: [[0, 2, 4, 6], [1, 3, 5, 12]] },
     { n: 3, widths: [358, 244, 358], starts: [36, 0, 72], columns: [[0, 2, 4, 10, 12], [1, 3, 9, 11, 13], [5, 6, 8, 7]] },
     { n: 4, widths: [270, 230, 210, 230], starts: [0, 60, 24, 90], columns: [[0, 2, 8, 14, 13], [1, 4, 9, 17, 12], [5, 3, 10, 11], [6, 15, 16, 7]] },
   ];
@@ -860,8 +860,9 @@ function homeCollage() {
     return `--ratio${plan.n}:${1000 / height}`;
   });
   const tiles = items.map((item, i) => {
-    const skip = i >= 14 ? '(max-width: 149.99rem)' : i >= 8 ? '(max-width: 79.99rem)' : PHONE;
-    return `<a class="collage-tile" href="${href(workPath(item.p))}" tabindex="-1" style="${vars[i].join(';')}"${item.clip ? ` data-preview="${item.clip}"` : ''}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 150rem) 17vw, (min-width: 80rem) 24vw, (min-width: 61rem) 28vw, 1px', skip })}</a>`;
+    const expandedOnly = i === 7 || (i >= 8 && i !== 12);
+    const skip = i >= 14 ? '(max-width: 111.99rem)' : expandedOnly ? '(max-width: 79.99rem)' : PHONE;
+    return `<a class="collage-tile${i === 7 ? ' expanded-video' : i === 12 ? ' compact-photo' : ''}" href="${href(workPath(item.p))}" tabindex="-1" style="${vars[i].join(';')}"${item.clip ? ` data-preview="${item.clip}"${i === 7 ? ' data-preview-min-width="80rem"' : ''}` : ''}>${img(item.src, item.alt, { lazy: false, eager: i === 0, sizes: '(min-width: 112rem) 17vw, (min-width: 80rem) 24vw, (min-width: 61rem) 28vw, 1px', skip })}</a>`;
   }).join('\n');
   return `<div class="home-collage" style="${ratios.join(';')}">${tiles}</div>`;
 }

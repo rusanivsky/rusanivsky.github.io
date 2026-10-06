@@ -59,10 +59,12 @@ class Element extends EventTarget {
   querySelectorAll(selector) { return this.children.filter(v => selector.includes('video') && v.className === 'stage-preview'); }
   querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
 }
-function setup({ desktop = true, reduced = false, saveData = false } = {}) {
+function setup({ desktop = true, reduced = false, saveData = false, expanded = true } = {}) {
   const stage = new Element(), button = new Element(), doc = new Element();
   const hosts = [new Element(), new Element(), new Element()];
   hosts.forEach((h, i) => { h.setAttribute('data-preview', `/media/video/previews/${i}.mp4`); h.dataset.preview = h.getAttribute('data-preview'); });
+  hosts[2].setAttribute('data-preview-min-width', '80rem');
+  hosts[2].dataset.previewMinWidth = '80rem';
   const videos = () => hosts.flatMap(h => h.children);
   stage.querySelectorAll = s => s.includes('data-preview') ? hosts : s.includes('video') ? videos() : [];
   doc.hidden = false; doc.body = new Element();
@@ -79,14 +81,15 @@ function setup({ desktop = true, reduced = false, saveData = false } = {}) {
     v.load = () => {};
     return v;
   };
+  const expandedMQ = new Element(); expandedMQ.matches = expanded;
   const desktopMQ = new Element(), reducedMQ = new Element(), connection = new Element();
   desktopMQ.matches = desktop; reducedMQ.matches = reduced; connection.saveData = saveData;
-  const matchMedia = q => q.includes('61rem') ? desktopMQ : q.includes('reduced-motion') ? reducedMQ : { matches: true };
+  const matchMedia = q => q.includes('61rem') ? desktopMQ : q.includes('80rem') ? expandedMQ : q.includes('reduced-motion') ? reducedMQ : { matches: true };
   const js = read('scripts/site.js');
   const code = js.slice(js.indexOf('/* ---------- Home: index + stage'), js.indexOf('/* ---------- Editorial photo galleries'));
   const win = new Element(); win.matchMedia = matchMedia; win.innerWidth = 1400; win.innerHeight = 900;
   vm.runInNewContext(code, { document: doc, window: win, navigator: { connection }, matchMedia, setTimeout: fn => { fn(); return 1; }, clearTimeout() {} });
-  return { videos, button, hidden(value) { doc.hidden = value; doc.emit('visibilitychange'); }, desktop(value) { desktopMQ.matches = value; desktopMQ.emit('change'); } };
+  return { videos, button, expanded(value) { expandedMQ.matches = value; expandedMQ.emit('change'); }, hidden(value) { doc.hidden = value; doc.emit('visibilitychange'); }, desktop(value) { desktopMQ.matches = value; desktopMQ.emit('change'); } };
 }
 test('AC3: all previews autoplay immediately, silently, inline and looping on desktop', () => {
   const p = setup(); assert.equal(p.videos().length, 3);
@@ -131,7 +134,7 @@ for (const prefix of ['', 'ua/']) test(`AC7: ${prefix || 'en/'} adaptive geometr
     const visible = tiles.map(m => ({ geometry: properties(attrs(m[1]).style), image: attrs(m[2].match(/<img\b([^>]*)>/)[1]), preview: attrs(m[1])['data-preview'] })).filter(t => `w${columns}` in t.geometry);
     assert.equal(visible.length, count, `${columns} columns visible count`);
     assert.ok(ratios[`ratio${columns}`] > 0, 'canvas ratio exists');
-    assert.equal(new Set(visible.filter(t => t.preview).map(t => t.preview)).size, 3, 'three unique video hosts visible in every mode');
+    assert.equal(new Set(visible.filter(t => t.preview).map(t => t.preview)).size, columns === 2 ? 2 : 3, 'two compact videos or three expanded videos');
     const rects = visible.map(({ geometry: g, image }) => {
       const r = { x: g[`x${columns}`], y: g[`y${columns}`], w: g[`w${columns}`], h: g[`h${columns}`] };
       assert.ok(Object.values(r).every(Number.isFinite));
@@ -141,6 +144,11 @@ for (const prefix of ['', 'ua/']) test(`AC7: ${prefix || 'en/'} adaptive geometr
       return r;
     });
     assert.equal(new Set(rects.map(r => r.x)).size, columns);
+    if (columns === 2) {
+      assert.equal(rects[6].x, 0, 'bottom speaker photo moves to left column');
+      const bottom = rects.reduce((a, b) => a.y + a.h > b.y + b.h ? a : b);
+      assert.equal(bottom.x, 0, 'two-column canvas finishes on the left');
+    }
     for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) {
       const a = rects[i], b = rects[j];
       assert.ok(a.x + a.w <= b.x + .001 || b.x + b.w <= a.x + .001 || a.y + a.h <= b.y + .001 || b.y + b.h <= a.y + .001, 'tiles never overlap');
@@ -155,8 +163,17 @@ test('AC8: playing video hides poster pixels; inactive fallback remains in marku
     const tiles = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m => hasClass(attrs(m[1]), 'collage-tile'));
     tiles.forEach((m, i) => {
       const sources = [...m[2].matchAll(/<source\b([^>]*)>/g)].map(x => attrs(x[1]));
-      const limit = i >= 14 ? '149.99rem' : i >= 8 ? '79.99rem' : '60.99rem';
+      const limit = i >= 14 ? '111.99rem' : (i === 7 || (i >= 8 && i !== 12)) ? '79.99rem' : '60.99rem';
       assert.ok(sources.some(s => s.media.includes(limit) && s.srcset.startsWith('data:image/')), 'hidden tile serves a tiny inline fallback instead of downloading photo');
     });
   }
+});
+
+test('AC3: compact desktop starts only two videos and resize unloads the expanded video', () => {
+  const p = setup({ expanded: false });
+  assert.equal(p.videos().length, 2, 'no request for third video in compact desktop');
+  p.expanded(true); assert.equal(p.videos().length, 3);
+  const third = p.videos()[2];
+  p.expanded(false); assert.equal(p.videos().length, 2);
+  assert.ok(third.paused && !third.getAttribute('src'), 'hidden third video releases download');
 });

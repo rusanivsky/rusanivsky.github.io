@@ -129,7 +129,7 @@ test('a lone portrait is centered and fits a comfortable desktop viewing height'
 // This is the current published edit, not a spacing restriction on compose().
 // Authors may still explicitly request adjacent heroes in other compositions.
 const openingHeroes = {
-  reportage: '/media/photo/public-events/20260820-192258-A.webp',
+  reportage: '/media/photo/public-events/20241108-193544-A.webp',
   'culture-and-art': '/media/photo/art-events/20260520-213303-A.webp',
   portraits: '/media/photo/photo-sessions/20250929-202244-A.webp',
 };
