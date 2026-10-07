@@ -39,7 +39,7 @@
       {
         "id": "dg-word-and-music-form-heart",
         "type": "image",
-        "src": "/media/design/cases/word-and-music-form-heart.webp",
+        "src": "/media/design/cases/word-and-music-krila-20261007-form-heart.webp",
         "alt": "Form of “On the Wings of Love”: a heart with staves",
         "caption": {
           "en": "Form of “On the Wings of Love”: a heart with staves",
@@ -54,86 +54,6 @@
         "caption": {
           "en": "Form of “Vivre, Aimer, Rêver…”: an ellipse with staves",
           "ua": "Форма «Vivre, Aimer, Rêver…»: еліпс із нотним станом"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-a3",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-a3.webp",
-        "alt": "A3 poster",
-        "caption": {
-          "en": "A3 poster",
-          "ua": "Афіша A3"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-post",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-post.webp",
-        "alt": "Post 4:5, light",
-        "caption": {
-          "en": "Post 4:5, light",
-          "ua": "Пост 4:5, світла версія"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-story",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-story.webp",
-        "alt": "Story 9:16, night",
-        "caption": {
-          "en": "Story 9:16, night",
-          "ua": "Сторіс 9:16, нічна версія"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-eventmate",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-eventmate.webp",
-        "alt": "Banner 16:9 for the ticket service, night",
-        "caption": {
-          "en": "Banner 16:9 for the ticket service, night",
-          "ua": "Банер 16:9 для квиткового сервісу, нічна версія"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-carousel-1",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-carousel-1.webp",
-        "alt": "Carousel: cover",
-        "caption": {
-          "en": "Carousel: cover",
-          "ua": "Карусель: обкладинка"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-carousel-2",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-carousel-2.webp",
-        "alt": "Carousel: performers",
-        "caption": {
-          "en": "Carousel: performers",
-          "ua": "Карусель: виконавці"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-carousel-3",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-carousel-3.webp",
-        "alt": "Carousel: programme",
-        "caption": {
-          "en": "Carousel: programme",
-          "ua": "Карусель: програма"
-        }
-      },
-      {
-        "id": "dg-word-and-music-krila-carousel-4",
-        "type": "image",
-        "src": "/media/design/cases/word-and-music-krila-carousel-4.webp",
-        "alt": "Carousel: notes",
-        "caption": {
-          "en": "Carousel: notes",
-          "ua": "Карусель: анотація"
         }
       },
       {
@@ -165,6 +85,166 @@
           "en": "Story 9:16, night",
           "ua": "Сторіс 9:16, нічна версія"
         }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-post-light",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-post-light.webp",
+        "alt": "Post 4:5, light",
+        "caption": {
+          "en": "Post 4:5, light",
+          "ua": "Пост 4:5, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-post-night",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-post-night.webp",
+        "alt": "Post 4:5, night",
+        "caption": {
+          "en": "Post 4:5, night",
+          "ua": "Пост 4:5, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-light",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-light.webp",
+        "alt": "Story 9:16, light",
+        "caption": {
+          "en": "Story 9:16, light",
+          "ua": "Сторіс 9:16, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-night",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-night.webp",
+        "alt": "Story 9:16, night",
+        "caption": {
+          "en": "Story 9:16, night",
+          "ua": "Сторіс 9:16, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-eventmate-light",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-eventmate-light.webp",
+        "alt": "Banner 16:9 for the ticket service, light",
+        "caption": {
+          "en": "Banner 16:9 for the ticket service, light",
+          "ua": "Банер 16:9 для квиткового сервісу, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-eventmate-night",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-eventmate-night.webp",
+        "alt": "Banner 16:9 for the ticket service, night",
+        "caption": {
+          "en": "Banner 16:9 for the ticket service, night",
+          "ua": "Банер 16:9 для квиткового сервісу, нічна версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-carousel-cover",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-carousel-cover.webp",
+        "alt": "Carousel 4:5: cover",
+        "caption": {
+          "en": "Carousel 4:5: cover",
+          "ua": "Карусель 4:5: обкладинка"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-carousel-performers",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-carousel-performers.webp",
+        "alt": "Carousel 4:5: performers",
+        "caption": {
+          "en": "Carousel 4:5: performers",
+          "ua": "Карусель 4:5: виконавці"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-carousel-programme",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-carousel-programme.webp",
+        "alt": "Carousel 4:5: programme",
+        "caption": {
+          "en": "Carousel 4:5: programme",
+          "ua": "Карусель 4:5: програма"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-carousel-annotation",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-carousel-annotation.webp",
+        "alt": "Carousel 4:5: notes",
+        "caption": {
+          "en": "Carousel 4:5: notes",
+          "ua": "Карусель 4:5: анотація"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-carousel-cover",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-carousel-cover.webp",
+        "alt": "Story carousel 9:16: cover",
+        "caption": {
+          "en": "Story carousel 9:16: cover",
+          "ua": "Карусель для сторіс 9:16: обкладинка"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-carousel-performers",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-carousel-performers.webp",
+        "alt": "Story carousel 9:16: performers",
+        "caption": {
+          "en": "Story carousel 9:16: performers",
+          "ua": "Карусель для сторіс 9:16: виконавці"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-carousel-programme",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-carousel-programme.webp",
+        "alt": "Story carousel 9:16: programme",
+        "caption": {
+          "en": "Story carousel 9:16: programme",
+          "ua": "Карусель для сторіс 9:16: програма"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-story-carousel-annotation",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-story-carousel-annotation.webp",
+        "alt": "Story carousel 9:16: notes",
+        "caption": {
+          "en": "Story carousel 9:16: notes",
+          "ua": "Карусель для сторіс 9:16: анотація"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-a2-light",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-a2-light.webp",
+        "alt": "A2 poster, light",
+        "caption": {
+          "en": "A2 poster, light",
+          "ua": "Афіша A2, світла версія"
+        }
+      },
+      {
+        "id": "dg-word-and-music-krila-20261007-a2-night",
+        "type": "image",
+        "src": "/media/design/cases/word-and-music-krila-20261007-a2-night.webp",
+        "alt": "A2 poster, night",
+        "caption": {
+          "en": "A2 poster, night",
+          "ua": "Афіша A2, нічна версія"
+        }
       }
     ],
     "externalLinks": [
@@ -174,7 +254,7 @@
       }
     ],
     "featured": false,
-    "cover": "/media/design/cases/word-and-music-cover.webp",
+    "cover": "/media/design/cases/word-and-music-krila-20261007-cover.webp",
     "designOrder": 0,
     "story": [
       {
@@ -275,23 +355,23 @@
               "en": "On the Wings of Love · light",
               "ua": "На крилах кохання · світла"
             },
-            "source": "20261015_На_крилах_кохання/All-Artboards.pdf, page 8 (A3 trim)",
+            "source": "20261015_На_крилах_кохання/01_Social/01-POST-LIGHT-4x5.jpg",
             "colours": [
               {
                 "role": "ground-top",
-                "hex": "#f6e4b9"
+                "hex": "#f6e0ae"
               },
               {
                 "role": "ground-bottom",
-                "hex": "#edcd92"
+                "hex": "#eac982"
               },
               {
                 "role": "form",
-                "hex": "#d9425c"
+                "hex": "#96394b"
               },
               {
                 "role": "ink",
-                "hex": "#20151d"
+                "hex": "#2c2024"
               }
             ]
           },
@@ -300,23 +380,23 @@
               "en": "On the Wings of Love · night",
               "ua": "На крилах кохання · нічна"
             },
-            "source": "20261015_На_крилах_кохання/20-CAROUSEL-NIGHT-01-COVER.png",
+            "source": "20261015_На_крилах_кохання/01_Social/02-POST-NIGHT-4x5.jpg",
             "colours": [
               {
                 "role": "ground-top",
-                "hex": "#491529"
+                "hex": "#5a162d"
               },
               {
                 "role": "ground-bottom",
-                "hex": "#88293b"
+                "hex": "#972a41"
               },
               {
                 "role": "form",
-                "hex": "#e3b249"
+                "hex": "#f3cf5f"
               },
               {
                 "role": "ink",
-                "hex": "#fdf7e4"
+                "hex": "#f6eddc"
               }
             ]
           },
@@ -440,31 +520,54 @@
           "ua": "Один концерт — усі формати"
         },
         "body": {
-          "en": "On the Wings of Love, 15 October 2026. One master layout becomes an A3 poster, posts and stories, a banner for the ticket service and an eight-slide carousel with the performers, programme and notes.",
-          "ua": "«На крилах кохання», 15 жовтня 2026. Один головний макет стає афішею A3, постами й сторіс, банером для квиткового сервісу та каруселлю з восьми слайдів із виконавцями, програмою й анотацією."
+          "en": "On the Wings of Love, 15 October 2026. A2 posters, 4:5 posts, 9:16 stories and 16:9 ticket banners in light and night versions. A four-slide carousel presents the cover, performers, programme and notes, with a matching version for stories.",
+          "ua": "«На крилах кохання», 15 жовтня 2026. Афіші A2, пости 4:5, сторіс 9:16 і квиткові банери 16:9 у світлій та нічній версіях. Карусель із чотирьох слайдів представляє обкладинку, виконавців, програму й анотацію та має відповідну версію для сторіс."
         },
         "groups": [
           {
-            "layout": "formats",
+            "layout": "pair",
             "media": [
-              "dg-word-and-music-krila-a3",
-              "dg-word-and-music-krila-post",
-              "dg-word-and-music-krila-story"
+              "dg-word-and-music-krila-20261007-a2-light",
+              "dg-word-and-music-krila-20261007-a2-night"
             ]
           },
           {
-            "layout": "wide",
+            "layout": "pair",
             "media": [
-              "dg-word-and-music-krila-eventmate"
+              "dg-word-and-music-krila-20261007-post-light",
+              "dg-word-and-music-krila-20261007-post-night"
+            ]
+          },
+          {
+            "layout": "pair",
+            "media": [
+              "dg-word-and-music-krila-20261007-story-light",
+              "dg-word-and-music-krila-20261007-story-night"
+            ]
+          },
+          {
+            "layout": "pair",
+            "media": [
+              "dg-word-and-music-krila-20261007-eventmate-light",
+              "dg-word-and-music-krila-20261007-eventmate-night"
             ]
           },
           {
             "layout": "strip",
             "media": [
-              "dg-word-and-music-krila-carousel-1",
-              "dg-word-and-music-krila-carousel-2",
-              "dg-word-and-music-krila-carousel-3",
-              "dg-word-and-music-krila-carousel-4"
+              "dg-word-and-music-krila-20261007-carousel-cover",
+              "dg-word-and-music-krila-20261007-carousel-performers",
+              "dg-word-and-music-krila-20261007-carousel-programme",
+              "dg-word-and-music-krila-20261007-carousel-annotation"
+            ]
+          },
+          {
+            "layout": "strip",
+            "media": [
+              "dg-word-and-music-krila-20261007-story-carousel-cover",
+              "dg-word-and-music-krila-20261007-story-carousel-performers",
+              "dg-word-and-music-krila-20261007-story-carousel-programme",
+              "dg-word-and-music-krila-20261007-story-carousel-annotation"
             ]
           }
         ]
