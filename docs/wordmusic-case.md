@@ -107,6 +107,14 @@ labels, no pill buttons.
 
 ## Review log
 
+- 8 October 2026: the owner flagged unequal heart/ellipse panel heights.
+  The system chapter now uses equal square frames with centered, contained
+  artwork and matching caption positions. Other format groups retain their
+  native proportions. Browser checks found equal 558.65 px square panels
+  and matching caption tops on desktop; the UA mobile page at 375 px has
+  equal 335.56 px square panels and no horizontal overflow. Independent
+  visual review PASS; all 101 Node acceptance checks pass.
+
 - 7 October 2026: refresh from `20261015_На_крилах_кохання/03_Експорт`:
   14 JPEGs in `01_Social`, plus the LIGHT/NIGHT A2 JPEGs in `02_Afisha`.
   Keep the five-chapter story, marks, Retail subset and Vivre applications.

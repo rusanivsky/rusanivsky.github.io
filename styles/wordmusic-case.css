@@ -55,6 +55,9 @@
 .wm-formats.wm-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .wm-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .wm-group .design-frame img { max-height: 72svh; }
+/* Compare the two concert forms in equal panels, with captions on one line. */
+.wm-chapter[data-chapter="system"] .wm-pair-grid .design-frame { aspect-ratio: 1; align-items: center; }
+.wm-chapter[data-chapter="system"] .wm-pair-grid .design-frame img { width: 100%; height: 100%; max-height: none; object-fit: contain; }
 .wm-strip .design-frame { padding: clamp(.5rem, 1.2vw, 1rem); }
 
 @media (max-width: 60.99rem) {
