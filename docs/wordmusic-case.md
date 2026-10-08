@@ -107,6 +107,17 @@ labels, no pill buttons.
 
 ## Review log
 
+- 8 October 2026: owner rejected equal outer frames because the coloured
+  artwork rectangles still had different proportions. Both images now render
+  in the ellipse's native 40:21 landscape format with the same edge positions.
+  Heart framing at 58% vertical position trims empty ground above and below
+  while keeping the complete layered-heart motif and staves. Ellipse framing
+  retains its full native image. The former square-frame treatment is removed.
+  Independent review of desktop/mobile screenshots and original artwork PASS:
+  complete motifs and staves remain visible, without distortion. Actual coloured
+  images measure 553.60×290.63 px on desktop and 311.56×163.57 px at 375 px
+  mobile, with matching edges. All 101 Node acceptance checks pass.
+
 - 8 October 2026: the owner flagged unequal heart/ellipse panel heights.
   The system chapter now uses equal square frames with centered, contained
   artwork and matching caption positions. Other format groups retain their
