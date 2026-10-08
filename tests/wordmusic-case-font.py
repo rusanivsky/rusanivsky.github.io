@@ -180,7 +180,7 @@ class SubsetFontAcceptance(unittest.TestCase):
 
     def test_only_font_file_published(self):
         fonts = sorted(str(p.relative_to(ROOT)) for p in ROOT.rglob('*')
-                       if p.is_file() and '.git' not in p.parts and 'node_modules' not in p.parts
+                       if p.is_file() and not {'.git', '.claude', '.codex', 'node_modules'}.intersection(p.relative_to(ROOT).parts)
                        and p.suffix.lower() in {'.woff2', '.woff', '.otf', '.ttf', '.eot'}
                        and 'tembrava' in p.name.lower())
         self.assertEqual(fonts, [self.url.lstrip('/')], 'the subset is the only Tembrava font file in the repository')

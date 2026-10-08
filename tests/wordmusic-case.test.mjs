@@ -129,7 +129,7 @@ const FONT_URL = /^\/fonts\/tembrava-case-[0-9a-f]{8}\.woff2$/;
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
-    if (name === '.git' || name === 'node_modules') continue;
+    if (['.git', '.claude', '.codex', 'node_modules'].includes(name)) continue;
     const p = join(dir, name);
     const st = statSync(p);
     if (st.isDirectory()) walk(p, out); else out.push(p);
@@ -159,6 +159,25 @@ function marksData() {
 function imagesIn(node) { return all(node, e => e.tag === 'img'); }
 const ratio = img => Number(img.attrs.width) / Number(img.attrs.height);
 const near = (r, target, tol = 0.02) => Math.abs(r - target) / target <= tol;
+
+function webpSize(path) {
+  const buf = readFileSync(resolve(root, path));
+  assert.equal(buf.toString('ascii', 0, 4), 'RIFF', `${path}: WebP RIFF header`);
+  assert.equal(buf.toString('ascii', 8, 12), 'WEBP', `${path}: WebP signature`);
+  for (let off = 12; off + 8 <= buf.length;) {
+    const kind = buf.toString('ascii', off, off + 4);
+    const size = buf.readUInt32LE(off + 4);
+    const at = off + 8;
+    if (kind === 'VP8X') return [1 + buf.readUIntLE(at + 4, 3), 1 + buf.readUIntLE(at + 7, 3)];
+    if (kind === 'VP8 ') return [buf.readUInt16LE(at + 6) & 0x3fff, buf.readUInt16LE(at + 8) & 0x3fff];
+    if (kind === 'VP8L') {
+      const bits = buf.readUInt32LE(at + 1);
+      return [(bits & 0x3fff) + 1, ((bits >>> 14) & 0x3fff) + 1];
+    }
+    off = at + size + (size % 2);
+  }
+  assert.fail(`${path}: WebP dimensions unavailable`);
+}
 
 // =====================================================================
 
@@ -358,20 +377,69 @@ test('word&music case — system story (docs/wordmusic-case.md)', async t => {
     }
   });
 
-  await t.test('AC6: one concert, every format', () => {
+  await t.test('AC6: October exports — all 16 distinct formats, A2 trim and four-slide versions', () => {
     const p = project();
-    assert.doesNotMatch(JSON.stringify(p), /02-POST-NIGHT-4x5/i, 'broken export not referenced in data');
+    const expected = new Set([
+      'a2-light', 'a2-night', 'post-light', 'post-night', 'story-light', 'story-night',
+      'eventmate-light', 'eventmate-night', 'carousel-cover', 'carousel-performers',
+      'carousel-programme', 'carousel-annotation', 'story-carousel-cover',
+      'story-carousel-performers', 'story-carousel-programme', 'story-carousel-annotation',
+    ].map(name => `/media/design/cases/word-and-music-krila-20261007-${name}.webp`));
+    const retired = new Set([
+      'a3', 'post', 'story', 'eventmate', 'carousel-1', 'carousel-2', 'carousel-3', 'carousel-4',
+    ].map(name => `/media/design/cases/word-and-music-krila-${name}.webp`));
+    // The October JPEG with this basename has been fixed; only the obsolete PNG is banned.
+    const brokenPNG = /02-POST-NIGHT-4x5\.png/i;
+    assert.doesNotMatch(JSON.stringify(p), brokenPNG, 'obsolete broken PNG not referenced in data');
     for (const lang of ['en', 'ua']) {
       const inUse = page(lang).chapter('in-use');
-      assert.doesNotMatch(page(lang).html, /02-POST-NIGHT-4x5/i, `${lang}: broken export not used`);
+      assert.doesNotMatch(page(lang).html, brokenPNG, `${lang}: obsolete broken PNG not used`);
       const imgs = imagesIn(inUse);
-      assert.ok(imgs.length >= 8, `${lang}: poster, post, story, banner and ≥4 carousel slides (found ${imgs.length} images)`);
-      const rs = imgs.map(ratio);
-      assert.ok(rs.some(r => near(r, 297 / 420)), `${lang}: A3 poster`);
-      assert.ok(rs.some(r => near(r, 4 / 5)), `${lang}: 4:5 post`);
-      assert.ok(rs.some(r => near(r, 9 / 16)), `${lang}: 9:16 story`);
-      assert.ok(rs.some(r => near(r, 16 / 9)), `${lang}: 16:9 EventMate banner`);
+      assert.equal(imgs.length, 16, `${lang}: all 14 social exports and two A2 posters rendered`);
+      const srcs = imgs.map(i => i.attrs.src);
+      assert.equal(new Set(srcs).size, 16, `${lang}: each export rendered once`);
+      assert.deepEqual(new Set(srcs), expected, `${lang}: complete approved export inventory`);
+      for (const src of srcs) assert.ok(!retired.has(src), `${lang}: updated artwork uses a new path: ${src}`);
+      for (const image of imgs) {
+        const name = image.attrs.src.split('20261007-')[1];
+        const nativeRatio = name.startsWith('a2-') ? 420 / 594
+          : name.startsWith('eventmate-') ? 16 / 9
+            : name.startsWith('story-') ? 9 / 16 : 4 / 5;
+        assert.ok(near(ratio(image), nativeRatio, .003), `${lang}: ${name} retains its native format`);
+      }
+      const counts = [
+        { ratio: 420 / 594, count: 2, label: 'A2 posters without 3 mm bleed' },
+        { ratio: 4 / 5, count: 6, label: 'two posts and four carousel slides' },
+        { ratio: 9 / 16, count: 6, label: 'two stories and four carousel story versions' },
+        { ratio: 16 / 9, count: 2, label: 'two EventMate banners' },
+      ];
+      for (const format of counts) {
+        assert.equal(imgs.filter(i => near(ratio(i), format.ratio, .003)).length, format.count,
+          `${lang}: ${format.label} keep the complete artwork proportions`);
+      }
+      const posters = imgs.filter(i => near(ratio(i), 420 / 594, .003));
+      for (const poster of posters) assert.match(poster.attrs.alt, /A2/, `${lang}: poster labelled A2`);
+      const captions = posters.map(i => i.attrs.alt).join(' ');
+      assert.match(captions, lang === 'en' ? /light/i : /світл/i, `${lang}: A2 light variant labelled`);
+      assert.match(captions, lang === 'en' ? /night/i : /нічн/i, `${lang}: A2 night variant labelled`);
+      const copy = textOf(all(inUse, e => hasClass(e, 'design-chapter-copy'))[0]);
+      assert.match(copy, /A2/, `${lang}: body describes the A2 poster`);
+      assert.doesNotMatch(copy, /A3|eight[- ]slide|восьми|8[- ]slide/i, `${lang}: stale format/count removed`);
+      assert.match(copy, lang === 'en' ? /(?:four|4)[- ]slide|(?:four|4) slides/i : /чотир|4[- ]?слайд/i,
+        `${lang}: body describes four carousel slides`);
+      assert.match(copy, lang === 'en' ? /story versions|stories/i : /сторіс/i,
+        `${lang}: story versions described`);
     }
+    const system = p.story.find(c => c.chapter === 'system');
+    const heart = p.media.find(m => system.media.includes(m.id) && /heart/i.test(m.alt));
+    assert.ok(heart && heart.src !== '/media/design/cases/word-and-music-form-heart.webp', 'heart form uses updated artwork at a new path');
+    assert.notEqual(p.cover, '/media/design/cases/word-and-music-cover.webp', 'case cover uses updated artwork at a new path');
+    for (const src of [heart.src, p.cover]) {
+      const ladder = JSON.parse(read('data/media-ladder.json'));
+      assert.ok(Array.isArray(ladder[src]) && ladder[src].length > 1, `${src}: new responsive ladder exists`);
+    }
+    const fullFrames = cssRules(read('styles/site.css')).find(r => r.selector === '.design-frame img');
+    assert.equal(decl(fullFrames.body, 'object-fit'), 'contain', 'case frames show full artwork');
   });
 
   await t.test('AC7: second event — 2–3 applications', () => {
@@ -396,6 +464,15 @@ test('word&music case — system story (docs/wordmusic-case.md)', async t => {
         assert.ok(exists(src.slice(1)) && statSync(resolve(root, src.slice(1))).size > 0, `${lang}: file exists ${src}`);
         assert.ok(mediaSrc.has(src), `${lang}: ${src} listed in p.media`);
         assert.ok(Array.isArray(ladder[src]) && ladder[src].length, `${lang}: ${src} has a media-ladder entry`);
+        const [width, height] = webpSize(src.slice(1));
+        assert.equal(Number(img.attrs.width), width, `${lang}: ${src} width matches actual WebP`);
+        assert.equal(Number(img.attrs.height), height, `${lang}: ${src} height matches actual WebP`);
+        for (const [rungWidth, rungSrc] of ladder[src]) {
+          assert.ok(exists(rungSrc.slice(1)), `${lang}: derivative exists ${rungSrc}`);
+          const [rw, rh] = webpSize(rungSrc.slice(1));
+          assert.equal(rw, rungWidth, `${lang}: derivative width matches ladder ${rungSrc}`);
+          assert.ok(near(rw / rh, width / height, .003), `${lang}: derivative preserves full-artwork ratio ${rungSrc}`);
+        }
         assert.ok((img.attrs.srcset || '').trim(), `${lang}: ${src} has srcset`);
         assert.ok(Number(img.attrs.width) > 0 && Number(img.attrs.height) > 0, `${lang}: ${src} width/height`);
         assert.ok(ancestors(img).some(a => hasClass(a, 'design-frame')), `${lang}: ${src} inside .design-frame`);

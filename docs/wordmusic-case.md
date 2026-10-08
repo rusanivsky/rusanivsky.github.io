@@ -69,10 +69,14 @@ recorded in data with their source file); the type hierarchy (title,
 subtitle, names, details) as live text; the form of each concert (heart and
 ellipse) as images cropped from the exports.
 
-**AC6. One concert, every format.** The `in-use` chapter shows, for
-"На крилах кохання": A3 poster, a 4:5 post, a 9:16 story, a 16:9 EventMate
-banner, and a carousel sequence of at least 4 slides. The broken export
-`02-POST-NIGHT-4x5.png` (logo with missing letters) is not used.
+**AC6. One concert, every format.** The `in-use` chapter shows all 16 current
+exports for "На крилах кохання": two A2 posters (420×594 mm trim, without
+the 3 mm print bleed), light/night pairs of 4:5 posts, 9:16 stories and
+16:9 EventMate banners, four 4:5 carousel slides and their four 9:16 story
+versions. Both languages name A2 and the four-slide carousel. The obsolete
+broken `02-POST-NIGHT-4x5.png` is excluded; the fixed October JPEG is used.
+Every updated asset, the heart crop and case cover has a new URL and a
+responsive ladder. Previous WebP files remain available.
 
 **AC7. Second event.** The `second-event` chapter shows 2–3 applications of
 "Vivre, Aimer, Rêver…" from the final renders (`04_Фінальні_рендери`, re-exported 3 October 2026), at least
@@ -103,6 +107,19 @@ labels, no pill buttons.
 
 ## Review log
 
+- 7 October 2026: refresh from `20261015_На_крилах_кохання/03_Експорт`:
+  14 JPEGs in `01_Social`, plus the LIGHT/NIGHT A2 JPEGs in `02_Afisha`.
+  Keep the five-chapter story, marks, Retail subset and Vivre applications.
+  Render light/night pairs followed by the carousel and its story versions.
+  Crop only print bleed from A2. The heart detail comes from
+  `05-EVENTMATE-LIGHT-16x9.jpg`; update the existing case-cover composition
+  with the new post pair and banner. The On the Wings of Love palette now
+  samples the post JPEGs at (4200,120), (4200,5500), (2250,700); ink is the
+  most frequent pixel in (200,700)–(2400,2500). These are export samples,
+  not a replacement for the brand's colour specification. Originals stay
+  in the source folder; old web exports remain in Git. Database/API and
+  new interaction contracts: N/A (static media/data refresh).
+
 - 3 October 2026: owner chose structure A1, live subset typeface, materials
   from 15.10 and Vivre, Aimer, Rêver. Discovery found the broken logo in
   `02-POST-NIGHT-4x5.png` (15.10); excluded from the page.
@@ -119,3 +136,11 @@ labels, no pill buttons.
   scroll inside their band on phones, ground outlines, pinned fontTools in
   CI, unverified "23 languages" claim removed. Open for the owner: the
   alphabet is drawn as SVG outlines of every basic glyph (allowed by AC3).
+
+- 7 October 2026: independent review PASS. All 16 hashed JPEG sources
+  match the new WebPs; only A2 bleed is trimmed. Actual image headers and
+  responsive-rung proportions pass. Existing marks, subset and Vivre data
+  are unchanged. 101 Node checks, 10 font checks and 5 licence checks pass;
+  live build is byte-idempotent. Browser checks at 1440 and 374 CSS px
+  show complete A2 panels and no horizontal overflow. Inventory tests
+  exclude ignored local worktrees from the published-font scan.
