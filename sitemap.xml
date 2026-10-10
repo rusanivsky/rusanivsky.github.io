@@ -131,14 +131,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/"/>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-10-11</lastmod>
   </url>
   <url>
     <loc>https://rusanivsky.com/ua/street/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/"/>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-10-11</lastmod>
   </url>
   <url>
     <loc>https://rusanivsky.com/work/sounds-of-chornobyl/</loc>
@@ -433,5 +433,19 @@
     <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/work/30-years-of-ukrainian-independence/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/work/30-years-of-ukrainian-independence/"/>
     <lastmod>2026-10-02</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/street/a-place-to-pause/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/a-place-to-pause/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/a-place-to-pause/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/a-place-to-pause/"/>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://rusanivsky.com/ua/street/a-place-to-pause/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rusanivsky.com/street/a-place-to-pause/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rusanivsky.com/ua/street/a-place-to-pause/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rusanivsky.com/street/a-place-to-pause/"/>
+    <lastmod>2026-10-11</lastmod>
   </url>
 </urlset>
