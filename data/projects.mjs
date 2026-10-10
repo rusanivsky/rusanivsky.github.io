@@ -455,6 +455,47 @@ for (const entry of designCases) {
   } else projects.push(entry);
 }
 
+// Full twenty-frame bridge series, published alongside the shorter award selection.
+projects.push({
+  "id": "p-a-place-to-pause",
+  "slug": "a-place-to-pause",
+  "section": "street",
+  "title": {
+    "en": "A Place to Pause",
+    "ua": "Місце, де можна зупинитися"
+  },
+  "year": "2025–2026",
+  "client": null,
+  "context": "personal",
+  "disciplines": [
+    "photography"
+  ],
+  "roles": [],
+  "shortDescription": {
+    "en": "I photographed Kyiv’s Pedestrian Bridge and its surroundings between June 2025 and October 2026. The red railings recur in many of the photographs, while the people, light and activity change.",
+    "ua": "Я фотографував Пішохідний міст у Києві та його околиці від червня 2025-го до жовтня 2026 року. Червоні перила повторюються в багатьох кадрах, а люди, світло й події змінюються."
+  },
+  "descriptionParagraphs": [
+    {
+      "en": "A cyclist looks over at people preparing for a rope jump. Others take photographs or stop by the railing. Workers repaint the bridge. Below, someone swims with an orange buoy, boats pass, and people sit or fish along the beach. By evening, a couple stands watching the river.",
+      "ua": "Велосипедист озирається на людей, які готуються до стрибка з мотузкою. Інші фотографують або зупиняються біля перил. Працівники фарбують міст. Унизу хтось пливе з помаранчевим буєм, проходять човни, на пляжі сидять люди й ловлять рибу. Надвечір пара стоїть і дивиться на річку."
+    },
+    {
+      "en": "The bridge connects the city centre with Trukhaniv Island, but it is also a place where people spend time. Some arrive together; others briefly share a view or watch the same thing. These ordinary uses are what interested me in the bridge as a third place: somewhere to be among other people, with room to stop and look.",
+      "ua": "Міст сполучає центр міста з Трухановим островом, але тут також проводять час. Хтось приходить разом, інші ненадовго зупиняються поруч, щоб помилуватися краєвидом або поспостерігати за тим самим. Саме ці повсякденні способи користування мостом зацікавили мене в ньому як у «третьому місці»: просторі, де можна побути серед людей, зупинитися й озирнутися довкола."
+    }
+  ],
+  "credits": [],
+  "imageNote": {
+    "en": "The final photograph is a composite: the Moon comes from another of my photographs.",
+    "ua": "Останній кадр — композит: Місяць взято з іншого мого знімка."
+  },
+  "cover": "/media/photo/a-place-to-pause/20260505-184932-A.webp",
+  "externalLinks": [],
+  "featured": false,
+  media: series('a-place-to-pause', 20)
+});
+
 /* The video catalogue: everything filmed or edited that is not already inside
    a selected project. Grouped by the role metadata the brief asks for rather
    than split into Reels / Shorts / Social top-level pages. */

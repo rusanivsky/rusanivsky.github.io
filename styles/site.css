@@ -495,17 +495,59 @@ ul, ol { list-style: none; }
   transition: color var(--t) var(--ease);
 }
 .rail-nav a:hover { color: var(--ink); }
-.rail :is(.rail-nav, .rail-foot) a[aria-current='page'] { color: var(--ink); font-weight: var(--w-medium); }
-.rail :is(.rail-nav, .rail-foot) a[aria-current='page']::before,
-.rail-nav a:hover::before,
-.rail-foot > a[href$='/rates/']:hover::before {
+/* Keep the marker in place so entering and leaving a link can both animate. */
+.rail :is(.rail-nav a, .rail-foot > a[href$='/rates/']) {
+  position: relative;
+  padding-left: 0;
+  transition: padding-left 420ms var(--ease-out), color 420ms var(--ease-out);
+}
+.rail :is(.rail-nav a, .rail-foot > a[href$='/rates/'])::before {
   content: '';
-  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 1em;
   width: 0.55rem;
   height: var(--rule-w);
-  margin-right: 0.45rem;
-  vertical-align: 0.28em;
   background: var(--ink);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out), opacity 420ms var(--ease-out);
+}
+.rail :is(.rail-nav a, .rail-foot > a[href$='/rates/']):is(:hover, :focus-visible, [aria-current='page']) {
+  padding-left: 1rem;
+  color: var(--ink);
+}
+.rail .rail-nav a:hover::before,
+.rail .rail-nav a:focus-visible::before,
+.rail :is(.rail-nav, .rail-foot) a[aria-current='page']::before,
+.rail .rail-foot > a[href$='/rates/']:hover::before,
+.rail .rail-foot > a[href$='/rates/']:focus-visible::before {
+  content: '';
+  opacity: 1;
+  transform: scaleX(1);
+}
+.rail :is(.rail-nav, .rail-foot) a[aria-current='page'] { font-weight: var(--w-medium); }
+/* Reveal the ink colour from left to right without duplicating the label. */
+@supports (background-clip: text) {
+  .rail :is(.rail-nav, .rail-foot) .nav-label {
+    background: linear-gradient(90deg, var(--ink) 0%, var(--ink) 45%, var(--muted) 55%, var(--muted) 100%) 100% 0 / 225% 100%;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    color: transparent;
+    transition: background-position 520ms var(--ease-out);
+  }
+  .rail :is(.rail-nav, .rail-foot) a:is(:hover, :focus-visible, [aria-current='page']) .nav-label {
+    background-position: 0% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rail :is(.rail-nav a, .rail-foot > a[href$='/rates/']),
+  .rail :is(.rail-nav a, .rail-foot > a[href$='/rates/'])::before,
+  .rail :is(.rail-nav, .rail-foot) .nav-label { transition: none; }
+}
+@media (forced-colors: active) {
+  .rail :is(.rail-nav, .rail-foot) .nav-label { background: none; color: LinkText; }
 }
 
 /* The rail is exactly one screen tall, so on a short window the links used to

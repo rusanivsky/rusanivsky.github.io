@@ -118,7 +118,7 @@ const ELSEWHERE = [
 
 const navLinks = (list, here) =>
   list.map(([path, key]) =>
-    `<a href="${href(path)}"${path === here ? ' aria-current="page"' : ''}>${ui(key)}</a>`).join('');
+    `<a href="${href(path)}"${path === here ? ' aria-current="page"' : ''}><span class="nav-label">${ui(key)}</span></a>`).join('');
 
 const themeControl = () => {
   const modes = [
@@ -1140,6 +1140,7 @@ ${p.slug === 'reels' ? '' : `      <p class="vid-title">${esc(v.title)}</p>`}
     <p class="eyebrow">${esc(meta[0])}${p.context === 'personal' && !p.section ? ' · ' + ui('personal') : ''}</p>
     <h1 class="project-title t-display">${esc(L(p.title))}</h1>
     ${t(p.shortDescription, 'project-dek t-lead col-7', 'p')}
+    ${(p.descriptionParagraphs || []).map(paragraph => t(paragraph, 'project-dek t-lead col-7', 'p')).join('')}
     ${p.client || roles.length || p.year ? `<dl class="facts">
       ${p.client ? `<div><dt>${ui('client')}</dt><dd>${esc(clientName(p))}</dd></div>` : ''}
       ${roles.length ? `<div><dt>${ui('role')}</dt><dd>${esc(roles.join(', '))}</dd></div>` : ''}
@@ -1151,6 +1152,8 @@ ${p.slug === 'reels' ? '' : `      <p class="vid-title">${esc(v.title)}</p>`}
   <div class="seq col-full g12" style="padding-inline:0">
 ${sequence}
   </div>
+
+  ${p.imageNote ? t(p.imageNote, 'image-note t-meta col-7', 'p') : ''}
 
   ${p.credits.length ? `<div class="credits col-7">
     <h2 class="section-label">${ui('credits')}</h2>
@@ -1381,8 +1384,8 @@ function enquiriesPage() {
    series. The section intro is the text the placeholder page carried before
    the frames landed; the list below it grows a card per series. */
 const STREET_INTRO = {
-  en: 'A street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
-  ua: 'Серія вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
+  en: 'Street-photography series about the city, spontaneous scenes and landscapes. It is not commissioned work and it is never finished — it runs alongside everything else.',
+  ua: 'Серії вуличних світлин — про місто, випадкові сцени і краєвиди. Це не замовна робота і вона ніколи не завершена: вона триває поряд з усім іншим.',
 };
 
 function streetPage() {
@@ -1678,7 +1681,7 @@ const previousSitemap = new URL('../sitemap.xml', import.meta.url);
 const previousDates = new Map(existsSync(previousSitemap)
   ? [...readFileSync(previousSitemap, 'utf8').matchAll(/<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)].map(m => [m[1], m[2]])
   : []);
-const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/street/': '2026-10-02', '/street/after-five/': '2026-10-02', '/tembrava/license/': '2026-10-02' };
+const PAGE_UPDATED = { '/': '2026-10-02', [ABOUT_PATH]: '2026-10-02', '/photo/': '2026-10-02', '/street/': '2026-10-11', '/street/a-place-to-pause/': '2026-10-11', '/street/after-five/': '2026-10-02', '/tembrava/license/': '2026-10-02' };
 const lastmod = (lang, path) => PAGE_UPDATED[path] || previousDates.get(SITE + other(lang, path)) || today;
 const urls = PUBLIC.map((path) => LANGS.map((lang) => `  <url>
     <loc>${SITE}${other(lang, path)}</loc>
