@@ -54,8 +54,8 @@ export const projects = [
     roles: ['Editing'],
     scopeRole: { en: 'Editing and motion design', ua: 'Монтаж і моушн-дизайн' },
     shortDescription: {
-      en: 'Episode 7.0 of Yevheniia Dubrovska’s interior review series. Editing and motion design by Kyrylo Rusanivsky.',
-      ua: 'Випуск 7.0 серії розборів інтерʼєрів Євгенії Дубровської. Монтаж і моушн-дизайн — Кирило Русанівський.',
+      en: 'Episode 7.0 of Yevheniia Dubrovska’s interior review series.',
+      ua: 'Випуск 7.0 серії розборів інтерʼєрів Євгенії Дубровської.',
     },
     credits: [
       { en: 'Editing and motion design — Kyrylo Rusanivsky', ua: 'Монтаж і моушн-дизайн — Кирило Русанівський' },
