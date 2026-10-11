@@ -229,10 +229,14 @@
   if (drawer) {
     var opener = document.getElementById('menu-open');
     var closer = document.getElementById('menu-close');
+    var closing = false;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function openDrawer() {
+      if (closing) return;
       drawer.hidden = false;
       drawer.scrollTop = 0;
+      drawer.offsetHeight;
       drawer.classList.add('open');
       if (opener) opener.setAttribute('aria-expanded', 'true');
       lockScroll();
@@ -240,12 +244,28 @@
       if (first) first.focus();
     }
     function closeDrawer() {
-      if (drawer.hidden) return;
+      if (drawer.hidden || closing) return;
       drawer.classList.remove('open');
-      drawer.hidden = true;
       if (opener) opener.setAttribute('aria-expanded', 'false');
       unlockScroll();
-      if (opener) opener.focus();
+      if (reducedMotion) {
+        drawer.hidden = true;
+        if (opener) opener.focus();
+        return;
+      }
+      closing = true;
+      var onEnd = function (event) {
+        if (event && (!event.target.classList.contains('group') || event.propertyName !== 'transform')) return;
+        drawer.removeEventListener('transitionend', onEnd);
+        clearTimeout(timer);
+        if (!drawer.classList.contains('open')) {
+          drawer.hidden = true;
+        }
+        closing = false;
+        if (opener) opener.focus();
+      };
+      var timer = setTimeout(onEnd, 300);
+      drawer.addEventListener('transitionend', onEnd);
     }
     if (opener) opener.addEventListener('click', openDrawer);
     if (closer) closer.addEventListener('click', closeDrawer);
