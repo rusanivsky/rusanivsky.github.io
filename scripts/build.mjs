@@ -173,7 +173,6 @@ const mobile = (here, path) => {
   <div class="drawer-top">
     <span class="wordmark">${ui('name')}</span>
     <button type="button" id="menu-close" class="burger-btn" aria-label="${attr(ui('close'))}">
-      <span class="burger-label">${ui('close')}</span>
       <span class="burger-icon" aria-hidden="true">
         <span class="line line-top"></span>
         <span class="line line-mid"></span>

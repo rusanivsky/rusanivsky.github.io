@@ -229,14 +229,10 @@
   if (drawer) {
     var opener = document.getElementById('menu-open');
     var closer = document.getElementById('menu-close');
-    var closing = false;
-    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function openDrawer() {
-      if (closing) return;
       drawer.hidden = false;
       drawer.scrollTop = 0;
-      drawer.offsetHeight;
       drawer.classList.add('open');
       if (opener) opener.setAttribute('aria-expanded', 'true');
       lockScroll();
@@ -244,27 +240,12 @@
       if (first) first.focus();
     }
     function closeDrawer() {
-      if (drawer.hidden || closing) return;
+      if (drawer.hidden) return;
       drawer.classList.remove('open');
+      drawer.hidden = true;
       if (opener) opener.setAttribute('aria-expanded', 'false');
       unlockScroll();
-      if (reducedMotion) {
-        drawer.hidden = true;
-        if (opener) opener.focus();
-        return;
-      }
-      closing = true;
-      var onEnd = function () {
-        drawer.removeEventListener('transitionend', onEnd);
-        clearTimeout(timer);
-        if (!drawer.classList.contains('open')) {
-          drawer.hidden = true;
-        }
-        closing = false;
-        if (opener) opener.focus();
-      };
-      var timer = setTimeout(onEnd, 300);
-      drawer.addEventListener('transitionend', onEnd);
+      if (opener) opener.focus();
     }
     if (opener) opener.addEventListener('click', openDrawer);
     if (closer) closer.addEventListener('click', closeDrawer);
@@ -1284,7 +1265,7 @@
     // Without the card the name fades in with the rest of the header; with
     // it, the name is brought in by the card itself (below).
     var chrome = stay ? [] : Array.prototype.slice.call(document.querySelectorAll(
-      (waiting ? '' : '.rail .wordmark, .bar .wordmark, ') + '.rail-nav a, .rail-foot > *, .bar > :not(.wordmark)'
+      (waiting ? '' : '.rail .wordmark, ') + '.rail-nav a, .rail-foot > *'
     ));
     var tiles = stay ? [] : document.querySelectorAll('.slide.on .tile');
     // Rules are part of the entrance too: a divider that is already drawn
