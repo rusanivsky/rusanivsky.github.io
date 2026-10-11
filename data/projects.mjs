@@ -52,13 +52,13 @@ export const projects = [
     context: 'commissioned',
     disciplines: ['video'],
     roles: ['Editing'],
-    scopeRole: { en: 'Editing, graphics & motion design', ua: 'Монтаж, графіка та моушн-дизайн' },
+    scopeRole: { en: 'Editing and motion design', ua: 'Монтаж і моушн-дизайн' },
     shortDescription: {
-      en: 'Episode 7.0 of Yevheniia Dubrovska’s interior review series. Editing, graphics and motion design by Kyrylo Rusanivsky.',
-      ua: 'Випуск 7.0 серії розборів інтерʼєрів Євгенії Дубровської. Монтаж, графіка та моушн-дизайн — Кирило Русанівський.',
+      en: 'Episode 7.0 of Yevheniia Dubrovska’s interior review series. Editing and motion design by Kyrylo Rusanivsky.',
+      ua: 'Випуск 7.0 серії розборів інтерʼєрів Євгенії Дубровської. Монтаж і моушн-дизайн — Кирило Русанівський.',
     },
     credits: [
-      { en: 'Editing, graphics & motion design — Kyrylo Rusanivsky', ua: 'Монтаж, графіка та моушн-дизайн — Кирило Русанівський' },
+      { en: 'Editing and motion design — Kyrylo Rusanivsky', ua: 'Монтаж і моушн-дизайн — Кирило Русанівський' },
     ],
     cover: `${THUMB}yt-_t_72SQRkOM.webp`,
     media: [
