@@ -44,6 +44,31 @@ function video(platform, id, title, poster) {
 
 export const projects = [
   {
+    id: 'p-zheka-rozbery-7',
+    slug: 'zheka-rozbery-7',
+    title: { en: 'Zheka, Rozbery! — Interior Reviews 7.0', ua: 'Жека, Розбери! Розбір ваших інтерʼєрів 7.0' },
+    year: null,
+    client: null,
+    context: 'commissioned',
+    disciplines: ['video'],
+    roles: ['Editing'],
+    scopeRole: { en: 'Editing, graphics & motion design', ua: 'Монтаж, графіка та моушн-дизайн' },
+    shortDescription: {
+      en: 'Episode 7.0 of Yevheniia Dubrovska’s interior review series. Editing, graphics and motion design by Kyrylo Rusanivsky.',
+      ua: 'Випуск 7.0 серії розборів інтерʼєрів Євгенії Дубровської. Монтаж, графіка та моушн-дизайн — Кирило Русанівський.',
+    },
+    credits: [
+      { en: 'Editing, graphics & motion design — Kyrylo Rusanivsky', ua: 'Монтаж, графіка та моушн-дизайн — Кирило Русанівський' },
+    ],
+    cover: `${THUMB}yt-_t_72SQRkOM.webp`,
+    media: [
+      video('yt', '_t_72SQRkOM', 'Жека, Розбери! Розбір ваших інтерʼєрів 7.0', `${THUMB}yt-_t_72SQRkOM.webp`),
+    ],
+    externalLinks: [{ label: 'YouTube', href: 'https://www.youtube.com/watch?v=_t_72SQRkOM' }],
+    featured: false,
+  },
+
+  {
     id: 'p-sounds-of-chornobyl',
     slug: 'sounds-of-chornobyl',
     title: { en: 'Sounds of Chornobyl', ua: 'Sounds of Chornobyl' },
