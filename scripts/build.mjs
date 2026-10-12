@@ -822,6 +822,21 @@ function homeCollage() {
     const d = dim(item.src);
     return d.w / d.h >= 1.3 && !photos.some(p => p.src === item.src);
   }).slice(0, 2);
+  // Home-only edit: replace the three street frames with event photographs.
+  const reportage = photoProjects.find(p => p.slug === 'reportage');
+  const eventFrames = [
+    '20260723-194913-A.webp',
+    '20260502-153447-A.webp',
+    '20260522-205321-A.webp',
+  ].map(file => {
+    const frame = stills(reportage).find(item => item.src.endsWith(`/${file}`));
+    if (!frame) throw new Error(`Missing home event photograph: ${file}`);
+    return { ...frame, p: reportage };
+  });
+  let eventIndex = 0;
+  photos.forEach((item, i) => {
+    if (item.p.section === 'street') photos[i] = eventFrames[eventIndex++];
+  });
   const preview = (slug, id) => {
     const p = featured.find(p => p.slug === slug);
     const film = p.media.find(m => m.videoId === id && m.platform === 'cf');
