@@ -42,6 +42,9 @@ function video(platform, id, title, poster) {
   return { id: `vd-${id}`, type: 'video', platform, videoId: id, title, poster };
 }
 
+// Shared by the episode page and the YD series so their video source stays in sync.
+const zhekaRozbery7 = video('yt', '_t_72SQRkOM', 'Жека, Розбери! Розбір ваших інтерʼєрів 7.0', `${THUMB}yt-_t_72SQRkOM.webp`);
+
 export const projects = [
   {
     id: 'p-zheka-rozbery-7',
@@ -62,7 +65,7 @@ export const projects = [
     ],
     cover: `${THUMB}yt-_t_72SQRkOM.webp`,
     media: [
-      video('yt', '_t_72SQRkOM', 'Жека, Розбери! Розбір ваших інтерʼєрів 7.0', `${THUMB}yt-_t_72SQRkOM.webp`),
+      zhekaRozbery7,
     ],
     externalLinks: [{ label: 'YouTube', href: 'https://www.youtube.com/watch?v=_t_72SQRkOM' }],
     featured: false,
@@ -188,11 +191,13 @@ export const projects = [
       ua: 'Тривала YouTube-серія для студії інтерʼєрного дизайну Євгенії Дубровської: інтервʼю, тури проєктами й пояснювальні ролики.',
     },
     credits: [
+      { en: '“Zheka, Rozbery!” 7.0: Editing and motion design — Kyrylo Rusanivsky', ua: '«Жека, Розбери!» 7.0: монтаж і моушн-дизайн — Кирило Русанівський' },
       { en: 'DOP & Editor — Kyrylo Rusanivsky', ua: 'Оператор і монтажер — Кирило Русанівський' },
       { en: 'DOP on part of the series — Andrew Shurpenkov', ua: 'Оператор частини серії — Андрій Шурпенков' },
     ],
     cover: `${THUMB}yt-3ityvlL8js4.webp`,
     media: [
+      zhekaRozbery7,
       video('yt', '3ityvlL8js4', 'Interview with photographer Yevhenii Avramenko', `${THUMB}yt-3ityvlL8js4.webp`),
       video('yt', 'wM2vY2mxudY', 'INTERIOR DESIGN PROJECT. 8 stages of interior design.', `${THUMB}yt-wM2vY2mxudY.webp`),
       video('yt', '8Bc_-qWoE88', 'APARTMENT AT THE GOLDEN GATES! Golden Gates Apartment', `${THUMB}yt-8Bc_-qWoE88.webp`),
