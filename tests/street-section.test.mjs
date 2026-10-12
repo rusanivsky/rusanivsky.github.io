@@ -130,7 +130,7 @@ test('S3: /street/after-five/ is the series page with its twelve-frame collage',
   }
 });
 
-test('S4: home keeps the series as the eighth Selected row and in the persistent collage', () => {
+test('S4: home keeps the street series row while the collage uses event photographs', () => {
   for (const prefix of PREFIXES) {
     const html = read(`${prefix}index.html`);
     const target = `/${prefix}street/after-five/`;
@@ -141,7 +141,18 @@ test('S4: home keeps the series as the eighth Selected row and in the persistent
     const title = eighth[2].match(/<span class="row-title">([\s\S]*?)<\/span>/);
     assert.ok(title, `${prefix}index.html: eighth row has a title`);
     assert.equal(text(title[1]), L.series[lang(prefix)], `${prefix}index.html: eighth row title`);
-    assert.ok(tags(html, 'a').some(a => hasClass(a, 'collage-tile') && a.href === target), `${prefix}index.html: a collage tile links to the series`);
+    const tiles = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)]
+      .filter(m => hasClass(attrs(m[1]), 'collage-tile'));
+    assert.ok(tiles.length > 0, `${prefix}index.html: collage exists`);
+    assert.ok(tiles.every(m => !/\/street\//.test(attrs(m[1]).href)), `${prefix}index.html: no street collage links`);
+    const streetSources = new Set(series().media.filter(m => m.type === 'image').map(m => m.src));
+    assert.ok(tiles.every(m => tags(m[2], 'img').every(a => !streetSources.has(a.src))), `${prefix}index.html: no street collage photographs`);
+    for (const file of ['20260723-194913-A.webp', '20260502-153447-A.webp', '20260522-205321-A.webp']) {
+      const matching = tiles.filter(m => tags(m[2], 'img').some(a => a.src === `/media/photo/public-events/${file}`));
+      assert.equal(matching.length, 1, `${prefix}index.html: event photograph ${file} appears once`);
+      assert.equal(attrs(matching[0][1]).href, `/${prefix}work/reportage/`, `${prefix}index.html: event photograph links to Events`);
+      assert.ok(existsSync(resolve(root, `media/photo/public-events/${file}`)), `event photograph ${file} exists`);
+    }
   }
 });
 
