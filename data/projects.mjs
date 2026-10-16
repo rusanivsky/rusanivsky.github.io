@@ -523,7 +523,7 @@ projects.push({
   "cover": "/media/photo/a-place-to-pause/20260505-184932-A.webp",
   "externalLinks": [],
   "featured": false,
-  media: series('a-place-to-pause', 20)
+  media: series('a-place-to-pause', 21)
 });
 
 /* The video catalogue: everything filmed or edited that is not already inside
